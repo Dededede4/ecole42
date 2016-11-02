@@ -1,0 +1,35 @@
+#!/bin/bash
+
+action=$1
+schoolGitUrl=$2
+name=$3
+
+thisPath=`pwd`
+workPath='/Users/mprevot/dev/ecole42'
+backupPath='/Users/mprevot/dev/ecole42.github'
+
+if [ $action = "new" ]
+then
+	cd $workPath
+	git clone $schoolGitUrl $name
+	
+	cd $backupPath
+	mkdir $name
+	git add $name
+	git commit -m "Add project $name"
+	git push origin master
+else
+	command=""
+
+	for i in "$@"; do 
+		    i="${i//\\/\\\\}"
+		    command="$command \"${i//\"/\\\"}\""
+	done
+
+	echo $command
+	eval $command
+
+	subPath=${thisPath#$workPath}
+	cd "$backupPath$subPath"
+	eval $command
+fi
