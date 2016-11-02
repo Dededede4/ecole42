@@ -8,6 +8,8 @@ thisPath=`pwd`
 workPath='/Users/mprevot/dev/ecole42'
 backupPath='/Users/mprevot/dev/ecole42.github'
 
+rsync -a --exclude='.git/' "${workPath}/" "${backupPath}/"
+
 if [ $action = "new" ]
 then
 	cd $workPath
