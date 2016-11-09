@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_alphabet.c                                :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/09 18:30:39 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/09 18:21:52 by mprevot           #+#    #+#             */
+/*   Updated: 2016/11/09 18:29:32 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int i;
+#include <stdio.h>
+#include <string.h>
 
-	i = 0;
-	while (s1[i] == s2[i])
-	{
-		if (s1[i] == '\0')
-			return (0);
-		i++;
-	}
-	i = (s1[i] - s2[i]);
-	if (i)
-	{
-		return (1);
-	}
-	else
-	{
-		return (-1);
-	}
+int ft_strcmp(char *s1, char *s2);
+
+int		main(void)
+{
+	char	*str1 = "Je suis un string";
+	char	*str2 = "Je suis un string et";
+
+	printf("%d\n", ft_strcmp(str1, str2));
+	printf("%d\n", strcmp(str1, str2));
 }
