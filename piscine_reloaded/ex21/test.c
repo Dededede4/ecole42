@@ -4,10 +4,10 @@ int     *ft_range(int min, int max);
 
 int		main()
 {
-	int 	min = -42;
-	int		max = 42;
-	int		loops = max - min - 1;
-	int		*tab = ft_range(-42, 42);
+	int 	min = -3;
+	int		max = 20;
+	int		loops = max - min;
+	int		*tab = ft_range(min, max);
 	int		i = 0;
 
 	while (i < loops){
