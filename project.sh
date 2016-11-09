@@ -17,9 +17,6 @@ then
 	
 	cd $backupPath
 	mkdir $name
-	git add $name
-	git commit -m "Add project $name"
-	git push origin master
 else
 	command=""
 
