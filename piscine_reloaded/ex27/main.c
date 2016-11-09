@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 17:05:48 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/09 17:44:48 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/09 18:47:07 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 	ft_cat(argv[1]);
+	ft_putchar('\n');
 	return (0);
 }
