@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/03 17:40:45 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/09 10:31:25 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,15 @@ int	ft_iterative_factorial(int nb)
 		return (0);
 	}
 	if (nb <= 1)
-        {
-                return (1);
-        }
+	{
+		return (1);
+	}
 	r = nb;
-        nb--;
+	nb--;
 	while (nb)
 	{
 		r *= nb;
 		nb--;
 	}
-
 	return (r);
 }
