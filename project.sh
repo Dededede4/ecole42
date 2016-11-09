@@ -17,6 +17,22 @@ then
 	
 	cd $backupPath
 	mkdir $name
+elif [ $action = "pull" ]
+then
+	cd $workPath
+	git stash --include-untracked
+
+	cd $backupPath
+	git fetch
+	git pull
+
+	rsync -a --exclude='.git/' "${backupPath}/" "${workPath}/"
+	cd $workPath
+	git add .
+	git commit -m 'synchronisation from github'
+	
+
+	git stash pop
 else
 	command=""
 
