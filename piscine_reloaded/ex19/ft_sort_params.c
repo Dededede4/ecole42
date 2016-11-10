@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/10 10:32:04 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/10 11:19:39 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int		ft_is_superior_str(char *a, char *b)
 	{
 		if (a[i] == '\0' && b[i] == '\0')
 			return (0);
+		if (a[i] == '\0')
+			return (0);
 		if (b[i] == '\0')
 			return (1);
 		i++;
 	}
-	if (a[i - 1] == '\0')
-		return (0);
 	return (1);
 }
 
