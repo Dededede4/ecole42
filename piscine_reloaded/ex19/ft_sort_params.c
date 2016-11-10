@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/10 11:19:39 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/10 13:01:37 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,12 @@ int		ft_is_superior_str(char *a, char *b)
 	i = 0;
 	while (a[i] <= b[i])
 	{
-		if (a[i] == '\0' && b[i] == '\0')
-			return (0);
 		if (a[i] == '\0')
 			return (0);
-		if (b[i] == '\0')
-			return (1);
 		i++;
 	}
+	if (a[i] > b[i] && i > 0 && b[i] == '\0')
+		return (0);
 	return (1);
 }
 
@@ -52,7 +50,7 @@ void	ft_bublesort_str(int count, char **list)
 			tmp = list[i];
 			list[i] = list[i + 1];
 			list[i + 1] = tmp;
-			ft_bublesort_str(count, list);
+			i = 0;
 		}
 		i++;
 	}
