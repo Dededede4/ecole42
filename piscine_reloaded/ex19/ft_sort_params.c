@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/09 10:41:12 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/10 10:32:04 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int		ft_is_superior_str(char *a, char *b)
 void	ft_bublesort_str(int count, char **list)
 {
 	char	*tmp;
-	int		havechange;
 	int		i;
 
 	i = 1;
