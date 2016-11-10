@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_alphabet.c                                :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/10 11:06:25 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/10 11:02:01 by mprevot           #+#    #+#             */
+/*   Updated: 2016/11/10 11:04:19 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_recursive_factorial(int nb)
+#include <stdio.h>
+
+int	ft_recursive_factorial(int nb);
+
+int		main(void)
 {
-	if (nb < 0 || nb > 10)
-		return (0);
-	if (nb <= 1)
-		return (1);
-	return (nb * ft_recursive_factorial(nb - 1));
+	printf("%d\n", ft_recursive_factorial(14));
 }
