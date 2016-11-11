@@ -9,19 +9,22 @@ for path2Test in $files; do
 	path2Function="../${path2Test#$name_prefix}"
 
 	echo "========= ${path2Test}  =========";
-	rm ./a.out 2> /dev/null
+	rm ./a.out err errNorme 2> /dev/null
+
+	norminette $path2Function
+	echo ""
 	gcc -Wall -Wextra -Werror $path2Test $path2Function 2> err
 	if [ "${?}" = "0" ]; then
 		./a.out
 		code=$?
 		if [ "$code" != "0" ]; then
-			echo "Error: return ($code)";
+			echo "Test error: return ($code)";
 			errs=true
 		else
-			echo "ok"
+			echo "Test: ok"
 		fi
 	else
-		echo "Erreur de compilation:"
+		echo "Erreur de compilation :"
 		cat err
 		errs=true
 	fi
@@ -29,5 +32,5 @@ done
 
 if [ "$errs" = false ]
 then
-	echo "Les tests sont passés."
+	echo "\nLes tests sont passés."
 fi
