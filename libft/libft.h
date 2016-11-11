@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/11 12:51:32 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/11 14:33:28 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,4 +14,4 @@
 #include <string.h>
 
 void    *ft_memset(void *b, int c, size_t len);
-
+void    ft_bzero(void *s, size_t n);
