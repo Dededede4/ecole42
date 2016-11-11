@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_bzero.c                                       :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/11 13:46:11 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/11 14:28:47 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/11 14:29:14 by mprevot           #+#    #+#             */
+/*   Updated: 2016/11/11 14:35:41 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include "../libft.h"
-#include <stdlib.h>
+#include "libft.h"
 
-int		main(void)
+void	ft_bzero(void *s, size_t n)
 {
-	char	a[] = "coucou";
-	ft_bzero(a, 3);
-	
-	char	b[] = "coucou";
-	bzero(b, 3);
+	size_t			i;
+	unsigned char	*s2;
 
-	return memcmp(a, b, 7);
+	i = 0;
+	s2 = s;
+	while (i < n)
+	{
+		s2[i] = 0;
+		i++;
+	}
 }
