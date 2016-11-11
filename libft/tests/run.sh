@@ -3,7 +3,11 @@
 errs=false
 name_prefix="test_"
 
-files=`find . -name "${name_prefix}*.c" -type f -exec basename {} \;`
+if [ -z "$1" ]; then
+	files=`find . -name "${name_prefix}*.c" -type f -exec basename {} \;`
+else
+	files=$1
+fi
 
 for path2Test in $files; do
 	path2Function="../${path2Test#$name_prefix}"
@@ -13,7 +17,7 @@ for path2Test in $files; do
 
 	norminette $path2Function
 	echo ""
-	gcc -Wall -Wextra -Werror $path2Test $path2Function 2> err
+	gcc -Wall -Wextra -Werror $path2Test ../ft_*.c 2> err
 	if [ "${?}" = "0" ]; then
 		./a.out
 		code=$?
@@ -32,5 +36,5 @@ done
 
 if [ "$errs" = false ]
 then
-	echo "\nLes tests sont passés."
+	echo -e "\nLes tests sont passés."
 fi
