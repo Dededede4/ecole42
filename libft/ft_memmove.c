@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/11 14:33:28 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/11 11:56:12 by mprevot           #+#    #+#             */
+/*   Updated: 2016/11/11 14:45:56 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
+#include "libft.h"
 
-void    *ft_memset(void *b, int c, size_t len);
-void    ft_bzero(void *s, size_t n);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-void    *ft_memccpy(void *dest, const void *src, int c, size_t n);
-void	*ft_memmove(void *s1, const void *s2, size_t n);
+void	*ft_memmove(void *s1, const void *s2, size_t n)
+{
+	unsigned char	*str;
+
+	str = (unsigned char*)malloc(sizeof(*str) * n);
+	ft_memcpy(str, s2, n);
+	ft_memcpy(s1, str, n);
+	free(str);
+	return (s1);
+}
