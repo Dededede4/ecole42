@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   test_ft_memchr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/14 15:11:50 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/14 15:04:03 by mprevot           #+#    #+#             */
+/*   Updated: 2016/11/14 15:17:39 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <string.h>
+#include "../libft.h"
 
-void    *ft_memset(void *b, int c, size_t len);
-void    ft_bzero(void *s, size_t n);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-void    *ft_memccpy(void *dest, const void *src, int c, size_t n);
-void	*ft_memmove(void *s1, const void *s2, size_t n);
-void	*ft_memchr(const void *s, int c, size_t n);
+int		main(void)
+{
+	char	str[] = "je.cherche 1 truc";
+
+	void	*result = ft_memchr(str, '.', strlen(str));
+
+	if (result != str + 2)
+		return (10);
+	
+	void    *result2 = ft_memchr(str, 'X', strlen(str));
+	if (result2 != NULL)
+		return (20);
+
+	return (0);
+}
