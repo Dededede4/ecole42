@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 16:44:01 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/14 16:49:48 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/14 16:57:10 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ char	*ft_strcpy(char *dst, const char *src)
 		dst[i] = src[i];
 		i++;
 	}
+	dst[i] = '\0';
 	return (dst);
 }
