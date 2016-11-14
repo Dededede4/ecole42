@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 17:32:33 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/14 17:35:28 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/14 18:27:03 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 
 int		main(void)
 {
-	char	str1[10] = "12345";
-	char	str2[5] = "1234";
-	char	attendu[] = "123451234";
-	ft_strcat(str1, str2);
-	return (strcmp(attendu, str1));
+	char	str1[15] = "12345678901234";
+	str1[6] = '\0';
+	char	str2[5] = "AAA";
+	char	attendu[] = "123456AAA01234";
+	attendu[9] = '\0';
+	strcat(str1, str2);
+	return (memcmp(attendu, str1, 14));
 }

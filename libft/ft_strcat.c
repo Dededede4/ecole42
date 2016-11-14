@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 17:37:20 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/14 17:41:29 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/14 18:27:55 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ char	*ft_strcat(char *restrict s1, const char *restrict s2)
 		s1[len + i] = s2[i];
 		i++;
 	}
+	s1[len + i] = '\0';
 	return (s1);
 }
