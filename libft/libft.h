@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/14 18:38:24 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/14 19:34:07 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,3 +26,4 @@ char	*ft_strcpy(char *dst, const char *src);
 char	*ft_strncpy(char *dst, const char *src, size_t len);
 char	*ft_strcat(char *restrict s1, const char *restrict s2);
 char	*ft_strncat(char *restrict s1, const char *restrict s2, size_t n);
+size_t	ft_strlcat(char * restrict dst, const char * restrict src, size_t size);
