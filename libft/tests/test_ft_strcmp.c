@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_alphabet.c                                :+:      :+:    :+:   */
+/*   test_ft_strncmp.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/09 10:36:22 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/15 13:55:55 by mprevot           #+#    #+#             */
+/*   Updated: 2016/11/15 14:01:32 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int i;
+#include "../libft.h"
 
-	i = 0;
-	while (s1[i] == s2[i])
-	{
-		if (s1[i] == '\0')
-			return (0);
-		i++;
-	}
-	return (s1[i] - s2[i]);
+int		main(void)
+{
+	if (ft_strcmp("aaaa", "b") >= 0)
+		return (10);
+	if (ft_strcmp("bbbbb", "a") <= 0)
+		return (20);
+	if (ft_strcmp("aaa", "aaa") != 0)
+		return (30);
+	return (0);
 }
