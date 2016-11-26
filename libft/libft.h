@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#if __STDC_VERSION__ < 199901L
+#define restrict /* nothing */
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -30,3 +34,5 @@ size_t	ft_strlcat(char * restrict dst, const char * restrict src, size_t size);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char    *ft_strstr(const char *big, const char *little);
+

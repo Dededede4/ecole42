@@ -20,4 +20,5 @@ int		main(void)
 		return (10);
 	if (ft_strchr(str1, 'z') != NULL)
 		return (20);
+	return (0);
 }

@@ -23,5 +23,7 @@ char	*ft_strstr(const char *big, const char *little)
 	{
 		big++;
 	}
+	if (!*big)
+		return (NULL);
 	return ((char *)big);
 }
