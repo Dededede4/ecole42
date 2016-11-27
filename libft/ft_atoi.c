@@ -6,21 +6,21 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 12:15:27 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/27 14:00:42 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/27 14:18:11 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-int	ft_atoi(const char *str)
+int			ft_atoi(const char *str)
 {
 	int		result;
 	int		n;
 
 	n = 0;
-	while (*str && ((*str == '\n') || (*str == '\t') || (*str == '\v')
-				|| (*str == ' ') || (*str == '\f') || (*str  == '\r')))
+	while (*str == '\n' || *str == '\t' || *str == '\v' \
+			|| *str == ' ' || *str == '\f' || *str == '\r')
 		str++;
 	if (*str == '-')
 	{
