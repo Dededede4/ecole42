@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/27 14:28:15 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/27 14:51:25 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,5 @@ int		ft_strcmp(char *s1, char *s2);
 char    *ft_strnstr(const char *big, const char *little, size_t len);
 int		ft_atoi(const char *str);
 int		ft_tolower(int c);
+int		ft_toupper(int c);
+int		ft_isprint(int c);
