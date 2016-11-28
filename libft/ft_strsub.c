@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 15:30:48 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/28 16:00:08 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/28 16:14:58 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
 	char	*str;
 
-	str = ft_strnew(len + 1);
+	str = ft_strnew(len);
 	if (str == NULL)
 		return (NULL);
 	ft_memcpy(str, (void*)(s + start), len);
