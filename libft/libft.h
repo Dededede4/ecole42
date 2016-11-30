@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/30 10:17:36 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/11/30 14:11:04 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,3 +86,5 @@ void	ft_putendl_fd(char const *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char const *s, int fd);
 t_list	*ft_lstnew(void const *content, size_t content_size);
+void	ft_lstdelone(t_list **link, void (*del)(void *, size_t));
+void	ft_lstdel(t_list **alst, void (*del)(void*, size_t));
