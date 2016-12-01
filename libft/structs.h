@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/14 15:25:28 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/01 11:08:52 by mprevot          ###   ########.fr       */
+/*   Created: 2016/12/01 11:07:30 by mprevot           #+#    #+#             */
+/*   Updated: 2016/12/01 11:07:38 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
-int		ft_memcmp(const void *s1, const void *s2, size_t n)
+typedef struct		s_parts_chars
 {
 	size_t			i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	size_t			start;
+	size_t			count;
+	size_t			is_c;
+}					t_parts_chars;
 
-	if (!s1 && !s2 && !n)
-		return (0);
-	i = 0;
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	while (str1[i] == str2[i] && i < n)
-	{
-		i++;
-	}
-	return (str1[i] - str2[i]);
-}
+typedef struct		s_list
+{
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
+}					t_list;
+
+#endif
