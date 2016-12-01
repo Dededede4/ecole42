@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 13:15:17 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/15 13:18:14 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 14:49:02 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *)s);
 		s++;
 	}
+	if (!*s && c == '\0')
+		return ((char *)s);
 	return (NULL);
 }
