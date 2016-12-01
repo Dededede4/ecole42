@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 14:01:43 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/09 10:36:22 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 14:28:18 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,5 @@ int	ft_strcmp(char *s1, char *s2)
 			return (0);
 		i++;
 	}
-	return (s1[i] - s2[i]);
+	return ((int)((unsigned char)s1[i] - (unsigned char)s2[i]));
 }

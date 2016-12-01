@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 14:02:09 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/15 14:18:35 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 14:27:05 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n)
 		s1++;
 		s2++;
 	}
-	return ((int)(*s1 - *s2));
+	return ((int)((unsigned char)*s1 - (unsigned char)*s2));
 }

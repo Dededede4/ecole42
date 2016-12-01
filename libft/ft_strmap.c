@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:37:58 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/28 12:56:41 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 14:13:54 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strmap(char const *s, char (*f)(char))
 
 	i = 0;
 	dup = ft_strdup(s);
+	if (!dup)
+		return (NULL);
 	while (dup[i])
 	{
 		dup[i] = f(dup[i]);
