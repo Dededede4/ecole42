@@ -20,6 +20,8 @@ char	*ft_strtrim(char const *s)
 	d = 0;
 	while (s[d] == ' ' || s[d] == '\t' || s[d] == '\n')
 		d++;
+	if (s[d] == '\0')
+		return ((char *)s + d);
 	f = ft_strlen(s) - 1;
 	while (s[f] == ' ' || s[f] == '\t' || s[f] == '\n')
 		f--;
