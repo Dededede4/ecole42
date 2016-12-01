@@ -65,8 +65,12 @@ char	**ft_strsplit(char const *s, char c)
 	char	**tab;
 	size_t	len;
 
+	if (s == NULL || !c)
+		return (NULL);
 	len = ft_count_parts(s, c);
 	tab = ft_memalloc(sizeof(tab) * (len + 1));
+	if (tab == NULL)
+		return (NULL);
 	ft_get_parts(s, c, tab);
 	return (tab);
 }
