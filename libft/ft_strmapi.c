@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 14:26:56 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/01 14:12:14 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 17:36:48 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	size_t	i;
 
 	i = 0;
+	if (!s || !f)
+		return (NULL);
 	dup = ft_strdup(s);
 	if (dup == NULL)
 		return (NULL);

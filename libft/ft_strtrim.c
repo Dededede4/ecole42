@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 17:21:29 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/28 17:34:13 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 17:45:43 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ char	*ft_strtrim(char const *s)
 	size_t	d;
 	size_t	f;
 
+	if (!s)
+		return (NULL);
 	d = 0;
 	while (s[d] == ' ' || s[d] == '\t' || s[d] == '\n')
 		d++;
 	if (s[d] == '\0')
-		return ((char *)s + d);
+		return (ft_strnew(0));
 	f = ft_strlen(s) - 1;
 	while (s[f] == ' ' || s[f] == '\t' || s[f] == '\n')
 		f--;

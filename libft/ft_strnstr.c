@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 10:29:52 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/01 14:42:24 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 17:21:27 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,16 @@
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	strlen;
-	size_t	i;
-	int		cmp;
+	size_t	len2;
 
-	if (!(*little))
+	if (*little == '\0')
 		return ((char *)big);
-	strlen = ft_strlen(little);
-	if (strlen > ft_strlen(big))
-		return (NULL);
-	i = len - strlen + 2;
-	cmp = -1;
-	while (--i && *big && len-- >= strlen && cmp != 0)
+	len2 = ft_strlen(little);
+	while (*big != '\0' && len-- >= len2)
 	{
-		cmp = ft_strncmp(big, little, strlen);
-		if (cmp != 0)
-			big++;
+		if (*big == *little && ft_memcmp(big, little, len2) == 0)
+			return ((char *)big);
+		big++;
 	}
-	if (!*big || (cmp != 0 && i == 0))
-		return (NULL);
-	return ((char *)big);
+	return (NULL);
 }

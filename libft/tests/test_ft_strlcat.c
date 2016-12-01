@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:09:16 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/15 12:54:29 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/01 18:33:50 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ int		main(void)
 	val4 = ft_strlcat(d3, d4, 50);
 	if (val3 != val4)
 		return (30);
-
-	if (strcmp(d3, s4) != 0)
-		return (40);
 
 	return (0);
 }
