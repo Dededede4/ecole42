@@ -14,11 +14,14 @@
 
 void	*ft_memmove(void *s1, const void *s2, size_t n)
 {
-	unsigned char	*str;
+	void		*ret;
 
-	str = (unsigned char*)malloc(sizeof(*str) * n);
-	ft_memcpy(str, s2, n);
-	ft_memcpy(s1, str, n);
-	free(str);
-	return (s1);
+	ret = s1;
+	if (s1 < s2)
+		while ((size_t)(s1 - ret) < n)
+			*(unsigned char *)s1++ = *(unsigned char *)s2++;
+	else
+		while (n-- > 0)
+			((unsigned char *)s1)[n] = ((unsigned char *)s2)[n];
+	return (ret);
 }
