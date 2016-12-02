@@ -6,7 +6,7 @@
 #    By: mprevot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/01 11:18:53 by mprevot           #+#    #+#              #
-#    Updated: 2016/12/02 17:55:37 by mprevot          ###   ########.fr        #
+#    Updated: 2016/12/02 17:57:54 by mprevot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,4 +53,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean
+.PHONY: clean fclean re all
