@@ -6,7 +6,7 @@
 #    By: mprevot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/01 11:18:53 by mprevot           #+#    #+#              #
-#    Updated: 2016/12/01 13:10:11 by mprevot          ###   ########.fr        #
+#    Updated: 2016/12/02 17:55:37 by mprevot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=libft.a
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -Werror -O3
+CFLAGS=-Wall -Wextra -Werror
 
 RM=rm -f
 
