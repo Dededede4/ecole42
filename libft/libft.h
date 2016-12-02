@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/02 16:21:53 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/02 18:39:57 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <fcntl.h>
 
 typedef struct		s_parts_chars
 {
@@ -102,5 +103,9 @@ void				ft_lstdel(t_list **alst, void (*del)(void*, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-
+void				ft_cat(char *path);
+void				ft_foreach(int *tab, int length, void (*f)(int*));
+void				*ft_range(int min, int max);
+int					ft_factorial(int nb);
+void				ft_swap(int *a, int *b);
 #endif
