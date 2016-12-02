@@ -6,20 +6,20 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 18:22:38 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/30 18:55:59 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/02 16:19:39 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_ondelete(void *content, size_t len)
+static void	ft_ondelete(void *content, size_t len)
 {
 	(void)len;
 	free(content);
 	content = NULL;
 }
 
-t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
 	t_list	*next;
 	t_list	*new_first;

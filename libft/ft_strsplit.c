@@ -6,17 +6,17 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 17:50:39 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/28 19:39:43 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/02 16:22:24 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-size_t	ft_count_parts(char const *s, char c)
+static size_t		ft_count_parts(char const *s, char c)
 {
-	size_t		i;
-	size_t		count;
+	size_t			i;
+	size_t			count;
 
 	i = 1;
 	count = 0;
@@ -31,7 +31,7 @@ size_t	ft_count_parts(char const *s, char c)
 	return (count);
 }
 
-void	ft_get_parts(char const *s, char c, char **tab)
+static void			ft_get_parts(char const *s, char c, char **tab)
 {
 	t_parts_chars	v;
 
@@ -60,10 +60,10 @@ void	ft_get_parts(char const *s, char c, char **tab)
 	}
 }
 
-char	**ft_strsplit(char const *s, char c)
+char				**ft_strsplit(char const *s, char c)
 {
-	char	**tab;
-	size_t	len;
+	char			**tab;
+	size_t			len;
 
 	if (s == NULL || !c)
 		return (NULL);
