@@ -20,7 +20,6 @@
 int		error(int argc);
 int		ft_check(char *str);
 int		count_cara(char *str);
-void	free_list(List *list);
 
 int		main(int argc, char const *argv[])
 {
@@ -39,13 +38,13 @@ int		main(int argc, char const *argv[])
 	}
 	i = 0;
 	check = 0;
-	str[i] = ft_strnew(21);
-	while((check = read(fd, str[i], 21)) >= 20)
+	str = ft_strnew(21);
+	while((check = read(fd, str, 21)) >= 20)
 	{
-		if ((count_cara(str[i])) != 0)
+		if ((count_cara(str)) != 0)
 		{
 			ft_putstr("Piece invalide\n");
-			ft_putstr(str[i]);
+			ft_putstr(str);
 			return (1);
 		}
 	}
