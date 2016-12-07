@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fillit.h"
 
 t_tetri		*ft_tetrinew(char *tetri, size_t pos, char c)
 {
