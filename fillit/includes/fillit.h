@@ -1,9 +1,8 @@
-#include "libft.h"
-
 #ifndef FILLIT_H
 # define FILLIT_H
 
 # include "libft.h"
+# include <string.h>
 
 typedef struct		s_tetri
 {
