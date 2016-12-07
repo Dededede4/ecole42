@@ -6,6 +6,7 @@ typedef struct		s_tetri
 	struct s_tetri	*r;
 	struct s_tetri	*d;
 	struct s_tetri	*t;
+	char			c;
 }					t_tetri;
 
 size_t	ft_strlinelen(char *s)
