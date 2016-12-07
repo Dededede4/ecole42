@@ -6,11 +6,11 @@
 /*   By: fmasiala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 12:05:40 by fmasiala          #+#    #+#             */
-/*   Updated: 2016/12/07 12:05:49 by fmasiala         ###   ########.fr       */
+/*   Updated: 2016/12/07 14:43:16 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
 int		ft_istetriminos(char *str)
 {

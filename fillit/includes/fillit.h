@@ -3,6 +3,8 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
+# include "libft.h"
+
 typedef struct		s_tetri
 {
 	struct s_tetri	*l;
