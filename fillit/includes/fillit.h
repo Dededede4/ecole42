@@ -14,5 +14,6 @@ typedef struct		s_tetri
 }					t_tetri;
 size_t	ft_strlinelen(char *s);
 int		ft_open(char *argc[]);
+t_tetri	**creat_tetriminos(char *argv, int nbr);
 
 #endif
