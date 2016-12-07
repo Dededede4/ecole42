@@ -1,5 +1,8 @@
 #include "libft.h"
 
+#ifndef FILLIT_H
+# define FILLIT_H
+
 typedef struct		s_tetri
 {
 	struct s_tetri	*l;
@@ -8,5 +11,7 @@ typedef struct		s_tetri
 	struct s_tetri	*t;
 	char			c;
 }					t_tetri;
+size_t	ft_strlinelen(char *s);
+int		ft_open(char *argc[]);
 
-size_t	ft_strlinelen(char *s)
+#endif
