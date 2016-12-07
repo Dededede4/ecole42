@@ -6,11 +6,11 @@
 /*   By: fmasiala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 13:14:30 by fmasiala          #+#    #+#             */
-/*   Updated: 2016/12/07 13:14:48 by fmasiala         ###   ########.fr       */
+/*   Updated: 2016/12/07 14:42:19 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
 t_tetri		*ft_tetrinew(char *tetri, size_t pos, char c)
 {

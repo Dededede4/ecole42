@@ -1,5 +1,16 @@
-#include "fillit.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_get_tetriminos_minsize.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/07 14:42:47 by mprevot           #+#    #+#             */
+/*   Updated: 2016/12/07 14:42:57 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+include "../includes/fillit.h"
 
 // TODO tests
 int	ft_can_merge_tetriminos(char *map, size_t width, t_tetri *tetri, size_t pos)
