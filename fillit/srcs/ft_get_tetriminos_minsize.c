@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-include "../includes/fillit.h"
+#include "../includes/fillit.h"
 
 // TODO tests
 int	ft_can_merge_tetriminos(char *map, size_t width, t_tetri *tetri, size_t pos)
