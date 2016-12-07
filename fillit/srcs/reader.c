@@ -70,7 +70,7 @@ int		error(int argc)
 {
 	if (argc != 2)
 	{
-		ft_putstr("usage: fillit valid_sample.txt\n");
+		ft_putstr_fd("usage: fillit valid_sample.txt\n", 0);
 		return (-1);
 	}
 	return (0);
@@ -82,7 +82,7 @@ int		ft_open(char *argc[])
 
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
-		ft_putstr("Error\n");
+		ft_putstr_fd("Open Error\n", 0);
 		exit(0);
 	}
 	return (fd);
@@ -110,7 +110,7 @@ t_tetri		reader(int argc, char *argv[], int	*len)
 	{
 		if ((count_cara(str)) != 0)
 		{
-			ft_putstr("Piece invalide\n");
+			ft_putstr_fd("Piece invalide\n", 0);
 			ft_putstr(str);
 			return (1);
 		}
