@@ -76,11 +76,11 @@ int		error(int argc)
 	return (0);
 }
 
-int		ft_open(char *argv)
+int		ft_open(char *argv[])
 {
 	int		fd;
 
-	if ((fd = open(argv, O_RDONLY)) == -1)
+	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
 		ft_putstr_fd("Open Error\n", 0);
 		exit(0);
@@ -88,7 +88,7 @@ int		ft_open(char *argv)
 	return (fd);
 }
 
-t_tetri		reader(int argc, char *argv[], int	*len)
+t_tetri		**reader(int argc, char *argv[], int	*len)
 {
 	int		fd;
 	int		i;
@@ -113,12 +113,12 @@ t_tetri		reader(int argc, char *argv[], int	*len)
 		{
 			ft_putstr_fd("Piece invalide\n", 0);
 			ft_putstr(str);
-			return (1);
+			exit (1);
 		}
 		str[20] = '\0';
 		nbr++;
 	}
-	creat_tetriminos(argv, nbr);
+	tetris = creat_tetriminos(argv[1], nbr);
 	*len = nbr;
 	close(fd);
 	return (tetris);

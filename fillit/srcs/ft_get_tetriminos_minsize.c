@@ -41,7 +41,7 @@ int	ft_can_merge_tetriminos(char *map, size_t width, t_tetri *tetri, size_t pos)
 		can = ft_can_merge_tetriminos(map, tetri->d, pos - width);
 	}
 	if (can)
-		return (1)
+		return (1);
 	else
 		return (0);
 }
@@ -103,7 +103,7 @@ size_t	ft_tests_tetriminos_position(char *map, size_t width, t_tetri **tetris, i
 	nbr_permutes = 0;
 	while(i < nbr_tetri)
 	{
-		map2 = ft_dup(map);
+		map2 = ft_strdup(map);
 		r = ft_merge_all_tetriminos(map2, width, tetris, nbr_tetri);
 		if (r)
 		{
@@ -119,7 +119,7 @@ size_t	ft_tests_tetriminos_position(char *map, size_t width, t_tetri **tetris, i
 		if (i == nbr_tetri - 1)
 		{
 			i = 0;
-			nbr_permutes+;
+			nbr_permutes++;
 		}
 		ft_permute(tetris + nbr_permutes, nbr_tetri - nbr_permutes);
 	}

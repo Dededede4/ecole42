@@ -30,7 +30,7 @@ t_tetri		*ft_tetrinew(char *tetri, size_t pos, char c)
 	return (new);
 }
 
-t_tetri		creat_tetriminos(char *argv, int nbr)
+t_tetri		**creat_tetriminos(char *argv, int nbr)
 {
 	t_tetri	**tetris;
 	int		i;
@@ -41,7 +41,8 @@ t_tetri		creat_tetriminos(char *argv, int nbr)
 
 	i = 0;
 	check = 0;
-	fd = ft_open(argv);
+	fd = ft_open(&argv);
+	str = ft_strnew(21);
 	tetris = malloc(nbr * sizeof(t_tetri));
 
 	while((check = read(fd, str, 21)) >= 20)
