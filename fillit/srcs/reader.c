@@ -76,11 +76,11 @@ int		error(int argc)
 	return (0);
 }
 
-int		ft_open(char *argc[])
+int		ft_open(char *argv)
 {
 	int		fd;
 
-	if ((fd = open(argv[1], O_RDONLY)) == -1)
+	if ((fd = open(argv, O_RDONLY)) == -1)
 	{
 		ft_putstr_fd("Open Error\n", 0);
 		exit(0);
@@ -95,6 +95,7 @@ t_tetri		reader(int argc, char *argv[], int	*len)
 	int		check;
 	int     nbr;
 	char	*str;
+	t_tetri **tetris;
 
 	nbr = 0;
 	*len = 0;
@@ -105,7 +106,7 @@ t_tetri		reader(int argc, char *argv[], int	*len)
 	i = 0;
 	check = 0;
 	str = ft_strnew(21);
-	fd = ft_open(*argv[]);
+	fd = ft_open(argv);
 	while((check = read(fd, str, 21)) >= 20)
 	{
 		if ((count_cara(str)) != 0)
@@ -117,7 +118,8 @@ t_tetri		reader(int argc, char *argv[], int	*len)
 		str[20] = '\0';
 		nbr++;
 	}
-	creat_tetriminos(*arg[]);
+	creat_tetriminos(argv, nbr);
 	*len = nbr;
 	close(fd);
+	return (tetris);
 }

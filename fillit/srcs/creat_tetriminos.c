@@ -14,31 +14,35 @@
 
 t_tetri		*ft_tetrinew(char *tetri, size_t pos, char c)
 {
-	t_list	*new;
+	t_tetri	*new;
 
-	new = (t_list *)malloc(sizeof(t_list));
+	new = (t_tetri *)malloc(sizeof(t_tetri));
 	if (new == NULL)
 		return (NULL);
 	new->c = c;
 	if (tetri[pos + 5] == '#')
-		new->d = ft_tetrinew(tetri, pos + 5, c)
+		new->d = ft_tetrinew(tetri, pos + 5, c);
 	if (tetri[pos + 4] == '#')
-		new->l = ft_tetrinew(tetri, pos + 4, c)
+		new->l = ft_tetrinew(tetri, pos + 4, c);
 	if (tetri[pos + 6] == '#')
-		new->r = ft_tetrinew(tetri, pos + 6, c)
+		new->r = ft_tetrinew(tetri, pos + 6, c);
 	new->t = NULL;
 	return (new);
 }
 
-t_tetri		creat_tetriminos(char *argv[])
+t_tetri		creat_tetriminos(char *argv, int nbr)
 {
 	t_tetri	**tetris;
 	int		i;
 	char	c = 'A';
+	int		fd;
+	int		check;
+	char	*str;
 
-	fd = ft_open(*argv[]);
-	tetris = malloc(nbr * sizeof(t_tetri));
 	i = 0;
+	check = 0;
+	fd = ft_open(argv);
+	tetris = malloc(nbr * sizeof(t_tetri));
 
 	while((check = read(fd, str, 21)) >= 20)
 	{
