@@ -23,13 +23,13 @@ int	ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 	can = 1;
 	if (tetri->r)
 	{
-		printf("right\n");
+		//printf("right\n");
 		if (pos + 1 < len)
 			can = ft_can_merge_tetriminos(map, width, tetri->r, pos + 1);
 	}
 	if (can && tetri->l)
 	{
-		printf("left\n");
+		//printf("left\n");
 		if (pos == 0)
 			return (0);
 		if (pos - 1 < len)
@@ -37,24 +37,24 @@ int	ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 	}
 	if (can && tetri->d)
 	{
-		printf("down\n");
+		//printf("down\n");
 		if (pos + width < len)
-			can = ft_can_merge_tetriminos(map, width, tetri->d, pos + width);
+			can = ft_can_merge_tetriminos(map, width, tetri->d, pos + width + 1);
 	}
 	if (can && tetri->t)
 	{
-		printf("top\n");
+		//printf("top\n");
 		if (pos < width)
 			return (0);
-		can = ft_can_merge_tetriminos(map, width, tetri->d, pos - width);
+		can = ft_can_merge_tetriminos(map, width, tetri->d, pos - width - 1);
 	}
 	if (can){
-		printf("wiii\n");
+		//printf("wiii\n");
 		return (1);
 	}
 	else
 	{
-		printf("owwwwww\n");
+		//printf("owwwwww\n");
 		return (0);
 	}
 }
@@ -68,9 +68,9 @@ void	ft_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 	if (tetri->l)
 		ft_merge_tetriminos(map, width, tetri->l, pos - 1);
 	if (tetri->d)
-		ft_merge_tetriminos(map, width, tetri->d, pos + width);
+		ft_merge_tetriminos(map, width, tetri->d, pos + width + 1);
 	if (tetri->t)
-		ft_merge_tetriminos(map, width, tetri->d, pos - width);
+		ft_merge_tetriminos(map, width, tetri->d, pos - width - 1);
 }
 
 
@@ -88,21 +88,21 @@ int	ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris, int nbr_tetr
 		y = 0;
 		while (y < nbr_tetri)
 		{
-			printf("%d\n", y);
-			if (ft_can_merge_tetriminos(map, width, tetris[y], i))
+			//printf("%d\n", y);
+			if (!tetris[y]->printed && ft_can_merge_tetriminos(map, width, tetris[y], i))
 			{
-				printf("bon");
+				//printf("bon");
+				//printf("****%c\n", tetris[y]->c);
 				ft_merge_tetriminos(map, width, tetris[y], i);
+				tetris[y]->printed = 1;
 				goods++;
 			}
-			else
-				printf("mauvais\n");
+				//printf("mauvais\n");
 			y++;
 		}
 		if (goods == nbr_tetri)
 			return (1);
-		else
-			i++;
+		i++;
 	}
 	return (0);
 }
@@ -113,55 +113,67 @@ int	ft_tests_tetriminos_position(char *map, int width, t_tetri **tetris, int nbr
 	int	i;
 	char	*map2;
 	int	r;
-	int	nbr_permutes;
+	int	nbr_all_permutes;
 
 	i = 0;
-	nbr_permutes = 0;
-	while(i < nbr_tetri)
+	nbr_all_permutes = 0;
+	while(nbr_all_permutes <= nbr_tetri)
 	{
 		map2 = ft_strdup(map);
 
 		r = ft_merge_all_tetriminos(map2, width, tetris, nbr_tetri);
 		if (r)
 		{
-
+			//printf("pouet\n");
 			ft_strcpy(map, map2);
-			ft_strclr(map2);
 			return (1);
 		}
-		else
-		{
-			ft_strclr(map2);
-		}
+		ft_strclr(map2);
 		if (i == nbr_tetri - 1)
 		{
 			i = 0;
-			nbr_permutes++;
+			nbr_all_permutes++;
 		}
-		printf("permute\n");
-		ft_permute((void**)(tetris + nbr_permutes), nbr_tetri - nbr_permutes);
+		//printf("permute\n");
+		ft_permute((void**)tetris, nbr_tetri, nbr_all_permutes);
 		i++;
 	}
 	return (0);
 }
 
 // TODO tests
-void	ft_permute(void	**mem, int len)
+void	ft_permute(void	**mem, int len, int start)
 {
 	void	*last;
 	int	i;
 
-	if (len <= 0)
+	if (len - start <= 0)
 		return;
 
-	i = len - 1;
+	/*i = 0;
+	while(i < len)
+	{
+		ft_putchar(((t_tetri **)mem)[i]->c);
+		i++;
+	}
+	ft_putchar('\n');*/
+	i = len  - 1;
 	last = mem[i];
-	while (i)
+	while (i > start)
 	{
 		mem[i] = mem[i - 1];
 		i--;
 	}
-	mem[0] = last;
+	mem[start] = last;
+/*
+	i = 0;
+	while(i < len)
+	{
+		ft_putchar(((t_tetri **)mem)[i]->c);
+		i++;
+	}
+	ft_putchar('\n');
+	ft_putchar('\n');*/
 }
 
 
@@ -198,19 +210,20 @@ int		main(int argc, char **argv)
 
 	nbr_tetri = 0;
 	width = 2;
-	tetris = reader(argc, argv[1], &nbr_tetri);
-	while (width < 4)
+	
+	while (1)
 	{
+		tetris = reader(argc, argv[1], &nbr_tetri);
 		map = ft_getmap(width);
 		if (!map)
 			return (0);
-		printf("%s\n", map);
+		//printf("Test d'une map de largeur %d...\n", width);
 		if (ft_tests_tetriminos_position(map, width, tetris, nbr_tetri))
 		{
 			ft_putstr(map);
 			return (0);
 		}
-		//printf("%s", map);
+		////printf("%s", map);
 		ft_strclr(map);
 		width++;
 	}
