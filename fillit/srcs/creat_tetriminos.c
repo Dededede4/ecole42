@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-t_tetri		*ft_tetrinew(char *tetri, size_t pos, char c)
+t_tetri		*ft_tetrinew(char *tetri, int pos, char c)
 {
 	t_tetri	*new;
 
