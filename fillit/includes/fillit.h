@@ -3,6 +3,8 @@
 
 # include "libft.h"
 # include <string.h>
+# include <errno.h>
+# include <stdio.h>
 
 typedef struct		s_tetri
 {
@@ -13,9 +15,9 @@ typedef struct		s_tetri
 	char			c;
 }					t_tetri;
 int		ft_strlinelen(char *s);
-int		ft_open(char *argc[]);
-t_tetri	**creat_tetriminos(char *argv, int nbr);
+int		ft_open(char *path);
+t_tetri	**creat_tetriminos(char *path, int nbr);
 void	ft_permute(void	**str, int len);
-t_tetri	**reader(int argc, char *argv[], int *len);
+t_tetri	**reader(int argc, char *path, int *len);
 
 #endif
