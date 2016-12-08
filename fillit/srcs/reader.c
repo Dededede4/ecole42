@@ -106,8 +106,13 @@ t_tetri		**reader(int argc, char *path, int *len)
 	check = 0;
 	str = ft_strnew(21);
 	fd = ft_open(path);
-	while((check = read(fd, str, 21)) >= 20)
+	while((check = read(fd, str, 21)))
 	{
+		if (check != 21 && check != 20)
+		{
+			ft_putstr_fd("Piece invalide\n", 0);
+			exit (1);
+		}
 		if ((count_cara(str)) != 0)
 		{
 			ft_putstr_fd("Piece invalide\n", 0);

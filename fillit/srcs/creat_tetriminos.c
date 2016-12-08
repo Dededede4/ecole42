@@ -24,14 +24,25 @@ t_tetri		*ft_tetrinew(char *tetri, int pos, char c)
 	new->l = NULL;
 	new->r = NULL;
 	new->t = NULL;
+	new->printed = 0;
+	tetri[pos] = 'X';
 	if (pos + 5 < 21 && tetri[pos + 5] == '#')
 		new->d = ft_tetrinew(tetri, pos + 5, c);
-	if (pos + 4 < 21 && tetri[pos + 4] == '#')
-		new->l = ft_tetrinew(tetri, pos + 4, c);
-	if (pos + 6 < 21 && tetri[pos + 6] == '#')
-		new->r = ft_tetrinew(tetri, pos + 6, c);
+	if (pos - 1 >= 0 && tetri[pos - 1] == '#')
+		new->l = ft_tetrinew(tetri, pos - 1, c);
+	if (pos + 1 < 21 && tetri[pos + 1] == '#')
+		new->r = ft_tetrinew(tetri, pos + 1, c);
 	
 	return (new);
+}
+
+void	ft_print_tetriminos(t_tetri *t)
+{
+	char	*map;
+
+	map = ft_getmap(9);
+	ft_merge_tetriminos(map, 9, t, 5);
+	ft_putstr(map);
 }
 
 t_tetri		**creat_tetriminos(char *path, int nbr)
@@ -51,8 +62,9 @@ t_tetri		**creat_tetriminos(char *path, int nbr)
 
 	while((check = read(fd, str, 21)) >= 20)
 	{
-
+		//write(1, str, 21);
 		tetris[i] = ft_tetrinew(ft_strchr(str, '#'), 0, c + i);
+		//ft_print_tetriminos(tetris[i]);
 		i++;
 	}
 	close(fd);
