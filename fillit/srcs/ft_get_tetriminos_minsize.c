@@ -95,7 +95,7 @@ size_t	ft_merge_all_tetriminos(char *map, size_t width, t_tetri **tetris, int nb
 size_t	ft_tests_tetriminos_position(char *map, size_t width, t_tetri **tetris, int nbr_tetri)
 {
 	size_t	i;
-	size_t	map2;
+	char	*map2;
 	size_t	r;
 	size_t	nbr_permutes;
 
