@@ -67,8 +67,8 @@ size_t	ft_merge_all_tetriminos(char *map, size_t width, t_tetri **tetris, int nb
 	size_t	i;
 	size_t	y;
 	size_t	goods;
-	int		nbr_tetri = 2;
-
+	
+	nbr_tetri = 2;
 	i = 0;
 	goods = 0;
 	while (map[i])
