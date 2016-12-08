@@ -52,5 +52,6 @@ t_tetri		**creat_tetriminos(char *argv, int nbr)
 		i++;
 	}
 	close(fd);
+	free(str);
 	return (tetris);
 }
