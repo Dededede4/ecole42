@@ -20,17 +20,21 @@ t_tetri		*ft_tetrinew(char *tetri, int pos, char c)
 	if (new == NULL)
 		return (NULL);
 	new->c = c;
-	if (tetri[pos + 5] == '#')
-		new->d = ft_tetrinew(tetri, pos + 5, c);
-	if (tetri[pos + 4] == '#')
-		new->l = ft_tetrinew(tetri, pos + 4, c);
-	if (tetri[pos + 6] == '#')
-		new->r = ft_tetrinew(tetri, pos + 6, c);
+	new->d = NULL;
+	new->l = NULL;
+	new->r = NULL;
 	new->t = NULL;
+	if (pos + 5 < 21 && tetri[pos + 5] == '#')
+		new->d = ft_tetrinew(tetri, pos + 5, c);
+	if (pos + 4 < 21 && tetri[pos + 4] == '#')
+		new->l = ft_tetrinew(tetri, pos + 4, c);
+	if (pos + 6 < 21 && tetri[pos + 6] == '#')
+		new->r = ft_tetrinew(tetri, pos + 6, c);
+	
 	return (new);
 }
 
-t_tetri		**creat_tetriminos(char *argv, int nbr)
+t_tetri		**creat_tetriminos(char *path, int nbr)
 {
 	t_tetri	**tetris;
 	int		i;
@@ -41,7 +45,7 @@ t_tetri		**creat_tetriminos(char *argv, int nbr)
 
 	i = 0;
 	check = 0;
-	fd = ft_open(&argv);
+	fd = ft_open(path);
 	str = ft_strnew(21);
 	tetris = malloc(nbr * sizeof(t_tetri));
 
