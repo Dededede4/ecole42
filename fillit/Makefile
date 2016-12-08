@@ -22,7 +22,7 @@ LDFLAGS=-L.
 
 LDLIBS=-lft
 
-SRC= srcs/creat_tetriminos.c srcs/ft_get_tetriminos_minsize.c srcs/ft_strlinelen.c srcs/reader.c
+SRC= srcs/creat_tetriminos.c srcs/ft_get_tetriminos_minsize.c srcs/ft_strlinelen.c srcs/reader.c includes/libft.a
 
 $(NAME): fillit
 	$(CC) $(CFLAGS) $(SRC) -o $(NAME)

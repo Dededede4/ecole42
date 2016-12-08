@@ -12,8 +12,10 @@ typedef struct		s_tetri
 	struct s_tetri	*t;
 	char			c;
 }					t_tetri;
-size_t	ft_strlinelen(char *s);
+int		ft_strlinelen(char *s);
 int		ft_open(char *argc[]);
 t_tetri	**creat_tetriminos(char *argv, int nbr);
+void	ft_permute(void	**str, int len);
+t_tetri	**reader(int argc, char *argv[], int *len);
 
 #endif

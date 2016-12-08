@@ -12,9 +12,9 @@
 
 #include "../includes/fillit.h"
 
-size_t	ft_strlinelen(char *s)
+int	ft_strlinelen(char *s)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	while (s[i])
