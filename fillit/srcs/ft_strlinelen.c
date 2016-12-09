@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-int	ft_strlinelen(char *s)
+int		ft_strlinelen(char *s)
 {
 	int i;
 

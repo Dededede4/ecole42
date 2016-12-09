@@ -13,11 +13,13 @@
 #include "../includes/fillit.h"
 
 // TODO tests
+
 int		ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	int		can;
-	int		len = (width + 1) * width + 1; // Ne pas le calculer ici
+	int		len;
 
+	len = (width + 1) * width + 1;
 	if (map[pos] != '.')
 		return (0);
 	can = 1;
@@ -36,7 +38,8 @@ int		ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 	if (can && tetri->d)
 	{
 		if (pos + width < len)
-			can = ft_can_merge_tetriminos(map, width, tetri->d, pos + width + 1);
+			can = ft_can_merge_tetriminos(map, width, tetri->d,
+											pos + width + 1);
 	}
 	if (can && tetri->t)
 	{
@@ -51,6 +54,7 @@ int		ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 }
 
 // TODO tests
+
 void	ft_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = tetri->c;
@@ -64,14 +68,15 @@ void	ft_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 		ft_merge_tetriminos(map, width, tetri->d, pos - width - 1);
 }
 
-
 // TODO tests
-int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris, int nbr_tetri)
+
+int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris,
+	int nbr_tetri)
 {
 	int		i;
 	int		y;
 	int		goods;
-	
+
 	i = 0;
 	goods = 0;
 	while (map[i])
@@ -79,7 +84,8 @@ int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris, int nbr_tet
 		y = 0;
 		while (y < nbr_tetri)
 		{
-			if (!tetris[y]->printed && ft_can_merge_tetriminos(map, width, tetris[y], i))
+			if (!tetris[y]->printed &&
+				ft_can_merge_tetriminos(map, width, tetris[y], i))
 			{
 				ft_merge_tetriminos(map, width, tetris[y], i);
 				tetris[y]->printed = 1;
@@ -95,7 +101,9 @@ int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris, int nbr_tet
 }
 
 // TODO tests
-int		ft_tests_tetriminos_position(char *map, int width, t_tetri **tetris, int nbr_tetri)
+
+int		ft_tests_tetriminos_position(char *map, int width,
+	t_tetri **tetris, int nbr_tetri)
 {
 	int		i;
 	char	*map2;
@@ -126,14 +134,15 @@ int		ft_tests_tetriminos_position(char *map, int width, t_tetri **tetris, int nb
 }
 
 // TODO tests
-void	ft_permute(void	**mem, int len, int start)
+
+void	ft_permute(void **mem, int len, int start)
 {
 	void	*last;
-	int	i;
+	int		i;
 
 	if (len - start <= 0)
-		return;
-	i = len  - 1;
+		return ;
+	i = len - 1;
 	last = mem[i];
 	while (i > start)
 	{
@@ -143,12 +152,12 @@ void	ft_permute(void	**mem, int len, int start)
 	mem[start] = last;
 }
 
-
 // TODO tests
+
 void	*ft_getmap(int width)
 {
 	char	*new;
-	int 	i;
+	int		i;
 	int		len;
 
 	i = 0;
@@ -165,31 +174,4 @@ void	*ft_getmap(int width)
 		i++;
 	}
 	return (new);
-}
-
-
-int		main(int argc, char **argv)
-{
-	char	*map;
-	int		width;
-	int		nbr_tetri;
-	t_tetri **tetris;
-
-	nbr_tetri = 0;
-	width = 2;
-	while (1)
-	{
-		tetris = reader(argc, argv[1], &nbr_tetri);
-		map = ft_getmap(width);
-		if (!map)
-			return (0);
-		if (ft_tests_tetriminos_position(map, width, tetris, nbr_tetri))
-		{
-			ft_putstr(map);
-			return (0);
-		}
-		ft_strclr(map);
-		width++;
-	}
-	return (1);
 }

@@ -26,7 +26,8 @@ int		ft_istetriminos(char *str)
 		if (str[i] == '#')
 		{
 			count++;
-			if ((str[i + 1] == '#') || (str[i - 1] == '#') || (str[i + 5] == '#') || (str[i - 5] == '#'))
+			if ((str[i + 1] == '#') || (str[i - 1] == '#') ||
+				(str[i + 5] == '#') || (str[i - 5] == '#'))
 			{
 				flag++;
 			}
@@ -60,20 +61,10 @@ int		count_cara(char *str)
 			return (-1);
 		i++;
 	}
-	if (dot == 12 && diese == 4 && (ft_istetriminos(str) == 0) )
+	if (dot == 12 && diese == 4 && (ft_istetriminos(str) == 0))
 		return (0);
 	else
 		return (-1);
-}
-
-int		error(int argc)
-{
-	if (argc != 2)
-	{
-		ft_putstr_fd("usage: fillit valid_sample.txt\n", 0);
-		return (-1);
-	}
-	return (0);
 }
 
 int		ft_open(char *path)
@@ -89,35 +80,25 @@ int		ft_open(char *path)
 	return (fd);
 }
 
-t_tetri		**reader(int argc, char *path, int *len)
+t_tetri	**reader(int argc, char *path, int *len)
 {
 	int		fd;
-	int		i;
 	int		check;
-	int     nbr;
+	int		nbr;
 	char	*str;
 	t_tetri **tetris;
 
 	if (error(argc) == -1)
 		exit(0);
 	nbr = 0;
-	*len = 0;	
-	i = 0;
+	*len = 0;
 	check = 0;
 	str = ft_strnew(21);
 	fd = ft_open(path);
-	while((check = read(fd, str, 21)))
+	while ((check = read(fd, str, 21)))
 	{
-		if (check != 21 && check != 20)
-		{
-			ft_putstr_fd("Piece invalide\n", 0);
-			exit (1);
-		}
-		if ((count_cara(str)) != 0)
-		{
-			ft_putstr_fd("Piece invalide\n", 0);
-			exit (1);
-		}
+		if (tetri_checker(check, str) != 0)
+			exit(0);
 		str[20] = '\0';
 		nbr++;
 	}
