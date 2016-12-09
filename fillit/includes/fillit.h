@@ -28,5 +28,5 @@ int					error(int argc);
 int					count_cara(char *str);
 int					ft_tests_tetriminos_position(char *map, int width,
 	t_tetri **tetris, int nbr_tetri);
-
+void				ft_permete_to_first(void **mem, int pos);
 #endif
