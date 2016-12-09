@@ -6,7 +6,7 @@
 /*   By: fmasiala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 09:18:18 by fmasiala          #+#    #+#             */
-/*   Updated: 2016/12/09 09:21:34 by fmasiala         ###   ########.fr       */
+/*   Updated: 2016/12/09 15:12:02 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int		main(int argc, char **argv)
 	{
 		tetris = reader(argc, argv[1], &nbr_tetri);
 		map = ft_getmap(width);
+		ft_putstr("Nouvelle map…\n");
 		if (!map)
 			return (0);
 		if (ft_tests_tetriminos_position(map, width, tetris, nbr_tetri))
