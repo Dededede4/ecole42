@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-t_tetri		*ft_tetrinew(char *tetri, int pos, char c)
+t_tetri	*ft_tetrinew(char *tetri, int pos, char c)
 {
 	t_tetri	*new;
 
@@ -32,7 +32,6 @@ t_tetri		*ft_tetrinew(char *tetri, int pos, char c)
 		new->l = ft_tetrinew(tetri, pos - 1, c);
 	if (pos + 1 < 21 && tetri[pos + 1] == '#')
 		new->r = ft_tetrinew(tetri, pos + 1, c);
-	
 	return (new);
 }
 
@@ -45,11 +44,10 @@ void	ft_print_tetriminos(t_tetri *t)
 	ft_putstr(map);
 }
 
-t_tetri		**creat_tetriminos(char *path, int nbr)
+t_tetri	**creat_tetriminos(char *path, int nbr)
 {
 	t_tetri	**tetris;
 	int		i;
-	char	c = 'A';
 	int		fd;
 	int		check;
 	char	*str;
@@ -59,12 +57,9 @@ t_tetri		**creat_tetriminos(char *path, int nbr)
 	fd = ft_open(path);
 	str = ft_strnew(21);
 	tetris = malloc(nbr * sizeof(t_tetri));
-
-	while((check = read(fd, str, 21)) >= 20)
+	while ((check = read(fd, str, 21)) >= 20)
 	{
-		//write(1, str, 21);
-		tetris[i] = ft_tetrinew(ft_strchr(str, '#'), 0, c + i);
-		//ft_print_tetriminos(tetris[i]);
+		tetris[i] = ft_tetrinew(ft_strchr(str, '#'), 0, 'A' + i);
 		i++;
 	}
 	close(fd);
