@@ -40,7 +40,7 @@ void	ft_print_tetriminos(t_tetri *t)
 	char	*map;
 
 	map = ft_getmap(9);
-	ft_merge_tetriminos(map, 9, t, 5);
+	ft_write_tetriminos(map, 9, t, 5);
 	ft_putstr(map);
 }
 
