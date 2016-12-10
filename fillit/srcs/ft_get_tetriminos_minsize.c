@@ -70,8 +70,8 @@ void	ft_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 		ft_merge_tetriminos(map, width, tetri->l, pos - 1);
 	if (tetri->d)
 		ft_merge_tetriminos(map, width, tetri->d, pos + width + 1);
-	if (tetri->t)
-		ft_merge_tetriminos(map, width, tetri->d, pos - width - 1);
+	/*if (tetri->t)
+		ft_merge_tetriminos(map, width, tetri->d, pos - width - 1);*/
 }
 
 // TODO tests
