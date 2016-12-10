@@ -27,10 +27,8 @@ static int		ft_intlen(int n)
 char			*ft_itoa(int n)
 {
 	char		*str;
-	int			i;
 	int			len;
 
-	i = 0;
 	len = ft_intlen(n);
 	str = ft_strnew(len);
 	if (str == NULL)
