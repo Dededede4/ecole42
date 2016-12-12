@@ -14,6 +14,7 @@
 
 // TODO tests
 
+/* Teste si on peut écrire un tetris dans une position */
 int		ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	int		can;
@@ -60,7 +61,7 @@ int		ft_can_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 }
 
 // TODO tests
-
+/* Écrit un tetri dans une position */
 void	ft_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = tetri->c;
@@ -75,6 +76,8 @@ void	ft_merge_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 }
 
 // TODO tests
+
+/* Prends en argument la list, des tetriminos, et essaye de tous les écrires, en les testant tous sur chaque position */
 
 int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris,
 		int nbr_tetri)
@@ -103,10 +106,18 @@ int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris,
 			return (1);
 		i++;
 	}
+	i = 0;
+	while(i < nbr_tetri)
+	{
+		tetris[i]->printed = 0;
+		i++;
+	}
 	return (0);
 }
 
 // TODO tests
+
+/* Permute l'odre des tetris dans tous les cas possibles, et execute à chaque permutation ft_merge_all_tetriminos() (qui va essayer de les écrire dans la map) */
 
 int		ft_tests_tetriminos_position(char *map, int width,
 		t_tetri **tetris, int nbr_tetri)
@@ -126,6 +137,11 @@ int		ft_tests_tetriminos_position(char *map, int width,
 		{
 			map2 = ft_strdup(map);
 			r = ft_merge_all_tetriminos(map2, width, tetris, nbr_tetri);
+			/*if (width == 6 && is_tetriminos_order("ABCEFGHD", tetris))
+			{
+				ft_putstr(map2);
+				exit(0);
+			}*/
 			if (r)
 			{
 				ft_strcpy(map, map2);
