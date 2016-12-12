@@ -28,7 +28,7 @@ int		main(int argc, char **argv)
 		ft_putstr("Nouvelle map…\n");
 		if (!map)
 			return (0);
-		if (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, 0, 0, 0))
+		if (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, 0, 0))
 		{
 			ft_putstr(map);
 			return (0);
