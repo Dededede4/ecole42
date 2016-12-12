@@ -169,6 +169,20 @@ int		ft_tests_tetriminos_position(char *map, int width,
 	return (0);
 }
 
+
+int		is_tetriminos_order(char *s, t_tetri **tetris)
+{
+	int 	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != tetris[i]->c)
+			return (0);
+		i++;
+	}
+	return (1);
+}
 // TODO tests
 
 void    ft_permete_to_first(void **mem, int pos)
