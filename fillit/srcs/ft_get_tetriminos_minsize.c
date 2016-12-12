@@ -119,55 +119,46 @@ int		ft_merge_all_tetriminos(char *map, int width, t_tetri **tetris,
 
 /* Permute l'odre des tetris dans tous les cas possibles, et execute à chaque permutation ft_merge_all_tetriminos() (qui va essayer de les écrire dans la map) */
 
-int		ft_tests_tetriminos_position(char *map, int width,
-		t_tetri **tetris, int nbr_tetri)
-{
-	int		i;
-	char	*map2;
-	int		r;
-	int		nbr_all_permutes;
-	int		big_permutes;
 
-	i = 0;
-	nbr_all_permutes = 0;
-	big_permutes = 0;
-	while (big_permutes < nbr_tetri)
-	{
-		while (i + nbr_all_permutes <= nbr_tetri)
-		{
-			map2 = ft_strdup(map);
-			r = ft_merge_all_tetriminos(map2, width, tetris, nbr_tetri);
-			/*if (width == 6 && is_tetriminos_order("ABCEFGHD", tetris))
-			{
-				ft_putstr(map2);
-				exit(0);
-			}*/
-			if (r)
-			{
-				ft_strcpy(map, map2);
-				return (1);
-			}
-			ft_strclr(map2);
-			if (i + nbr_all_permutes == nbr_tetri)
-			{
-				ft_putstr("permuteee\n");
-				i = 0;
-				//ft_permute((void**)tetris, nbr_tetri, nbr_all_permutes);
-				nbr_all_permutes++;
-			}
-			ft_permute((void**)tetris, nbr_tetri, nbr_all_permutes);
-			i++;
-		}
-		ft_putstr("**************\n");
-		big_permutes++;
-		i = 0;
-		nbr_all_permutes = 1;
-		if (big_permutes > 1)
-			ft_permete_to_first((void**)tetris, big_permutes - 1);
-		ft_permete_to_first((void**)tetris, big_permutes);
-	}
-	return (0);
+void	ft_swap_tetri(t_tetri **a, t_tetri **b)
+{
+	t_tetri *tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
+
+int 	ft_tests_tetriminos_position(char *map, int width, t_tetri **tetris, int nbr_tetri, int i) { 
+	int		r;
+	char	*map2;
+	int 	j;
+
+ 	if (nbr_tetri == i){
+		map2 = ft_strdup(map);
+		r = ft_merge_all_tetriminos(map2, width, tetris, nbr_tetri);
+		if (r)
+		{
+			ft_strcpy(map, map2);
+			return (1);
+		}
+		ft_strclr(map2);
+		return (0);
+	}
+	r = 0;
+	j = i;
+	while (j < nbr_tetri) {
+		ft_swap_tetri(tetris+i,tetris+j);
+		r = ft_tests_tetriminos_position(map, width, tetris, nbr_tetri, i+1);
+		if (r == 1)
+			return (1);
+		ft_swap_tetri(tetris+i,tetris+j);
+		j++;
+	}
+	return (-1);
+}
+
+
 
 
 int		is_tetriminos_order(char *s, t_tetri **tetris)
