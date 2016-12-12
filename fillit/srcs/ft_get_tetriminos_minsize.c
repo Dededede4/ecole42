@@ -88,44 +88,41 @@ void	ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 		ft_write_tetriminos(map, width, tetri->d, pos - width - 1);*/
 }
 // TODO tests
+
 int		ft_write_all_tetriminos(char *map, int width,
-		t_tetri **tetris, int nbr_tetri, int map_pos, int tetri_pos, int tetri_check)
+		t_tetri **tetris, int nbr_tetri, int map_pos, int tetri_check)
 {
-	int	tmp;
-	int	rollback;
+	int	i;
 
-	rollback = 0;
-
+	i = 0;
 	if (tetri_check == nbr_tetri)
 		return (1);
 
 	if (!map[map_pos])
 		return (0);
 
-	if (tetri_pos == nbr_tetri)
-	{
-		return (0);
-	}
 
-	if (ft_can_write_tetriminos(map, width, tetris[tetri_pos], map_pos))
+	while (i < nbr_tetri)
 	{
-		tetri_check++;
-		ft_write_tetriminos(map, width, tetris[tetri_pos], map_pos);
-		rollback = 1;
-	}
-
-	if (!rollback)
-	{
-		tmp = ft_write_all_tetriminos(map, width, tetris, nbr_tetri, map_pos + 1, tetri_pos, tetri_check);
-		if (tmp)
-			return (1);
-	}
-	tmp = ft_write_all_tetriminos(map, width, tetris, nbr_tetri, map_pos, tetri_pos + 1, tetri_check);
-	if (tmp)
-		return (1);
-	if (rollback)
-		ft_erase_tetriminos(map, width, tetris[tetri_pos], map_pos);
-	return (0);
+		if (tetris[i]->printed != 1 && ft_can_write_tetriminos(map, width, tetris[i], map_pos))
+		{
+			tetri_check++;
+			ft_write_tetriminos(map, width, tetris[i], map_pos);
+			tetris[i]->printed = 1;
+			if (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, map_pos + 1, tetri_check) == 1)
+			{
+				return (1);
+			}
+			else
+			{
+				tetris[i]->printed = 0;
+				tetri_check--;
+				ft_erase_tetriminos(map, width, tetris[i], map_pos);
+			}
+		}
+		i++;
+	}		
+	return (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, map_pos + 1, tetri_check));
 }
 
 // TODO tests
