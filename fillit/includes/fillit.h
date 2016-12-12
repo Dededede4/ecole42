@@ -26,7 +26,7 @@ void				*ft_getmap(int width);
 int					tetri_checker(int check, char *str);
 int					error(int argc);
 int					count_cara(char *str);
-int					ft_tests_tetriminos_position(char *map, int width,
-	t_tetri **tetris, int nbr_tetri);
 void				ft_permete_to_first(void **mem, int pos);
+int 				is_tetriminos_order(char *s, t_tetri **tetris);
+int 				ft_tests_tetriminos_position(char *map, int width, t_tetri **tetris, int nbr_tetri, int i);
 #endif
