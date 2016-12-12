@@ -20,10 +20,10 @@ int		main(int argc, char **argv)
 	t_tetri **tetris;
 
 	nbr_tetri = 0;
-	width = 2;
+	tetris = reader(argc, argv[1], &nbr_tetri);
+	width = ft_sqrt(nbr_tetri);
 	while (1)
 	{
-		tetris = reader(argc, argv[1], &nbr_tetri);
 		map = ft_getmap(width);
 		ft_putstr("Nouvelle map…\n");
 		if (!map)
