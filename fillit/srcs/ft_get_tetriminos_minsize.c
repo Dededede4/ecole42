@@ -79,11 +79,11 @@ void	ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = '.';
 	if (tetri->r)
-		ft_write_tetriminos(map, width, tetri->r, pos + 1);
+		ft_erase_tetriminos(map, width, tetri->r, pos + 1);
 	if (tetri->l)
-		ft_write_tetriminos(map, width, tetri->l, pos - 1);
+		ft_erase_tetriminos(map, width, tetri->l, pos - 1);
 	if (tetri->d)
-		ft_write_tetriminos(map, width, tetri->d, pos + width + 1);
+		ft_erase_tetriminos(map, width, tetri->d, pos + width + 1);
 	/*if (tetri->t)
 		ft_write_tetriminos(map, width, tetri->d, pos - width - 1);*/
 }
