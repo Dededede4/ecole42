@@ -11,13 +11,22 @@
 /* ************************************************************************** */
 
 #include "../includes/fillit.h"
+int		check_end_file(int check)
+{
+	if (check != 20)
+	{
+		ft_putstr("error\n");
+		return (1);
+	}
+	return (0);
+}
 
 int		ft_error(int argc)
 {
 	if (argc != 2)
 	{
-		ft_putstr_fd("usage: fillit valid_sample.txt\n", 0);
-		return (-1);
+		ft_putstr("usage: fillit input_file\n");
+		return (1);
 	}
 	return (0);
 }
@@ -26,13 +35,14 @@ int		tetri_checker(int check, char *str)
 {
 	if (check != 21 && check != 20)
 	{
-		ft_putstr_fd("Piece invalide\n", 1);
+		ft_putstr("error\n");
 		return (1);
 	}
 	if ((count_cara(str)) != 0)
 	{
-		ft_putstr_fd("Piece invalide\n", 1);
+		ft_putstr("error\n");
 		return (1);
 	}
+	ft_strclr(str); 
 	return (0);
 }
