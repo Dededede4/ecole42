@@ -36,12 +36,12 @@ int		tetri_checker(int check, char *str)
 {
 	if (check != 21 && check != 20)
 	{
-		ft_putstr("error1\n");
+		ft_putstr("error\n");
 		return (1);
 	}
 	if ((count_cara(str)) != 0)
 	{
-		ft_putstr("error2\n");
+		ft_putstr("error\n");
 		return (1);
 	}
 	return (0);

@@ -16,25 +16,25 @@ int		ft_istetriminos(char *str)
 {
 	int		i;
 	int		count;
-	int		flag;
 
 	i = 0;
 	count = 0;
-	flag = 0;
 	while (i < 21)
 	{
 		if (str[i] == '#')
 		{
-			count++;
-			if ((str[i + 1] == '#') || (str[i - 1] == '#') ||
-				(str[i + 5] == '#') || (str[i - 5] == '#'))
-			{
-				flag++;
-			}
+			if ((i + 1) < 20 && str[i + 1] == '#')
+				count++;
+			if ((i - 1) >= 0 && str[i - 1] == '#')
+				count++;
+			if ((i + 5) < 20 && str[i + 5] == '#')
+				count++;
+			if ((i - 5) >= 0 && str[i - 5] == '#')
+				count++;
 		}
 		i++;
 	}
-	if (flag == count)
+	if (count == 6 || count == 8)
 		return (0);
 	else
 		return (-1);
