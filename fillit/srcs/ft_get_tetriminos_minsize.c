@@ -106,6 +106,10 @@ int		ft_write_all_tetriminos(char *map, int width,
 			tetri_check++;
 			ft_write_tetriminos(map, width, tetris[tetri_pos], i);
 			tetris[tetri_pos]->printed = 1;
+<<<<<<< HEAD
+=======
+			//ft_putendl(map);
+>>>>>>> 5bd9cf66abacfae0bb272dea813b9a12ef846938
 			if (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, tetri_pos + 1, tetri_check) == 1)
 			{
 				return (1);
