@@ -34,7 +34,7 @@ void				ft_permute(void	**str, int len, int start);
 t_tetri				**reader(int argc, char *path, int *len);
 void				*ft_getmap(int width);
 int					tetri_checker(int check, char *str);
-int					error(int argc);
+int					ft_error(int argc);
 int					count_cara(char *str);
 void				ft_permete_to_first(void **mem, int pos);
 int					ft_write_all_tetriminos(char *map, int width,

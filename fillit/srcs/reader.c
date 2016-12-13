@@ -73,7 +73,7 @@ int		ft_open(char *path)
 
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
-		printf("%s : %s \n", strerror(errno), path);
+		//printf("%s : %s \n", strerror(errno), path);
 		ft_putstr_fd("Open Error\n", 0);
 		exit(2);
 	}
@@ -88,7 +88,7 @@ t_tetri	**reader(int argc, char *path, int *len)
 	char	*str;
 	t_tetri **tetris;
 
-	if (error(argc) == -1)
+	if (ft_error(argc) == -1)
 		exit(0);
 	nbr = 0;
 	*len = 0;

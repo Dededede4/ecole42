@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-int		error(int argc)
+int		ft_error(int argc)
 {
 	if (argc != 2)
 	{
