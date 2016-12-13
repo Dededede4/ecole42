@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "../includes/fillit.h"
-int		check_end_file(int check)
+
+int		check_end_file(int check, int last)
 {
-	if (check != 20)
+	if (check == 0 && last == 21)
 	{
 		ft_putstr("error\n");
 		return (1);
@@ -35,14 +36,13 @@ int		tetri_checker(int check, char *str)
 {
 	if (check != 21 && check != 20)
 	{
-		ft_putstr("error\n");
+		ft_putstr("error1\n");
 		return (1);
 	}
 	if ((count_cara(str)) != 0)
 	{
-		ft_putstr("error\n");
+		ft_putstr("error2\n");
 		return (1);
 	}
-	ft_strclr(str); 
 	return (0);
 }

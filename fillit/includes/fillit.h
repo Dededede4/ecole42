@@ -41,5 +41,5 @@ int					ft_write_all_tetriminos(char *map, int width,
 		t_tetri **tetris, int nbr_tetri, int map_pos, int tetri_check);
 void				ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos);
 int					ft_sqrt(int nb);
-int					check_end_file(int check);
+int					check_end_file(int check, int last);
 #endif

@@ -84,6 +84,7 @@ t_tetri	**reader(int argc, char *path, int *len)
 	int		fd;
 	int		check;
 	int		nbr;
+	int		last;
 	char	*str;
 	t_tetri **tetris;
 
@@ -92,6 +93,7 @@ t_tetri	**reader(int argc, char *path, int *len)
 	nbr = 0;
 	*len = 0;
 	check = 0;
+	last = 0;
 	str = ft_strnew(21);
 	fd = ft_open(path);
 	while ((check = read(fd, str, 21)))
@@ -99,9 +101,10 @@ t_tetri	**reader(int argc, char *path, int *len)
 		if (tetri_checker(check, str) != 0)
 			exit(0);
 		nbr++;
+		last = check;
 	}
-	if((check_end_file(check)) != 0)
-		exit (0);
+	if (check_end_file(check, last) != 0)
+			exit (0);
 	tetris = creat_tetriminos(path, nbr);
 	*len = nbr;
 	close(fd);
