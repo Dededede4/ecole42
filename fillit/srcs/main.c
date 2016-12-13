@@ -22,8 +22,6 @@ int		main(int argc, char **argv)
 	nbr_tetri = 0;
 	width = 2;
 	tetris = reader(argc, argv[1], &nbr_tetri);
-	while(nbr_tetri * 4 >= width * width)
-		width++;
 	while (1)
 	{
 		map = ft_getmap(width);
