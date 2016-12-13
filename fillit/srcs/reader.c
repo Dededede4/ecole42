@@ -6,7 +6,7 @@
 /*   By: fmasiala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 12:05:40 by fmasiala          #+#    #+#             */
-/*   Updated: 2016/12/07 14:43:16 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/13 11:57:20 by fmasiala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int		ft_open(char *path)
 
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
-		//printf("%s : %s \n", strerror(errno), path);
-		ft_putstr_fd("Open Error\n", 0);
+		printf("%s : %s \n", strerror(errno), path);
+		ft_putstr_fd("Open Error\n", 1);
 		exit(2);
 	}
 	return (fd);
