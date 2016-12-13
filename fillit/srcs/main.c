@@ -20,12 +20,13 @@ int		main(int argc, char **argv)
 	t_tetri **tetris;
 
 	nbr_tetri = 0;
+	width = 2;
 	tetris = reader(argc, argv[1], &nbr_tetri);
-	width = ft_sqrt(nbr_tetri);
+	while(nbr_tetri * 4 >= width * width)
+		width++;
 	while (1)
 	{
 		map = ft_getmap(width);
-		ft_putstr("Nouvelle map…\n");
 		if (!map)
 			return (0);
 		if (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, 0, 0))

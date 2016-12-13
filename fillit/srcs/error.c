@@ -26,12 +26,12 @@ int		tetri_checker(int check, char *str)
 {
 	if (check != 21 && check != 20)
 	{
-		ft_putstr_fd("Piece invalide\n", 0);
+		ft_putstr_fd("Piece invalide\n", 1);
 		return (1);
 	}
 	if ((count_cara(str)) != 0)
 	{
-		ft_putstr_fd("Piece invalide\n", 0);
+		ft_putstr_fd("Piece invalide\n", 1);
 		return (1);
 	}
 	return (0);
