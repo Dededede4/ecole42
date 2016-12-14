@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-void	*ft_getmap(int width)
+void	*ft_newmap(int width)
 {
 	char	*new;
 	int		i;

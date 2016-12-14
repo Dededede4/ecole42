@@ -39,12 +39,12 @@ void	ft_print_tetriminos(t_tetri *t)
 {
 	char	*map;
 
-	map = ft_getmap(9);
+	map = ft_newmap(9);
 	ft_write_tetriminos(map, 9, t, 5);
 	ft_putstr(map);
 }
 
-t_tetri	**creat_tetriminos(char *path, int nbr)
+t_tetri	**ft_creat_tetriminos(char *path, int nbr)
 {
 	t_tetri	**tetris;
 	int		i;
