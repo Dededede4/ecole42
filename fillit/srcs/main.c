@@ -29,6 +29,8 @@ int		main(int argc, char **argv)
 			return (0);
 		if (ft_write_all_tetriminos(map, width, tetris, nbr_tetri, 0, 0))
 		{
+			if ((empty_map(map)) != 0)
+				return (1);
 			ft_putstr(map);
 			return (0);
 		}

@@ -19,7 +19,7 @@ int		ft_istetriminos(char *str)
 
 	i = 0;
 	count = 0;
-	while (i < 21)
+	while (i < 20)
 	{
 		if (str[i] == '#')
 		{
@@ -99,7 +99,7 @@ t_tetri	**reader(int argc, char *path, int *len)
 	while ((check = read(fd, str, 21)))
 	{
 		if (tetri_checker(check, str) != 0)
-			exit(0);
+			exit (0);
 		nbr++;
 		last = check;
 	}

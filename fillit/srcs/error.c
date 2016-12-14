@@ -12,6 +12,16 @@
 
 #include "../includes/fillit.h"
 
+int		empty_map(char *map)
+{
+	if ((ft_strcmp(map, "..\n..\n")) == 0)
+	{
+		ft_putstr("error\n");
+		return (1);
+	}
+	return 0;
+}
+
 int		check_end_file(int check, int last)
 {
 	if (check == 0 && last == 21)
