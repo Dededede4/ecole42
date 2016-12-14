@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fillit.h"
+#include "libft.h"
 
 int		ft_strlinelen(char *s)
 {

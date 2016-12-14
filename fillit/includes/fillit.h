@@ -13,7 +13,7 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
-# include "libft/libft.h"
+# include "./libft/libft.h"
 # include <string.h>
 # include <errno.h>
 # include <stdio.h>
@@ -37,11 +37,14 @@ int					tetri_checker(int check, char *str);
 int					ft_error(int argc);
 int					count_cara(char *str);
 void				ft_permete_to_first(void **mem, int pos);
-int					ft_write_all_tetriminos(char *map, int width,
+int					ft_resolve(char *map, int width,
 		t_tetri **tetris, int nbr_tetri, int map_pos, int tetri_check);
 void				ft_write_tetriminos(char *map, int width,
 		t_tetri *tetri, int pos);
 int					ft_sqrt(int nb);
 int					check_end_file(int check, int last);
 int					empty_map(char *map);
+int					ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos);
+void				ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos);
+void				ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos);
 #endif

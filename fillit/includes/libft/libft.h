@@ -14,7 +14,7 @@
 # define LIBFT_H
 
 # if __STDC_VERSION__ < 199901L
-#  define restrict
+#  define RESTRICT
 # endif
 
 # include <unistd.h>
@@ -108,4 +108,6 @@ void				ft_foreach(int *tab, int length, void (*f)(int*));
 void				*ft_range(int min, int max);
 int					ft_factorial(int nb);
 void				ft_swap(int *a, int *b);
+int					ft_strlinelen(char *s);
+int					ft_sqrt(int nb);
 #endif
