@@ -15,11 +15,10 @@
 int				main(int argc, char **argv)
 {
 	t_params	p;
-	t_tetri		**tetris;
 
 	p.nbr_tetri = 0;
 	p.width = 2;
-	tetris = ft_reader(argc, argv[1], &p.nbr_tetri);
+	p.tetris = ft_reader(argc, argv[1], &(p.nbr_tetri));
 	while (1)
 	{
 		p.map = ft_newmap(p.width);
