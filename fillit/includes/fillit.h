@@ -28,7 +28,7 @@ typedef struct		s_tetri
 	char			printed;
 }					t_tetri;
 
-typedef struct 		s_params 
+typedef struct		s_params
 {
 	char			*map;
 	int				width;
