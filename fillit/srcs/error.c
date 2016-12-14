@@ -39,7 +39,7 @@ int		ft_tetri_checker(int check, char *str)
 		ft_putstr("error\n");
 		return (1);
 	}
-	if ((ft_count_cara(str)) != 0)
+	if ((ft_check_syntax(str)) != 0)
 	{
 		ft_putstr("error\n");
 		return (1);

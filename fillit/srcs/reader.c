@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-int		ft_check_read(int *nbr, int *check, int fd)
+int		ft_check_file(int *nbr, int *check, int fd)
 {
 	char	*str;
 	int		last;
@@ -22,14 +22,20 @@ int		ft_check_read(int *nbr, int *check, int fd)
 	while ((*check = read(fd, str, 21)))
 	{
 		if (ft_tetri_checker(*check, str) != 0)
-			return (-1);
+		{
+			if ((*check != 21 && *check != 20) || (ft_check_syntax(str)) != 0)
+			{
+				ft_putstr("error\n");
+				return (-1);
+			}
+		}
 		(*nbr)++;
 		last = *check;
 	}
 	return (last);
 }
 
-int		ft_istetriminos(char *str)
+int		ft_check_disposition(char *str)
 {
 	int		i;
 	int		count;
@@ -57,7 +63,7 @@ int		ft_istetriminos(char *str)
 		return (-1);
 }
 
-int		ft_count_cara(char *str)
+int		ft_check_syntax(char *str)
 {
 	int		i;
 	int		dot;
@@ -78,7 +84,7 @@ int		ft_count_cara(char *str)
 			return (-1);
 		i++;
 	}
-	if (dot == 12 && diese == 4 && (ft_istetriminos(str) == 0))
+	if (dot == 12 && diese == 4 && (ft_check_disposition(str) == 0))
 		return (0);
 	else
 		return (-1);
@@ -108,7 +114,7 @@ t_tetri	**ft_reader(int argc, char *path, int *len)
 	check = 0;
 	last = 0;
 	fd = ft_open(path);
-	if ((last = ft_check_read(len, &check, fd)) == -1)
+	if ((last = ft_check_file(len, &check, fd)) == -1)
 		exit(0);
 	if (ft_check_end_file(check, last) != 0)
 		exit(0);
