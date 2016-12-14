@@ -20,18 +20,18 @@ int		ft_resolve(char *map, int width,
 	i = 0;
 	if (tetri_check == nbr_tetri)
 		return (1);
-
 	if (tetri_pos == nbr_tetri)
 		return (0);
-
 	while (map[i])
 	{
-		if (tetris[tetri_pos]->printed != 1 && ft_can_write_tetriminos(map, width, tetris[tetri_pos], i))
+		if (tetris[tetri_pos]->printed != 1 &&
+			ft_can_write_tetriminos(map, width, tetris[tetri_pos], i))
 		{
 			tetri_check++;
 			ft_write_tetriminos(map, width, tetris[tetri_pos], i);
 			tetris[tetri_pos]->printed = 1;
-			if (ft_resolve(map, width, tetris, nbr_tetri, tetri_pos + 1, tetri_check) == 1)
+			if (ft_resolve(map, width, tetris,
+				nbr_tetri, tetri_pos + 1, tetri_check) == 1)
 			{
 				return (1);
 			}
@@ -43,8 +43,7 @@ int		ft_resolve(char *map, int width,
 			}
 		}
 		i++;
-	}		
-	return (ft_resolve(map, width, tetris, nbr_tetri, tetri_pos + 1, tetri_check));
+	}
+	return (ft_resolve(map, width, tetris, nbr_tetri,
+		tetri_pos + 1, tetri_check));
 }
-
-
