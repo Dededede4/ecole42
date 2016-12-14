@@ -39,7 +39,8 @@ int					count_cara(char *str);
 void				ft_permete_to_first(void **mem, int pos);
 int					ft_write_all_tetriminos(char *map, int width,
 		t_tetri **tetris, int nbr_tetri, int map_pos, int tetri_check);
-void				ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos);
+void				ft_write_tetriminos(char *map, int width,
+		t_tetri *tetri, int pos);
 int					ft_sqrt(int nb);
 int					check_end_file(int check, int last);
 int					empty_map(char *map);
