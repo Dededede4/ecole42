@@ -12,38 +12,35 @@
 
 #include "../includes/fillit.h"
 
-int		ft_resolve(char *map, int width,
-		t_tetri **tetris, int nbr_tetri, int tetri_pos, int tetri_check)
+int		ft_resolve(t_params p, int tetri_pos, int tetri_check)
 {
 	int	i;
 
 	i = 0;
-	if (tetri_check == nbr_tetri)
+	if (tetri_check == p.nbr_tetri)
 		return (1);
-	if (tetri_pos == nbr_tetri)
+	if (tetri_pos == p.nbr_tetri)
 		return (0);
-	while (map[i])
+	while (p.map[i])
 	{
-		if (tetris[tetri_pos]->printed != 1 &&
-			ft_can_write_tetriminos(map, width, tetris[tetri_pos], i))
+		if (p.tetris[tetri_pos]->printed != 1 &&
+			ft_can_write_tetriminos(p.map, p.width, p.tetris[tetri_pos], i))
 		{
 			tetri_check++;
-			ft_write_tetriminos(map, width, tetris[tetri_pos], i);
-			tetris[tetri_pos]->printed = 1;
-			if (ft_resolve(map, width, tetris,
-				nbr_tetri, tetri_pos + 1, tetri_check) == 1)
+			ft_write_tetriminos(p.map, p.width, p.tetris[tetri_pos], i);
+			p.tetris[tetri_pos]->printed = 1;
+			if (ft_resolve(p, tetri_pos + 1, tetri_check) == 1)
 			{
 				return (1);
 			}
 			else
 			{
-				tetris[tetri_pos]->printed = 0;
+				p.tetris[tetri_pos]->printed = 0;
 				tetri_check--;
-				ft_erase_tetriminos(map, width, tetris[tetri_pos], i);
+				ft_erase_tetriminos(p.map, p.width, p.tetris[tetri_pos], i);
 			}
 		}
 		i++;
 	}
-	return (ft_resolve(map, width, tetris, nbr_tetri,
-		tetri_pos + 1, tetri_check));
+	return (ft_resolve(p, tetri_pos + 1, tetri_check));
 }

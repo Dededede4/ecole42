@@ -14,26 +14,24 @@
 
 int		main(int argc, char **argv)
 {
-	char	*map;
-	int		width;
-	int		nbr_tetri;
+	t_params	p;
 	t_tetri **tetris;
 
-	nbr_tetri = 0;
-	width = 2;
-	tetris = ft_reader(argc, argv[1], &nbr_tetri);
+	p.nbr_tetri = 0;
+	p.width = 2;
+	tetris = ft_reader(argc, argv[1], &p.nbr_tetri);
 	while (1)
 	{
-		map = ft_newmap(width);
-		if (!map)
+		p.map = ft_newmap(p.width);
+		if (!p.map)
 			return (0);
-		if (ft_resolve(map, width, tetris, nbr_tetri, 0, 0))
+		if (ft_resolve(p, 0, 0))
 		{
-			ft_putstr(map);
+			ft_putstr(p.map);
 			return (0);
 		}
-		ft_strclr(map);
-		width++;
+		ft_strclr(p.map);
+		p.width++;
 	}
 	return (1);
 }
