@@ -21,10 +21,10 @@ int		main(int argc, char **argv)
 
 	nbr_tetri = 0;
 	width = 2;
-	tetris = reader(argc, argv[1], &nbr_tetri);
+	tetris = ft_reader(argc, argv[1], &nbr_tetri);
 	while (1)
 	{
-		map = ft_getmap(width);
+		map = ft_newmap(width);
 		if (!map)
 			return (0);
 		if (ft_resolve(map, width, tetris, nbr_tetri, 0, 0))

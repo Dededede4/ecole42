@@ -21,7 +21,7 @@ int		ft_check_read(int *nbr, int *check, int fd)
 	str = ft_strnew(21);
 	while ((*check = read(fd, str, 21)))
 	{
-		if (tetri_checker(*check, str) != 0)
+		if (ft_tetri_checker(*check, str) != 0)
 			return (-1);
 		(*nbr)++;
 		last = *check;
@@ -57,7 +57,7 @@ int		ft_istetriminos(char *str)
 		return (-1);
 }
 
-int		count_cara(char *str)
+int		ft_count_cara(char *str)
 {
 	int		i;
 	int		dot;
@@ -96,7 +96,7 @@ int		ft_open(char *path)
 	return (fd);
 }
 
-t_tetri	**reader(int argc, char *path, int *len)
+t_tetri	**ft_reader(int argc, char *path, int *len)
 {
 	int		fd;
 	int		check;
@@ -110,9 +110,9 @@ t_tetri	**reader(int argc, char *path, int *len)
 	fd = ft_open(path);
 	if ((last = ft_check_read(len, &check, fd)) == -1)
 		exit(0);
-	if (check_end_file(check, last) != 0)
+	if (ft_check_end_file(check, last) != 0)
 		exit(0);
-	tetris = creat_tetriminos(path, *len);
+	tetris = ft_creat_tetriminos(path, *len);
 	close(fd);
 	return (tetris);
 }

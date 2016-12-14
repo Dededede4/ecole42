@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-int		check_end_file(int check, int last)
+int		ft_check_end_file(int check, int last)
 {
 	if ((check == 0 && last == 21) || (check == 0 && last == 0))
 	{
@@ -32,14 +32,14 @@ int		ft_error(int argc)
 	return (0);
 }
 
-int		tetri_checker(int check, char *str)
+int		ft_tetri_checker(int check, char *str)
 {
 	if (check != 21 && check != 20)
 	{
 		ft_putstr("error\n");
 		return (1);
 	}
-	if ((count_cara(str)) != 0)
+	if ((ft_count_cara(str)) != 0)
 	{
 		ft_putstr("error\n");
 		return (1);
