@@ -35,7 +35,10 @@ void				*ft_newmap(int width);
 int					ft_check_syntax(char *str);
 int					ft_resolve(char *map, int width,
 		t_tetri **tetris, int nbr_tetri, int map_pos, int tetri_check);
-int					ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos);
-void				ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos);
-void				ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos);
+int					ft_can_write_tetriminos(char *map, int width,
+		t_tetri *tetri, int pos);
+void				ft_write_tetriminos(char *map, int width,
+		t_tetri *tetri, int pos);
+void				ft_erase_tetriminos(char *map, int width,
+		t_tetri *tetri, int pos);
 #endif
