@@ -31,18 +31,3 @@ int		ft_error(int argc)
 	}
 	return (0);
 }
-
-int		ft_tetri_checker(int check, char *str)
-{
-	if (check != 21 && check != 20)
-	{
-		ft_putstr("error\n");
-		return (1);
-	}
-	if ((ft_check_syntax(str)) != 0)
-	{
-		ft_putstr("error\n");
-		return (1);
-	}
-	return (0);
-}
