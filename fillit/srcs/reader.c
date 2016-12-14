@@ -12,7 +12,7 @@
 
 #include "../includes/fillit.h"
 
-int		ft_check_read(int *nbr, int *check,int fd)
+int		ft_check_read(int *nbr, int *check, int fd)
 {
 	char	*str;
 	int		last;
@@ -111,7 +111,7 @@ t_tetri	**reader(int argc, char *path, int *len)
 	if ((last = ft_check_read(len, &check, fd)) == -1)
 		exit(0);
 	if (check_end_file(check, last) != 0)
-			exit (0);
+		exit(0);
 	tetris = creat_tetriminos(path, *len);
 	close(fd);
 	return (tetris);
