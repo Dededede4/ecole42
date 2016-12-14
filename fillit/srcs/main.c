@@ -23,6 +23,7 @@ int				main(int argc, char **argv)
 	while (1)
 	{
 		p.map = ft_newmap(p.width);
+		p.len = (p.width + 1) * p.width + 1;
 		if (!p.map)
 			return (0);
 		if (ft_resolve(p, 0, 0))

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_tetriminos_minsize.c                        :+:      :+:    :+:   */
+/*   resolve.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/07 14:42:47 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/09 15:03:11 by mprevot          ###   ########.fr       */
+/*   Created: 2016/12/14 17:06:46 by mprevot           #+#    #+#             */
+/*   Updated: 2016/12/14 17:06:55 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ int		ft_resolve(t_params p, int tetri_pos, int tetri_check)
 	while (p.map[i])
 	{
 		if (p.tetris[tetri_pos]->printed != 1 &&
-			ft_can_write_tetriminos(p.map, p.width, p.tetris[tetri_pos], i))
+			ft_can_write_tetri(p, p.tetris[tetri_pos], i))
 		{
 			tetri_check++;
-			ft_write_tetriminos(p.map, p.width, p.tetris[tetri_pos], i);
+			ft_write_tetri(p.map, p.width, p.tetris[tetri_pos], i);
 			if (ft_resolve(p, tetri_pos + 1, tetri_check) == 1)
 				return (1);
 			else
 			{
 				tetri_check--;
-				ft_erase_tetriminos(p.map, p.width, p.tetris[tetri_pos], i);
+				ft_erase_tetri(p.map, p.width, p.tetris[tetri_pos], i);
 			}
 		}
 		i++;
