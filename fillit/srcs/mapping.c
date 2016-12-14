@@ -34,62 +34,56 @@ void	*ft_newmap(int width)
 	return (new);
 }
 
-int		ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
+int		ft_can_write_tetri(t_params p, t_tetri *tetri, int pos)
 {
 	int		can;
-	int		len;
 
-	len = (width + 1) * width + 1;
-	if (map[pos] != '.')
+	if (p.map[pos] != '.')
 		return (0);
 	can = 1;
 	if (tetri->r)
 	{
-		if (pos + 1 < len)
-			can = ft_can_write_tetriminos(map, width, tetri->r, pos + 1);
-		else
-			can = 0;
+		can = 0;
+		if (pos + 1 < p.len)
+			can = ft_can_write_tetri(p, tetri->r, pos + 1);
 	}
 	if (can && tetri->l)
 	{
 		if (pos == 0)
 			return (0);
-		if (pos - 1 < len)
-			can = ft_can_write_tetriminos(map, width, tetri->l, pos - 1);
-		else
-			can = 0;
+		can = 0;
+		if (pos - 1 < p.len)
+			can = ft_can_write_tetri(p, tetri->l, pos - 1);
 	}
 	if (can && tetri->d)
 	{
-		if (pos + width + 1 < len)
-			can = ft_can_write_tetriminos(map, width, tetri->d,
-					pos + width + 1);
-		else
-			can = 0;
+		can = 0;
+		if (pos + p.width + 1 < p.len)
+			can = ft_can_write_tetri(p, tetri->d, pos + p.width + 1);
 	}
 	return (can);
 }
 
-void	ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
+void	ft_write_tetri(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = tetri->c;
 	tetri->printed = 1;
 	if (tetri->r)
-		ft_write_tetriminos(map, width, tetri->r, pos + 1);
+		ft_write_tetri(map, width, tetri->r, pos + 1);
 	if (tetri->l)
-		ft_write_tetriminos(map, width, tetri->l, pos - 1);
+		ft_write_tetri(map, width, tetri->l, pos - 1);
 	if (tetri->d)
-		ft_write_tetriminos(map, width, tetri->d, pos + width + 1);
+		ft_write_tetri(map, width, tetri->d, pos + width + 1);
 }
 
-void	ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos)
+void	ft_erase_tetri(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = '.';
 	tetri->printed = 0;
 	if (tetri->r)
-		ft_erase_tetriminos(map, width, tetri->r, pos + 1);
+		ft_erase_tetri(map, width, tetri->r, pos + 1);
 	if (tetri->l)
-		ft_erase_tetriminos(map, width, tetri->l, pos - 1);
+		ft_erase_tetri(map, width, tetri->l, pos - 1);
 	if (tetri->d)
-		ft_erase_tetriminos(map, width, tetri->d, pos + width + 1);
+		ft_erase_tetri(map, width, tetri->d, pos + width + 1);
 }

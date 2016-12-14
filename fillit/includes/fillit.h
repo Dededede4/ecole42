@@ -32,6 +32,7 @@ typedef struct 		s_params
 {
 	char			*map;
 	int				width;
+	int				len;
 	t_tetri			**tetris;
 	int				nbr_tetri;
 }					t_params;
@@ -43,10 +44,10 @@ void				*ft_newmap(int width);
 int					ft_check_syntax(char *str);
 int					ft_resolve(t_params p,
 		int map_pos, int tetri_check);
-int					ft_can_write_tetriminos(char *map, int width,
+int					ft_can_write_tetri(t_params p,
 		t_tetri *tetri, int pos);
-void				ft_write_tetriminos(char *map, int width,
+void				ft_write_tetri(char *map, int width,
 		t_tetri *tetri, int pos);
-void				ft_erase_tetriminos(char *map, int width,
+void				ft_erase_tetri(char *map, int width,
 		t_tetri *tetri, int pos);
 #endif
