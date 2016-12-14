@@ -116,7 +116,7 @@ t_tetri	**ft_reader(int argc, char *path, int *len)
 	fd = ft_open(path);
 	if ((last = ft_check_file(len, &check, fd)) == -1)
 		exit(0);
-	if ((check == 0 && last == 21) || (check == 0 && last == 0) || (len > 26))
+	if ((check == 0 && last == 21) || (check == 0 && last == 0) || (*len > 26))
 	{
 		ft_putstr("error\n");
 		exit(0);
