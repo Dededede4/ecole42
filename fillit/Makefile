@@ -22,7 +22,7 @@ LDFLAGS=-L.
 
 LDLIBS=-lft
 
-SRC= srcs/creat_tetriminos.c srcs/resolve.c srcs/reader.c srcs/error.c srcs/main.c srcs/mapping.c includes/libft/libft.a
+SRC= srcs/tetriminos.c srcs/resolve.c srcs/reader.c srcs/error.c srcs/main.c srcs/mapping.c includes/libft/libft.a
 
 $(NAME): libft
 	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
