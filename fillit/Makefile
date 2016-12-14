@@ -32,12 +32,11 @@ libft:
 
 all: $(NAME)
 
-clean: fclean
-
-fclean:
-	$(RM) $(NAME)
+clean:
+	$(RM)
 	make -C includes/libft fclean
-
+fclean: clean
+	$(RM) $(NAME)
 re: fclean all
 
 .PHONY: clean fclean re all
