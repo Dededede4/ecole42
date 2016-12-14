@@ -67,10 +67,7 @@ int		ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 		else
 			can = 0;
 	}
-	if (can)
-		return (1);
-	else
-		return (0);
+	return (can);
 }
 
 void	ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
