@@ -116,8 +116,11 @@ t_tetri	**ft_reader(int argc, char *path, int *len)
 	fd = ft_open(path);
 	if ((last = ft_check_file(len, &check, fd)) == -1)
 		exit(0);
-	if (ft_check_end_file(check, last) != 0)
+	if ((check == 0 && last == 21) || (check == 0 && last == 0))
+	{
+		ft_putstr("error\n");
 		exit(0);
+	}
 	tetris = ft_creat_tetriminos(path, *len);
 	close(fd);
 	return (tetris);
