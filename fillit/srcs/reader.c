@@ -21,13 +21,10 @@ int		ft_check_file(int *nbr, int *check, int fd)
 	str = ft_strnew(21);
 	while ((*check = read(fd, str, 21)))
 	{
-		if (ft_tetri_checker(*check, str) != 0)
+		if ((*check != 21 && *check != 20) || (ft_check_syntax(str)) != 0)
 		{
-			if ((*check != 21 && *check != 20) || (ft_check_syntax(str)) != 0)
-			{
-				ft_putstr("error\n");
-				return (-1);
-			}
+			ft_putstr("error\n");
+			return (-1);
 		}
 		(*nbr)++;
 		last = *check;
