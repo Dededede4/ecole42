@@ -17,6 +17,7 @@ int		ft_check_read(int *nbr, int *check,int fd)
 	char	*str;
 	int		last;
 
+	last = 0;
 	str = ft_strnew(21);
 	while ((*check = read(fd, str, 21)))
 	{
