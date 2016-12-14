@@ -14,7 +14,7 @@
 # define LIBFT_H
 
 # if __STDC_VERSION__ < 199901L
-#  define RESTRICT
+#  define restrict
 # endif
 
 # include <unistd.h>
