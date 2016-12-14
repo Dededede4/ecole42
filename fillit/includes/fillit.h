@@ -6,14 +6,14 @@
 /*   By: fmasiala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 15:46:32 by fmasiala          #+#    #+#             */
-/*   Updated: 2016/12/13 11:55:17 by fmasiala         ###   ########.fr       */
+/*   Updated: 2016/12/14 14:23:59 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLIT_H
 # define FILLIT_H
 
-# include "libft.h"
+# include "libft/libft.h"
 # include <string.h>
 # include <errno.h>
 # include <stdio.h>

@@ -12,9 +12,6 @@
 
 #include "../includes/fillit.h"
 
-// TODO tests
-
-/* Teste si on peut écrire un tetris dans une position */
 int		ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	int		can;
@@ -48,20 +45,12 @@ int		ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 		else
 			can = 0;
 	}
-	/*if (can && tetri->t)
-	  {
-	  if (pos < width)
-	  return (0);
-	  can = ft_can_write_tetriminos(map, width, tetri->d, pos - width - 1);
-	  }*/
 	if (can)
 		return (1);
 	else
 		return (0);
 }
 
-// TODO tests
-/* Écrit un tetri dans une position */
 void	ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = tetri->c;
@@ -71,8 +60,6 @@ void	ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 		ft_write_tetriminos(map, width, tetri->l, pos - 1);
 	if (tetri->d)
 		ft_write_tetriminos(map, width, tetri->d, pos + width + 1);
-	/*if (tetri->t)
-		ft_write_tetriminos(map, width, tetri->d, pos - width - 1);*/
 }
 
 void	ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos)
