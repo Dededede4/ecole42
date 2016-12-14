@@ -21,13 +21,3 @@ int		ft_check_end_file(int check, int last)
 	}
 	return (0);
 }
-
-int		ft_error(int argc)
-{
-	if (argc != 2)
-	{
-		ft_putstr("usage: fillit input_file\n");
-		return (1);
-	}
-	return (0);
-}

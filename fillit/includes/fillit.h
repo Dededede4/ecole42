@@ -35,7 +35,6 @@ void				ft_permute(void	**str, int len, int start);
 t_tetri				**ft_reader(int argc, char *path, int *len);
 void				*ft_newmap(int width);
 int					ft_tetri_checker(int check, char *str);
-int					ft_error(int argc);
 int					ft_check_syntax(char *str);
 void				ft_permete_to_first(void **mem, int pos);
 int					ft_resolve(char *map, int width,

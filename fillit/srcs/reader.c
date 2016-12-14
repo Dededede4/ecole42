@@ -109,8 +109,11 @@ t_tetri	**ft_reader(int argc, char *path, int *len)
 	int		last;
 	t_tetri **tetris;
 
-	if (ft_error(argc) == -1)
-		exit(0);
+	if (argc != 2)
+	{
+		ft_putstr_fd("usage: fillit input_file\n", 0);
+		exit(1);
+	}
 	check = 0;
 	last = 0;
 	fd = ft_open(path);
