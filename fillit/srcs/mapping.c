@@ -41,9 +41,8 @@ int		ft_can_write_tetri(t_params p, t_tetri *tetri, int pos)
 	if (p.map[pos] != '.')
 		return (0);
 	can = 1;
-	if (tetri->r)
+	if (tetri->r && !(can = 0))
 	{
-		can = 0;
 		if (pos + 1 < p.len)
 			can = ft_can_write_tetri(p, tetri->r, pos + 1);
 	}
