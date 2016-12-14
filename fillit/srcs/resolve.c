@@ -28,14 +28,10 @@ int		ft_resolve(t_params p, int tetri_pos, int tetri_check)
 		{
 			tetri_check++;
 			ft_write_tetriminos(p.map, p.width, p.tetris[tetri_pos], i);
-			p.tetris[tetri_pos]->printed = 1;
 			if (ft_resolve(p, tetri_pos + 1, tetri_check) == 1)
-			{
 				return (1);
-			}
 			else
 			{
-				p.tetris[tetri_pos]->printed = 0;
 				tetri_check--;
 				ft_erase_tetriminos(p.map, p.width, p.tetris[tetri_pos], i);
 			}

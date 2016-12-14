@@ -76,6 +76,7 @@ int		ft_can_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 void	ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = tetri->c;
+	tetri->printed = 1;
 	if (tetri->r)
 		ft_write_tetriminos(map, width, tetri->r, pos + 1);
 	if (tetri->l)
@@ -87,6 +88,7 @@ void	ft_write_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 void	ft_erase_tetriminos(char *map, int width, t_tetri *tetri, int pos)
 {
 	map[pos] = '.';
+	tetri->printed = 0;
 	if (tetri->r)
 		ft_erase_tetriminos(map, width, tetri->r, pos + 1);
 	if (tetri->l)
