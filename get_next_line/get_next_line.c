@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/18 17:53:51 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/19 13:06:40 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,16 @@ int		ft_find_line(t_buff *buff)
 		{
 			ft_strjoin(buff->buff, tmp);
 			free(tmp);
-			return (ft_find_line(buff));
+			return (ft_find_line(buff->buff)));
 		}
 		else
 		{
-			// TODO (EOF and no \n) 
+			buuf->n = 1;
+			return (buff->buff);
 		}
 	}
 	else
 	{
-		buff->n++;
 		*rest = '\0';
 		tmp = buff->buff;
 		buff->buff = ++rest;
@@ -76,7 +76,7 @@ int		get_next_line(const int fd, char **line)
 	t_buff	buff;
 
 	buff = ft_get_buff(fd);
-	if (!buff)
+	if (!buff || buff->n)
 		return (NULL);
 	*line = ft_find_line(buff);
 	return (0);	
