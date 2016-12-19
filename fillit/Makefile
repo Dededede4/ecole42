@@ -6,7 +6,7 @@
 #    By: mprevot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/01 11:18:53 by mprevot           #+#    #+#              #
-#    Updated: 2016/12/15 17:14:00 by mprevot          ###   ########.fr        #
+#    Updated: 2016/12/14 14:40:38 by mprevot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,11 @@ LDLIBS=-lft
 
 SRC= srcs/tetriminos.c srcs/resolve.c srcs/reader.c srcs/main.c srcs/mapping.c includes/libft/libft.a
 
-$(NAME):
-	make -C includes/libft
+$(NAME): libft
 	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+
+libft:
+	make -C includes/libft
 
 all: $(NAME)
 
