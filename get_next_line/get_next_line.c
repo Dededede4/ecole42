@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/19 13:06:40 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/20 17:12:14 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ t_buff		*ft_get_buff(fd)
 	if (!lstbuff)
 		lstbuff = buff;
 	else
-		ft_lstadd(&lstbuff, buff);
+		ft_lstadd((t_list**)&lstbuff, (t_list*)buff);
 	return (buff);
 }
 
-int		ft_find_line(t_buff *buff)
+char	*ft_find_line(t_buff *buff)
 {
 	char	*rest;
 	char	*tmp;
@@ -52,15 +52,16 @@ int		ft_find_line(t_buff *buff)
 		l = read(buff->fd, tmp, BUFF_SIZE);
 		if (l > 0)
 		{
-			ft_strjoin(buff->buff, tmp);
+			buff->buff = ft_strjoin(buff->buff, tmp);
 			free(tmp);
-			return (ft_find_line(buff->buff)));
+			return (ft_find_line(buff));
 		}
-		else
+		else if (l == 0)
 		{
-			buuf->n = 1;
+			buff->n = 1;
 			return (buff->buff);
 		}
+		return (NULL);
 	}
 	else
 	{
@@ -73,11 +74,19 @@ int		ft_find_line(t_buff *buff)
 
 int		get_next_line(const int fd, char **line)
 {
-	t_buff	buff;
+	t_buff	*buff;
 
 	buff = ft_get_buff(fd);
-	if (!buff || buff->n)
-		return (NULL);
+	if (!buff)
+	{
+		return (-1);
+	}
+	if (buff->n)
+		return (0);
 	*line = ft_find_line(buff);
-	return (0);	
+	if (*line == NULL)
+		return (-1);
+	if (buff->n && **line == '\0')
+		return (0);
+	return (1);	
 }
