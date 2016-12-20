@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/20 17:12:14 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/20 19:52:56 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,30 @@ t_buff		*ft_get_buff(fd)
 {
 	static t_buff	*lstbuff;
 	t_buff			*buff;
+	t_buff			*new;
+	t_buff			*last;
 
 	buff = lstbuff;
 	while (buff)
 	{
 		if (buff->fd == fd)
 			return (buff);
+		last = buff;
 		buff = buff->next;
 	}
-	buff = (t_buff *)malloc(sizeof(t_buff));
-	if (buff == NULL)
+	new = (t_buff *)malloc(sizeof(t_buff));
+	if (new == NULL)
 		return (NULL);
-	buff->fd = fd;
-	buff->n = 0;
-	buff->buff = ft_strnew(0);
-	if (buff->buff == NULL)
+	new->fd = fd;
+	new->n = 0;
+	new->buff = ft_strnew(0);
+	if (new->buff == NULL)
 		return (NULL);
 	if (!lstbuff)
-		lstbuff = buff;
+		lstbuff = new;
 	else
-		ft_lstadd((t_list**)&lstbuff, (t_list*)buff);
-	return (buff);
+		last->next = new;
+	return (new);
 }
 
 char	*ft_find_line(t_buff *buff)
@@ -76,6 +79,8 @@ int		get_next_line(const int fd, char **line)
 {
 	t_buff	*buff;
 
+	if (fd < 0 || line == NULL)
+		return (-1);
 	buff = ft_get_buff(fd);
 	if (!buff)
 	{
