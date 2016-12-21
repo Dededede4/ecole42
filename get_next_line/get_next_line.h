@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:40:29 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/19 16:43:30 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/21 12:00:25 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct		s_buff
 {
 	int				fd;
 	char			*buff;
+	char			*buff_start;
 	int				n;
 	struct s_buff	*next;
 }					t_buff;

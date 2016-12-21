@@ -33,6 +33,8 @@ t_buff		*ft_get_buff(fd)
 	new->fd = fd;
 	new->n = 0;
 	new->buff = ft_strnew(0);
+	new->buff_start = new->buff;
+	new->next = NULL;
 	if (new->buff == NULL)
 		return (NULL);
 	if (!lstbuff)
@@ -56,6 +58,8 @@ char	*ft_find_line(t_buff *buff)
 		if (l > 0)
 		{
 			buff->buff = ft_strjoin(buff->buff, tmp);
+			free(buff->buff_start);
+			buff->buff_start = buff->buff;
 			free(tmp);
 			return (ft_find_line(buff));
 		}
