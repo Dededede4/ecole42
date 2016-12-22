@@ -6,13 +6,13 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/21 19:31:41 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/22 11:32:59 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_buff		*ft_get_buff(fd)
+t_buff		*ft_get_buff(int fd)
 {
 	static t_buff	*lstbuff;
 	t_buff			*buff;
