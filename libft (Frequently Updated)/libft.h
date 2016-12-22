@@ -14,13 +14,19 @@
 # define LIBFT_H
 
 # if __STDC_VERSION__ < 199901L
-#  DEFINE restrict
+#  define restrict
 # endif
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <unistd.h>
+
+
+# define BUFF_SIZE 42
 
 typedef struct		s_parts_chars
 {
@@ -36,6 +42,28 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+/*
+** (for ft_gnl())
+** t_buff store the buffer for a specific fd :
+**
+** fd is the file descriptor
+** *content is the buffer (the pointer can move from \n to \n)
+** *content_start save the original buffer pointer (for free())
+** ended is equal to 1 if the fd is at the end of the file, otherwise 0.
+*/
+
+typedef struct          s_buff
+{
+        int                             fd;
+        char                    *content;
+        char                    *content_start;
+        int                             ended;
+        struct s_buff   *next;
+}                                       t_buff;
+
+int                                     get_next_line(const int fd, char **line);
+
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -108,4 +136,5 @@ void				ft_foreach(int *tab, int length, void (*f)(int*));
 void				*ft_range(int min, int max);
 int					ft_factorial(int nb);
 void				ft_swap(int *a, int *b);
+int					ft_gnl(const int fd, char **line);
 #endif
