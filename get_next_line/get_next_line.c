@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/22 11:39:47 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/22 12:05:48 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ t_buff		*ft_get_buff(int fd)
 	if (new == NULL)
 		return (NULL);
 	new->fd = fd;
-	new->n = 0;
-	new->buff = ft_strnew(0);
-	new->buff_start = new->buff;
+	new->ended = 0;
+	new->content = ft_strnew(0);
+	new->content_start = new->content;
 	new->next = NULL;
-	if (new->buff == NULL)
+	if (new->content == NULL)
 		return (NULL);
 	if (!lstbuff)
 		lstbuff = new;
@@ -50,29 +50,29 @@ char	*ft_find_line(t_buff *buff)
 	char	*tmp;
 	int		l;
 
-	rest = ft_strchr(buff->buff, '\n');
+	rest = ft_strchr(buff->content, '\n');
 	if(rest == NULL)
 	{
 		tmp = ft_strnew(BUFF_SIZE);
 		l = read(buff->fd, tmp, BUFF_SIZE);
 		if (l > 0)
 		{
-			buff->buff = ft_strjoin(buff->buff, tmp);
-			free(buff->buff_start);
-			buff->buff_start = buff->buff;
+			buff->content = ft_strjoin(buff->content, tmp);
+			free(buff->content_start);
+			buff->content_start = buff->content;
 			free(tmp);
 			return (ft_find_line(buff));
 		}
 		else if (l == 0)
 		{
-			buff->n = 1;
-			return (buff->buff);
+			buff->ended = 1;
+			return (buff->content);
 		}
 		return (NULL);
 	}
 	*rest = '\0';
-	tmp = buff->buff;
-	buff->buff = ++rest;
+	tmp = buff->content;
+	buff->content = ++rest;
 	return (ft_strdup(tmp));
 }
 
@@ -87,12 +87,12 @@ int		get_next_line(const int fd, char **line)
 	{
 		return (-1);
 	}
-	if (buff->n)
+	if (buff->ended)
 		return (0);
 	*line = ft_find_line(buff);
 	if (*line == NULL)
 		return (-1);
-	if (buff->n && **line == '\0')
+	if (buff->ended && **line == '\0')
 		return (0);
 	return (1);	
 }
