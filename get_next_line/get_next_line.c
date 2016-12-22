@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/22 11:32:59 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/22 11:39:47 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,10 @@ char	*ft_find_line(t_buff *buff)
 		}
 		return (NULL);
 	}
-	else
-	{
-		*rest = '\0';
-		tmp = buff->buff;
-		buff->buff = ++rest;
-		return (ft_strdup(tmp));
-	}
+	*rest = '\0';
+	tmp = buff->buff;
+	buff->buff = ++rest;
+	return (ft_strdup(tmp));
 }
 
 int		get_next_line(const int fd, char **line)
