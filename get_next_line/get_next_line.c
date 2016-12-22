@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/22 12:05:48 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/22 12:51:00 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 t_buff		*ft_get_buff(int fd)
 {
-	static t_buff	*lstbuff;
+	static t_buff	*firstbuff;
 	t_buff			*buff;
-	t_buff			*new;
 	t_buff			*last;
 
-	buff = lstbuff;
+	buff = firstbuff;
 	while (buff)
 	{
 		if (buff->fd == fd)
@@ -27,21 +26,19 @@ t_buff		*ft_get_buff(int fd)
 		last = buff;
 		buff = buff->next;
 	}
-	new = (t_buff *)malloc(sizeof(t_buff));
-	if (new == NULL)
+	if (!(buff = (t_buff *)malloc(sizeof(t_buff))))
 		return (NULL);
-	new->fd = fd;
-	new->ended = 0;
-	new->content = ft_strnew(0);
-	new->content_start = new->content;
-	new->next = NULL;
-	if (new->content == NULL)
+	buff->fd = fd;
+	buff->ended = 0;
+	if (!(buff->content = ft_strnew(0)))
 		return (NULL);
-	if (!lstbuff)
-		lstbuff = new;
+	buff->content_start = buff->content;
+	buff->next = NULL;
+	if (!firstbuff)
+		firstbuff = buff;
 	else
-		last->next = new;
-	return (new);
+		last->next = buff;
+	return (buff);
 }
 
 char	*ft_find_line(t_buff *buff)
