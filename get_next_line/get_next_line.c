@@ -6,13 +6,13 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/22 12:57:27 by mprevot          ###   ########.fr       */
+/*   Updated: 2016/12/22 13:02:46 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_buff		*ft_get_buff(int fd)
+t_buff				*ft_get_buff(int fd)
 {
 	static t_buff	*firstbuff;
 	t_buff			*buff;
@@ -41,13 +41,13 @@ t_buff		*ft_get_buff(int fd)
 	return (buff);
 }
 
-char	*ft_find_line(t_buff *buff)
+char				*ft_find_line(t_buff *buff)
 {
-	char	*rest;
-	char	*tmp;
-	int		l;
+	char			*rest;
+	char			*tmp;
+	int				l;
 
-	if(!(rest = ft_strchr(buff->content, '\n')))
+	if (!(rest = ft_strchr(buff->content, '\n')))
 	{
 		tmp = ft_strnew(BUFF_SIZE);
 		if ((l = read(buff->fd, tmp, BUFF_SIZE)) > 0)
@@ -68,9 +68,9 @@ char	*ft_find_line(t_buff *buff)
 	return (ft_strdup(tmp));
 }
 
-int		get_next_line(const int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
-	t_buff	*buff;
+	t_buff			*buff;
 
 	if (fd < 0 || line == NULL)
 		return (-1);
@@ -86,5 +86,5 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	if (buff->ended && **line == '\0')
 		return (0);
-	return (1);	
+	return (1);
 }
