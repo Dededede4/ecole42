@@ -1,0 +1,24 @@
+Hello mprevot,
+
+Your exam session for the project "C Exam - Beginner" has just been marked as finished by the exam system.
+The assignment subjects, grading traces, and the contents of your turn-in repository are attached to this email.
+
+
+Start time: 20/12/2016 09:00:47 UTC
+End time: 20/12/2016 12:58:46 UTC
+Mode: real
+Final grade: 75/100
+
+Assignments:
+  Level 5:
+    1: ft_itoa_base for 15 potential points (Current)
+    0: rpn_calc for 20 potential points (Failure)
+    0: rev_wstr for 16 potential points (Success)
+    1: ft_list_size for 59 potential points (Success)
+    0: str_capitalizer for 64 potential points (Failure)
+
+
+
+Automated regards,
+
+42's exam system
