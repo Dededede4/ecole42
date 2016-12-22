@@ -14,12 +14,10 @@
 
 void	ft_cat(char *path)
 {
-	int		i;
 	int		fd;
 	int		l;
 	void	*buf[255];
 
-	i = 0;
 	fd = open(path, O_RDONLY);
 	if (fd > -1)
 	{
