@@ -1,0 +1,40 @@
+s = ft_putstr
+S = synonime de ls
+p = print en hexa
+d, i = ft_putnbr
+D = ???
+o = unsigned int (Converts to octal)
+O = ?
+u = unsigned int (Converts to decimal)
+U = ?
+x = unsigned int (Converts to lower-case hex)
+X = unsigned int (Converts to upper-case hex)
+c = ft_putchar (si l est présent ?)
+C = synonyme de lc
+
+%   flags   minimum-field-width   .precision   length   Letter
+
+
+
+
+
+• Vous devez gérer les flags #0-+ et espace
+# => For %#o (octal), include a leading zero.  For %#x (hex), include a leading '0x'.
+0 => Mettre des 0 à la place des espaces
+- => justifier à gauche
++ => Afficher un + quand c'est positif
+espace => mettre un espace si le nombre est positif
+
+• Vous devez gérer la taille minimum du champ
+%5s => "  AAA"
+
+• Vous devez gérer la précision
+Pour une string, afficher un nombre max de chars
+Pour un digit, afficher des 0 devant
+
+• Vous devez gérer les flags hh h l ll j z
+hh => permet de dire si on parle de signed ou d'unsigned char
+h => permet de dire si on parle de signed ou d'unsigned short
+ll => permet de dire si on parle long long or unsigned long long
+j => specifies the argument is a intmax_t or uintmax_t.
+z => specifies the argument is a size_t
