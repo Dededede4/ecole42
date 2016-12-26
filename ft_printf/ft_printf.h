@@ -13,6 +13,10 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+
+# include <stdarg.h>
+# include "libft/libft.h"
+
 # define SIZE_HH = 1
 # define SIZE_H = 2
 # define SIZE_L = 3
@@ -32,8 +36,10 @@ struct		s_flags
 	int		precision;
 	char	lenght;
 	char 	type;
-	int		i;
+	int		nbr;
 	
 }			t_flags;
+
+t_args		ft_printf_readarg(const char *str)
 
 #endif

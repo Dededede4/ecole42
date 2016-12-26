@@ -1,46 +1,114 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/26 07:46:40 by mprevot           #+#    #+#             */
+/*   Updated: 2016/12/26 09:57:12 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft/libft.h"
 
-#include <stdarg.h>
-
-int	ft_recursive_printf(const char *str, va_list ap)
+t_args		ft_printf_flags(const char *str, t_args *a)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	while(str[i] && str[i] != '%')
+	while (str[i])
 	{
-		ft_putchar(str[i]);
+		if (str[i] == '#')
+			a->hash = 1;
+		else if (str[i] == '0')
+			a->zero = 1;
+		else if (str[i] == '+')
+			a->plus = 1;
+		else if (str[i] == '-')
+			a->minus = 1;
+		else if (str[i] == ' ')
+			a->space = 1;
+		else
+			break;
 		i++;
 	}
-	if (str[i] == '%')
-	{
-		if (str[i + 1] == '%')
-		{
-			ft_putchar('%');
-			i += 2;
-		}
-		else if (str[i + 1] == 's')
-		{
-			ft_putstr(va_arg(ap, char *));
-			i += 2;
-		}
-		else if (str[i + 1] == 'd' || str[i + 1] == 'i')
-		{
-			ft_putnbr(va_arg(ap, int));
-			i += 2;
-		}
-		ft_recursive_printf(str + i, ap);
-	}
-	return (0);
+	return (i);
 }
 
-int	ft_printf(const char *format, ...)
+int		ft_printf_width(const char *str, t_args *a)
 {
-	va_list ap;
+	int		i;
 
-	va_start(ap, format);
-	ft_recursive_printf(format, ap);
-
-	va_end(ap);
-	return (0);
+	i = 0;
+	while (ft_isdigit(str[i]))
+		i++;
+	if (i)
+		a->width = ft_atoi(str);
+	return (i);
 }
+
+int		ft_printf_precision(const char *str, t_args *a)
+{
+	int		i;
+
+	i = 0;
+	if (str[i] != '.')
+		return (i);
+	i++;
+	while (ft_isdigit(str[i]))
+		i++;
+	if (i)
+		a->precision = ft_atoi(str);
+	return (i);
+}
+
+int		ft_printf_lenght(const char *str, t_args *a)
+{
+	if (str[0] == 'h' && str[1] == 'h')
+	{
+		a->lenght = SIZE_HH;
+		return (2);
+	}
+	else if (str[0] == 'l' && str[1] == 'l')
+	{
+		a->lenght = SIZE_LL;
+		return (2);
+	}
+	else if (str[0] == 'h')
+		a->lenght = SIZE_H;
+	else if (str[0] == 'l')
+		a->lenght = SIZE_L;
+	else if (str[0] == 'j')
+		a->lenght = SIZE_J;
+	else if (str[0] == 'z')
+		a->lenght = SIZE_Z;
+	else
+		return (0);
+	return (1);
+}
+
+t_args	ft_printf_readarg(const char *str)
+{
+	int 	i;
+	t_args	a;
+
+	i = 0;
+	a.hash = -1;
+	a.zero = -1;
+	a.plus = -1;
+	a.minus = -1;
+	a.space = -1;
+	a.precision = -1;
+	a.lenght = -1;
+	a.type = -1;
+	i += ft_printf_flags(str, &a);
+	i += ft_printf_width(str + i, &a);
+	i += ft_printf_precision(str + i, &a);
+	i += ft_printf_lenght(str + i, &a);
+	a.type = str[i];
+	i++;
+	a.nbr = i;
+	return (a);
+}
+
