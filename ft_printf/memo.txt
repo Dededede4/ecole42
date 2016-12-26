@@ -2,11 +2,11 @@ s = ft_putstr
 S = synonime de ls
 p = print en hexa
 d, i = ft_putnbr
-D = ???
+D = ld
 o = unsigned int (Converts to octal)
-O = ?
+O = lo
 u = unsigned int (Converts to decimal)
-U = ?
+U = lu
 x = unsigned int (Converts to lower-case hex)
 X = unsigned int (Converts to upper-case hex)
 c = ft_putchar (si l est présent ?)
@@ -20,7 +20,7 @@ C = synonyme de lc
 
 • Vous devez gérer les flags #0-+ et espace
 # => For %#o (octal), include a leading zero.  For %#x (hex), include a leading '0x'.
-0 => Mettre des 0 à la place des espaces
+0 => Mettre des 0 à la place des espaces (quand on gère un espace minimal)
 - => justifier à gauche
 + => Afficher un + quand c'est positif
 espace => mettre un espace si le nombre est positif
