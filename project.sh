@@ -26,7 +26,7 @@ then
 	git fetch
 	git pull
 
-	rsync -a --exclude='.git/' "${backupPath}/${thisDir}" "${thisPath}/"
+	rsync -a --exclude='.git/' "${backupPath}/${thisDir}/" "${thisPath}"
 	cd $thisPath
 	git add .
 	git commit -m 'synchronisation from github'
