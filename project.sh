@@ -5,6 +5,7 @@ schoolGitUrl=$2
 name=$3
 
 thisPath=`pwd`
+thisDir=${PWD##*/}
 workPath='/Users/mprevot/dev/ecole42'
 backupPath='/Users/mprevot/dev/ecole42.github'
 
@@ -19,18 +20,17 @@ then
 	mkdir $name
 elif [ $action = "pull" ]
 then
-	cd $workPath
 	git stash --include-untracked
 
 	cd $backupPath
 	git fetch
 	git pull
 
-	rsync -a --exclude='.git/' "${backupPath}/" "${workPath}/"
-	cd $workPath
+	rsync -a --exclude='.git/' "${backupPath}/${thisDir}" "${thisPath}/"
+	cd $thisPath
 	git add .
 	git commit -m 'synchronisation from github'
-	
+	git push	
 
 	git stash pop
 else
