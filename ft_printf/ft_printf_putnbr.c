@@ -2,7 +2,14 @@
 
 void	ft_printf_putnbr_signed(int nbr, t_args a)
 {
-	(void)a;
+	int	i;
+
+	if (a.precision != -1)
+	{
+		i = a.precision - ft_intlen(nbr);
+		while(i--)
+			write(1, "0", 1);
+	}
 	ft_putnbr(nbr);
 }
 

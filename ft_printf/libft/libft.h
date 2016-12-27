@@ -137,4 +137,5 @@ void				*ft_range(int min, int max);
 int					ft_factorial(int nb);
 void				ft_swap(int *a, int *b);
 int					ft_gnl(const int fd, char **line);
+int					ft_intlen(int n);
 #endif

@@ -22,7 +22,7 @@ libft/ft_strjoin.c libft/ft_strtrim.c libft/ft_strsplit.c libft/ft_itoa.c libft/
 libft/ft_putstr.c libft/ft_putendl.c libft/ft_putnbr.c libft/ft_putchar.c libft/ft_putendl.c \
 libft/ft_putnbr.c libft/ft_putstr.c libft/ft_lstnew.c libft/ft_lstdelone.c libft/ft_lstdel.c \
 libft/ft_lstadd.c libft/ft_lstiter.c libft/ft_lstmap.c libft/ft_putchar_fd.c libft/ft_putstr_fd.c \
-libft/ft_putendl_fd.c libft/ft_putnbr_fd.c \
+libft/ft_putendl_fd.c libft/ft_putnbr_fd.c libft/ft_intlen.c \
 ft_printf.c ft_printf_putnbr.c ft_printf_putstr.c ft_printf_readarg.c
 
 OBJ=ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_memmove.o \
@@ -37,7 +37,7 @@ ft_strjoin.o ft_strtrim.o ft_strsplit.o ft_itoa.o ft_putchar.o \
 ft_putstr.o ft_putendl.o ft_putnbr.o ft_putchar.o ft_putendl.o \
 ft_putnbr.o ft_putstr.o ft_lstnew.o ft_lstdelone.o ft_lstdel.o \
 ft_lstadd.o ft_lstiter.o ft_lstmap.o ft_putchar_fd.o ft_putstr_fd.o \
-ft_putendl_fd.o ft_putnbr_fd.o \
+ft_putendl_fd.o ft_putnbr_fd.o ft_intlen.o \
 ft_printf.o ft_printf_putnbr.o ft_printf_putstr.o ft_printf_readarg.o
 
 $(NAME): ft_printf.h
