@@ -77,12 +77,9 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		ft_printf_putnbr_hexa_maj(str, a);
 	else if (a.type == 'c')
 		ft_printf_putchar(str, a);
-	else if (str[i + 1] == '%')
-	{
+	else if (a.type == '%')
 		ft_putchar('%');
-		i += 2;
-	}
-	ft_recursive_printf(str + i, ap);
+	ft_recursive_printf(str + a.nbr, ap);
 	return (0);
 }
 
