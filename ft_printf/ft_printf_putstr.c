@@ -20,13 +20,18 @@ void	ft_printf_wputstr(wchar_t *str, t_args a)
 	int	i;
 
 	i = 0;
-	while (str[i] && i < a.precision)
-		i++;
-	write(1, str, i);
+	if (a.precision == -1)
+		while (str[i])
+			i++;
+	else
+		while (str[i] && i < a.precision)
+			i++;
+
+	write(1, str, i * sizeof(wchar_t));
 }
 
 void	ft_printf_putchar(char c, t_args a)
 {
-	(void)c;
 	(void)a;
+	ft_putchar(c);
 }

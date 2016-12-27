@@ -10,6 +10,7 @@ int	main(void)
 	int nbr = 42;
 	ft_printf("%p\n", &nbr);
 	printf("%p\n", &nbr);
-	//ft_printf("%s et %S")
+	ft_printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
+	printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
 	return (0);
 }
