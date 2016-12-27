@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "ft_printf.h"
 
-t_args		ft_printf_flags(const char *str, t_args *a)
+int		ft_printf_flags(const char *str, t_args *a)
 {
 	int		i;
 
