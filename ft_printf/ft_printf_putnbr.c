@@ -6,7 +6,7 @@ void	ft_printf_putnbr_signed(int nbr, t_args a)
 	ft_putnbr(nbr);
 }
 
-void	ft_printf_putnbr_hexa_min(unsigned int nbr, t_args a)
+void	ft_printf_putnbr_hexa_min(unsigned long nbr, t_args a)
 {
 	int	n;
 
@@ -20,7 +20,7 @@ void	ft_printf_putnbr_hexa_min(unsigned int nbr, t_args a)
 		ft_putchar('a' + (n - 10));
 }
 
-void	ft_printf_putnbr_hexa_maj(unsigned int nbr, t_args a)
+void	ft_printf_putnbr_hexa_maj(unsigned long nbr, t_args a)
 {
 	int	n;
 
@@ -34,7 +34,7 @@ void	ft_printf_putnbr_hexa_maj(unsigned int nbr, t_args a)
 		ft_putchar('A' + (n - 10));
 }
 
-void	ft_printf_putnbr_octal(unsigned int nbr, t_args a)
+void	ft_printf_putnbr_octal(unsigned long nbr, t_args a)
 {
 	int	n;
 
@@ -45,7 +45,7 @@ void	ft_printf_putnbr_octal(unsigned int nbr, t_args a)
 	ft_putchar('0' + n);
 }
 
-void	ft_printf_putnbr_unsigned(unsigned int nbr, t_args a)
+void	ft_printf_putnbr_unsigned(unsigned long nbr, t_args a)
 {
 	int	n;
 
@@ -56,8 +56,8 @@ void	ft_printf_putnbr_unsigned(unsigned int nbr, t_args a)
 	ft_putchar('0' + n);
 }
 
-void	ft_printf_putnbr_pointer(int *nbr, t_args a)
+void	ft_printf_putnbr_pointer(unsigned long nbr, t_args a)
 {
-	(void)nbr;
-	(void)a;
+	ft_putstr("0x");
+	ft_printf_putnbr_hexa_min(nbr, a);
 }

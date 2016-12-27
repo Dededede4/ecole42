@@ -71,7 +71,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		}
 	}
 	else if (a.type == 'p')
-		ft_printf_putnbr_pointer(va_arg(ap, int *), a);
+		ft_printf_putnbr_pointer(va_arg(ap, unsigned long), a);
 	else if (a.type == 'd' || a.type == 'i')
 	 	ft_printf_putnbr_signed(va_arg(ap, int), a);
 	else if (a.type == 'o')
