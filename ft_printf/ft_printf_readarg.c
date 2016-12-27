@@ -53,16 +53,12 @@ int		ft_printf_precision(const char *str, t_args *a)
 	int		i;
 
 	i = 0;
-	/*ft_putchar('-');
-	ft_putchar(str[i]);
-	ft_putchar('\n');*/
 	if (str[i] != '.')
 		return (i);
 	i++;
+	a->precision = ft_atoi(str + i);
 	while (ft_isdigit(str[i]))
 		i++;
-	if (i)
-		a->precision = ft_atoi(str);
 	return (i);
 }
 
