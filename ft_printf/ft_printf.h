@@ -37,6 +37,7 @@ typedef struct 	s_args
 	char		lenght;
 	char	 	type;
 	int			nbr;
+	int			tmp;
 	
 }				t_args;
 

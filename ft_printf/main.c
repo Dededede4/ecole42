@@ -16,5 +16,12 @@ int	main(void)
 
 	ft_printf("%.12d\n", 42);
 	printf("%.12d\n", 42);
+
+	ft_printf("%.15x\n", 9584);
+	printf("%.15x\n", 9584);
+
+	int nbr2 = 99;
+	ft_printf("%.15p\n", &nbr2);
+	//printf("%.15p\n", &nbr2);
 	return (0);
 }
