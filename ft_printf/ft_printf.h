@@ -41,9 +41,9 @@ typedef struct 	s_args
 }				t_args;
 
 int     		ft_printf(const char *format, ...);
-void			ft_printf_putnbr_hexa_min(int nbr, t_args a);
-void			ft_printf_putnbr_hexa_maj(int nbr, t_args a);
-void			ft_printf_putnbr_octal(int nbr, t_args a);
+void			ft_printf_putnbr_hexa_min(unsigned int nbr, t_args a);
+void			ft_printf_putnbr_hexa_maj(unsigned int nbr, t_args a);
+void			ft_printf_putnbr_octal(unsigned int nbr, t_args a);
 void			ft_printf_putnbr_unsigned(unsigned int nbr, t_args a);
 void			ft_printf_putnbr_pointer(int *nbr, t_args a);
 void			ft_printf_putstr(const char *str, t_args a);

@@ -106,8 +106,8 @@ t_args	ft_printf_readarg(const char *str)
 	i += ft_printf_width(str + i, &a);
 	i += ft_printf_precision(str + i, &a);
 	i += ft_printf_lenght(str + i, &a);
-	a.type = str[i];
-	i++;
+	a.type = str[i + 1];
+	i+=2;
 	a.nbr = i;
 	return (a);
 }

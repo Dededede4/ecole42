@@ -59,30 +59,35 @@ int	ft_recursive_printf(const char *str, va_list ap)
 
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
+	/*ft_putchar('*');
+	ft_putchar(a.type);
+	ft_putchar('\n');*/
 	if (a.type == 's')
 	{
 		if (a.lenght == SIZE_L)
 			ft_printf_wputstr(va_arg(ap, wchar_t *), a);
-		else
+		else{
 			ft_printf_putstr(va_arg(ap, char *), a);
+		}
 	}
 	else if (a.type == 'p')
 		ft_printf_putnbr_pointer(va_arg(ap, int *), a);
 	else if (a.type == 'd' || a.type == 'i')
 	 	ft_printf_putnbr_signed(va_arg(ap, int), a);
 	else if (a.type == 'o')
-	 	ft_printf_putnbr_octal(va_arg(ap, int), a);
+	 	ft_printf_putnbr_octal(va_arg(ap, unsigned int), a);
 	else if (a.type == 'u')
 		ft_printf_putnbr_unsigned(va_arg(ap, unsigned int), a);
 	else if (a.type == 'x')
-		ft_printf_putnbr_hexa_min(va_arg(ap, int), a);
+		ft_printf_putnbr_hexa_min(va_arg(ap, unsigned int), a);
 	else if (a.type == 'X')
-		ft_printf_putnbr_hexa_maj(va_arg(ap, int), a);
+		ft_printf_putnbr_hexa_maj(va_arg(ap, unsigned int), a);
 	else if (a.type == 'c')
 		ft_printf_putchar(va_arg(ap, int), a);
 	else if (a.type == '%')
 		ft_putchar('%');
-	ft_recursive_printf(str + a.nbr, ap);
+	i += a.nbr;
+	ft_recursive_printf(str + i, ap);
 	return (0);
 }
 
