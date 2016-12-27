@@ -53,6 +53,9 @@ int		ft_printf_precision(const char *str, t_args *a)
 	int		i;
 
 	i = 0;
+	/*ft_putchar('-');
+	ft_putchar(str[i]);
+	ft_putchar('\n');*/
 	if (str[i] != '.')
 		return (i);
 	i++;
@@ -93,7 +96,7 @@ t_args	ft_printf_readarg(const char *str)
 	int 	i;
 	t_args	a;
 
-	i = 0;
+	i = 1;
 	a.hash = -1;
 	a.zero = -1;
 	a.plus = -1;
@@ -102,12 +105,12 @@ t_args	ft_printf_readarg(const char *str)
 	a.precision = -1;
 	a.lenght = -1;
 	a.type = -1;
-	i += ft_printf_flags(str, &a);
+	i += ft_printf_flags(str + i, &a);
 	i += ft_printf_width(str + i, &a);
 	i += ft_printf_precision(str + i, &a);
 	i += ft_printf_lenght(str + i, &a);
-	a.type = str[i + 1];
-	i+=2;
+	a.type = str[i];
+	i++;
 	a.nbr = i;
 	return (a);
 }

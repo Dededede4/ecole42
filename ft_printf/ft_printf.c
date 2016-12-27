@@ -66,9 +66,8 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	{
 		if (a.lenght == SIZE_L)
 			ft_printf_wputstr(va_arg(ap, wchar_t *), a);
-		else{
+		else
 			ft_printf_putstr(va_arg(ap, char *), a);
-		}
 	}
 	else if (a.type == 'p')
 		ft_printf_putnbr_pointer(va_arg(ap, unsigned long), a);
