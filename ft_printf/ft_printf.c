@@ -41,11 +41,25 @@ void	ft_printf_synonyms(t_args *a)
 	}
 }
 
+wchar_t		*ft_wstrdup(const char *str, size_t len)
+{
+	wchar_t	*r;
+
+	if (!(r = malloc((len + 1) * sizeof(wchar_t))))
+		return (NULL);
+	r[len] = '\0';
+	while(len--)
+		r[len] = str[len];
+	return r;
+}
+
 int	ft_recursive_printf(const char *str, va_list ap)
 {
 	int		i;
 	char	*tmp;
 	intmax_t 	n;
+	wchar_t	*s;
+	char	c;
 	t_args	a;
 
 	i = 0;
@@ -68,7 +82,14 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		if (a.lenght == SIZE_L)
 			ft_printf_wputstr(va_arg(ap, wchar_t *), a);
 		else
-			ft_printf_putstr(va_arg(ap, char *), a);
+		{
+			tmp = va_arg(ap, char *);
+			s = ft_wstrdup(tmp, ft_strlen(tmp));
+			if (!s)
+				return (0);
+			ft_printf_wputstr(s, a);
+			free(s);
+		}
 	}
 	else if (a.type == 'p')
 	{
@@ -91,7 +112,14 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	else if (a.type == 'X')
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), a, 16);
 	else if (a.type == 'c')
-		ft_printf_putchar(va_arg(ap, int), a);
+	{
+		c = va_arg(ap, int);
+		s = ft_wstrdup(&c, 1);
+		if (!s)
+			return (0);
+		ft_printf_wputstr(s, a);
+		free(s);
+	}
 	else if (a.type == '%')
 		ft_putchar('%');
 	i += a.nbr;

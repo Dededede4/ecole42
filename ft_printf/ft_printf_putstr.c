@@ -1,34 +1,28 @@
 #include "ft_printf.h"
-
-void	ft_printf_putstr(const char *str, t_args a)
-{
-	int	i;
-
-	i = 0;
-	if (a.precision == -1)
-		ft_putstr(str);
-	else
-	{
-		while (str[i] && i < a.precision)
-			i++;
-		write(1, str, i);
-	}
-}
+#include <stdio.h>
 
 void	ft_printf_wputstr(wchar_t *str, t_args a)
 {
-	int	i;
+	size_t	i;
+	size_t len;
 
-	i = 0;
+	len = 0;
 	if (a.precision == -1)
-		while (str[i])
-			i++;
+		while (str[len])
+			len++;
 	else
-		while (str[i] && i < a.precision)
-			i++;
-
-	write(1, str, i * sizeof(wchar_t));
+		while (str[len] && len < (size_t)a.precision)
+			len++;
+	i = a.width - len;
+	if (a.width != -1 && a.minus == -1)
+		while (i--)
+			ft_putchar(' ');
+	write(1, str, len * sizeof(wchar_t));
+	if (a.width != -1 && a.minus != -1)
+		while (i--)
+			ft_putchar(' ');
 }
+
 
 void	ft_printf_putchar(char c, t_args a)
 {

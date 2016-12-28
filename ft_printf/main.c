@@ -30,6 +30,17 @@ int	main(void)
 	ft_printf("%#o\n", 12);
 	printf("%#o\n", 12);
 
+	printf("%-10s| :)\n", "hey");
+	ft_printf("%-10s| :)\n", "hey");
+	printf("%10s| :)\n", "hey");
+	ft_printf("%10s| :)\n", "hey");
+
+	ft_printf("%10s %10S %10c\n", "Coucou", L"G\x82rard !", 'z');
+	printf("%10s %10S %10c\n", "Coucou", L"G\x82rard !", 'z');
+
+	ft_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+	printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+
 	/*printf("%.5i\n", 42);
 	printf("%05i\n", 42);
 

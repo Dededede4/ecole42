@@ -43,7 +43,6 @@ typedef struct 	s_args
 
 int     		ft_printf(const char *format, ...);
 void			ft_printf_putnbr_pointer(unsigned long nbr, t_args a);
-void			ft_printf_putstr(const char *str, t_args a);
 void			ft_printf_wputstr(wchar_t *str, t_args a);
 void			ft_printf_synonyms(t_args *a);
 int				ft_recursive_printf(const char *str, va_list ap);
