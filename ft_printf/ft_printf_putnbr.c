@@ -55,15 +55,59 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base)
 }
 
 
-void	ft_printf_putnbr_signed(int nbr, t_args a)
+intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
 {
-	int	i;
+	intmax_t	nbr;
 
-	if (a.precision != -1)
+	nbr = va_arg(args, uintmax_t);
+	if (a.lenght == SIZE_HH)
+		nbr = (signed char)nbr;
+	else if (a.lenght == SIZE_H)
+		nbr = (short int)nbr;
+	else if (a.lenght == SIZE_L)
+		nbr = (long int)nbr;
+	else if (a.lenght == SIZE_LL)
+		nbr = (long long int)nbr;
+	else if (a.lenght == SIZE_J)
+		nbr = (intmax_t)nbr;
+	else if (a.lenght == SIZE_Z)
+		nbr = (ssize_t)nbr;
+	else
+		nbr = (int)nbr;
+	return (nbr);
+}
+
+void	ft_printf_putnbr_signed(intmax_t nbr, t_args a, char base, int neg)
+{
+	intmax_t	n;
+
+	a.tmp++;
+	if (nbr == 0)
 	{
-		i = a.precision - ft_intlen(nbr);
-		while(i--)
-			write(1, "0", 1);
+		if (neg)
+		{
+			ft_putchar('-');
+			a.tmp++;
+		}
+		if (a.precision != -1)
+		{
+			n = a.precision - a.tmp;
+			while(n--)
+				write(1, "0", 1);
+		}
+		return;
 	}
-	ft_putnbr(nbr);
+	ft_printf_putnbr_signed(nbr / base, a, base, neg);
+	n = nbr % base;
+	if (neg)
+		n = 0 - n;
+	if (n <= 9)
+		ft_putchar('0' + n);
+	if (n >= 10 && n <= 36)
+	{
+		if (a.type == 'X')
+			ft_putchar('A' + (n - 10));
+		else
+			ft_putchar('a' + (n - 10));
+	}
 }

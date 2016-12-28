@@ -53,7 +53,8 @@ int				ft_printf_precision(const char *str, t_args *a);
 int				ft_printf_lenght(const char *str, t_args *a);
 t_args			ft_printf_readarg(const char *str);
 void			ft_printf_putchar(char c, t_args a);
-void			ft_printf_putnbr_signed(int nbr, t_args a);
+intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a);
 uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a);
 void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base);
+void	ft_printf_putnbr_signed(intmax_t nbr, t_args a, char base, int neg);
 #endif
