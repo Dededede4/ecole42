@@ -21,7 +21,11 @@ int	main(void)
 	printf("%.15x\n", 9584);
 
 	int nbr2 = 99;
-	ft_printf("%.15p\n", &nbr2);
-	//printf("%.15p\n", &nbr2);
+	ft_printf("%p\n", &nbr2);
+	printf("%p\n", &nbr2);
+
+	unsigned int nbr3 = 42;
+	ft_printf("%b\n", nbr3);
+
 	return (0);
 }

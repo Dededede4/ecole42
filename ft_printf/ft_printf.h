@@ -35,17 +35,13 @@ typedef struct 	s_args
 	int			width;
 	int			precision;
 	char		lenght;
-	char	 	type;
+	char		type;
 	int			nbr;
 	int			tmp;
 	
 }				t_args;
 
 int     		ft_printf(const char *format, ...);
-void			ft_printf_putnbr_hexa_min(unsigned long nbr, t_args a);
-void			ft_printf_putnbr_hexa_maj(unsigned long nbr, t_args a);
-void			ft_printf_putnbr_octal(unsigned long nbr, t_args a);
-void			ft_printf_putnbr_unsigned(unsigned long nbr, t_args a);
 void			ft_printf_putnbr_pointer(unsigned long nbr, t_args a);
 void			ft_printf_putstr(const char *str, t_args a);
 void			ft_printf_wputstr(wchar_t *str, t_args a);
@@ -58,4 +54,6 @@ int				ft_printf_lenght(const char *str, t_args *a);
 t_args			ft_printf_readarg(const char *str);
 void			ft_printf_putchar(char c, t_args a);
 void			ft_printf_putnbr_signed(int nbr, t_args a);
+uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a);
+void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base);
 #endif
