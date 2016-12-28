@@ -27,5 +27,14 @@ int	main(void)
 	unsigned int nbr3 = 42;
 	ft_printf("%b\n", nbr3);
 
+	ft_printf("%#o\n", 12);
+	printf("%#o\n", 12);
+
+	/*printf("%.5i\n", 42);
+	printf("%05i\n", 42);
+
+	printf("%.10s\n", "pouet");
+	//printf("%05s\n", "pouet");*/
+
 	return (0);
 }

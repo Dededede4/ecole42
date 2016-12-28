@@ -71,7 +71,10 @@ int	ft_recursive_printf(const char *str, va_list ap)
 			ft_printf_putstr(va_arg(ap, char *), a);
 	}
 	else if (a.type == 'p')
+	{
+		a.hash = 1;
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), a, 16);
+	}
 	else if (a.type == 'b')
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), a, 2);
 	else if (a.type == 'd' || a.type == 'i')

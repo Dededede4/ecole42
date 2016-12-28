@@ -31,8 +31,13 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base)
 	a.tmp++;
 	if (nbr == 0)
 	{
-		if (a.type == 'p')
-			ft_putstr("0x");
+		if(a.hash != -1)
+		{
+			ft_putchar('0');
+			a.tmp++;
+			if (base == 16)
+				ft_putchar('x');
+		}
 		if (a.precision != -1)
 		{
 			n = a.precision - a.tmp;
