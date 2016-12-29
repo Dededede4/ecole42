@@ -24,28 +24,23 @@ uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
+void	ft_printf_putnbr_unsigned(t_args *a)
 {
 	uintmax_t	n;
 
 	a->tmp++;
-	if (nbr == 0 && a->tmp != 0)
+	if (a->unbr == 0 && a->tmp != 0)
 	{
 		if (a->plus != -1)
 		{
 			ft_putchar('+');
 			a->tmp++;
 		}
-		else if (a->space != -1)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
 		if(a->hash != -1)
 		{
 			ft_putchar('0');
 			a->tmp++;
-			if (base == 16)
+			if (a->base == 16)
 				ft_putchar('x');
 		}
 		if (a->precision != -1)
@@ -56,8 +51,8 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		}
 		return;
 	}
-	ft_printf_putnbr_unsigned(nbr / base, a, base);
-	n = nbr % base;
+	ft_printf_putnbr_unsigned(a->unbr / a->base, a);
+	n = a->unbr % a->base;
 	if (n <= 9)
 		ft_putchar('0' + n);
 	if (n >= 10 && n <= 36)
@@ -92,10 +87,9 @@ intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
+void	ft_printf_putnbr_signed(t_args *a)
 {
 	intmax_t	n;
-	int 		spaces;
 
 	a->tmp++;
 	if (nbr == 0)
@@ -106,24 +100,10 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 			ft_putchar('+');
 			a->tmp++;
 		}
-		else if (a->space != -1 && !neg)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
 		else if (neg)
 		{
 			ft_putchar('-');
 			a->tmp++;
-		}
-		if (a->width != -1)
-		{
-			spaces = a->width - a->tmp;
-			while (spaces--)
-			{
-				ft_putchar(' ');
-				a->tmp++;
-			}
 		}
 		if (a->precision != -1)
 		{

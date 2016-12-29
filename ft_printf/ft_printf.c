@@ -78,44 +78,73 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	if (a.type == 's')
 	{
 		if (a.lenght == SIZE_L)
-			ft_printf_wputstr(va_arg(ap, wchar_t *), &a);
+		{
+			a.str = va_arg(ap, wchar_t *);
+			ft_printf_putargs(ft_printf_wputstr, &a);
+		}
 		else
 		{
 			tmp = va_arg(ap, char *);
 			s = ft_wstrdup(tmp, ft_strlen(tmp));
 			if (!s)
 				return (0);
-			ft_printf_wputstr(s, &a);
+			a.str = s;
+			ft_printf_putargs(ft_printf_wputstr, &a);
 			free(s);
 		}
 	}
 	else if (a.type == 'p')
 	{
 		a.hash = 1;
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
+		a.base = 16;
+		a.unbr = ft_printf_getarg_nbr_unsigned(ap, a);
+		ft_printf_putargs(ft_printf_putnbr_unsigned, &a);
 	}
 	else if (a.type == 'b')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 2);
+	{
+		a.unbr = ft_printf_getarg_nbr_unsigned(ap, a);
+		a.base = 2;
+		ft_printf_putargs(ft_printf_putnbr_unsigned, &a);
+	}
 	else if (a.type == 'd' || a.type == 'i')
 	{
-		n = ft_printf_getarg_nbr_signed(ap, a);
-	 	ft_printf_putnbr_signed(n, &a, 10, n < 0);
+		a.snbr = ft_printf_getarg_nbr_signed(ap, a);
+		a.base = 10;
+		a.neg = (a.snbr < 0);
+		ft_printf_putargs(ft_printf_putnbr_signed, &a);
 	}
 	else if (a.type == 'o')
-	 	ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 8);
+	{
+		a.unbr = ft_printf_getarg_nbr_unsigned(ap, a);
+		a.base = 8;
+		ft_printf_putargs(ft_printf_putnbr_unsigned, &a);
+	}
 	else if (a.type == 'u')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 10);
+	{
+		a.unbr = ft_printf_getarg_nbr_unsigned(ap, a);
+		a.base = 10;
+		ft_printf_putargs(ft_printf_putnbr_unsigned, &a);
+	}
 	else if (a.type == 'x')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
+	{
+		a.unbr = ft_printf_getarg_nbr_unsigned(ap, a);
+		a.base = 16;
+		ft_printf_putargs(ft_printf_putnbr_unsigned, &a);
+	}
 	else if (a.type == 'X')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
+	{
+		a.unbr = ft_printf_getarg_nbr_unsigned(ap, a);
+		a.base = 16;
+		ft_printf_putargs(ft_printf_putnbr_unsigned, &a);
+	}
 	else if (a.type == 'c')
 	{
 		c = va_arg(ap, int);
 		s = ft_wstrdup(&c, 1);
 		if (!s)
 			return (0);
-		ft_printf_wputstr(s, &a);
+		a.str = s;
+		ft_printf_putargs(ft_printf_wputstr, &a);
 		free(s);
 	}
 	else if (a.type == '%')
@@ -124,7 +153,8 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		s = ft_wstrdup(&c, 1);
 		if (!s)
 			return (0);
-		ft_printf_wputstr(s, &a);
+		a.str = s;
+		ft_printf_putargs(ft_printf_wputstr, &a);
 		free(s);
 	}
 	printed = i + a.tmp;
