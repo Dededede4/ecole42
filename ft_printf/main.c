@@ -53,10 +53,11 @@ int	main(void)
 	int s1;
 	int s2;
 
-	s1 = printf("%5%");
-	s2 = ft_printf("%5%");
+	s1 = printf("%10i\n", 12);
+	s2 = ft_printf("%10i\n", 12);
 
 	printf("%d, %d\n", s1, s2);
+	//printf("%i");
 
 	/*printf("%.5i\n", 42);
 	printf("%05i\n", 42);

@@ -29,7 +29,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	uintmax_t	n;
 
 	a->tmp++;
-	if (nbr == 0)
+	if (nbr == 0 && a->tmp != 0)
 	{
 		if (a->plus != -1)
 		{
@@ -95,10 +95,12 @@ intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
 void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 {
 	intmax_t	n;
+	int 		spaces;
 
 	a->tmp++;
 	if (nbr == 0)
 	{
+
 		if (a->plus != -1 && !neg)
 		{
 			ft_putchar('+');
@@ -113,6 +115,15 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 		{
 			ft_putchar('-');
 			a->tmp++;
+		}
+		if (a->width != -1)
+		{
+			spaces = a->width - a->tmp;
+			while (spaces--)
+			{
+				ft_putchar(' ');
+				a->tmp++;
+			}
 		}
 		if (a->precision != -1)
 		{
