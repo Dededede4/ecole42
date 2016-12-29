@@ -31,6 +31,16 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base)
 	a.tmp++;
 	if (nbr == 0)
 	{
+		if (a.plus != -1)
+		{
+			ft_putchar('+');
+			a.tmp++;
+		}
+		else if (a.space != -1)
+		{
+			ft_putchar(' ');
+			a.tmp++;
+		}
 		if(a.hash != -1)
 		{
 			ft_putchar('0');
@@ -89,7 +99,17 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args a, char base, int neg)
 	a.tmp++;
 	if (nbr == 0)
 	{
-		if (neg)
+		if (a.plus != -1 && !neg)
+		{
+			ft_putchar('+');
+			a.tmp++;
+		}
+		else if (a.space != -1 && !neg)
+		{
+			ft_putchar(' ');
+			a.tmp++;
+		}
+		else if (neg)
 		{
 			ft_putchar('-');
 			a.tmp++;

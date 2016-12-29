@@ -22,10 +22,3 @@ void	ft_printf_wputstr(wchar_t *str, t_args a)
 		while (i--)
 			ft_putchar(' ');
 }
-
-
-void	ft_printf_putchar(char c, t_args a)
-{
-	(void)a;
-	ft_putchar(c);
-}

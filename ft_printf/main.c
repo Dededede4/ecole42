@@ -41,6 +41,13 @@ int	main(void)
 	ft_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
 	printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
 
+	ft_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+	printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+
+	ft_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
+	printf("%+i %+i % i % i\n", 321, -321, 321, -321);
+
+
 	/*printf("%.5i\n", 42);
 	printf("%05i\n", 42);
 
