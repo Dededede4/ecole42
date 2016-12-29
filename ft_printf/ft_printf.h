@@ -15,6 +15,7 @@
 
 
 # include <stdarg.h>
+# include <inttypes.h>
 # include "libft/libft.h"
 
 # define SIZE_HH 1
