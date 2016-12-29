@@ -47,6 +47,16 @@ int	main(void)
 	ft_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
 	printf("%+i %+i % i % i\n", 321, -321, 321, -321);
 
+	ft_printf("\n");
+	printf("\n");
+
+	int s1;
+	int s2;
+
+	s1 = printf("%5%");
+	s2 = ft_printf("%5%");
+
+	printf("%d, %d\n", s1, s2);
 
 	/*printf("%.5i\n", 42);
 	printf("%05i\n", 42);

@@ -24,33 +24,33 @@ uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base)
+void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 {
 	uintmax_t	n;
 
-	a.tmp++;
+	a->tmp++;
 	if (nbr == 0)
 	{
-		if (a.plus != -1)
+		if (a->plus != -1)
 		{
 			ft_putchar('+');
-			a.tmp++;
+			a->tmp++;
 		}
-		else if (a.space != -1)
+		else if (a->space != -1)
 		{
 			ft_putchar(' ');
-			a.tmp++;
+			a->tmp++;
 		}
-		if(a.hash != -1)
+		if(a->hash != -1)
 		{
 			ft_putchar('0');
-			a.tmp++;
+			a->tmp++;
 			if (base == 16)
 				ft_putchar('x');
 		}
-		if (a.precision != -1)
+		if (a->precision != -1)
 		{
-			n = a.precision - a.tmp;
+			n = a->precision - a->tmp;
 			while(n--)
 				write(1, "0", 1);
 		}
@@ -62,7 +62,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args a, char base)
 		ft_putchar('0' + n);
 	if (n >= 10 && n <= 36)
 	{
-		if (a.type == 'X')
+		if (a->type == 'X')
 			ft_putchar('A' + (n - 10));
 		else
 			ft_putchar('a' + (n - 10));
@@ -92,31 +92,31 @@ intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_putnbr_signed(intmax_t nbr, t_args a, char base, int neg)
+void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 {
 	intmax_t	n;
 
-	a.tmp++;
+	a->tmp++;
 	if (nbr == 0)
 	{
-		if (a.plus != -1 && !neg)
+		if (a->plus != -1 && !neg)
 		{
 			ft_putchar('+');
-			a.tmp++;
+			a->tmp++;
 		}
-		else if (a.space != -1 && !neg)
+		else if (a->space != -1 && !neg)
 		{
 			ft_putchar(' ');
-			a.tmp++;
+			a->tmp++;
 		}
 		else if (neg)
 		{
 			ft_putchar('-');
-			a.tmp++;
+			a->tmp++;
 		}
-		if (a.precision != -1)
+		if (a->precision != -1)
 		{
-			n = a.precision - a.tmp;
+			n = a->precision - a->tmp;
 			while(n--)
 				write(1, "0", 1);
 		}
@@ -130,7 +130,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args a, char base, int neg)
 		ft_putchar('0' + n);
 	if (n >= 10 && n <= 36)
 	{
-		if (a.type == 'X')
+		if (a->type == 'X')
 			ft_putchar('A' + (n - 10));
 		else
 			ft_putchar('a' + (n - 10));
