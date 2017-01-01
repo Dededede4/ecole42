@@ -57,4 +57,5 @@ intmax_t		ft_printf_getarg_nbr_signed(va_list args, t_args a);
 uintmax_t		ft_printf_getarg_nbr_unsigned(va_list args, t_args a);
 void			ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base);
 void			ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg);
+void			ft_printf_rwputstr(wchar_t *str, t_args *a);
 #endif

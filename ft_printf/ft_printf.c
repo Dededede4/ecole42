@@ -96,6 +96,20 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	}
 	else if (a.type == 'b')
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 2);
+	else if (a.type == 'r')
+	{
+		if (a.lenght == SIZE_L)
+			ft_printf_rwputstr(va_arg(ap, wchar_t *), &a);
+		else
+		{
+			tmp = va_arg(ap, char *);
+			s = ft_wstrdup(tmp, ft_strlen(tmp));
+			if (!s)
+				return (0);
+			ft_printf_rwputstr(s, &a);
+			free(s);
+		}
+	}
 	else if (a.type == 'd' || a.type == 'i')
 	{
 		n = ft_printf_getarg_nbr_signed(ap, a);

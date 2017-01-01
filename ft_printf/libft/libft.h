@@ -138,4 +138,5 @@ int					ft_factorial(int nb);
 void				ft_swap(int *a, int *b);
 int					ft_gnl(const int fd, char **line);
 int					ft_intlen(int n);
+void		*ft_memchrf(void *s, int (*f)(void *), size_t len);
 #endif
