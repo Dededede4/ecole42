@@ -24,11 +24,12 @@ void	test_printf(char *s, ...)
 	out = dup(1);
 	pipe(p);
 	dup2(p[1], 1);
-	good_return = dprintf(1, s, args);
+	good_return = printf(s, args);
+	fflush(stdout);
 	t = read(p[0], good_print, 1023);
 	good_print[t] = '\0';
 	dup2(out, 1);	
-
+	
 	out = dup(1);
         pipe(p);
         dup2(p[1], 1);
@@ -40,41 +41,40 @@ void	test_printf(char *s, ...)
 
 	if (strcmp(good_print, bad_print) != 0 || good_return != bad_return)
 	{
-		printf("test n°%i : printf(\"%s\", ...);\n", printf_no, s);
-		printf("Real return (%i) and print \"%s\"\n", good_return, good_print);
-		printf("Your return (%i) and print \"%s\"\n\n", bad_return, bad_print);
+		ft_printf("#%i                  printf(\"%r\", ...);\n", printf_no, s);
+		ft_printf("Real return (%i) and print \"%r\"\n", good_return, good_print);
+		ft_printf("Your return (%i) and print \"%r\"\n\n", bad_return, bad_print);
 	}
-	printf("ouais…");
 }
 
 int	main(void)
 {
 	
-	test_printf("HOY %x %X %o %u %i", 6879892, 65456465, 998877552, 65465888, -99999);
+	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
 	
 	int nbr = 42;
-	test_printf("%p", &nbr);
+	test_printf("%p\n", &nbr);
 	
-	test_printf("%s %S %c", "Coucou", L"G\x82rard !", 'z');
-	test_printf("%.12d", 42);
+	test_printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
+	test_printf("%.12d\n", 42);
 
-	test_printf("%.15x", 9584);
+	test_printf("%.15x\n", 9584);
 
 	int nbr2 = 99;
-	test_printf("%p", &nbr2);
+	test_printf("%p\n", &nbr2);
 
 	unsigned int nbr3 = 42;
-	test_printf("%b", nbr3);
+	test_printf("%b\n", nbr3);
 
-	test_printf("%#o", 12);
+	test_printf("%#o\n", 12);
 
-	test_printf("%-10s| :)", "hey");
-	test_printf("%10s| :)", "hey");
-	test_printf("%10s %10S %10c", "Coucou", L"G\x82rard !", 'z');
-	test_printf("%-10s %-10S %-10c", "Coucou", L"G\x82rard !", 'z');
-	test_printf("%-10s %-10S %-10c", "Coucou", L"G\x82rard !", 'z');
-	test_printf("%+i %+i % i % i", 321, -321, 321, -321);
-	test_printf("%10i", 12);
+	test_printf("%-10s| :)\n", "hey");
+	test_printf("%10s| :)\n", "hey");
+	//test_printf("%10s %10S %10c\n", "Coucou", L"G\x82rard !", 'z');
+	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+	//test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
+	test_printf("%10i\n", 12);
 	//test_printf("%d, %d", s1, s2);
 	//printf("%i");
 
