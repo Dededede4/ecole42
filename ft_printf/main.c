@@ -55,7 +55,7 @@ int	main(void)
 	int nbr = 42;
 	test_printf("%p\n", &nbr);
 	
-	test_printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
+	//test_printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
 	test_printf("%.12d\n", 42);
 
 	test_printf("%.15x\n", 9584);
@@ -73,16 +73,19 @@ int	main(void)
 	//test_printf("%10s %10S %10c\n", "Coucou", L"G\x82rard !", 'z');
 	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
 	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
-	//test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
+	test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
 	test_printf("%10i\n", 12);
-	//test_printf("%d, %d", s1, s2);
-	//printf("%i");
 
-	/*printf("%.5i\n", 42);
+	int s1 = 245;
+	int s2 = -952;
+	test_printf("%d, %d", s1, s2);
+	//printf("%i");
+/*
+	printf("%.5i\n", 42);
 	printf("%05i\n", 42);
 
 	printf("%.10s\n", "pouet");
-	//printf("%05s\n", "pouet");*/
+	printf("%05s\n", "pouet");
 
 	return (0);
 }

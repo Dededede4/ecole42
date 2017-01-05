@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 09:48:59 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/26 09:57:14 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/01/04 11:37:02 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	if (a.type == 's')
 	{
 		if (a.lenght == SIZE_L)
+		{
 			ft_printf_wputstr(va_arg(ap, wchar_t *), &a);
+			exit(0);
+		}
 		else
 		{
 			tmp = va_arg(ap, char *);
@@ -99,7 +102,9 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	else if (a.type == 'r')
 	{
 		if (a.lenght == SIZE_L)
+		{
 			ft_printf_rwputstr(va_arg(ap, wchar_t *), &a);
+		}
 		else
 		{
 			tmp = va_arg(ap, char *);
