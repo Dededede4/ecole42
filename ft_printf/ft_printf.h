@@ -45,6 +45,7 @@ typedef struct 	s_args
 }				t_args;
 
 int     		ft_printf(const char *format, ...);
+int 			ft_vprintf(const char * restrict format, va_list ap);
 void			ft_printf_putnbr_pointer(unsigned long nbr, t_args a);
 void			ft_printf_wputstr(wchar_t *str, t_args *a);
 void			ft_printf_synonyms(t_args *a);
@@ -61,4 +62,6 @@ void			ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base);
 void			ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg);
 void			ft_printf_rwputstr(wchar_t *str, t_args *a);
 void			ft_wputstr(t_unicode *str);
+t_utf8			*ft_unicode2utf8(t_unicode *i_str, size_t *size);
+
 #endif

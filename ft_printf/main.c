@@ -26,43 +26,44 @@ void	test_printf(char *s, ...)
 	out = dup(1);
 	pipe(p);
 	dup2(p[1], 1);
-	good_return = printf(s, args);
+	good_return = vprintf(s, args);
 	fflush(stdout);
 	t = read(p[0], good_print, 1023);
-	if (printf_no == 3)
-		exit(0);
 	good_print[t] = '\0';
 	dup2(out, 1);	
-	
+	va_end( args );
+
 	out = dup(1);
         pipe(p);
         dup2(p[1], 1);
-
-        bad_return = ft_printf(s, args);
+        bad_return = ft_vprintf(s, args);
+        
         bad_print[read(p[0], bad_print, 1023)] = '\0';
 	dup2(out, 1);
-
 	va_end( args );
+	
 
 	if (strcmp(good_print, bad_print) != 0 || good_return != bad_return)
 	{
-		ft_printf("#%i                  printf(\"%r\", ...);\n", printf_no, s);
-		ft_printf("Real return (%i) and print \"%r\"\n", good_return, good_print);
-		ft_printf("Your return (%i) and print \"%r\"\n\n", bad_return, bad_print);
+		ft_printf("#%i                  printf(\"%r\", ...);\n", printf_no, "s");
+		ft_printf("Real return (%i) and print \"%r\"\n", good_return, "good_print");
+		ft_printf("Your return (%i) and print \"%r\"\n", bad_return, "bad_print");
+		ft_printf("Difference is %i.\n\n", strcmp(good_print, bad_print));
 	}
 }
 
 int	main(void)
 {
-	
+	test_printf("%S\n", L"éaaa\n");
 	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
-	
+
 	int nbr = 42;
 	test_printf("%p\n", &nbr);
+
 	
 	test_printf("%S\n", L"é");
 
-	//test_printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
+	test_printf("%s %c\n", "Coucou", 'z');
 	test_printf("%.12d\n", 42);
 
 	test_printf("%.15x\n", 9584);
@@ -77,9 +78,10 @@ int	main(void)
 
 	test_printf("%-10s| :)\n", "hey");
 	test_printf("%10s| :)\n", "hey");
-	//test_printf("%10s %10S %10c\n", "Coucou", L"Gérard !", 'z');
-	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
-	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
+	//test_printf("%10s %10S %10c\n", "Coucou", L"aaa", 'z');
+	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
+	//
+	test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
 	test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
 	test_printf("%10i\n", 12);
 

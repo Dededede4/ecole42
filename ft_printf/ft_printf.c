@@ -72,15 +72,14 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	}
 	i = tmp - str;
 	write(1, str, i);
-
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
 	if (a.type == 's')
 	{
 		if (a.lenght == SIZE_L)
 		{
-			ft_printf_wputstr(va_arg(ap, wchar_t *), &a);
-			exit(0);
+			
+			ft_printf_wputstr(va_arg(ap, t_unicode *), &a);
 		}
 		else
 		{
@@ -112,7 +111,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 			if (!s)
 				return (0);
 			ft_printf_rwputstr(s, &a);
-			free(s);
+			//free(s);
 		}
 	}
 	else if (a.type == 'd' || a.type == 'i')
@@ -161,4 +160,9 @@ int	ft_printf(const char *format, ...)
 
 	va_end(ap);
 	return (r);
+}
+
+int ft_vprintf(const char * restrict format, va_list ap)
+{
+	return ft_recursive_printf(format, ap);
 }
