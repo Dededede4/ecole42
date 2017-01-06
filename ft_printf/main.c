@@ -1,10 +1,12 @@
 #include "ft_printf.h"
 
 #include <stdio.h>
+#include <locale.h>
 
 void	test_printf(char *s, ...)
 {
 	static int printf_no = 0;
+	setlocale(LC_ALL, "");
 	printf_no++;
 	ft_printf("go");
 	va_list args;
@@ -27,14 +29,17 @@ void	test_printf(char *s, ...)
 	good_return = printf(s, args);
 	fflush(stdout);
 	t = read(p[0], good_print, 1023);
+	if (printf_no == 3)
+		exit(0);
 	good_print[t] = '\0';
 	dup2(out, 1);	
 	
 	out = dup(1);
         pipe(p);
         dup2(p[1], 1);
+
         bad_return = ft_printf(s, args);
-        bad_print[read(p[0], bad_print, 1024)] = '\0';
+        bad_print[read(p[0], bad_print, 1023)] = '\0';
 	dup2(out, 1);
 
 	va_end( args );
@@ -55,6 +60,8 @@ int	main(void)
 	int nbr = 42;
 	test_printf("%p\n", &nbr);
 	
+	test_printf("%S\n", L"é");
+
 	//test_printf("%s %S %c\n", "Coucou", L"G\x82rard !", 'z');
 	test_printf("%.12d\n", 42);
 
@@ -70,7 +77,7 @@ int	main(void)
 
 	test_printf("%-10s| :)\n", "hey");
 	test_printf("%10s| :)\n", "hey");
-	//test_printf("%10s %10S %10c\n", "Coucou", L"G\x82rard !", 'z');
+	//test_printf("%10s %10S %10c\n", "Coucou", L"Gérard !", 'z');
 	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
 	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"G\x82rard !", 'z');
 	test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
@@ -85,7 +92,7 @@ int	main(void)
 	printf("%05i\n", 42);
 
 	printf("%.10s\n", "pouet");
-	printf("%05s\n", "pouet");
+	printf("%05s\n", "pouet");*/
 
 	return (0);
 }

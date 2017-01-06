@@ -39,7 +39,10 @@ int		main(void)
 
 	//ft_wputstr(L"Gérard il à manger éééààïlolo");
 	// ft_wputstr(L"Gérard il à manger ッ éééààïlolo ￥");
-	printf("𐀀");
+	//printf("𐀀");
 	//ft_putnbr(L'😼');
+	//ft_wputstr((t_unicode*)L"😼 é 𐀀 éééààïlolo par contre l'ascii marche pas");
+	//ft_printf("%S", L"😼 é 𐀀 éééààïlolo par contre l'ascii marche pas");
+	ft_printf("%");
 	return (0);
 }

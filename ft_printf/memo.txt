@@ -38,3 +38,148 @@ h => permet de dire si on parle de signed ou d'unsigned short
 ll => permet de dire si on parle long long or unsigned long long
 j => specifies the argument is a intmax_t or uintmax_t.
 z => specifies the argument is a size_t
+
+
+/**
+**  98  : b
+**  0110 0010
+**  The first bit is zero. We can send to write.
+**
+**  233 : é
+**  1110 1001
+**  Need to apply the mask : 110x xxxx 10xx xxxx
+**  0000 0011   10 1001 (= 233)
+**  110x xxxx 10xx xxxx
+**  =
+**  1100 0011 1010 1001 (= C3A9)
+**  So, send to write  (write(1, "\xc3\xa9", 2) cause hexa value is C3A9)
+**  
+**  First, save bits that would have been overwritten by the mask
+**  0000 0000 1110 1001
+**  &
+**  0000 0000 1100 0000 (C0)
+**  =
+**  0000 0000 1100 0000 (set to "tmp")
+**  233 & C0 = C0
+** 
+**  Secondly, move "tmp" two bits to the left
+**  0000 0000 1100 0000 << 2 = 0000 0011 0000 0000 (set to "tmp")
+**
+**  Thirdly, apply the positive bits of the mask
+**  0000 0011 0000 0000
+** 	|
+**  1100 0000 1000 0000 (C080)
+**  =
+**  1100 0011 1000 0000
+**  
+**  Fourthly, apply the negative bits of the mask
+**  1101 1111 1011 1111 (DFBF)
+**  &
+**  1100 0011 1000 0000
+**  =
+**  1100 0011 1010 0000
+**
+**	Fifth, save bit no overwritten by the mask (see step one)
+**  0000 0000 1110 1001
+**  &
+**  0000 0000 0011 1111 (3F)
+**  0000 0000 0010 1001
+**
+**  Finally apply bit no overwritten by the mask
+**  0000 0000 0010 1001
+**  |
+**  1100 0011 1010 0000
+**  =
+**  1100 0011 1010 1001
+**  12483 : ッ
+**  =========================================================
+**  65509 : ￥
+**
+**  0000 0000 0000 0000 1111 1111 1110 0101
+**  Need to apply the mask : 110x xxxx 10xx xxxx 10xx xxxx
+**  0000 0000 0000 1111   11 1111   10 0101
+**  0000 0000 1110 xxxx 10xx xxxx 10xx xxxx
+**  =
+**  0000 0000 1100 1111 1011 1111 1010 0101
+**  0000 0000 1100 1111 1011 1111 1010 0101
+**  0000 0000 1100 1111 1011 1111 1010 0101
+**  0000 0000 1110 1111 1011 1111 1010 0101
+**
+**
+**  Algorithm
+**  First, save bits that would have been overwritten by the mask
+**  0000 0000 0000 0000 1111 1111 1110 0101
+**  &
+**  0000 0000 0000 0000 1111 1111 1100 0000 (FFC0)
+**  =
+**  0000 0000 0000 0000 1111 1111 1100 0000
+**
+**  Secondly, move it two bits to the left
+**  0000 0000 0000 0000 1111 1111 1100 0000 << 2 = 0000 0000 0000 0011 1111 1111 0000 0000
+**
+
+0000 0000 1110 xxxx 10xx xxxx 10xx xxxx
+0000 0000 0000 0000 1111 1111 1100 0000
+&
+0000 0000 0000 0000 1111 0000 0000 0000 (F000)
+=
+0000 0000 0000 0000 1111 0000 0000 0000
+0000 0000 1110 xxxx 10xx xxxx 10xx xxxx
+
+0000 0000 0000 0000 1111 0000 0000 0000 << 4 = 0000 0000 0000 1111 0000 0000 0000 0000
+
+Purge useless
+0000 0000 1110 xxxx 10xx xxxx 10xx xxxx
+0000 0000 0000 0011 1111 1111 0000 0000
+&
+0000 0000 0000 0000 0011 1111 0000 0000 (3F00)
+=
+0000 0000 0000 0000 0011 1111 0000 0000
+
+
+Mix
+0000 0000 0000 0000 0011 1111 0000 0000
+|
+0000 0000 0000 1111 0000 0000 0000 0000 ()
+=
+0000 0000 0000 1111 0011 1111 0000 0000
+0000 0000 1110 xxxx 10xx xxxx 10xx xxxx
+
+**  
+**  Thirdly, apply the positive bits of the mask
+**  0000 0000 0000 1111 0011 1111 0000 0000
+**  |
+**  0000 0000 1110 0000 1000 0000 1000 0000 (E08080)
+**  =
+**  0000 0000 1100 1111 1011 1111 1000 0000
+**
+**  Fourthly, apply the negative bits of the mask
+**  0000 0000 1100 1111 1011 1111 1000 0000
+**  &
+**  1111 1111 1110 1111 1011 1111 1011 1111 (FFEFBFBF)
+**  =
+**  0000 0000 1100 1111 1011 1111 1000 0000
+**
+**	Fifth, save bit no overwritten by the mask (see step one)
+**  0000 0000 0000 0000 1111 1111 1110 0101
+**  &
+**  0000 0000 0001 0000 0000 0000 0011 1111 (10003F)
+**  =
+**  0000 0000 0000 0000 0000 0000 0010 0101
+**
+**  Finally apply bit no overwritten by the mask
+**  0000 0000 0000 0000 0000 0000 0010 0101
+**  |
+**  0000 0000 1100 1111 1011 1111 1000 0000
+**  =
+**  0000 0000 1100 1111 1011 1111 1010 0101
+**/
+
+void printbits(long v, size_t size) {
+  long i; // for C89 compatability
+  for(i = --size; i >= 0; i--){
+  		ft_putchar('0' + ((v >> i) & 1));
+  		if (i % 4 == 0)
+  			ft_putchar(' ');
+  	};
+}

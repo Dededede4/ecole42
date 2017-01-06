@@ -25,6 +25,8 @@
 # define SIZE_J 5
 # define SIZE_Z 6
 
+typedef int		t_unicode;
+typedef char	t_utf8;
 
 typedef struct 	s_args
 {
@@ -58,5 +60,5 @@ uintmax_t		ft_printf_getarg_nbr_unsigned(va_list args, t_args a);
 void			ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base);
 void			ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg);
 void			ft_printf_rwputstr(wchar_t *str, t_args *a);
-void			ft_wputstr(int *str);
+void			ft_wputstr(t_unicode *str);
 #endif
