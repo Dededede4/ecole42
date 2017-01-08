@@ -33,21 +33,21 @@ void	test_printf(char *s, ...)
 	dup2(out, 1);	
 	va_end( args );
 
+	va_start(args, s);
 	out = dup(1);
         pipe(p);
         dup2(p[1], 1);
         bad_return = ft_vprintf(s, args);
-        
         bad_print[read(p[0], bad_print, 1023)] = '\0';
 	dup2(out, 1);
 	va_end( args );
 	
 
-	if (strcmp(good_print, bad_print) != 0 || good_return != bad_return)
+	if (memcmp(good_print, bad_print, ft_strlen(good_print)) != 0 || good_return != bad_return)
 	{
-		ft_printf("#%i                  printf(\"%r\", ...);\n", printf_no, "s");
-		ft_printf("Real return (%i) and print \"%r\"\n", good_return, "good_print");
-		ft_printf("Your return (%i) and print \"%r\"\n", bad_return, "bad_print");
+		ft_printf("#%i                  printf(\"%r\", ...);\n", printf_no, s);
+		ft_printf("Real return (%i) and print \"%r\"\n", good_return, good_print);
+		ft_printf("Your return (%i) and print \"%r\"\n", bad_return, bad_print);
 		ft_printf("Difference is %i.\n\n", strcmp(good_print, bad_print));
 	}
 }
@@ -62,6 +62,7 @@ int	main(void)
 
 	
 	test_printf("%S\n", L"é");
+	test_printf("%S", L"ooo ❤ ☀ ☆ ☂ ☻ ♞ ☯ ☭ ☢ € dddd");
 
 	test_printf("%s %c\n", "Coucou", 'z');
 	test_printf("%.12d\n", 42);
@@ -71,16 +72,15 @@ int	main(void)
 	int nbr2 = 99;
 	test_printf("%p\n", &nbr2);
 
-	unsigned int nbr3 = 42;
-	test_printf("%b\n", nbr3);
+	//unsigned int nbr3 = 42;
+	//test_printf("%b\n", nbr3);
 
 	test_printf("%#o\n", 12);
 
 	test_printf("%-10s| :)\n", "hey");
 	test_printf("%10s| :)\n", "hey");
-	//test_printf("%10s %10S %10c\n", "Coucou", L"aaa", 'z');
-	//test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
-	//
+	test_printf("%10s %10S %10c\n", "Coucou", L"aaa", 'z');
+	test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
 	test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
 	test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
 	test_printf("%10i\n", 12);
@@ -89,12 +89,12 @@ int	main(void)
 	int s2 = -952;
 	test_printf("%d, %d", s1, s2);
 	//printf("%i");
-/*
-	printf("%.5i\n", 42);
-	printf("%05i\n", 42);
 
-	printf("%.10s\n", "pouet");
-	printf("%05s\n", "pouet");*/
+	test_printf("%.5i\n", 42);
+	test_printf("%05i\n", 42);
+
+	test_printf("%.10s\n", "pouet");
+	test_printf("%05s\n", "pouet");
 
 	return (0);
 }

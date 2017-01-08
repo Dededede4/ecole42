@@ -111,7 +111,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 			if (!s)
 				return (0);
 			ft_printf_rwputstr(s, &a);
-			//free(s);
+			free(s);
 		}
 	}
 	else if (a.type == 'd' || a.type == 'i')

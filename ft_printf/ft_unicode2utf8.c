@@ -29,6 +29,15 @@ size_t		ft_strsize(t_unicode *str)
 	return (size);
 }
 
+void printbits2(long v, size_t size) {
+  long i; // for C89 compatability
+  for(i = --size; i >= 0; i--){
+                ft_putchar('0' + ((v >> i) & 1));
+                if (i % 4 == 0)
+                        ft_putchar(' ');
+        };
+}
+
 
 t_utf8		*ft_unicode2utf8(t_unicode *i_str, size_t *size)
 {
@@ -65,11 +74,13 @@ t_utf8		*ft_unicode2utf8(t_unicode *i_str, size_t *size)
 			save = save << 2;
 			toWrite = toWrite << 8;
 		}
+
+		/*printbits2(nbr, 32);
+		ft_putchar('\n');*/
 		chars = ft_charsize(i_str[i]);
 		(*size) += chars;
 		while (chars--)
-			c_str[(*size) - chars] = (t_utf8)(nbr >> (8 * chars));
-		(*size)++;
+			c_str[(*size) - chars - 1] = (t_utf8)(nbr >> (8 * (chars)));
 		i++;		
 	}
 	return c_str;

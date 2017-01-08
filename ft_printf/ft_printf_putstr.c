@@ -63,10 +63,10 @@ void	ft_rwwrite(int fd, wchar_t *str, size_t len)
 		write(fd, str, (finded - str) * 4);
 		if (*finded == L'\n')
 		{
-			write(fd, L"\\n", 8);
+			write(fd, "\\n", 2);
 		}
 		else
-			write(fd, finded, 4);
+			write(fd, finded, 1);
 		ft_rwwrite(fd, finded + 1, len - 1 - ((finded - str)));
 	}
 }

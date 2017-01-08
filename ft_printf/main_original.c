@@ -11,38 +11,24 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <locale.h>
+#include <unistd.h>
+
 #include "ft_printf.h"
 
-#include <locale.h>
 
-void printbits(int v);
-
-void	test2(char *s, ...)
-{
-	va_list args;
-	va_start(args, s);
-	char nbr = va_arg(args, int);
-	ft_putnbr((int)nbr); // Affiche -32 (pas normal)
-	ft_putchar('\n');
-	(void)nbr;	
-	va_end(args);
-}
-
-void	test1(char *s, ...)
-{
-	va_list args;
-	va_start(args, s);
-	test2(s, args);
-	va_end(args);
-
-	char nbr = va_arg(args, int);
-	ft_putnbr((int)nbr); // Affiche 97 (normal)
-	va_end(args);
+void printbits(long v, size_t size) {
+  long i; // for C89 compatability
+  for(i = --size; i >= 0; i--){
+  		ft_putchar('0' + ((v >> i) & 1));
+  		if (i % 4 == 0)
+  			ft_putchar(' ');
+  	};
 }
 
 int		main(void)
 {
-	test1("useless", 'a');
+    ft_wputstr((t_unicode*)L"ooo ❤ ☀ ☆ ☂ ☻ ♞ ☯ ☭ ☢ € dddd");
 	return (0);
 }
 
