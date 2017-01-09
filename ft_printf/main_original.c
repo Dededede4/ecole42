@@ -28,7 +28,7 @@ void printbits(long v, size_t size) {
 
 int		main(void)
 {
-    ft_wputstr((t_unicode*)L"ooo ❤ ☀ ☆ ☂ ☻ ♞ ☯ ☭ ☢ € dddd");
+	printbits((unsigned int)-1, 32);
 	return (0);
 }
 
