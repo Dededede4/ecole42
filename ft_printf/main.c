@@ -143,7 +143,22 @@ int	main(void)
 
 	// pour s
 	test_printf("%.10s\n", "pouet");
-	
+
+
+	// les tests qui foirent
+	test_printf("%-10x", 42);
+	test_printf("%-15x", 542);
+	test_printf("%c", 0);
+	test_printf("%C", 0);
+	test_printf("%hhC, %hhC", 0, L'米');
+	test_printf("{%-10d}", 42);
+	test_printf("{%-15Z}", 123);
+	test_printf("%#o", 0);
+	test_printf("%+c", 0);
+	test_printf("% u", 9999);
+	test_printf("%.c", 0);
+	test_printf(NULL);
+
 	// Errors cases
 
 	test_printf("%C", -1); // Alway return -1 now.
