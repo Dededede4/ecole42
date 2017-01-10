@@ -28,6 +28,7 @@ void	test_printf(char *s, ...)
 	dup2(p[1], 1);
 	good_return = vprintf(s, args);
 	fflush(stdout);
+	write(1, "\0", 1);
 	t = read(p[0], good_print, 1023);
 	good_print[t] = '\0';
 	dup2(out, 1);	
@@ -38,6 +39,8 @@ void	test_printf(char *s, ...)
         pipe(p);
         dup2(p[1], 1);
         bad_return = ft_vprintf(s, args);
+		fflush(stdout);
+		write(1, "\0", 1);
         bad_print[read(p[0], bad_print, 1023)] = '\0';
 	dup2(out, 1);
 	va_end( args );
@@ -58,7 +61,7 @@ int	main(void)
 	test_printf("hello tests");
 	test_printf("test test test 		test lol");
 	test_printf("\n");
-	//test_printf("");
+	test_printf("");
 
 	// Vous devez gérer les conversions suivantes : sSpdDioOuUxXcC
 	//test_printf("%C", L'a');
