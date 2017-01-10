@@ -44,38 +44,25 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a)
 			ft_putchar(' ');
 }
 
-int		ft_printf_not_printable(void *s)
+
+void	ft_rwwrite(t_unicode *str)
 {
-	wchar_t c;
+	size_t			i;
+	t_unicode		old;
 
-	c = *((wchar_t*)s);
-	if (c == L'\n')
-	{
-		return (1);
-	}
-	return (0);
-}
-
-void	ft_rwwrite(int fd, wchar_t *str, size_t len)
-{
-	wchar_t		*finded;
-
+	i = 0;
 	if (*str == L'\0')
 		return;
-	finded = ft_memchrf(str, ft_printf_not_printable, len * 4);
-	if (finded == NULL)
-	{
-		ft_wputstr(str);
-	}
-	else
-	{
-		write(fd, str, (finded - str));
-		if (*finded == L'\n')
-		{
-			write(fd, "\\n", 2);
-		}
-		ft_rwwrite(fd, finded + 1, len - 1 - ((finded - str)));
-	}
+	while (str[i] && str[i] != L'\n')
+		i++;
+	old = str[i];
+	str[i] = 0;
+	ft_wputstr(str);
+	str[i] = old;
+	if (str[i] == L'\n')
+		write(1, "\\n", 2);
+	else if (str[i] != L'\0')
+		ft_rwwrite(str + i + 1);
 }
 
 void	ft_printf_rwputstr(wchar_t *str, t_args *a)
@@ -98,7 +85,7 @@ void	ft_printf_rwputstr(wchar_t *str, t_args *a)
 	if (a->width != -1 && a->minus == -1)
 		while (spaces--)
 			ft_putchar(' ');
-	ft_rwwrite(1, str, len);
+	ft_rwwrite(str);
 	if (a->width != -1 && a->minus != -1)
 		while (spaces--)
 			ft_putchar(' ');
