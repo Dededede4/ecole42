@@ -1,3 +1,9 @@
+Mes bonus :
+%b
+%r
+ft_vprintf
+
+
 s = ft_putstr
 S = synonime de ls
 p = print en hexa

@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 07:48:08 by mprevot           #+#    #+#             */
-/*   Updated: 2017/01/04 12:01:51 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/01/10 13:35:22 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "ft_printf.h"
 
 
-void printbits(long v, size_t size) {
+void printbits21(long v, size_t size) {
   long i; // for C89 compatability
   for(i = --size; i >= 0; i--){
   		ft_putchar('0' + ((v >> i) & 1));
@@ -28,7 +28,7 @@ void printbits(long v, size_t size) {
 
 int		main(void)
 {
-	printbits((unsigned int)-1, 32);
+	ft_printf("%C", L'a');
 	return (0);
 }
 

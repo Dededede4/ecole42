@@ -53,13 +53,22 @@ wchar_t		*ft_wstrdup(const char *str, size_t len)
 	return r;
 }
 
+void printbits(long v, size_t size) {
+  long i; // for C89 compatability
+  for(i = --size; i >= 0; i--){
+  		ft_putchar('0' + ((v >> i) & 1));
+  		if (i % 4 == 0)
+  			ft_putchar(' ');
+  	};
+}
+
 int	ft_recursive_printf(const char *str, va_list ap)
 {
 	int		i;
 	char	*tmp;
 	intmax_t 	n;
 	wchar_t	*s;
-	char	c;
+	int	c;
 	t_args	a;
 	int 	printed;
 
@@ -130,7 +139,14 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	else if (a.type == 'c')
 	{
 		c = va_arg(ap, int);
-		s = ft_wstrdup(&c, 1);
+		if (a.lenght != SIZE_L)
+			s = ft_wstrdup((char*)(&c), 1);
+		else
+		{
+			s = (int *)ft_memalloc(sizeof(int) * 2);
+			*s = c;
+
+		}
 		if (!s)
 			return (0);
 		ft_printf_wputstr(s, &a);
@@ -139,7 +155,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	else if (a.type == '%')
 	{
 		c = '%';
-		s = ft_wstrdup(&c, 1);
+		s = ft_wstrdup((char*)(&c), 1);
 		if (!s)
 			return (0);
 		ft_printf_wputstr(s, &a);

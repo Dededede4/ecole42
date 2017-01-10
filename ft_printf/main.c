@@ -64,9 +64,11 @@ int	main(void)
 	test_printf("");
 
 	// Vous devez gérer les conversions suivantes : sSpdDioOuUxXcC
+	test_printf("%c wooow", 'z');
 	test_printf("%C", L'a');
-	test_printf("%C", L'𐀀');
+	test_printf("%C xDD", L'𐀀');
 
+	test_printf("%i", 0);
 	test_printf("%d, %d", 245, -952);
 
 	test_printf("%S\n", L"éaaa\n");
