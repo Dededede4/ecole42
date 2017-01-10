@@ -64,8 +64,8 @@ int	main(void)
 	test_printf("");
 
 	// Vous devez gérer les conversions suivantes : sSpdDioOuUxXcC
-	//test_printf("%C", L'a');
-	//test_printf("%C", L'𐀀');
+	test_printf("%C", L'a');
+	test_printf("%C", L'𐀀');
 
 	test_printf("%d, %d", 245, -952);
 
@@ -74,7 +74,7 @@ int	main(void)
 
 	int nbr = 42;
 	test_printf("%p\n", &nbr);
-	//test_printf("%S\n", L"é");
+	test_printf("%S\n", L"é");
 	test_printf("%S", L"ooo ❤ ☀ ☆ ☂ ☻ ♞ ☯ ☭ ☢ € dddd");
 	test_printf("%s %c\n", "Coucou", 'z');
 
@@ -82,7 +82,7 @@ int	main(void)
 	test_printf("666%p\n", &nbr2);
 
 	// Vous devez gérer le %%
-	//test_printf("%");
+	test_printf("%");
 	test_printf("%%");
 	test_printf("%%%%%%%%");
 	test_printf("%%aa%%cc%%000%%");
