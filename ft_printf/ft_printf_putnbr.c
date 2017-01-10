@@ -46,13 +46,19 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 			ft_putchar('0');
 			a->tmp++;
 			if (base == 16)
+			{
 				ft_putchar('x');
+				a->tmp++;
+			}
 		}
 		if (a->precision != -1)
 		{
 			n = a->precision - a->tmp;
 			while(n--)
+			{
 				write(1, "0", 1);
+				a->tmp++;
+			}
 		}
 		return;
 	}
@@ -129,7 +135,10 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 		{
 			n = a->precision - a->tmp;
 			while(n--)
+			{
 				write(1, "0", 1);
+				a->tmp++;
+			}
 		}
 		return;
 	}

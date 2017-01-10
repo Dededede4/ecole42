@@ -84,6 +84,7 @@ int	main(void)
 	
 	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
 	int nbr = 42;
+	test_printf("%p", &nbr);
 	test_printf("ooo %p\n", &nbr);
 	test_printf("%S\n", L"é");
 	test_printf("%S", L"ooo ❤ ☀ ☆ ☂ ☻ ♞ ☯ ☭ ☢ € dddd");
