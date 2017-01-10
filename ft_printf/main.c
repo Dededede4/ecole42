@@ -102,6 +102,10 @@ int	main(void)
 
 	// Vous devez gérer les flags #0-+ et espace
 	// Pour s
+	test_printf("%-10S", L"");
+	test_printf("%-10S", L"blabla");
+	test_printf("%-10S", L"blablablab");
+	test_printf("%-10S", L"blablablabauieauieauieau");
 	test_printf("%-10s| :)\n", "hey");
 	test_printf("%10s| :)\n", "hey");
 	test_printf("%10s %10S %10c\n", "Coucou", L"aaa", 'z');

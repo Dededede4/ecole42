@@ -27,16 +27,15 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a)
 	else
 		while (str[len] && len < (size_t)a->precision)
 			len++;
-	spaces = a->width - len;
-	if (a->width != -1)
-		a->tmp = a->width;
-	else
-		a->tmp = len;
+	spaces = (a->width > (int)len) ? a->width - len : 0;
+	a->tmp = len;
 	if (a->width != -1 && a->minus == -1)
 		while (spaces--)
 			ft_putchar(' ');
 	size = ft_wputstr(str) - a->tmp;
 	a->tmp += size;
+	if (a->width != -1 && spaces > 0)
+		a->tmp = a->width;
 	if (size == -1)
 		a->err = 1;
 	if (a->width != -1 && a->minus != -1)
