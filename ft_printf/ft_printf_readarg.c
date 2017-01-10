@@ -103,6 +103,7 @@ t_args	ft_printf_readarg(const char *str)
 	a.type = -1;
 	a.tmp = -1;
 	a.width = -1;
+	a.err = -1;
 	i += ft_printf_flags(str + i, &a);
 	i += ft_printf_width(str + i, &a);
 	i += ft_printf_precision(str + i, &a);

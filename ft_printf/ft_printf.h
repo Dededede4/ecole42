@@ -41,6 +41,7 @@ typedef struct 	s_args
 	char		type;
 	int			nbr;
 	int			tmp;
+	int 		err;
 	
 }				t_args;
 

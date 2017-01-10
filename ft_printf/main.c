@@ -58,6 +58,7 @@ void	test_printf(char *s, ...)
 int	main(void)
 {
 	// Basic usage
+	
 	test_printf("hello tests");
 	test_printf("test test test 		test lol");
 	test_printf("\n");
@@ -75,9 +76,13 @@ int	main(void)
 	test_printf("miaouu%S", L"😼");
 	test_printf("%S", L"miaou😼");
 	test_printf("%S\n", L"éaaa\n");
-	test_printf("dur %C dur", 2147483647);
-	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
+	
 
+	test_printf("Unicode comprises %C entries in the range", 1114111);
+	
+
+	
+	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
 	int nbr = 42;
 	test_printf("%p\n", &nbr);
 	test_printf("%S\n", L"é");
@@ -132,14 +137,16 @@ int	main(void)
 	// pour s
 	test_printf("%.10s\n", "pouet");
 	
+	// Errors cases
 
+	test_printf("%C", -1); // Alway return -1 now.
+	test_printf("Unicode comprises %C code points in the range", 1114112);
+	test_printf("0dur %C dur", 2147483646);
+	test_printf("dur %C dur", 2147483647);
+	test_printf("max +1 utf8 4-bytes is %C", 1114111 + 1);
+	test_printf("Unicode values %C because is signed", -1);
+	test_printf("Invalides str %C through %C", 55296, 57343);
 	
-
-	
-
-	/*unsigned int unicode = L'a';*/
-	/*while (unicode < (unsigned int)-1)
-		test_printf("%C", unicode++);*/
 
 	/*int *strunicode = L"a";
 	while (unicode < (unsigned int)-1)

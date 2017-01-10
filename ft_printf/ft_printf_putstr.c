@@ -1,10 +1,13 @@
 #include "ft_printf.h"
 
-size_t	ft_wputstr(t_unicode *str)
+int			ft_wputstr(t_unicode *str)
 {
 	size_t	size;
+	char	*output;
 
-	char *output = (char *)ft_unicode2utf8(str, &size);
+	output = (char *)ft_unicode2utf8(str, &size);
+	if (output == NULL)
+		return -1;
 	write(1, output, size);
 	free(output);
 	return size;
@@ -14,6 +17,8 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a)
 {
 	size_t	spaces;
 	size_t len;
+	int		size;
+
 
 	len = 0;
 	if (a->precision == -1)
@@ -30,7 +35,10 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a)
 	if (a->width != -1 && a->minus == -1)
 		while (spaces--)
 			ft_putchar(' ');
-	a->tmp += ft_wputstr(str) - a->tmp;
+	size = ft_wputstr(str) - a->tmp;
+	a->tmp += size;
+	if (size == -1)
+		a->err = 1;
 	if (a->width != -1 && a->minus != -1)
 		while (spaces--)
 			ft_putchar(' ');

@@ -71,13 +71,15 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	int	c;
 	t_args	a;
 	int 	printed;
+	static int 		old_return = 0;
+	int 			new_return;
 
 	i = 0;
 	tmp = ft_strchr(str, '%');
 	if (tmp == NULL)
 	{
 		ft_putstr(str);
-		return (ft_strlen(str));
+		return (old_return == -1 ? -1 : ft_strlen(str));
 	}
 	i = tmp - str;
 	write(1, str, i);
@@ -95,7 +97,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 			tmp = va_arg(ap, char *);
 			s = ft_wstrdup(tmp, ft_strlen(tmp));
 			if (!s)
-				return (0);
+				return (-1);
 			ft_printf_wputstr(s, &a);
 			free(s);
 		}
@@ -118,7 +120,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 			tmp = va_arg(ap, char *);
 			s = ft_wstrdup(tmp, ft_strlen(tmp));
 			if (!s)
-				return (0);
+				return (-1);
 			ft_printf_rwputstr(s, &a);
 			free(s);
 		}
@@ -148,7 +150,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 
 		}
 		if (!s)
-			return (0);
+			return (-1);
 		ft_printf_wputstr(s, &a);
 		free(s);
 	}
@@ -157,13 +159,19 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		c = '%';
 		s = ft_wstrdup((char*)(&c), 1);
 		if (!s)
-			return (0);
+			return (-1);
 		ft_printf_wputstr(s, &a);
 		free(s);
 	}
 	printed = i + a.tmp;
 	i += a.nbr;
-	return ft_recursive_printf(str + i, ap) + printed;
+	if (a.err == 1)
+		old_return = -1;
+	new_return = ft_recursive_printf(str + i, ap) + printed;
+	if (old_return == -1)
+		return -1;
+	old_return = new_return;
+	return new_return;
 }
 
 int	ft_printf(const char *format, ...)

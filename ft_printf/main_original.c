@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 07:48:08 by mprevot           #+#    #+#             */
-/*   Updated: 2017/01/10 13:35:22 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/01/10 16:34:24 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,25 @@ void printbits21(long v, size_t size) {
   	};
 }
 
+void	test_printf(char *s, ...)
+{
+	setlocale(LC_ALL, "");
+	va_list args;
+	va_start(args, s);
+
+	ft_putnbr(vprintf(s, args));
+
+
+	va_end( args );
+
+}
+
 int		main(void)
 {
-	ft_printf("%C", L'a');
+	//int a = -1;
+	//printf("%C\n", a);
+
+	test_printf("%C\n", 'a');
 	return (0);
 }
 
