@@ -54,20 +54,18 @@ void	ft_rwwrite(int fd, wchar_t *str, size_t len)
 
 	if (*str == L'\0')
 		return;
-	finded = ft_memchrf(str, ft_printf_not_printable, len * 4);
+	finded = ft_memchrf(str, ft_printf_not_printable, len);
 	if (finded == NULL)
 	{
-		write(fd, str, len * sizeof(wchar_t));
+		ft_wputstr(str);
 	}
 	else
 	{
-		write(fd, str, (finded - str) * 4);
+		write(fd, str, (finded - str));
 		if (*finded == L'\n')
 		{
 			write(fd, "\\n", 2);
 		}
-		else
-			write(fd, finded, 1);
 		ft_rwwrite(fd, finded + 1, len - 1 - ((finded - str)));
 	}
 }
