@@ -98,7 +98,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 	int 		spaces;
 
 	a->tmp++;
-	if (nbr == 0)
+	if (nbr == 0 && a->tmp != 0)
 	{
 
 		if (a->plus != -1 && !neg)

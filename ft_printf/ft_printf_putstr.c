@@ -10,7 +10,7 @@ size_t	ft_wputstr(t_unicode *str)
 	return size;
 }
 
-void	ft_printf_wputstr(wchar_t *str, t_args *a)
+void	ft_printf_wputstr(t_unicode *str, t_args *a)
 {
 	size_t	spaces;
 	size_t len;
@@ -22,7 +22,6 @@ void	ft_printf_wputstr(wchar_t *str, t_args *a)
 	else
 		while (str[len] && len < (size_t)a->precision)
 			len++;
-	a->tmp = len;
 	spaces = a->width - len;
 	if (a->width != -1)
 		a->tmp = a->width;
@@ -31,7 +30,7 @@ void	ft_printf_wputstr(wchar_t *str, t_args *a)
 	if (a->width != -1 && a->minus == -1)
 		while (spaces--)
 			ft_putchar(' ');
-	a->tmp += ft_wputstr(str) - 1;
+	a->tmp += ft_wputstr(str) - a->tmp;
 	if (a->width != -1 && a->minus != -1)
 		while (spaces--)
 			ft_putchar(' ');

@@ -71,7 +71,11 @@ int	main(void)
 	test_printf("%i", 0);
 	test_printf("%d, %d", 245, -952);
 
+	test_printf("%S", L"😼");
+	test_printf("miaouu%S", L"😼");
+	test_printf("%S", L"miaou😼");
 	test_printf("%S\n", L"éaaa\n");
+	test_printf("dur %C dur", 2147483647);
 	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
 
 	int nbr = 42;
