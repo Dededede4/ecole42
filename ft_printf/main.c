@@ -121,6 +121,8 @@ int	main(void)
 	// Vous devez gérer la taille minimum du champ
 	// pour i
 	test_printf("%10i\n", 12);
+	test_printf("%10u\n", 12);
+	test_printf("%010u\n", 12);
 
 	//pour s
 	test_printf("%05s\n", "pouet");

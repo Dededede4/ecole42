@@ -27,6 +27,7 @@ uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
 void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 {
 	uintmax_t	n;
+	int			spaces;
 
 	a->tmp++;
 	if (nbr == 0 && a->tmp != 0)
@@ -48,6 +49,15 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 			if (base == 16)
 			{
 				ft_putchar('x');
+				a->tmp++;
+			}
+		}
+		if (a->width != -1)
+		{
+			spaces = a->width - a->tmp;
+			while (spaces--)
+			{
+				ft_putchar((a->zero != -1) ? '0' : ' ');
 				a->tmp++;
 			}
 		}
@@ -127,7 +137,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 			spaces = a->width - a->tmp;
 			while (spaces--)
 			{
-				ft_putchar(' ');
+				ft_putchar((a->zero != -1) ? '0' : ' ');
 				a->tmp++;
 			}
 		}
