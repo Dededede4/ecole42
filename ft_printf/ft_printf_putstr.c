@@ -62,7 +62,7 @@ void	ft_rwwrite(int fd, wchar_t *str, size_t len)
 
 	if (*str == L'\0')
 		return;
-	finded = ft_memchrf(str, ft_printf_not_printable, len);
+	finded = ft_memchrf(str, ft_printf_not_printable, len * 4);
 	if (finded == NULL)
 	{
 		ft_wputstr(str);
