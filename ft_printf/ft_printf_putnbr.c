@@ -82,7 +82,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	if (a->width != -1 && a->minus == -1)
 	{
 		spaces = a->width - a->tmp;
-		while (spaces--)
+		while (spaces-- > 0)
 		{
 			ft_putchar((a->zero != -1) ? '0' : ' ');
 			a->tmp++;
@@ -91,7 +91,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	if (a->precision != -1)
 	{
 		n = a->precision - a->tmp;
-		while(n--)
+		while(n-- > 0)
 		{
 			write(1, "0", 1);
 			a->tmp++;
@@ -104,7 +104,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	if (a->width != -1 && a->minus != -1)
 	{
 		spaces = a->width - a->tmp;
-		while (spaces--)
+		while (spaces-- > 0)
 		{
 			ft_putchar((a->zero != -1) ? '0' : ' ');
 			a->tmp++;
@@ -161,7 +161,7 @@ void	ft_printf_putnbr_signed_recursive(intmax_t nbr, t_args *a, char base, int n
 		if (a->width != -1 && a->minus == -1)
 		{
 			spaces = a->width - a->tmp;
-			while (spaces--)
+			while (spaces-- > 0)
 			{
 				ft_putchar((a->zero != -1) ? '0' : ' ');
 				a->tmp++;
@@ -170,7 +170,7 @@ void	ft_printf_putnbr_signed_recursive(intmax_t nbr, t_args *a, char base, int n
 		if (a->precision != -1)
 		{
 			n = a->precision - a->tmp;
-			while(n--)
+			while(n-- > 0)
 			{
 				write(1, "0", 1);
 				a->tmp++;
@@ -201,7 +201,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 	if (a->width != -1 && a->minus != -1)
 	{
 		spaces = a->width - a->tmp;
-		while (spaces--)
+		while (spaces-- > 0)
 		{
 			ft_putchar((a->zero != -1) ? '0' : ' ');
 			a->tmp++;

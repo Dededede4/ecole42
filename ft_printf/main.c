@@ -8,7 +8,7 @@ void	test_printf(char *s, ...)
 	static int printf_no = 0;
 	setlocale(LC_ALL, "");
 	printf_no++;
-	ft_printf("#%zu                  printf(\"%r\", ...);\n", printf_no, s);
+	ft_printf("#%zu                  printf(\"%r\", ...);\n", printf_no, (s == NULL) ? "(NULL)" : s);
 	va_list args;
 	va_start(args, s);
 
@@ -157,8 +157,11 @@ int	main(void)
 	test_printf("%+c", 0);
 	test_printf("% u", 9999);
 	test_printf("%.c", 0);
-	test_printf(NULL);
+	//test_printf(NULL);
 	test_printf("%#.4o\n", 4);
+	test_printf("%.4d", 42);
+	test_printf("%.4d", 424242);
+
 	// Errors cases
 
 	test_printf("%C", -1); // Alway return -1 now.

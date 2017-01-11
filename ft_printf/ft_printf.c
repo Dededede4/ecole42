@@ -75,6 +75,10 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	int 			new_return;
 
 	i = 0;
+	if (str == NULL)
+	{
+		return (-1);
+	}
 	tmp = ft_strchr(str, '%');
 	if (tmp == NULL)
 	{
