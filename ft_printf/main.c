@@ -151,6 +151,7 @@ int	main(void)
 	test_printf("%C", 0);
 	test_printf("%hhC, %hhC", 0, L'米');
 	test_printf("{%-10d}", 42);
+	test_printf("{%Z}", 123);
 	test_printf("{%-15Z}", 123);
 	test_printf("%#o", 0);
 	test_printf("%+c", 0);

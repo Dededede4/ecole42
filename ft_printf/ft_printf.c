@@ -165,19 +165,22 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	}
 	else
 	{
-		c = a.type;
-		if (a.lenght != SIZE_L)
-			s = ft_wstrdup((char*)(&c), 1);
-		else
+		if (str[i + 1] != '%')
 		{
-			s = (int *)ft_memalloc(sizeof(int) * 2);
-			*s = c;
+			c = a.type;
+			if (a.lenght != SIZE_L)
+				s = ft_wstrdup((char*)(&c), 1);
+			else
+			{
+				s = (int *)ft_memalloc(sizeof(int) * 2);
+				*s = c;
 
+			}
+			if (!s)
+				return (-1);
+			ft_printf_wputstr(s, &a);
+			free(s);
 		}
-		if (!s)
-			return (-1);
-		ft_printf_wputstr(s, &a);
-		free(s);
 	}
 	printed = i + a.tmp;
 	i += a.nbr;
