@@ -24,7 +24,7 @@ uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
+void	ft_printf_putnbr_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
 {
 	uintmax_t	n;
 	int			spaces;
@@ -52,7 +52,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 				a->tmp++;
 			}
 		}
-		if (a->width != -1)
+		if (a->width != -1 && a->minus == -1)
 		{
 			spaces = a->width - a->tmp;
 			while (spaces--)
@@ -72,7 +72,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		}
 		return;
 	}
-	ft_printf_putnbr_unsigned(nbr / base, a, base);
+	ft_printf_putnbr_unsigned_recursive(nbr / base, a, base);
 	n = nbr % base;
 	if (n <= 9)
 		ft_putchar('0' + n);
@@ -85,6 +85,25 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}
 }
 
+void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
+{
+	int spaces;
+
+	ft_printf_putnbr_unsigned_recursive(nbr, a, base);
+	if (a->width != -1 && a->minus != -1)
+	{
+		/*ft_putnbr(a->width);
+		ft_putchar('\n');
+		ft_putnbr(a->tmp);
+		ft_putchar('\n');*/
+		spaces = a->width - a->tmp;
+		while (spaces--)
+		{
+			ft_putchar((a->zero != -1) ? '0' : ' ');
+			a->tmp++;
+		}
+	}
+}
 
 intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
 {

@@ -8,7 +8,7 @@ void	test_printf(char *s, ...)
 	static int printf_no = 0;
 	setlocale(LC_ALL, "");
 	printf_no++;
-	ft_printf("go");
+	ft_printf("#%zu                  printf(\"%r\", ...);\n", printf_no, s);
 	va_list args;
 	va_start(args, s);
 
@@ -48,7 +48,6 @@ void	test_printf(char *s, ...)
 
 	if (memcmp(good_print, bad_print, ft_strlen(good_print)) != 0 || good_return != bad_return)
 	{
-		ft_printf("#%zu                  printf(\"%r\", ...);\n", printf_no, s);
 		ft_printf("Real return (%i) and print \"%r\"\n", good_return, good_print);
 		ft_printf("Your return (%i) and print \"%r\"\n", bad_return, bad_print);
 		ft_printf("Difference is %i.\n\n", strcmp(good_print, bad_print));
@@ -158,7 +157,7 @@ int	main(void)
 	test_printf("% u", 9999);
 	test_printf("%.c", 0);
 	test_printf(NULL);
-
+	test_printf("%#.4o\n", 4);
 	// Errors cases
 
 	test_printf("%C", -1); // Alway return -1 now.
@@ -168,6 +167,8 @@ int	main(void)
 	test_printf("max +1 utf8 4-bytes is %C", 1114111 + 1);
 	test_printf("Unicode values %C because is signed", -1);
 	test_printf("Invalides str %C through %C", 55296, 57343);
+
+
 	
 
 	/*int *strunicode = L"a";
