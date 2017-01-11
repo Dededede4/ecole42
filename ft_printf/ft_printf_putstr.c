@@ -41,6 +41,7 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a)
 	if (a->width != -1 && a->minus != -1)
 		while (spaces--)
 			ft_putchar(' ');
+	a->tmp = (a->tmp == 0) ? 1 : a->tmp;
 }
 
 
