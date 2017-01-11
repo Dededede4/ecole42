@@ -48,8 +48,8 @@ void	test_printf(char *s, ...)
 
 	if (memcmp(good_print, bad_print, ft_strlen(good_print)) != 0 || good_return != bad_return)
 	{
-		ft_printf("Real return (%i) and print \"%r\"\n", good_return, good_print);
-		ft_printf("Your return (%i) and print \"%r\"\n", bad_return, bad_print);
+		ft_printf("Real return (%2i) and print \"%r\"\n", good_return, good_print);
+		ft_printf("Your return (%2i) and print \"%r\"\n", bad_return, bad_print);
 		ft_printf("Difference is %i.\n\n", strcmp(good_print, bad_print));
 	}
 }
