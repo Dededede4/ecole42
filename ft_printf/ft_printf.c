@@ -138,6 +138,15 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
 	else if (a.type == 'X')
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
+	else if (a.type == '%')
+	{
+		c = '%';
+		s = ft_wstrdup((char*)(&c), 1);
+		if (!s)
+			return (-1);
+		ft_printf_wputstr(s, &a);
+		free(s);
+	}
 	else if (a.type == 'c')
 	{
 		c = va_arg(ap, int);
@@ -154,10 +163,17 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		ft_printf_wputstr(s, &a);
 		free(s);
 	}
-	else if (a.type == '%')
+	else
 	{
-		c = '%';
-		s = ft_wstrdup((char*)(&c), 1);
+		c = a.type;
+		if (a.lenght != SIZE_L)
+			s = ft_wstrdup((char*)(&c), 1);
+		else
+		{
+			s = (int *)ft_memalloc(sizeof(int) * 2);
+			*s = c;
+
+		}
 		if (!s)
 			return (-1);
 		ft_printf_wputstr(s, &a);
