@@ -24,54 +24,21 @@ uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
 	return (nbr);
 }
 
+void	ft_printf_nbrlen_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
+{
+	a->tmp++;
+	if (nbr == 0 && a->tmp != 0)
+		return;
+	ft_printf_nbrlen_unsigned_recursive(nbr / base, a, base);
+}
+
 void	ft_printf_putnbr_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
 {
 	uintmax_t	n;
-	int			spaces;
 
 	a->tmp++;
 	if (nbr == 0 && a->tmp != 0)
-	{
-		if (a->plus != -1)
-		{
-			ft_putchar('+');
-			a->tmp++;
-		}
-		else if (a->space != -1)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
-		if(a->hash != -1)
-		{
-			ft_putchar('0');
-			a->tmp++;
-			if (base == 16)
-			{
-				ft_putchar('x');
-				a->tmp++;
-			}
-		}
-		if (a->width != -1 && a->minus == -1)
-		{
-			spaces = a->width - a->tmp;
-			while (spaces--)
-			{
-				ft_putchar((a->zero != -1) ? '0' : ' ');
-				a->tmp++;
-			}
-		}
-		if (a->precision != -1)
-		{
-			n = a->precision - a->tmp;
-			while(n--)
-			{
-				write(1, "0", 1);
-				a->tmp++;
-			}
-		}
 		return;
-	}
 	ft_printf_putnbr_unsigned_recursive(nbr / base, a, base);
 	n = nbr % base;
 	if (n <= 9)
@@ -87,9 +54,53 @@ void	ft_printf_putnbr_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
 
 void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 {
-	int spaces;
+	int 		spaces;
+	int			save;
+	uintmax_t	n;
 
+	ft_printf_nbrlen_unsigned_recursive(nbr, a, base);
+	if (a->plus != -1)
+	{
+		ft_putchar('+');
+		a->tmp++;
+	}
+	/*else if (a->space != -1)
+	{
+		ft_putchar(' ');
+		a->tmp++;
+	}*/
+	if(a->hash != -1 && nbr != 0)
+	{
+		ft_putchar('0');
+		a->tmp++;
+		if (base == 16)
+		{
+			ft_putchar('x');
+			a->tmp++;
+		}
+	}
+	if (a->width != -1 && a->minus == -1)
+	{
+		spaces = a->width - a->tmp;
+		while (spaces--)
+		{
+			ft_putchar((a->zero != -1) ? '0' : ' ');
+			a->tmp++;
+		}
+	}
+	if (a->precision != -1)
+	{
+		n = a->precision - a->tmp;
+		while(n--)
+		{
+			write(1, "0", 1);
+			a->tmp++;
+		}
+	}
+	save = a->tmp;
+	a->tmp = -1;
 	ft_printf_putnbr_unsigned_recursive(nbr, a, base);
+	a->tmp = save;
 	if (a->width != -1 && a->minus != -1)
 	{
 		spaces = a->width - a->tmp;

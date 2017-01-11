@@ -165,7 +165,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	}
 	else
 	{
-		if (str[i + 1] != '%')
+		if (a.type != '\0')
 		{
 			c = a.type;
 			if (a.lenght != SIZE_L)
