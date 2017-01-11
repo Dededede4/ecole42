@@ -90,8 +90,8 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}
 	if (a->precision != -1)
 	{
-		n = a->precision - a->tmp;
-		while(n-- > 0)
+		n = (a->precision > a->tmp) ? a->precision - a->tmp : 0;
+		while(n--)
 		{
 			write(1, "0", 1);
 			a->tmp++;

@@ -77,7 +77,7 @@ void	ft_printf_rwputstr(wchar_t *str, t_args *a)
 	else
 		while (str[len] && len < (size_t)a->precision)
 			len++;
-	spaces = a->width - len;
+	spaces = (a->width > (int)len) ? a->width - len : 0;
 	if (a->width != -1)
 		a->tmp = a->width;
 	else
