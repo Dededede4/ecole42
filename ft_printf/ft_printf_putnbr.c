@@ -69,7 +69,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		ft_putchar(' ');
 		a->tmp++;
 	}*/
-	if(a->hash != -1 && nbr != 0)
+	if(a->hash != -1)
 	{
 		ft_putchar('0');
 		a->tmp++;

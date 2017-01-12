@@ -46,7 +46,7 @@ void	test_printf(char *s, ...)
 	va_end( args );
 	
 
-	if (memcmp(good_print, bad_print, ft_strlen(good_print)) != 0 || good_return != bad_return)
+	if (strcmp(good_print, bad_print) != 0 || good_return != bad_return)
 	{
 		ft_printf("Real return (%2i) and print \"%r\"\n", good_return, good_print);
 		ft_printf("Your return (%2i) and print \"%r\"\n", bad_return, bad_print);
@@ -172,6 +172,7 @@ int	main(void)
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
 	test_printf("%o, %ho, %hho", -42, -42, -42);
 	test_printf("%c", 200);
+	test_printf("%C", 200);
 	test_printf("% p|%+p", 42, 42);
 	test_printf("%#.x, %#.0x", 0, 0);
 	test_printf("%.0p, %.p", 0, 0);

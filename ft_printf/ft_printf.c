@@ -41,11 +41,11 @@ void	ft_printf_synonyms(t_args *a)
 	}
 }
 
-wchar_t		*ft_wstrdup(const char *str, size_t len)
+t_unicode		*ft_wstrdup(const unsigned char *str, size_t len)
 {
-	wchar_t	*r;
+	t_unicode	*r;
 
-	if (!(r = malloc((len + 1) * sizeof(wchar_t))))
+	if (!(r = malloc((len + 1) * sizeof(t_unicode))))
 		return (NULL);
 	r[len] = '\0';
 	while(len--)
@@ -66,8 +66,9 @@ int	ft_recursive_printf(const char *str, va_list ap)
 {
 	int		i;
 	char	*tmp;
+	unsigned char	*utmp;
 	intmax_t 	n;
-	wchar_t	*s;
+	t_unicode	*s;
 	int	c;
 	t_args	a;
 	int 	printed;
@@ -94,15 +95,15 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		if (a.lenght == SIZE_L)
 		{
 			
-			ft_printf_wputstr(va_arg(ap, t_unicode *), &a);
+			ft_printf_wputstr(va_arg(ap, t_unicode *), &a, ft_putstr_utf8);
 		}
 		else
 		{
-			tmp = va_arg(ap, char *);
-			s = ft_wstrdup(tmp, ft_strlen(tmp));
+			utmp = va_arg(ap, unsigned char *);
+			s = ft_wstrdup(utmp, ft_strlen((char *)utmp));
 			if (!s)
 				return (-1);
-			ft_printf_wputstr(s, &a);
+			ft_printf_wputstr(s, &a, ft_putstr_ascii);
 			free(s);
 		}
 	}
@@ -117,15 +118,15 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	{
 		if (a.lenght == SIZE_L)
 		{
-			ft_printf_rwputstr(va_arg(ap, wchar_t *), &a);
+			ft_printf_wputstr(va_arg(ap, t_unicode *), &a, ft_putstr_raw_utf8);
 		}
 		else
 		{
-			tmp = va_arg(ap, char *);
-			s = ft_wstrdup(tmp, ft_strlen(tmp));
+			utmp = va_arg(ap, unsigned char *);
+			s = ft_wstrdup(utmp, ft_strlen((char *)utmp));
 			if (!s)
 				return (-1);
-			ft_printf_rwputstr(s, &a);
+			ft_printf_wputstr(s, &a, ft_putstr_raw_ascii);
 			free(s);
 		}
 	}
@@ -145,26 +146,31 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	else if (a.type == '%')
 	{
 		c = '%';
-		s = ft_wstrdup((char*)(&c), 1);
+		s = ft_wstrdup((unsigned char*)(&c), 1);
 		if (!s)
 			return (-1);
-		ft_printf_wputstr(s, &a);
+		ft_printf_wputstr(s, &a, ft_putstr_ascii);
 		free(s);
 	}
 	else if (a.type == 'c')
 	{
 		c = va_arg(ap, int);
 		if (a.lenght != SIZE_L)
-			s = ft_wstrdup((char*)(&c), 1);
+		{
+			s = ft_wstrdup((unsigned char*)(&c), 1);
+			if (!s)
+				return (-1);
+			ft_printf_wputstr(s, &a, ft_putstr_ascii);
+		}
 		else
 		{
-			s = (int *)ft_memalloc(sizeof(int) * 2);
+			s = (int *)ft_memalloc(sizeof(t_unicode) * 2);
+			if (!s)
+				return (-1);
 			*s = c;
-
+			ft_printf_wputstr(s, &a, ft_putstr_utf8);
 		}
-		if (!s)
-			return (-1);
-		ft_printf_wputstr(s, &a);
+		
 		free(s);
 	}
 	else
@@ -173,16 +179,15 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		{
 			c = a.type;
 			if (a.lenght != SIZE_L)
-				s = ft_wstrdup((char*)(&c), 1);
+				s = ft_wstrdup((unsigned char*)(&c), 1);
 			else
 			{
 				s = (int *)ft_memalloc(sizeof(int) * 2);
 				*s = c;
-
 			}
 			if (!s)
 				return (-1);
-			ft_printf_wputstr(s, &a);
+			ft_printf_wputstr(s, &a, ft_putstr_ascii);
 			free(s);
 		}
 	}

@@ -46,7 +46,7 @@ t_utf8		*ft_unicode2utf8(t_unicode *i_str, size_t *size)
 
 	i = 0;
 	*size = 0;
-	if (!(c_str = (t_utf8*)ft_strnew(ft_strsize(i_str))))
+	if (!(c_str = (t_utf8*)ft_strnew(ft_strsize(i_str) + 1)))
 		return (NULL);
 	while (i_str[i])
 	{
