@@ -191,7 +191,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	if (a.err == 1)
 		old_return = -1;
 	new_return = ft_recursive_printf(str + i, ap) + printed;
-	if (old_return == -1)
+	if (old_return == -1 && PERSIST_RETURN)
 		return -1;
 	old_return = new_return;
 	return new_return;
