@@ -83,7 +83,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	if (tmp == NULL)
 	{
 		ft_putstr(str);
-		return (old_return == -1 ? -1 : ft_strlen(str));
+		return (old_return == -1 ? -1 : (int)ft_strlen(str));
 	}
 	i = tmp - str;
 	write(1, str, i);
