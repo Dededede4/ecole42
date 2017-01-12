@@ -71,8 +71,11 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}*/
 	if(a->hash != -1)
 	{
-		ft_putchar('0');
-		a->tmp++;
+		if (nbr > 0)
+		{
+			ft_putchar('0');
+			a->tmp++;
+		}
 		if (base == 16)
 		{
 			ft_putchar('x');

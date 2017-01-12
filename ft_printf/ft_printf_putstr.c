@@ -58,6 +58,7 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *))
 
 
 	len = 0;
+	size = 0;
 	if (a->precision == -1)
 		while (str[len])
 			len++;
@@ -78,6 +79,8 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *))
 	if (a->width != -1 && a->minus != -1)
 		while (spaces--)
 			ft_putchar(' ');
+	if (str[0] == '\0')
+		ft_putchar('\0');
 	a->tmp = (a->tmp == 0) ? 1 : a->tmp;
 }
 

@@ -149,7 +149,7 @@ int	main(void)
 	test_printf("%-15x", 542);
 	test_printf("%c", 0);
 	test_printf("%C", 0);
-	test_printf("%hhC, %hhC", 0, L'米');
+	test_printf("%hhC, %hhC", 'a', L'米');
 	test_printf("{%-10d}", 42);
 	test_printf("{%Z}", 123);
 	test_printf("{%-15Z}", 123);
@@ -164,6 +164,7 @@ int	main(void)
 	test_printf("%.4d", 42);
 	test_printf("%.4d", 424242);
 	test_printf("%.4o", 424242);
+	test_printf("test %c test", 0);
 	test_printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S ",
 	L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ",
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω");

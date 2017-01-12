@@ -190,6 +190,8 @@ int	ft_recursive_printf(const char *str, va_list ap)
 			ft_printf_wputstr(s, &a, ft_putstr_ascii);
 			free(s);
 		}
+		else
+			return (0);
 	}
 	printed = i + a.tmp;
 	i += a.nbr;
