@@ -165,6 +165,7 @@ int	main(void)
 	test_printf("%.4d", 424242);
 	test_printf("%.4o", 424242);
 	test_printf("test %c test", 0);
+	test_printf("%S", L"");
 	test_printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S ",
 	L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ",
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω");
@@ -175,7 +176,12 @@ int	main(void)
 	test_printf("%c", 200);
 	test_printf("%C", 200);
 	test_printf("% p|%+p", 42, 42);
+	test_printf("%.5i\n%.5i\n", 42, 424242424);
+	test_printf("%#x", 0);
+	test_printf("%.x", 0);
 	test_printf("%#.x, %#.0x", 0, 0);
+	test_printf("%.1x", 0);
+	test_printf("wa %.2x", 0);
 	test_printf("%.0p, %.p", 0, 0);
 	test_printf("%15.4o", 42);
 	test_printf("%.4s", "42 is the answer");
