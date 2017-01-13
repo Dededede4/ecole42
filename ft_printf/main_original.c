@@ -41,10 +41,11 @@ void	test_printf(char *s, ...)
 
 int		main(void)
 {
+	printf("wa %.0x", 0);
 	//int a = -1;
 	//printf("%C\n", a);
 
-	test_printf("%C\n", 'a');
+	//test_printf("%C\n", 'a');
 	return (0);
 }
 

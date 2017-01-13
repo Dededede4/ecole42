@@ -46,7 +46,7 @@ void	test_printf(char *s, ...)
 	va_end( args );
 	
 
-	if (memcmp(good_print, bad_print, ft_strlen(good_print)) != 0 || good_return != bad_return)
+	if (strcmp(good_print, bad_print) != 0 || good_return != bad_return)
 	{
 		ft_printf("Real return (%2i) and print \"%r\"\n", good_return, good_print);
 		ft_printf("Your return (%2i) and print \"%r\"\n", bad_return, bad_print);
@@ -149,7 +149,7 @@ int	main(void)
 	test_printf("%-15x", 542);
 	test_printf("%c", 0);
 	test_printf("%C", 0);
-	test_printf("%hhC, %hhC", 0, L'米');
+	test_printf("%hhC, %hhC", 'a', L'米');
 	test_printf("{%-10d}", 42);
 	test_printf("{%Z}", 123);
 	test_printf("{%-15Z}", 123);
@@ -164,6 +164,8 @@ int	main(void)
 	test_printf("%.4d", 42);
 	test_printf("%.4d", 424242);
 	test_printf("%.4o", 424242);
+	test_printf("test %c test", 0);
+	test_printf("%S", L"");
 	test_printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S ",
 	L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ",
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω");
@@ -172,8 +174,14 @@ int	main(void)
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
 	test_printf("%o, %ho, %hho", -42, -42, -42);
 	test_printf("%c", 200);
+	test_printf("%C", 200);
 	test_printf("% p|%+p", 42, 42);
+	test_printf("%.5i\n%.5i\n", 42, 424242424);
+	test_printf("%#x", 0);
+	test_printf("%.x", 0);
 	test_printf("%#.x, %#.0x", 0, 0);
+	test_printf("%.1x", 0);
+	test_printf("wa %.2x", 0);
 	test_printf("%.0p, %.p", 0, 0);
 	test_printf("%15.4o", 42);
 	test_printf("%.4s", "42 is the answer");

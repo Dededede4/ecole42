@@ -59,21 +59,25 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	uintmax_t	n;
 
 	ft_printf_nbrlen_unsigned_recursive(nbr, a, base);
-	if (a->plus != -1)
+	save = a->tmp;
+	/*if (a->plus != -1)
 	{
 		ft_putchar('+');
 		a->tmp++;
-	}
+	}*/
 	/*else if (a->space != -1)
 	{
 		ft_putchar(' ');
 		a->tmp++;
 	}*/
-	if(a->hash != -1 && nbr != 0)
+	if(a->hash != -1)
 	{
-		ft_putchar('0');
-		a->tmp++;
-		if (base == 16)
+		if (nbr > 0 || a->type == 'p' )
+		{
+			ft_putchar('0');
+			a->tmp++;
+		}
+		if ((nbr > 0 && base == 16) || a->type == 'p')
 		{
 			ft_putchar('x');
 			a->tmp++;
@@ -81,7 +85,10 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}
 	if (a->width != -1 && a->minus == -1)
 	{
-		spaces = a->width - a->tmp;
+		if (a->precision != -1)
+			spaces = a->width - a->precision;
+		else
+			spaces = a->width - a->tmp;
 		while (spaces-- > 0)
 		{
 			ft_putchar((a->zero != -1) ? '0' : ' ');
@@ -90,7 +97,10 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}
 	if (a->precision != -1)
 	{
-		n = (a->precision > a->tmp) ? a->precision - a->tmp : 0;
+		if (a->width != -1)
+			n = (a->precision > save) ? a->precision - save : 0;
+		else
+			n = (a->precision > a->tmp) ? a->precision - a->tmp : 0;
 		while(n--)
 		{
 			write(1, "0", 1);
@@ -99,7 +109,12 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}
 	save = a->tmp;
 	a->tmp = -1;
-	ft_printf_putnbr_unsigned_recursive(nbr, a, base);
+	if (a->precision != 0)
+		ft_printf_putnbr_unsigned_recursive(nbr, a, base);
+	else if (a->type != 'p')
+		save = 0;
+	else if (a->type == 'p')
+		save--;
 	a->tmp = save;
 	if (a->width != -1 && a->minus != -1)
 	{
