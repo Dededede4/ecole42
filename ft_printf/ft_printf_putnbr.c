@@ -124,7 +124,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}*/
 	if (a->width != -1 && a->minus == -1)
 	{
-		if (a->precision != -1)
+		if (a->precision != -1 && a->precision > a->tmp)
 			spaces = a->width - a->precision;
 		else
 			spaces = a->width - a->tmp;
