@@ -68,4 +68,5 @@ int				ft_putstr_utf8(t_unicode *str, size_t len);
 int				ft_putstr_ascii(t_unicode *str, size_t len);
 int				ft_putstr_raw_utf8(t_unicode *str, size_t len);
 int				ft_putstr_raw_ascii(t_unicode *str, size_t len);
+size_t			ft_strsize(t_unicode *str);
 #endif

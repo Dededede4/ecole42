@@ -219,6 +219,10 @@ int	main(void)
 	test_printf("%#.o", 32);
 	test_printf("%#.o, %#.0o", 0, 0);
 	test_printf("%#.o", 42);
+	test_printf("{%30S}", L"test");
+	test_printf("{%30S}", L"étest");
+	test_printf("{%30S}", L"ééééééééééééééééé");
+	test_printf("{%30S}", L"éééééééééééééééééééééééééééééé");
 	test_printf("{%30S}", L"我是一只猫。");
 	test_printf("{%030S}", L"我是一只猫。");
 	test_printf("{%03.2d}", 0);
