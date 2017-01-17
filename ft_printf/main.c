@@ -193,6 +193,12 @@ int	main(void)
 	test_printf("{% c}", 0);
 	test_printf("%+o", 0);
 	test_printf("%#X", 42);
+	test_printf("{%0c}", 'z');
+	test_printf("{%3c}", 'z');
+	test_printf("{%.3c}", 'z');
+	test_printf("{%03c}", 'z');
+	test_printf("{%-03c}", 'z');
+	test_printf("{%03C}", 0);
 	test_printf("{%03c}", 0);
 	test_printf("{%10d}", -42);
 	test_printf("%hhC, %hhC", 0, L'米');
