@@ -122,6 +122,23 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		ft_putchar(' ');
 		a->tmp++;
 	}*/
+	if (a->width != -1 && a->minus == -1)
+	{
+		if (a->precision != -1)
+			spaces = a->width - a->precision;
+		else
+			spaces = a->width - a->tmp;
+		if (a->hash != -1 && (nbr > 0 || a->type == 'p'))
+			spaces--;
+		if (a->hash != -1 && ((nbr > 0 && base == 16) || a->type == 'p'))
+			spaces--;
+
+		while (spaces-- > 0)
+		{
+			ft_putchar((a->zero != -1) ? '0' : ' ');
+			a->tmp++;
+		}
+	}
 	if(a->hash != -1)
 	{
 		if (nbr > 0 || a->type == 'p' )
@@ -132,18 +149,6 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		if ((nbr > 0 && base == 16) || a->type == 'p')
 		{
 			ft_putchar((a->type == 'X' ? 'X' : 'x'));
-			a->tmp++;
-		}
-	}
-	if (a->width != -1 && a->minus == -1)
-	{
-		if (a->precision != -1)
-			spaces = a->width - a->precision;
-		else
-			spaces = a->width - a->tmp;
-		while (spaces-- > 0)
-		{
-			ft_putchar((a->zero != -1) ? '0' : ' ');
 			a->tmp++;
 		}
 	}
