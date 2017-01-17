@@ -205,10 +205,22 @@ int	main(void)
 	test_printf("%hhC, %hhC", 0, L'米');
 	test_printf("%p", 0);
 
+	test_printf("{%5p}", 0);
+	test_printf("{%010d}", -42);
+	test_printf("{% 03d}", 0);
+	test_printf("%15.4d", 424242);
+	test_printf("%15.4o", 424242);
+	test_printf("%4.15s", "I am 42");
+	test_printf("%.5p", 0);
+	test_printf("%#.o, %#.0o", 0, 0);
+	test_printf("%#.o", 42);
+
 	// Errors cases
 
-	test_printf("%C", -1); // Alway return -1 now.
+	// Alway return -1 now.
 	test_printf("Unicode comprises %C code points in the range", 1114112);
+	test_printf("test");
+	test_printf("%C", -1);
 	test_printf("0dur %C dur", 2147483646);
 	test_printf("dur %C dur", 2147483647);
 	test_printf("max +1 utf8 4-bytes is %C", 1114111 + 1);
