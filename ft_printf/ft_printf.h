@@ -25,6 +25,8 @@
 # define SIZE_J 5
 # define SIZE_Z 6
 
+# define PERSIST_RETURN 1
+
 typedef int				t_unicode;
 typedef unsigned char	t_utf8;
 
