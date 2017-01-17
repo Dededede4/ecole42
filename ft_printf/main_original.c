@@ -41,11 +41,13 @@ void	test_printf(char *s, ...)
 
 int		main(void)
 {
-	ft_printf("%c wooow", 'z');
+	//ft_printf("%c wooow", 'z');
 	//int a = -1;
 	//printf("%C\n", a);
 
 	//test_printf("%C\n", 'a');
+	printf("%15.4d\n", 424242);
+	ft_printf("%15.4d", 424242);
 	return (0);
 }
 

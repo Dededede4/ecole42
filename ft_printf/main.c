@@ -208,6 +208,7 @@ int	main(void)
 	test_printf("{%5p}", 0);
 	test_printf("{%010d}", -42);
 	test_printf("{% 03d}", 0);
+	test_printf("%15.4d", 4);
 	test_printf("%15.4d", 424242);
 	test_printf("%15.4o", 424242);
 	test_printf("%4.15s", "I am 42");
