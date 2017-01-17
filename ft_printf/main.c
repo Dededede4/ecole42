@@ -200,6 +200,7 @@ int	main(void)
 	test_printf("{%-03c}", 'z');
 	test_printf("{%03C}", 0);
 	test_printf("{%03c}", 0);
+	test_printf("{%03c}", 1);
 	test_printf("{%10d}", -42);
 	test_printf("%hhC, %hhC", 0, L'米');
 	test_printf("%p", 0);

@@ -69,8 +69,15 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, size_t))
 	spaces = (a->width > (int)len) ? a->width - len : 0;
 	a->tmp = len;
 	if (a->width != -1 && a->minus == -1)
+	{
+		if (str[0] == 0)
+		{
+			spaces--;
+			a->width--;
+		}
 		while (spaces--)
 			ft_putchar((a->zero != -1) ? '0' : ' ');
+	}
 	size = f(str, len + 1) - a->tmp;
 	a->tmp += size;
 	if (a->width != -1 && spaces > 0)
