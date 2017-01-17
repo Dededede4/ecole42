@@ -225,6 +225,10 @@ int	main(void)
 	test_printf("{%30S}", L"éééééééééééééééééééééééééééééé");
 	test_printf("{%30S}", L"我是一只猫。");
 	test_printf("{%030S}", L"我是一只猫。");
+	test_printf("{%10.5d}\n", 9);
+	test_printf("{%03.2d}", 9);
+	test_printf("{%03.5d}", 9);
+	test_printf("{%03.10d}", 9);
 	test_printf("{%03.2d}", 0);
 	test_printf("%.d, %.0d", 0, 0);
 	test_printf("%.4S", L"我是一只猫。");

@@ -46,7 +46,9 @@ int		main(void)
 	//printf("%C\n", a);
 
 	//test_printf("%C\n", 'a');
-	printf("-->%#.x<-- -->%#.o<--", 0, 0);
+	printf("%05i\n", 5);
+	ft_printf("%05i\n", 5);
+
 	return (0);
 }
 
