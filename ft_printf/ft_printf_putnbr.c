@@ -203,13 +203,18 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 		if (a->width == -1)
 			a->tmp++;
 	}
+	if (neg && a->zero != -1)
+	{
+		ft_putchar('-');
+		a->tmp++;
+	}
 	if (a->width != -1 && a->minus == -1)
 	{
 		if (a->precision != -1)
 			spaces = a->width - a->precision;
 		else
 			spaces = a->width - a->tmp;
-		if (neg)
+		if (neg && a->zero == -1)
 			spaces--;
 		while (spaces-- > 0)
 		{
@@ -217,7 +222,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 			a->tmp++;
 		}
 	}
-	if (neg)
+	if (neg && a->zero == -1)
 	{
 		ft_putchar('-');
 		a->tmp++;
