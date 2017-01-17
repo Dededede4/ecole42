@@ -41,7 +41,7 @@ void	test_printf(char *s, ...)
 
 int		main(void)
 {
-	printf("wa %.0x", 0);
+	ft_printf("%c wooow", 'z');
 	//int a = -1;
 	//printf("%C\n", a);
 
