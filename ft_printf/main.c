@@ -186,6 +186,7 @@ int	main(void)
 	test_printf("%15.4o", 42);
 	test_printf("%.4s", "42 is the answer");
 	test_printf("%15.4d", 42);
+	test_printf("{%0-3u}", 0);
 	test_printf("{%0-3d}", 0);
 	test_printf("{% c}", 0);
 	test_printf("%+o", 0);

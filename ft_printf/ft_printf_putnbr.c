@@ -173,7 +173,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		spaces = a->width - a->tmp;
 		while (spaces-- > 0)
 		{
-			ft_putchar((a->zero != -1) ? '0' : ' ');
+			ft_putchar(' ');
 			a->tmp++;
 		}
 	}
@@ -236,7 +236,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 		spaces = a->width - a->tmp;
 		while (spaces-- > 0)
 		{
-			ft_putchar((a->zero != -1) ? '0' : ' ');
+			ft_putchar(' ');
 			a->tmp++;
 		}
 	}
