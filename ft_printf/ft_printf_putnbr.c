@@ -168,7 +168,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 	}
 	save = a->tmp;
 	a->tmp = -1;
-	if (a->precision != 0)
+	if (a->precision != 0 || (a->hash != -1 && a->type == 'o' ))
 		ft_printf_putnbr_unsigned_recursive(nbr, a, base);
 	else if (a->type != 'p')
 		save = 0;

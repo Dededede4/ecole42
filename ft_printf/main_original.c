@@ -46,8 +46,7 @@ int		main(void)
 	//printf("%C\n", a);
 
 	//test_printf("%C\n", 'a');
-	printf("%15.4d\n", 424242);
-	ft_printf("%15.4d", 424242);
+	printf("-->%#.x<-- -->%#.o<--", 0, 0);
 	return (0);
 }
 
