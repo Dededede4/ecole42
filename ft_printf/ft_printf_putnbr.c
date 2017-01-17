@@ -158,7 +158,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 			n = (a->precision > save) ? a->precision - save : 0;
 		else
 			n = (a->precision > a->tmp) ? a->precision - a->tmp : 0;
-		if (a->type == 'p')
+		if (a->precision > a->tmp && a->type == 'p')
 			n += 2;
 		while(n--)
 		{
