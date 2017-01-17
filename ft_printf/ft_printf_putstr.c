@@ -80,7 +80,7 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, size_t))
 	}
 	size = f(str, len + 1) - a->tmp;
 	a->tmp += size;
-	if (a->width != -1 && spaces > 0)
+	if (a->width != -1 && spaces > 0 && a->width > a->tmp)
 		a->tmp = a->width;
 	if (size == -1)
 		a->err = 1;
