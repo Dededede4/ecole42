@@ -188,6 +188,8 @@ int	main(void)
 	test_printf("%15.4d", 42);
 	test_printf("{%0-3u}", 0);
 	test_printf("{%0-3d}", 0);
+	test_printf("{%03u}", 0);
+	test_printf("{%03d}", 0);
 	test_printf("{% c}", 0);
 	test_printf("%+o", 0);
 	test_printf("%#X", 42);

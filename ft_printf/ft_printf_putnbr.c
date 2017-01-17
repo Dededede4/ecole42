@@ -131,7 +131,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		}
 		if ((nbr > 0 && base == 16) || a->type == 'p')
 		{
-			ft_putchar('x');
+			ft_putchar((a->type == 'X' ? 'X' : 'x'));
 			a->tmp++;
 		}
 	}
