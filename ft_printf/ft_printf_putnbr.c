@@ -200,8 +200,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 	else if (a->space != -1 && !neg)
 	{
 		ft_putchar(' ');
-		if (a->width == -1)
-			a->tmp++;
+		a->tmp++;
 	}
 	if (neg && a->zero != -1)
 	{
