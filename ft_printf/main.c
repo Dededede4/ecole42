@@ -213,8 +213,15 @@ int	main(void)
 	test_printf("%15.4o", 424242);
 	test_printf("%4.15s", "I am 42");
 	test_printf("%.5p", 0);
+
 	test_printf("%#.o, %#.0o", 0, 0);
 	test_printf("%#.o", 42);
+	test_printf("{%30S}", L"我是一只猫。");
+	test_printf("{%030S}", L"我是一只猫。");
+	test_printf("{%03.2d}", 0);
+	test_printf("%.d, %.0d", 0, 0);
+	test_printf("%.4S", L"我是一只猫。");
+	test_printf("%.0p, %.p", 0, 0);
 
 	// Errors cases
 
