@@ -242,9 +242,23 @@ int	main(void)
 	test_printf("{%-.20d}\n", 42);
 	test_printf("{%-020d}\n", 42);
 	test_printf("{%-015.20d}\n", 42);
+
 	test_printf("%.d, %.0d", 0, 0);
 	test_printf("%.4S", L"我是一只猫。");
 	test_printf("%.0p, %.p", 0, 0);
+	test_printf("{%05p}", 0);
+	test_printf("%15.4s", "I am 42");
+	test_printf("%2.9p", 1234);
+	test_printf("%.0%");
+	test_printf("%#08x", 42);
+	test_printf("%5.2s is a string", "this");
+	test_printf("%10s is a string", "");
+	test_printf("%5.2s is a string", "");
+	test_printf("%-5.2s is a string", "this");
+	test_printf("% 10.5d", 4242);
+	test_printf("%+10.5d", 4242);
+	test_printf("%03.2d", -1);
+
 
 	// Errors cases
 
