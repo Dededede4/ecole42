@@ -45,12 +45,14 @@ int		main(void)
 	//int a = -1;
 	//printf("%C\n", a);
 
-	printf("%.5p\n", (void *)0);
+	/*printf("%.5p\n", (void *)0);
 	ft_printf("%.5p\n\n", 0);
 	printf("%.0p, %.p\n", 0, 0);
-	ft_printf("%.0p, %.p\n", 0, 0);
+	ft_printf("%.0p, %.p\n\n", 0, 0);
 	printf("%.1p, %.p\n", 0, 1);
-	ft_printf("%.1p, %.p\n", 0, 1);
+	ft_printf("%.1p, %.p\n", 0, 1);*/
+	printf("%#.4o\n", 4);
+	ft_printf("%#.4o\n", 4);
 	//               00042
 	/*printf("{%020.5d}\n", 42);
 	printf("{%20.5d}\n", 42);
