@@ -45,8 +45,12 @@ int		main(void)
 	//int a = -1;
 	//printf("%C\n", a);
 
-	printf("{%020.8d}\n", 42);
-	ft_printf("{%020.8d}\n", 42);
+	printf("%.5p\n", (void *)0);
+	ft_printf("%.5p\n\n", 0);
+	printf("%.0p, %.p\n", 0, 0);
+	ft_printf("%.0p, %.p\n", 0, 0);
+	printf("%.1p, %.p\n", 0, 1);
+	ft_printf("%.1p, %.p\n", 0, 1);
 	//               00042
 	/*printf("{%020.5d}\n", 42);
 	printf("{%20.5d}\n", 42);

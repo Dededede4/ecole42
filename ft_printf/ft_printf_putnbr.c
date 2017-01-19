@@ -122,7 +122,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 		ft_putchar(' ');
 		a->tmp++;
 	}*/
-	if (a->width != -1 && a->minus == -1)
+	if ((a->zero == -1 || a->precision > 0) && a->width != -1 && a->minus == -1)
 	{
 		if (a->precision != -1 && a->precision > a->tmp)
 			spaces = a->width - a->precision;
@@ -135,7 +135,7 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 
 		while (spaces-- > 0)
 		{
-			ft_putchar((a->zero != -1) ? '0' : ' ');
+			ft_putchar(' ');
 			a->tmp++;
 		}
 	}
@@ -152,13 +152,22 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 			a->tmp++;
 		}
 	}
+	if (a->zero != -1 &&  a->precision == -1 &&  a->width != -1 && a->minus == -1)
+	{
+		spaces = a->width - a->tmp;
+		while (spaces-- > 0)
+		{
+			ft_putchar('0');
+			a->tmp++;
+		}
+	}
 	if (a->precision != -1)
 	{
 		if (a->width != -1)
 			n = (a->precision > save) ? a->precision - save : 0;
 		else
 			n = (a->precision > a->tmp) ? a->precision - a->tmp : 0;
-		if (a->precision > a->tmp && a->type == 'p')
+		if (a->type == 'p' && a->precision > 0)
 			n += 2;
 		while(n--)
 		{
@@ -166,6 +175,8 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 			a->tmp++;
 		}
 	}
+
+
 	save = a->tmp;
 	a->tmp = -1;
 	if (a->precision != 0 || (a->hash != -1 && a->type == 'o' ))

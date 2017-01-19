@@ -261,6 +261,7 @@ int	main(void)
 	test_printf("{%-020u}\n", 42);
 	test_printf("{%-015.20u}\n", 42);
 
+	test_printf("%.1p, %.p\n", 0, 1);
 	test_printf("%.d, %.0d", 0, 0);
 	test_printf("%.4S", L"我是一只猫。");
 	test_printf("%.0p, %.p", 0, 0);
