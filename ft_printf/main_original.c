@@ -45,9 +45,21 @@ int		main(void)
 	//int a = -1;
 	//printf("%C\n", a);
 
-	//test_printf("%C\n", 'a');
-	printf("%05i\n", 5);
-	ft_printf("%05i\n", 5);
+	printf("{%020.8d}\n", 42);
+	ft_printf("{%020.8d}\n", 42);
+	//               00042
+	/*printf("{%020.5d}\n", 42);
+	printf("{%20.5d}\n", 42);
+	//00000000000000000042
+	printf("{%.20d}\n", 42);
+	printf("{%020d}\n", 42);
+	printf("{%015.20d}\n", 42);*/
+
+	//En gros on met de 0 à gauche sauf si la précision est supérieure à 1 ET la largeur supérieure à 1.
+
+
+	//printf("{%010.2d}\n", 9);
+
 
 	return (0);
 }

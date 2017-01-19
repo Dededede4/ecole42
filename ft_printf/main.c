@@ -230,6 +230,18 @@ int	main(void)
 	test_printf("{%03.5d}", 9);
 	test_printf("{%03.10d}", 9);
 	test_printf("{%03.2d}", 0);
+	test_printf("{%020.8d}\n", 42);
+	test_printf("{%020.5d}\n", 42);
+	test_printf("{%20.5d}\n", 42);
+	test_printf("{%.20d}\n", 42);
+	test_printf("{%020d}\n", 42);
+	test_printf("{%015.20d}\n", 42);
+	test_printf("{%-020.8d}\n", 42);
+	test_printf("{%-020.5d}\n", 42);
+	test_printf("{%-20.5d}\n", 42);
+	test_printf("{%-.20d}\n", 42);
+	test_printf("{%-020d}\n", 42);
+	test_printf("{%-015.20d}\n", 42);
 	test_printf("%.d, %.0d", 0, 0);
 	test_printf("%.4S", L"我是一只猫。");
 	test_printf("%.0p, %.p", 0, 0);
