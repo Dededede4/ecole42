@@ -39,9 +39,34 @@ void	test_printf(char *s, ...)
 
 }
 
+void	transform(void	*nbr)
+{
+	((char*)nbr)[0] = 0;
+}
+
 int		main(void)
 {
-	exit(ft_printf("%.d, %.0d", 0, 0));	
+	//ft_printf("%.4s", "yaaaaaa");
+	char	*str = ft_strdup("je suis en string");
+	ft_printf("%p %p %p\n", &(str[0]), &(str[1]), &(str[2]));
+
+	char 	*nbrs = malloc(4);
+	nbrs[3] = 0x7;
+	nbrs[2] = 0x5B;
+	nbrs[1] = 0xCD;
+	nbrs[0] = 0x15;
+	int		*nbrs2 = (int*)nbrs;
+	//printbits21(*nbrs2, 32);
+	ft_putnbr(*nbrs2);
+
+	/*ft_printf("%.3S", L"1我是一只猫。");
+	ft_printf("\n");
+	char str[] = "%.4S";
+	printf(str, L"2我是一只猫。");*/
+	/*unsigned int test = -1;
+	transform(&test);
+	printbits21(test, 32);
+	exit(0);*/
 	//ft_printf("%c wooow", 'z');
 	//int a = -1;
 	//printf("%C\n", a);

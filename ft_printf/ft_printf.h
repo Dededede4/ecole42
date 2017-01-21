@@ -27,8 +27,14 @@
 
 # define PERSIST_RETURN 1
 
+
+# define TRUE 1
+# define FALSE 0
+
+
 typedef int				t_unicode;
 typedef unsigned char	t_utf8;
+typedef char 			t_bool;
 
 typedef struct 	s_args
 {
@@ -50,7 +56,7 @@ typedef struct 	s_args
 int     		ft_printf(const char *format, ...);
 int 			ft_vprintf(const char * restrict format, va_list ap);
 void			ft_printf_putnbr_pointer(unsigned long nbr, t_args a);
-void			ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, size_t len));
+void			ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int precision));
 void			ft_printf_synonyms(t_args *a);
 int				ft_recursive_printf(const char *str, va_list ap);
 int	 			ft_printf_flags(const char *str, t_args *a);
@@ -64,9 +70,12 @@ uintmax_t		ft_printf_getarg_nbr_unsigned(va_list args, t_args a);
 void			ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base);
 void			ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg);
 t_utf8			*ft_unicode2utf8(t_unicode *i_str, size_t *size);
-int				ft_putstr_utf8(t_unicode *str, size_t len);
-int				ft_putstr_ascii(t_unicode *str, size_t len);
-int				ft_putstr_raw_utf8(t_unicode *str, size_t len);
-int				ft_putstr_raw_ascii(t_unicode *str, size_t len);
+int				ft_putstr_utf8(t_unicode *str, int precision);
+int				ft_putstr_ascii(t_unicode *str, int precision);
+int				ft_putstr_raw_utf8(t_unicode *str, int precision);
+int				ft_putstr_raw_ascii(t_unicode *str, int precision);
 size_t			ft_strsize(t_unicode *str);
+void			*ft_intcpy(void *dest, const void *src, size_t n);
+t_unicode		*ft_unicodedup(const t_unicode *s1);
+size_t			ft_unicodelen(const t_unicode *s);
 #endif

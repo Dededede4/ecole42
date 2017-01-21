@@ -263,7 +263,9 @@ int	main(void)
 
 	test_printf("%.1p, %.p\n", 0, 1);
 	test_printf("%.d, %.0d", 0, 0);
+	test_printf("%.4s", "yaaaaaaaaa");
 	test_printf("%.4S", L"我是一只猫。");
+	test_printf("%.7S", L"我是一只猫。");
 	test_printf("%.0p, %.p", 0, 0);
 	test_printf("{%05p}", 0);
 	test_printf("%15.4s", "I am 42");

@@ -1,31 +1,37 @@
 #include "ft_printf.h"
 
-int			ft_putstr_utf8(t_unicode *str, size_t len)
+int			ft_putstr_utf8(t_unicode *str, int precision)
 {
 	size_t	size;
 	char	*output;
+	int		len;
 
 	output = (char *)ft_unicode2utf8(str, &size);
 	if (output == NULL)
 		return -1;
-	write(1, output, len + (size - len));
+	len = (precision < 1) ? size : precision - 1;
+	write(1, output, len);
 	free(output);
-	return size;
+	return len;
 }
 
-int			ft_putstr_ascii(t_unicode *str, size_t len)
+int			ft_putstr_ascii(t_unicode *str, int precision)
 {
 	int		i;
+	int		len;
 
 	i = 0;
-	len--;
-	while (i < (int)len)
-		ft_putchar((char)str[i++]);
+	len = (precision < 1) ? ft_unicodelen(str) : precision;
+	while (str[i] && i < len)
+	{
+		ft_putchar(*(str + i));
+		i++;
+	}
 	return i;
 }
 
 
-int			ft_putstr_raw_utf8(t_unicode *str, size_t len)
+int			ft_putstr_raw_utf8(t_unicode *str, int precision)
 {
 	size_t			i;
 	t_unicode		old;
@@ -37,38 +43,27 @@ int			ft_putstr_raw_utf8(t_unicode *str, size_t len)
 		i++;
 	old = str[i];
 	str[i] = 0;
-	ft_putstr_utf8(str, len);
+	ft_putstr_utf8(str, precision);
 	str[i] = old;
 	if (str[i] == L'\n')
 		write(1, "\\n", 2);
 	else if (str[i] != L'\0')
-		return ft_putstr_raw_utf8(str + i + 1, len) + i;
+		return ft_putstr_raw_utf8(str + i + 1, precision) + i;
 	return i + 1;
 }
 
-int			ft_putstr_raw_ascii(t_unicode *str, size_t len)
+int			ft_putstr_raw_ascii(t_unicode *str, int precision)
 {
-	return ft_putstr_raw_utf8(str, len); // TODO
+	return ft_putstr_raw_utf8(str, precision); // TODO
 }
 
-void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, size_t))
+void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int))
 {
 	size_t	spaces;
-	size_t len;
 	int		size;
 
-
-	len = 0;
-	size = 0;
-	if (a->precision == -1)
-		while (str[len])
-			len++;
-	else
-		while (str[len] && len < (size_t)a->precision)
-			len++;
 	size = (int)ft_strsize(str);
 	spaces = (a->width > size) ? a->width - size : 0;
-	a->tmp = len;
 	if (a->width != -1 && a->minus == -1)
 	{
 		if (str[0] == 0)
@@ -79,8 +74,8 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, size_t))
 		while (spaces--)
 			ft_putchar((a->zero != -1) ? '0' : ' ');
 	}
-	size = f(str, len + 1) - a->tmp;
-	a->tmp += size;
+	size = f(str, a->precision);
+	a->tmp = size;
 	if (a->width != -1 && spaces > 0 && a->width > a->tmp)
 		a->tmp = a->width;
 	if (size == -1)
