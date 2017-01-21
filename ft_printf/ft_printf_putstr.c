@@ -64,7 +64,7 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int))
 
 	size = (int)ft_strsize(str);
 	spaces = (a->width > size) ? a->width - size : 0;
-	if (a->width != -1 && a->minus == -1)
+	if (a->width != -1)
 	{
 		if (str[0] != 0 && a->precision != -1)
 			spaces = (a->width > size) ? a->width - a->precision : 0;
@@ -73,9 +73,10 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int))
 			spaces--;
 			a->width--;
 		}
+	}
+	if (a->width != -1 && a->minus == -1)
 		while (spaces--)
 			ft_putchar((a->zero != -1) ? '0' : ' ');
-	}
 	size = f(str, a->precision);
 	a->tmp = size;
 	if (a->width != -1 && spaces > 0 && a->width > a->tmp)
