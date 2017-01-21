@@ -46,18 +46,7 @@ void	transform(void	*nbr)
 
 int		main(void)
 {
-	//ft_printf("%.4s", "yaaaaaa");
-	char	*str = ft_strdup("je suis en string");
-	ft_printf("%p %p %p\n", &(str[0]), &(str[1]), &(str[2]));
-
-	char 	*nbrs = malloc(4);
-	nbrs[3] = 0x7;
-	nbrs[2] = 0x5B;
-	nbrs[1] = 0xCD;
-	nbrs[0] = 0x15;
-	int		*nbrs2 = (int*)nbrs;
-	//printbits21(*nbrs2, 32);
-	ft_putnbr(*nbrs2);
+	ft_printf("%15.4s", "I am 42");
 
 	/*ft_printf("%.3S", L"1我是一只猫。");
 	ft_printf("\n");

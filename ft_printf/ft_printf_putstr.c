@@ -66,6 +66,8 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int))
 	spaces = (a->width > size) ? a->width - size : 0;
 	if (a->width != -1 && a->minus == -1)
 	{
+		if (a->precision != -1)
+			spaces = (a->width > size) ? a->width - a->precision : 0;
 		if (str[0] == 0)
 		{
 			spaces--;
