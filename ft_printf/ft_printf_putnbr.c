@@ -112,16 +112,6 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 
 	ft_printf_nbrlen_unsigned_recursive(nbr, a, base);
 	save = a->tmp;
-	/*if (a->plus != -1)
-	{
-		ft_putchar('+');
-		a->tmp++;
-	}*/
-	/*else if (a->space != -1)
-	{
-		ft_putchar(' ');
-		a->tmp++;
-	}*/
 	if ((a->zero == -1 || a->precision > 0) && a->width != -1 && a->minus == -1)
 	{
 		if (a->precision != -1 && a->precision > a->tmp)
@@ -260,8 +250,15 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 	save = a->tmp;
 	a->tmp = -1;
 	if (a->precision != 0)
+	{
 		ft_printf_putnbr_signed_recursive(nbr, a, base, neg);
-	a->tmp = save;
+		a->tmp = save;
+	}
+	else
+	{
+		a->tmp = 0;
+	}
+	
 	if (a->width != -1 && a->minus != -1)
 	{
 		spaces = a->width - a->tmp;

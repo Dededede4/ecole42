@@ -41,6 +41,7 @@ void	test_printf(char *s, ...)
 
 int		main(void)
 {
+	exit(ft_printf("%.d, %.0d", 0, 0));	
 	//ft_printf("%c wooow", 'z');
 	//int a = -1;
 	//printf("%C\n", a);
@@ -51,8 +52,8 @@ int		main(void)
 	ft_printf("%.0p, %.p\n\n", 0, 0);
 	printf("%.1p, %.p\n", 0, 1);
 	ft_printf("%.1p, %.p\n", 0, 1);*/
-	printf("%#.4o\n", 4);
-	ft_printf("%#.4o\n", 4);
+	//printf("%#.4o\n", 4);
+	//ft_printf("%#.4o\n", 4);
 	//               00042
 	/*printf("{%020.5d}\n", 42);
 	printf("{%20.5d}\n", 42);
