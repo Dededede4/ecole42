@@ -241,10 +241,7 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 	}
 	if (a->precision != -1)
 	{
-		if (a->width != -1)
-			n = (a->precision > save) ? a->precision - save : 0;
-		else
-			n = (a->precision > a->tmp) ? a->precision - a->tmp : 0;
+		n = (a->precision > save) ? a->precision - save : 0;
 		while(n--)
 		{
 			write(1, "0", 1);

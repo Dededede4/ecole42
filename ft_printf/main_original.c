@@ -46,8 +46,8 @@ void	transform(void	*nbr)
 
 int		main(void)
 {
-	printf("%15.4s\n", "aaa");
-	ft_printf("%15.4s", "aaa");
+	printf("%.10d\n", -42);
+	ft_printf("%.10d\n", -42);
 	/*printf("%5.2s is a string\n", "");
 	ft_printf("%5.2s is a string\n", "");*/
 	/*printf("% 10.5d\n", 4242);
