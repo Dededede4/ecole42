@@ -46,10 +46,12 @@ void	transform(void	*nbr)
 
 int		main(void)
 {
+	printf("%15.4s\n", "aaa");
+	ft_printf("%15.4s", "aaa");
 	/*printf("%5.2s is a string\n", "");
 	ft_printf("%5.2s is a string\n", "");*/
-	printf("% 10.5d\n", 4242);
-	ft_printf("% 10.5d\n", 4242);
+	/*printf("% 10.5d\n", 4242);
+	ft_printf("% 10.5d\n", 4242);*/
 
 	/*ft_printf("%.3S", L"1我是一只猫。");
 	ft_printf("\n");
