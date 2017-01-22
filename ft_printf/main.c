@@ -281,6 +281,10 @@ int	main(void)
 	test_printf("%10.5d", -4242);
 	test_printf("%03.2d", -1);
 
+	test_printf("%.5C", 0);
+	test_printf("%15.4s", "42");
+	test_printf("%.10d", -42);
+
 
 	// Errors cases
 
