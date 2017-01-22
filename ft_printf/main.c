@@ -287,6 +287,29 @@ int	main(void)
 	test_printf("%15.4s", "42");
 	test_printf("%.10d", -42);
 
+	test_printf("%15.4S", L"我是一只猫。");
+	test_printf("%15.4s", "42 is the answer");
+	test_printf("%4.15S", L"我是一只猫。");
+	test_printf("%4.S", L"我是一只猫。");
+	test_printf("%4.1S", L"Jambon");
+	test_printf("%%   %", "test");
+	test_printf("%ll#x", 9223372036854775807);
+	test_printf("%5+d", 42);
+	test_printf("%5+d", -42);
+	test_printf("%-5+d", 42);
+	test_printf("%-5+d", -42);
+	test_printf("%zhd", "4294967296");
+	test_printf("%jzd", "9223372036854775807");
+	test_printf("%jhd", "9223372036854775807");
+	test_printf("%lhl", "9223372036854775807");
+	test_printf("%lhlz", "9223372036854775807");
+	test_printf("%zj", "9223372036854775807");
+	test_printf("%lhh", "2147483647");
+	test_printf("%hhld", "128");
+	test_printf("@main_ftprintf: %####0000 33..1..#00d\n", 256);
+	test_printf("@main_ftprintf: %####0000 33..1d", 256);
+	test_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256);
+
 
 	// Errors cases
 
