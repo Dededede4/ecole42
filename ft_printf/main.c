@@ -11,6 +11,7 @@ void	test_printf(char *s, ...)
 	ft_printf("#%zu                  printf(\"%r\", ...);\n", printf_no, (s == NULL) ? "(NULL)" : s);
 	va_list args;
 	va_start(args, s);
+	
 
 	int 	good_return;
         char    good_print[1024];
@@ -245,7 +246,9 @@ int	main(void)
 	test_printf("%4.S", L"我是一只猫。");
 	test_printf("%4.1S", L"Jambon");
 	test_printf("%%   %", "test");
-	test_printf("%ll#x", 9223372036854775807);
+	test_printf("%4.s", "42");
+	// Comportements indéfini
+	/*test_printf("%ll#x", 9223372036854775807);
 	test_printf("%5+d", 42);
 	test_printf("%5+d", -42);
 	test_printf("%-5+d", 42);
@@ -260,7 +263,7 @@ int	main(void)
 	test_printf("%hhld", "128");
 	test_printf("@main_ftprintf: %####0000 33..1..#00d\n", 256);
 	test_printf("@main_ftprintf: %####0000 33..1d", 256);
-	test_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256);
+	test_printf("@main_ftprintf: %###-#0000 33...12..#0+0d", 256);*/
 
 
 	// Errors cases
@@ -277,7 +280,9 @@ int	main(void)
 
 	// Segfaults cases
 	//test_printf(NULL);
-	
+	test_printf("{%s}", 0);
+	test_printf("{%S}", 0);
+	test_printf("{% s}", NULL);
 
 	/*int *strunicode = L"a";
 	while (unicode < (unsigned int)-1)

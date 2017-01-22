@@ -95,11 +95,14 @@ int	ft_recursive_printf(const char *str, va_list ap)
 		if (a.lenght == SIZE_L)
 		{
 			
-			ft_printf_wputstr(va_arg(ap, t_unicode *), &a, ft_putstr_utf8);
+			if (!(s = va_arg(ap, t_unicode *)))
+				s = L"(null)";
+			ft_printf_wputstr(s, &a, ft_putstr_utf8);
 		}
 		else
 		{
-			utmp = va_arg(ap, unsigned char *);
+			if (!(utmp = va_arg(ap, unsigned char *)))
+				utmp = (unsigned char*)"(null)";
 			s = ft_wstrdup(utmp, ft_strlen((char *)utmp));
 			if (!s)
 				return (-1);
@@ -218,5 +221,7 @@ int	ft_printf(const char *format, ...)
 
 int ft_vprintf(const char * restrict format, va_list ap)
 {
+	if (format == NULL)
+		return (-1);
 	return ft_recursive_printf(format, ap);
 }
