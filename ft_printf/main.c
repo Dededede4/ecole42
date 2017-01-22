@@ -278,6 +278,7 @@ int	main(void)
 	test_printf("%-5.2s is a string", "this");
 	test_printf("% 10.5d", 4242);
 	test_printf("%+10.5d", 4242);
+	test_printf("%10.5d", -4242);
 	test_printf("%03.2d", -1);
 
 

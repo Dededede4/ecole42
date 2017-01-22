@@ -185,38 +185,21 @@ void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
 void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 {
 	int spaces;
-	int rmspaces;
 	int save;
 	intmax_t	n;
 
 	ft_printf_nbrlen_signed_recursive(nbr, a, base);
 	save = a->tmp;
-	rmspaces = 0;
-	if (a->plus != -1 && !neg)
-	{
-		ft_putchar('+');
-		a->tmp++;
-		rmspaces++;
-	}
-	else if (a->space != -1 && !neg)
-	{
-		ft_putchar(' ');
-		a->tmp++;
-		rmspaces++;
-	}
-	if (neg && a->zero != -1)
-	{
-		ft_putchar('-');
-		a->tmp++;
-		rmspaces++;
-	}
 	if ((a->zero == -1 || a->precision > 0) && a->width != -1 && a->minus == -1)
 	{
 		if (a->precision != -1 && a->precision > a->tmp)
 			spaces = a->width - a->precision;
 		else
 			spaces = a->width - a->tmp;
-		spaces -= rmspaces;
+		if ((a->plus != -1 && !neg) || (a->space != -1 && !neg))
+			spaces--;
+		if (neg && a->zero != -1)
+			spaces--;
 		if (neg && a->zero == -1)
 			spaces--;
 		while (spaces-- > 0)
@@ -224,6 +207,21 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 			ft_putchar(' ');
 			a->tmp++;
 		}
+	}
+	if (a->plus != -1 && !neg)
+	{
+		ft_putchar('+');
+		a->tmp++;
+	}
+	else if (a->space != -1 && !neg)
+	{
+		ft_putchar(' ');
+		a->tmp++;
+	}
+	if (neg && a->zero != -1)
+	{
+		ft_putchar('-');
+		a->tmp++;
 	}
 	if (a->zero != -1 &&  a->precision == -1 &&  a->width != -1 && a->minus == -1)
 	{
