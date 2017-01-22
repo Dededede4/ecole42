@@ -282,6 +282,8 @@ int	main(void)
 	test_printf("%03.2d", -1);
 
 	test_printf("%.5C", 0);
+	test_printf("%.5C", L'a');
+	test_printf("%.5S", L"a");
 	test_printf("%15.4s", "42");
 	test_printf("%.10d", -42);
 

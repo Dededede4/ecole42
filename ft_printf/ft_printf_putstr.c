@@ -1,6 +1,6 @@
 #include "ft_printf.h"
 
-int			ft_putstr_utf8(t_unicode *str, int precision)
+int			ft_putstr_utf8(t_unicode *str, t_args *a)
 {
 	size_t	size;
 	char	*output;
@@ -9,19 +9,21 @@ int			ft_putstr_utf8(t_unicode *str, int precision)
 	output = (char *)ft_unicode2utf8(str, &size);
 	if (output == NULL)
 		return -1;
-	len = (precision < 1) ? size : precision - 1;
+	len = (a->precision < 1) ? size : a->precision - 1;
+	if (a->type == 'c')
+		len = size;
 	write(1, output, len);
 	free(output);
 	return len;
 }
 
-int			ft_putstr_ascii(t_unicode *str, int precision)
+int			ft_putstr_ascii(t_unicode *str, t_args *a)
 {
 	int		i;
 	int		len;
 
 	i = 0;
-	len = (precision < 1) ? ft_unicodelen(str) : precision;
+	len = (a->precision < 1) ? ft_unicodelen(str) : a->precision;
 	while (str[i] && i < len)
 	{
 		ft_putchar(*(str + i));
@@ -31,7 +33,7 @@ int			ft_putstr_ascii(t_unicode *str, int precision)
 }
 
 
-int			ft_putstr_raw_utf8(t_unicode *str, int precision)
+int			ft_putstr_raw_utf8(t_unicode *str, t_args *a)
 {
 	size_t			i;
 	t_unicode		old;
@@ -43,21 +45,21 @@ int			ft_putstr_raw_utf8(t_unicode *str, int precision)
 		i++;
 	old = str[i];
 	str[i] = 0;
-	ft_putstr_utf8(str, precision);
+	ft_putstr_utf8(str, a);
 	str[i] = old;
 	if (str[i] == L'\n')
 		write(1, "\\n", 2);
 	else if (str[i] != L'\0')
-		return ft_putstr_raw_utf8(str + i + 1, precision) + i;
+		return ft_putstr_raw_utf8(str + i + 1, a) + i;
 	return i + 1;
 }
 
-int			ft_putstr_raw_ascii(t_unicode *str, int precision)
+int			ft_putstr_raw_ascii(t_unicode *str, t_args *a)
 {
-	return ft_putstr_raw_utf8(str, precision); // TODO
+	return ft_putstr_raw_utf8(str, a); // TODO
 }
 
-void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int))
+void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, t_args *a))
 {
 	size_t	spaces;
 	int		size;
@@ -77,7 +79,7 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, int))
 	if (a->width != -1 && a->minus == -1)
 		while (spaces--)
 			ft_putchar((a->zero != -1) ? '0' : ' ');
-	size = f(str, a->precision);
+	size = f(str, a);
 	a->tmp = size;
 	if (a->width != -1 && spaces > 0 && a->width > a->tmp)
 		a->tmp = a->width;
