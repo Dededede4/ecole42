@@ -247,6 +247,7 @@ int	main(void)
 	test_printf("%4.1S", L"Jambon");
 	test_printf("%%   %", "test");
 	test_printf("%4.s", "42");
+	test_printf("{%05.s}", 0);
 	// Comportements indéfini
 	/*test_printf("%ll#x", 9223372036854775807);
 	test_printf("%5+d", 42);
