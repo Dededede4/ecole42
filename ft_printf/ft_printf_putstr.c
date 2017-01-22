@@ -12,6 +12,8 @@ int			ft_putstr_utf8(t_unicode *str, t_args *a)
 	len = (a->precision < (int)size && a->precision > 0) ? a->precision - 1 : size;
 	if (a->width != -1 && a->precision != -1)
 		len++;
+	if (a->precision == 0)
+		len = 0;
 	write(1, output, len);
 	free(output);
 	return len;
