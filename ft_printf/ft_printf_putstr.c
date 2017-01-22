@@ -10,6 +10,8 @@ int			ft_putstr_utf8(t_unicode *str, t_args *a)
 	if (output == NULL)
 		return -1;
 	len = (a->precision < (int)size && a->precision > 0) ? a->precision - 1 : size;
+	if (a->width != -1 && a->precision != -1)
+		len++;
 	write(1, output, len);
 	free(output);
 	return len;
@@ -67,7 +69,10 @@ void	ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, t_args *
 	if (a->width != -1)
 	{
 		if (str[0] != 0 && a->precision != -1 && a->precision < size)
-			spaces = (a->width > size) ? a->width - a->precision : 0;
+		{
+			spaces = (a->width > a->precision) ? a->width - a->precision : 0;
+		}
+		//ft_printf("width: %d, precision: %d, size: %d", a->width, a->precision, (int)size);
 		if (str[0] == 0 && a->type == 'c')
 		{
 			spaces--;

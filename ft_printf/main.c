@@ -56,31 +56,20 @@ void	test_printf(char *s, ...)
 
 int	main(void)
 {
-	// Basic usage
-	
 	test_printf("hello tests");
 	test_printf("test test test 		test lol");
 	test_printf("\n");
 	test_printf("");
-
-	// Vous devez gérer les conversions suivantes : sSpdDioOuUxXcC
 	test_printf("%c wooow", 'z');
 	test_printf("%C", L'a');
 	test_printf("%C xDD", L'𐀀');
-
 	test_printf("%i", 0);
 	test_printf("%d, %d", 245, -952);
-
 	test_printf("%S", L"😼");
 	test_printf("miaouu%S", L"😼");
 	test_printf("%S", L"miaou😼");
 	test_printf("%S\n", L"éaaa\n");
-	
-
-	test_printf("Unicode comprises %C entries in the range", 1114111);
-	
-
-	
+	test_printf("Unicode comprises %C entries in the range", 1114111);	
 	test_printf("HOY %x %X %o %u %i\n", 6879892, 65456465, 998877552, 65465888, -99999);
 	int nbr = 42;
 	test_printf("%p", &nbr);
@@ -88,19 +77,13 @@ int	main(void)
 	test_printf("%S\n", L"é");
 	test_printf("%S", L"ooo ❤ ☀ ☆ ☂ ☻ ♞ ☯ ☭ ☢ € dddd");
 	test_printf("%s %c\n", "Coucou", 'z');
-
 	int nbr2 = 99;
 	test_printf("666%p\n", &nbr2);
-
-	// Vous devez gérer le %%
 	test_printf("%");
 	test_printf("%%");
 	test_printf("%%%%%%%%");
 	test_printf("%%aa%%cc%%000%%");
 	test_printf("a%0cc%%000%%");
-
-	// Vous devez gérer les flags #0-+ et espace
-	// Pour s
 	test_printf("%-10S", L"");
 	test_printf("%-10S", L"blabla");
 	test_printf("%-10S", L"blablablab");
@@ -110,41 +93,17 @@ int	main(void)
 	test_printf("%10s %10S %10c\n", "Coucou", L"aaa", 'z');
 	test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
 	test_printf("%-10s %-10S %-10c\n", "Coucou", L"aaa", 'z');
-
-	// pour i
 	test_printf("%+i %+i % i % i\n", 321, -321, 321, -321);
-
-	// pour o
 	test_printf("%#o\n", 12);
-
-	// Vous devez gérer la taille minimum du champ
-	// pour i
 	test_printf("%10i\n", 12);
 	test_printf("%10u\n", 12);
 	test_printf("%010u\n", 12);
-
-	//pour s
 	test_printf("%05s\n", "pouet");
-
-
-	// Vous devez gérer les flags hh h l ll j z
-
-	// Vous devez gérer la précision
-	// pour d
 	test_printf("%.12d\n", 42);
-
-	// pour x
 	test_printf("%.15x\n", 9584);
-
-	// pour i
 	test_printf("%.5i\n", 42);
 	test_printf("%05i\n", 42);
-
-	// pour s
 	test_printf("%.10s\n", "pouet");
-
-
-	// les tests qui foirent
 	test_printf("%-10x", 42);
 	test_printf("%-15x", 542);
 	test_printf("%c", 0);
@@ -157,9 +116,6 @@ int	main(void)
 	test_printf("%+c", 0);
 	test_printf("% u", 9999);
 	test_printf("%.c", 0);
-	//test_printf(NULL);
-
-
 	test_printf("%#.4o\n", 4);
 	test_printf("%.4d", 42);
 	test_printf("%.4d", 424242);
@@ -204,7 +160,6 @@ int	main(void)
 	test_printf("{%10d}", -42);
 	test_printf("%hhC, %hhC", 0, L'米');
 	test_printf("%p", 0);
-
 	test_printf("{%5p}", 0);
 	test_printf("{%010d}", -42);
 	test_printf("{% 03d}", 0);
@@ -213,7 +168,6 @@ int	main(void)
 	test_printf("%15.4o", 424242);
 	test_printf("%4.15s", "I am 42");
 	test_printf("%.5p", 0);
-
 	test_printf("%#o", 0);
 	test_printf("%.o", 0);
 	test_printf("%#.o", 32);
@@ -242,7 +196,6 @@ int	main(void)
 	test_printf("{%-.20d}\n", 42);
 	test_printf("{%-020d}\n", 42);
 	test_printf("{%-015.20d}\n", 42);
-
 	test_printf("{%10.5u}\n", 9);
 	test_printf("{%03.2u}", 9);
 	test_printf("{%03.5u}", 9);
@@ -260,7 +213,6 @@ int	main(void)
 	test_printf("{%-.20u}\n", 42);
 	test_printf("{%-020u}\n", 42);
 	test_printf("{%-015.20u}\n", 42);
-
 	test_printf("%.1p, %.p\n", 0, 1);
 	test_printf("%.d, %.0d", 0, 0);
 	test_printf("%.4s", "yaaaaaaaaa");
@@ -280,13 +232,13 @@ int	main(void)
 	test_printf("%+10.5d", 4242);
 	test_printf("%10.5d", -4242);
 	test_printf("%03.2d", -1);
-
 	test_printf("%.5C", 0);
 	test_printf("%.5C", L'a');
 	test_printf("%.5S", L"a");
 	test_printf("%15.4s", "42");
 	test_printf("%.10d", -42);
 
+	test_printf("%15.4S", L"ééééééééééé");
 	test_printf("%15.4S", L"我是一只猫。");
 	test_printf("%15.4s", "42 is the answer");
 	test_printf("%4.15S", L"我是一只猫。");
@@ -323,7 +275,8 @@ int	main(void)
 	test_printf("Unicode values %C because is signed", -1);
 	test_printf("Invalides str %C through %C", 55296, 57343);
 
-
+	// Segfaults cases
+	//test_printf(NULL);
 	
 
 	/*int *strunicode = L"a";
