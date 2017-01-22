@@ -9,9 +9,7 @@ int			ft_putstr_utf8(t_unicode *str, t_args *a)
 	output = (char *)ft_unicode2utf8(str, &size);
 	if (output == NULL)
 		return -1;
-	len = (a->precision < 1) ? size : a->precision - 1;
-	if (a->type == 'c')
-		len = size;
+	len = (a->precision < (int)size && a->precision > 0) ? a->precision - 1 : size;
 	write(1, output, len);
 	free(output);
 	return len;
