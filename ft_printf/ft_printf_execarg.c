@@ -104,3 +104,28 @@ int					ft_printf_execarg_undefineds(t_args *a)
 	}
 	return (1);
 }
+
+int					ft_printf_execarg_pbdioux(t_args *a, va_list ap)
+{
+	intmax_t		n;
+
+	if (a->type == 'b')
+		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, *a), a, 2);
+	else if (a->type == 'o')
+		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, *a), a, 8);
+	else if (a->type == 'u')
+		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, *a), a, 10);
+	else if (a->type == 'x' || a->type == 'X')
+		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, *a), a, 16);
+	else if (a->type == 'p')
+	{
+		a->hash = 1;
+		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, *a), a, 16);
+	}
+	else if (a->type == 'd' || a->type == 'i')
+	{
+		n = ft_printf_getarg_nbr_signed(ap, *a);
+		ft_printf_putnbr_signed(n, a, 10, n < 0);
+	}
+	return (1);
+}

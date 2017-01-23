@@ -82,4 +82,5 @@ int				ft_printf_execarg_s(t_args *a, va_list ap);
 int				ft_printf_execarg_r(t_args *a, va_list ap);
 int				ft_printf_execarg_c(t_args *a, va_list ap);
 int				ft_printf_execarg_undefineds(t_args *a);
+int				ft_printf_execarg_pbdioux(t_args *a, va_list ap);
 #endif

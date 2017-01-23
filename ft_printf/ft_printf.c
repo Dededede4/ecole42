@@ -57,7 +57,6 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 {
 	int				i;
 	char			*tmp;
-	intmax_t 		n;
 	t_unicode		*s;
 	int				c;
 	t_args			a;
@@ -80,30 +79,14 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 	write(1, str, i);
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
-	if (a.type == 's')
+	if (a.type == 'p' || a.type == 'b' || a.type == 'd'
+		|| a.type == 'i' || a.type == 'o' || a.type == 'u' || a.type == 'x'
+		|| a.type == 'X')
+		ft_printf_execarg_pbdioux(&a, ap);
+	else if (a.type == 's')
 		ft_printf_execarg_s(&a, ap);
-	else if (a.type == 'p')
-	{
-		a.hash = 1;
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
-	}
-	else if (a.type == 'b')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 2);
 	else if (a.type == 'r')
 		ft_printf_execarg_r(&a, ap);
-	else if (a.type == 'd' || a.type == 'i')
-	{
-		n = ft_printf_getarg_nbr_signed(ap, a);
-	 	ft_printf_putnbr_signed(n, &a, 10, n < 0);
-	}
-	else if (a.type == 'o')
-	 	ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 8);
-	else if (a.type == 'u')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 10);
-	else if (a.type == 'x')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
-	else if (a.type == 'X')
-		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 16);
 	else if (a.type == '%')
 	{
 		c = '%';
