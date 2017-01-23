@@ -77,4 +77,7 @@ size_t			ft_strsize(t_unicode *str);
 void			*ft_intcpy(void *dest, const void *src, size_t n);
 t_unicode		*ft_unicodedup(const t_unicode *s1);
 size_t			ft_unicodelen(const t_unicode *s);
+t_unicode		*ft_wstrdup(const unsigned char *str, size_t len);
+int				ft_printf_execarg_s(t_args *a, va_list ap);
+int				ft_printf_execarg_r(t_args *a, va_list ap);
 #endif

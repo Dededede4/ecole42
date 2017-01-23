@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	ft_printf_synonyms(t_args *a)
+void				ft_printf_synonyms(t_args *a)
 {
 	if (a->type == 'D')
 	{
@@ -41,37 +41,27 @@ void	ft_printf_synonyms(t_args *a)
 	}
 }
 
-t_unicode		*ft_wstrdup(const unsigned char *str, size_t len)
+t_unicode			*ft_wstrdup(const unsigned char *str, size_t len)
 {
-	t_unicode	*r;
+	t_unicode		*r;
 
 	if (!(r = malloc((len + 1) * sizeof(t_unicode))))
 		return (NULL);
 	r[len] = '\0';
-	while(len--)
+	while (len--)
 		r[len] = str[len];
-	return r;
+	return (r);
 }
 
-void printbits(long v, size_t size) {
-  long i; // for C89 compatability
-  for(i = --size; i >= 0; i--){
-  		ft_putchar('0' + ((v >> i) & 1));
-  		if (i % 4 == 0)
-  			ft_putchar(' ');
-  	};
-}
-
-int ft_vprintf(const char * restrict str, va_list ap)
+int					ft_vprintf(const char * restrict str, va_list ap)
 {
-	int		i;
-	char	*tmp;
-	unsigned char	*utmp;
-	intmax_t 	n;
-	t_unicode	*s;
-	int	c;
-	t_args	a;
-	int 	printed;
+	int				i;
+	char			*tmp;
+	intmax_t 		n;
+	t_unicode		*s;
+	int				c;
+	t_args			a;
+	int 			printed;
 	static int 		old_return = 0;
 	int 			new_return;
 
@@ -91,37 +81,7 @@ int ft_vprintf(const char * restrict str, va_list ap)
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
 	if (a.type == 's')
-	{
-		if (a.lenght == SIZE_L)
-		{
-			
-			if (!(s = va_arg(ap, t_unicode *)))
-			{
-				s = L"(null)";
-				if (a.precision != -1 || a.zero != -1 || a.width != -1)
-				{
-					s = L"";
-				}
-			}
-			ft_printf_wputstr(s, &a, ft_putstr_utf8);
-		}
-		else
-		{
-			if (!(utmp = va_arg(ap, unsigned char *)))
-			{
-				utmp = (unsigned char*)"(null)";
-				if (a.precision != -1 || a.zero != -1 || a.width != -1)
-				{
-					utmp = (unsigned char*)"";
-				}
-			}
-			s = ft_wstrdup(utmp, ft_strlen((char *)utmp));
-			if (!s)
-				return (-1);
-			ft_printf_wputstr(s, &a, ft_putstr_ascii);
-			free(s);
-		}
-	}
+		ft_printf_execarg_s(&a, ap);
 	else if (a.type == 'p')
 	{
 		a.hash = 1;
@@ -130,21 +90,7 @@ int ft_vprintf(const char * restrict str, va_list ap)
 	else if (a.type == 'b')
 		ft_printf_putnbr_unsigned(ft_printf_getarg_nbr_unsigned(ap, a), &a, 2);
 	else if (a.type == 'r')
-	{
-		if (a.lenght == SIZE_L)
-		{
-			ft_printf_wputstr(va_arg(ap, t_unicode *), &a, ft_putstr_raw_utf8);
-		}
-		else
-		{
-			utmp = va_arg(ap, unsigned char *);
-			s = ft_wstrdup(utmp, ft_strlen((char *)utmp));
-			if (!s)
-				return (-1);
-			ft_printf_wputstr(s, &a, ft_putstr_raw_ascii);
-			free(s);
-		}
-	}
+		ft_printf_execarg_r(&a, ap);
 	else if (a.type == 'd' || a.type == 'i')
 	{
 		n = ft_printf_getarg_nbr_signed(ap, a);
@@ -222,7 +168,7 @@ int ft_vprintf(const char * restrict str, va_list ap)
 	return new_return;
 }
 
-int	ft_printf(const char *format, ...)
+int				ft_printf(const char *format, ...)
 {
 	va_list ap;
 	int 	r;
