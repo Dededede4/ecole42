@@ -46,7 +46,8 @@ void	transform(void	*nbr)
 
 int		main(void)
 {
-	printf("{%s}", 0);
+	printf("{%05.s}\n", "(nule)");
+	ft_printf("{%05.s}\n", "(nule)");
 	//ft_printf(str, L"我是一只猫。");
 	/*printf("%5.2s is a string\n", "");
 	ft_printf("%5.2s is a string\n", "");*/

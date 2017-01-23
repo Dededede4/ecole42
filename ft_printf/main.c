@@ -248,6 +248,14 @@ int	main(void)
 	test_printf("%%   %", "test");
 	test_printf("%4.s", "42");
 	test_printf("{%05.s}", 0);
+
+	test_printf("{%05.s}\n", "(nule)");
+	test_printf("{%05.s}\n", 0);
+	test_printf("{%5.s}\n", 0);
+	test_printf("{%0.s}\n", 0);
+	test_printf("{%s}", 0);
+	test_printf("{%S}", 0);
+	test_printf("{% s}", NULL);
 	// Comportements indéfini
 	/*test_printf("%ll#x", 9223372036854775807);
 	test_printf("%5+d", 42);
@@ -278,12 +286,6 @@ int	main(void)
 	test_printf("max +1 utf8 4-bytes is %C", 1114111 + 1);
 	test_printf("Unicode values %C because is signed", -1);
 	test_printf("Invalides str %C through %C", 55296, 57343);
-
-	// Segfaults cases
-	//test_printf(NULL);
-	test_printf("{%s}", 0);
-	test_printf("{%S}", 0);
-	test_printf("{% s}", NULL);
 
 	/*int *strunicode = L"a";
 	while (unicode < (unsigned int)-1)
