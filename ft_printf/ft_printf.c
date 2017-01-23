@@ -57,8 +57,6 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 {
 	int				i;
 	char			*tmp;
-	t_unicode		*s;
-	int				c;
 	t_args			a;
 	int 			printed;
 	static int 		old_return = 0;
@@ -88,17 +86,7 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 	else if (a.type == 'r')
 		ft_printf_execarg_r(&a, ap);
 	else if (a.type == '%')
-	{
-		c = '%';
-		a.width = -1;
-		a.precision = -1;
-		a.zero = -1;
-		s = ft_wstrdup((unsigned char*)(&c), 1);
-		if (!s)
-			return (-1);
-		ft_printf_wputstr(s, &a, ft_putstr_ascii);
-		free(s);
-	}
+		ft_printf_execarg_percent(&a);
 	else if (a.type == 'c')
 		ft_printf_execarg_c(&a, ap);
 	else
