@@ -260,6 +260,8 @@ int	main(void)
 	test_printf("{%s}", 0);
 	test_printf("{%S}", 0);
 	test_printf("{% s}", NULL);
+
+	test_printf("{%05.%}", 0);
 	// Comportements indéfini
 	/*test_printf("%ll#x", 9223372036854775807);
 	test_printf("%5+d", 42);

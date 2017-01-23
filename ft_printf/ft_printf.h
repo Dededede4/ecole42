@@ -58,7 +58,6 @@ int 			ft_vprintf(const char * restrict format, va_list ap);
 void			ft_printf_putnbr_pointer(unsigned long nbr, t_args a);
 void			ft_printf_wputstr(t_unicode *str, t_args *a, int (*f)(t_unicode *, t_args *a));
 void			ft_printf_synonyms(t_args *a);
-int				ft_recursive_printf(const char *str, va_list ap);
 int	 			ft_printf_flags(const char *str, t_args *a);
 int				ft_printf_width(const char *str, t_args *a);
 int				ft_printf_precision(const char *str, t_args *a);

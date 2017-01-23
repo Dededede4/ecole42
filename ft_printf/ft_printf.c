@@ -62,7 +62,7 @@ void printbits(long v, size_t size) {
   	};
 }
 
-int	ft_recursive_printf(const char *str, va_list ap)
+int ft_vprintf(const char * restrict str, va_list ap)
 {
 	int		i;
 	char	*tmp;
@@ -215,7 +215,7 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	i += a.nbr;
 	if (a.err == 1)
 		old_return = -1;
-	new_return = ft_recursive_printf(str + i, ap) + printed;
+	new_return = ft_vprintf(str + i, ap) + printed;
 	if (old_return == -1 && PERSIST_RETURN)
 		return -1;
 	old_return = new_return;
@@ -228,15 +228,8 @@ int	ft_printf(const char *format, ...)
 	int 	r;
 
 	va_start(ap, format);
-	r = ft_recursive_printf(format, ap);
+	r = ft_vprintf(format, ap);
 
 	va_end(ap);
 	return (r);
-}
-
-int ft_vprintf(const char * restrict format, va_list ap)
-{
-	if (format == NULL)
-		return (-1);
-	return ft_recursive_printf(format, ap);
 }
