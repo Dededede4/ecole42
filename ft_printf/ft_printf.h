@@ -81,4 +81,5 @@ t_unicode		*ft_wstrdup(const unsigned char *str, size_t len);
 int				ft_printf_execarg_s(t_args *a, va_list ap);
 int				ft_printf_execarg_r(t_args *a, va_list ap);
 int				ft_printf_execarg_c(t_args *a, va_list ap);
+int				ft_printf_execarg_undefineds(t_args *a);
 #endif

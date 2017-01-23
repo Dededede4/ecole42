@@ -119,25 +119,7 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 	else if (a.type == 'c')
 		ft_printf_execarg_c(&a, ap);
 	else
-	{
-		if (a.type != '\0')
-		{
-			c = a.type;
-			if (a.lenght != SIZE_L)
-				s = ft_wstrdup((unsigned char*)(&c), 1);
-			else
-			{
-				s = (int *)ft_memalloc(sizeof(int) * 2);
-				*s = c;
-			}
-			if (!s)
-				return (-1);
-			ft_printf_wputstr(s, &a, ft_putstr_ascii);
-			free(s);
-		}
-		else
-			return (0);
-	}
+		ft_printf_execarg_undefineds(&a);
 	printed = i + a.tmp;
 	i += a.nbr;
 	if (a.err == 1)

@@ -81,3 +81,26 @@ int					ft_printf_execarg_c(t_args *a, va_list ap)
 	free(s);
 	return (1);
 }
+
+int					ft_printf_execarg_undefineds(t_args *a)
+{
+	t_unicode		c;
+	t_unicode		*s;
+
+	if (a->type != '\0')
+	{
+		c = a->type;
+		if (a->lenght != SIZE_L)
+			s = ft_wstrdup((unsigned char*)(&c), 1);
+		else
+		{
+			s = (int *)ft_memalloc(sizeof(int) * 2);
+			*s = c;
+		}
+		if (!s)
+			return (-1);
+		ft_printf_wputstr(s, a, ft_putstr_ascii);
+		free(s);
+	}
+	return (1);
+}
