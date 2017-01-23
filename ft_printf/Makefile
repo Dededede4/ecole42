@@ -23,8 +23,8 @@ libft/ft_putstr.c libft/ft_putendl.c libft/ft_putnbr.c libft/ft_putchar.c libft/
 libft/ft_putnbr.c libft/ft_putstr.c libft/ft_lstnew.c libft/ft_lstdelone.c libft/ft_lstdel.c \
 libft/ft_lstadd.c libft/ft_lstiter.c libft/ft_lstmap.c libft/ft_putchar_fd.c libft/ft_putstr_fd.c \
 libft/ft_putendl_fd.c libft/ft_putnbr_fd.c libft/ft_intlen.c libft/ft_memchrf.c \
-ft_printf.c ft_printf_putnbr.c ft_printf_putstr.c ft_printf_readarg.c ft_unicode2utf8.c \
-ft_intcpy.c ft_unicodedup.c ft_unicodelen.c ft_printf_execarg0.c \
+ft_printf.c ft_printf_putstr.c ft_printf_readarg.c ft_unicode2utf8.c ft_printf_putnbr_signed.c \
+ft_intcpy.c ft_unicodedup.c ft_unicodelen.c ft_printf_execarg0.c ft_printf_putnbr_unsigned.c \
 ft_printf_execarg1.c ft_printf_execarg2.c
 
 OBJ=ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_memmove.o \
@@ -40,9 +40,10 @@ ft_putstr.o ft_putendl.o ft_putnbr.o ft_putchar.o ft_putendl.o \
 ft_putnbr.o ft_putstr.o ft_lstnew.o ft_lstdelone.o ft_lstdel.o \
 ft_lstadd.o ft_lstiter.o ft_lstmap.o ft_putchar_fd.o ft_putstr_fd.o \
 ft_putendl_fd.o ft_putnbr_fd.o ft_intlen.o ft_memchrf.o \
-ft_printf.o ft_printf_putnbr.o ft_printf_putstr.o ft_printf_readarg.o ft_unicode2utf8.o \
+ft_printf.o ft_printf_putstr.o ft_printf_readarg.o ft_unicode2utf8.o \
 ft_intcpy.o ft_unicodedup.o ft_unicodelen.o ft_printf_execarg0.o \
-ft_printf_execarg1.o ft_printf_execarg2.o
+ft_printf_execarg1.o ft_printf_execarg2.o ft_printf_putnbr_signed.o \
+ft_printf_putnbr_unsigned.o
 
 $(NAME): ft_printf.h
 	$(CC) $(CFLAGS) -c $(SRC)
