@@ -23,9 +23,13 @@ int			ft_putstr_ascii(t_unicode *str, t_args *a)
 {
 	int		i;
 	int		len;
+	size_t	size;
 
 	i = 0;
-	len = (a->precision < 1) ? ft_unicodelen(str) : a->precision;
+	size = ft_unicodelen(str);
+	len = (a->precision < (int)size && a->precision > 0) ? a->precision : size;
+	if (a->precision == 0)
+		len = 0;
 	while (str[i] && i < len)
 	{
 		ft_putchar(*(str + i));

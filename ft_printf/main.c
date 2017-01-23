@@ -250,6 +250,10 @@ int	main(void)
 	test_printf("{%05.s}", 0);
 
 	test_printf("{%05.s}\n", "(nule)");
+	test_printf("{%5.s}\n", "(nule)");
+	test_printf("{%5s}\n", "(nule)");
+	test_printf("{%.5s}\n", "(nule)");
+
 	test_printf("{%05.s}\n", 0);
 	test_printf("{%5.s}\n", 0);
 	test_printf("{%0.s}\n", 0);

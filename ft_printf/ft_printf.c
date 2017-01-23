@@ -161,6 +161,9 @@ int	ft_recursive_printf(const char *str, va_list ap)
 	else if (a.type == '%')
 	{
 		c = '%';
+		a.width = -1;
+		a.precision = -1;
+		a.zero = -1;
 		s = ft_wstrdup((unsigned char*)(&c), 1);
 		if (!s)
 			return (-1);
