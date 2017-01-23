@@ -14,24 +14,31 @@
 
 int					ft_printf(const char *format, ...)
 {
-	va_list 		ap;
-	int 			r;
+	va_list			ap;
+	int				r;
 
 	va_start(ap, format);
 	r = ft_vprintf(format, ap);
-
 	va_end(ap);
 	return (r);
 }
 
-int					ft_vprintf(const char * restrict str, va_list ap)
+int					ft_printf_return(int new_return)
+{
+	static int		old_return = 0;
+
+	if (old_return == -1 && PERSIST_RETURN)
+		return (-1);
+	old_return = new_return;
+	return (new_return);
+}
+
+int					ft_vprintf(const char *restrict str, va_list ap)
 {
 	int				i;
 	char			*tmp;
 	t_args			a;
-	int 			printed;
-	static int 		old_return = 0;
-	int 			new_return;
+	int				printed;
 
 	i = 0;
 	if (str == NULL)
@@ -40,7 +47,7 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 	if (tmp == NULL)
 	{
 		ft_putstr(str);
-		return (old_return == -1 ? -1 : (int)ft_strlen(str));
+		return (ft_printf_return((int)ft_strlen(str)));
 	}
 	i = tmp - str;
 	write(1, str, i);
@@ -50,12 +57,8 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 	printed = i + a.tmp;
 	i += a.nbr;
 	if (a.err == 1)
-		old_return = -1;
-	new_return = ft_vprintf(str + i, ap) + printed;
-	if (old_return == -1 && PERSIST_RETURN)
-		return -1;
-	old_return = new_return;
-	return new_return;
+		return (ft_printf_return(-1));
+	return (ft_printf_return(ft_vprintf(str + i, ap) + printed));
 }
 
 void				ft_printf_synonyms(t_args *a)
@@ -98,4 +101,3 @@ t_unicode			*ft_wstrdup(const unsigned char *str, size_t len)
 		r[len] = str[len];
 	return (r);
 }
-
