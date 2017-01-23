@@ -12,6 +12,52 @@
 
 #include "ft_printf.h"
 
+int					ft_printf(const char *format, ...)
+{
+	va_list 		ap;
+	int 			r;
+
+	va_start(ap, format);
+	r = ft_vprintf(format, ap);
+
+	va_end(ap);
+	return (r);
+}
+
+int					ft_vprintf(const char * restrict str, va_list ap)
+{
+	int				i;
+	char			*tmp;
+	t_args			a;
+	int 			printed;
+	static int 		old_return = 0;
+	int 			new_return;
+
+	i = 0;
+	if (str == NULL)
+		return (-1);
+	tmp = ft_strchr(str, '%');
+	if (tmp == NULL)
+	{
+		ft_putstr(str);
+		return (old_return == -1 ? -1 : (int)ft_strlen(str));
+	}
+	i = tmp - str;
+	write(1, str, i);
+	a = ft_printf_readarg(str + i);
+	ft_printf_synonyms(&a);
+	ft_printf_execarg(&a, ap);
+	printed = i + a.tmp;
+	i += a.nbr;
+	if (a.err == 1)
+		old_return = -1;
+	new_return = ft_vprintf(str + i, ap) + printed;
+	if (old_return == -1 && PERSIST_RETURN)
+		return -1;
+	old_return = new_return;
+	return new_return;
+}
+
 void				ft_printf_synonyms(t_args *a)
 {
 	if (a->type == 'D')
@@ -53,63 +99,3 @@ t_unicode			*ft_wstrdup(const unsigned char *str, size_t len)
 	return (r);
 }
 
-int					ft_vprintf(const char * restrict str, va_list ap)
-{
-	int				i;
-	char			*tmp;
-	t_args			a;
-	int 			printed;
-	static int 		old_return = 0;
-	int 			new_return;
-
-	i = 0;
-	if (str == NULL)
-	{
-		return (-1);
-	}
-	tmp = ft_strchr(str, '%');
-	if (tmp == NULL)
-	{
-		ft_putstr(str);
-		return (old_return == -1 ? -1 : (int)ft_strlen(str));
-	}
-	i = tmp - str;
-	write(1, str, i);
-	a = ft_printf_readarg(str + i);
-	ft_printf_synonyms(&a);
-	if (a.type == 'p' || a.type == 'b' || a.type == 'd'
-		|| a.type == 'i' || a.type == 'o' || a.type == 'u' || a.type == 'x'
-		|| a.type == 'X')
-		ft_printf_execarg_pbdioux(&a, ap);
-	else if (a.type == 's')
-		ft_printf_execarg_s(&a, ap);
-	else if (a.type == 'r')
-		ft_printf_execarg_r(&a, ap);
-	else if (a.type == '%')
-		ft_printf_execarg_percent(&a);
-	else if (a.type == 'c')
-		ft_printf_execarg_c(&a, ap);
-	else
-		ft_printf_execarg_undefineds(&a);
-	printed = i + a.tmp;
-	i += a.nbr;
-	if (a.err == 1)
-		old_return = -1;
-	new_return = ft_vprintf(str + i, ap) + printed;
-	if (old_return == -1 && PERSIST_RETURN)
-		return -1;
-	old_return = new_return;
-	return new_return;
-}
-
-int				ft_printf(const char *format, ...)
-{
-	va_list ap;
-	int 	r;
-
-	va_start(ap, format);
-	r = ft_vprintf(format, ap);
-
-	va_end(ap);
-	return (r);
-}
