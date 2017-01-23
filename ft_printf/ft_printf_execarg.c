@@ -38,7 +38,6 @@ int					ft_printf_execarg_s(t_args *a, va_list ap)
 
 int					ft_printf_execarg_r(t_args *a, va_list ap)
 {
-
 	t_unicode		*s;
 	unsigned char	*u;
 
@@ -55,5 +54,30 @@ int					ft_printf_execarg_r(t_args *a, va_list ap)
 		ft_printf_wputstr(s, a, ft_putstr_raw_ascii);
 		free(s);
 	}
+	return (1);
+}
+
+int					ft_printf_execarg_c(t_args *a, va_list ap)
+{
+	t_unicode		c;
+	t_unicode		*s;
+
+	c = va_arg(ap, int);
+	if (a->lenght != SIZE_L)
+	{
+		s = ft_wstrdup((unsigned char*)(&c), 1);
+		if (!s)
+			return (-1);
+		ft_printf_wputstr(s, a, ft_putstr_ascii);
+	}
+	else
+	{
+		s = (t_unicode *)ft_memalloc(sizeof(t_unicode) * 2);
+		if (!s)
+			return (-1);
+		*s = c;
+		ft_printf_wputstr(s, a, ft_putstr_utf8);
+	}
+	free(s);
 	return (1);
 }

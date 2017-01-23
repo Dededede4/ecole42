@@ -117,26 +117,7 @@ int					ft_vprintf(const char * restrict str, va_list ap)
 		free(s);
 	}
 	else if (a.type == 'c')
-	{
-		c = va_arg(ap, int);
-		if (a.lenght != SIZE_L)
-		{
-			s = ft_wstrdup((unsigned char*)(&c), 1);
-			if (!s)
-				return (-1);
-			ft_printf_wputstr(s, &a, ft_putstr_ascii);
-		}
-		else
-		{
-			s = (int *)ft_memalloc(sizeof(t_unicode) * 2);
-			if (!s)
-				return (-1);
-			*s = c;
-			ft_printf_wputstr(s, &a, ft_putstr_utf8);
-		}
-		
-		free(s);
-	}
+		ft_printf_execarg_c(&a, ap);
 	else
 	{
 		if (a.type != '\0')
