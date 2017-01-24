@@ -12,7 +12,8 @@
 
 #include "ft_printf.h"
 
-intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
+intmax_t		ft_printf_getarg_nbr_signed(
+	va_list args, t_args a)
 {
 	intmax_t	nbr;
 
@@ -34,22 +35,24 @@ intmax_t	ft_printf_getarg_nbr_signed(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_nbrlen_signed_recursive(intmax_t nbr, t_args *a, char base)
+void			ft_printf_nbrlen_signed_len(
+	intmax_t nbr, t_args *a, char base)
 {
 	a->tmp++;
 	if (nbr == 0 && a->tmp != 0)
 		return ;
-	ft_printf_nbrlen_signed_recursive(nbr / base, a, base);
+	ft_printf_nbrlen_signed_len(nbr / base, a, base);
 }
 
-void	ft_printf_putnbr_signed_recursive(intmax_t nbr, t_args *a, char base, int neg)
+void			ft_printf_putnbr_signed_print(
+	intmax_t nbr, t_args *a, char base, int neg)
 {
 	intmax_t	n;
 
 	a->tmp++;
 	if (nbr == 0 && a->tmp != 0)
-		return;
-	ft_printf_putnbr_signed_recursive(nbr / base, a, base, neg);
+		return ;
+	ft_printf_putnbr_signed_print(nbr / base, a, base, neg);
 	n = nbr % base;
 	if (neg)
 		n = 0 - n;
@@ -64,14 +67,11 @@ void	ft_printf_putnbr_signed_recursive(intmax_t nbr, t_args *a, char base, int n
 	}
 }
 
-void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
+void			ft_printf_putnbr_signed_printwidth(
+	t_args *a, int neg)
 {
-	int spaces;
-	int save;
-	intmax_t	n;
+	int			spaces;
 
-	ft_printf_nbrlen_signed_recursive(nbr, a, base);
-	save = a->tmp;
 	if ((a->zero == -1 || a->precision > 0) && a->width != -1 && a->minus == -1)
 	{
 		if (a->precision != -1 && a->precision > a->tmp)
@@ -90,65 +90,32 @@ void	ft_printf_putnbr_signed(intmax_t nbr, t_args *a, char base, int neg)
 			a->tmp++;
 		}
 	}
-	if (a->plus != -1 && !neg)
-	{
-		ft_putchar('+');
-		a->tmp++;
-	}
-	else if (a->space != -1 && !neg)
-	{
-		ft_putchar(' ');
-		a->tmp++;
-	}
-	if (neg && a->zero != -1)
-	{
-		ft_putchar('-');
-		a->tmp++;
-	}
-	if (a->zero != -1 &&  a->precision == -1 &&  a->width != -1 && a->minus == -1)
-	{
-		spaces = a->width - a->tmp;
-		if (neg && a->zero == -1)
-			spaces--;
-		while (spaces-- > 0)
-		{
-			ft_putchar('0');
-			a->tmp++;
-		}
-	}
+}
+
+void			ft_printf_putnbr_signed(
+	intmax_t nbr, t_args *a, char base, int neg)
+{
+	int			initial_len;
+
+	ft_printf_nbrlen_signed_len(nbr, a, base);
+	initial_len = a->tmp;
+	ft_printf_putnbr_signed_printwidth(a, neg);
+	ft_printf_putnbr_signed_printargs(a, neg);
+	ft_printf_putnbr_signed_printzeros(a, neg);
 	if (neg && a->zero == -1)
 	{
 		ft_putchar('-');
 		a->tmp++;
 	}
-	if (a->precision != -1)
-	{
-		n = (a->precision > save) ? a->precision - save : 0;
-		while(n--)
-		{
-			write(1, "0", 1);
-			a->tmp++;
-		}
-	}
-	save = a->tmp;
+	ft_printf_putnbr_signed_printprecision(a, initial_len);
+	initial_len = a->tmp;
 	a->tmp = -1;
 	if (a->precision != 0)
 	{
-		ft_printf_putnbr_signed_recursive(nbr, a, base, neg);
-		a->tmp = save;
+		ft_printf_putnbr_signed_print(nbr, a, base, neg);
+		a->tmp = initial_len;
 	}
 	else
-	{
 		a->tmp = 0;
-	}
-	
-	if (a->width != -1 && a->minus != -1)
-	{
-		spaces = a->width - a->tmp;
-		while (spaces-- > 0)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
-	}
+	ft_printf_putnbr_signed_printafter(a);
 }
