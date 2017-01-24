@@ -95,4 +95,5 @@ void			ft_printf_putnbr_unsigned_printhash(t_args *a, uintmax_t nbr, char base);
 void			ft_printf_putnbr_unsigned_printzero(t_args *a);
 void			ft_printf_putnbr_unsigned_printprecision(t_args *a, int initial_len);
 void 			ft_printf_putnbr_unsigned_printafter(t_args *a);
+size_t			ft_printf_putstr_printwidth(t_unicode *str, t_args *a);
 #endif
