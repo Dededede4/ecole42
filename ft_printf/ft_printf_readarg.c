@@ -30,7 +30,7 @@ int		ft_printf_flags(const char *str, t_args *a)
 		else if (str[i] == ' ')
 			a->space = 1;
 		else
-			break;
+			break ;
 		i++;
 	}
 	return (i);
@@ -89,7 +89,7 @@ int		ft_printf_lenght(const char *str, t_args *a)
 
 t_args	ft_printf_readarg(const char *str)
 {
-	int 	i;
+	int		i;
 	t_args	a;
 
 	i = 1;
@@ -113,4 +113,3 @@ t_args	ft_printf_readarg(const char *str)
 	a.nbr = i;
 	return (a);
 }
-

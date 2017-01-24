@@ -1,20 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_unicode2utf8.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/01/24 19:19:47 by mprevot           #+#    #+#             */
+/*   Updated: 2017/01/24 19:19:53 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-size_t		ft_charsize(t_unicode c)
+size_t			ft_charsize(t_unicode c)
 {
 	if ((int)c < 128)
-		return 1;
+		return (1);
 	else if ((int)c < 2048)
-		return 2;
+		return (2);
 	else if ((int)c < 65536)
-		return 3;
+		return (3);
 	else if ((int)c < 2097152)
-		return 4;
+		return (4);
 	else
-		return 5;
+		return (5);
 }
 
-size_t		ft_strsize(t_unicode *str)
+size_t			ft_strsize(t_unicode *str)
 {
 	size_t	i;
 	size_t	size;
@@ -29,20 +41,51 @@ size_t		ft_strsize(t_unicode *str)
 	return (size);
 }
 
-void printbits2(long v, size_t size) {
-  long i; // for C89 compatability
-  for(i = --size; i >= 0; i--){
-                ft_putchar('0' + ((v >> i) & 1));
-                if (i % 4 == 0)
-                        ft_putchar(' ');
-        };
+int				ft_unicodemask(size_t chars)
+{
+	if (chars == 2)
+		return (0xC080);
+	else if (chars == 3)
+		return (0xE08080);
+	else if (chars == 4)
+		return (0xF0808080);
+	return (0);
 }
 
-
-t_utf8		*ft_unicode2utf8(t_unicode *i_str, size_t *size)
+int				ft_utf8int(t_unicode c)
 {
-	t_utf8	*c_str;
-	size_t	i;
+	size_t		chars;
+	int			nbr;
+	t_unicode	save;
+	int			to_write;
+
+	save = c;
+	chars = ft_charsize(c);
+	if (chars == 1)
+	{
+		return (int)c;
+	}
+	else
+	{
+		nbr = ft_unicodemask(chars);
+		to_write = 0x3F;
+		while (chars--)
+		{
+			nbr = (nbr | (save & to_write));
+			save = save << 2;
+			to_write = to_write << 8;
+		}
+		return (nbr);
+	}
+}
+
+t_utf8			*ft_unicode2utf8(t_unicode *i_str, size_t *size)
+{
+	t_utf8		*c_str;
+	size_t		i;
+	int			nbr;
+	int			save;
+	size_t		chars;
 
 	i = 0;
 	*size = 0;
@@ -50,42 +93,16 @@ t_utf8		*ft_unicode2utf8(t_unicode *i_str, size_t *size)
 		return (NULL);
 	while (i_str[i])
 	{
-		size_t chars = ft_charsize(i_str[i]);
-		int		nbr;
-		int		save = i_str[i];
-
+		chars = ft_charsize(i_str[i]);
+		save = i_str[i];
 		if (i_str[i] < 0 || i_str[i] > 1114112 ||
 			(i_str[i] >= 55296 && i_str[i] <= 57343))
 			return (NULL);
-		nbr = 0;
-		if (chars == 1)
-		{
-			c_str[*size] = (t_utf8)i_str[i];
-			i++;
-			(*size)++;
-			continue;
-		}
-		else if (chars == 2)
-			nbr = 0xC080;
-		else if (chars == 3)
-			nbr = 0xE08080;
-		else if (chars == 4)
-			nbr = 0xF0808080;
-		int 	toWrite = 0x3F;
-		while (chars--)
-		{
-			nbr = (nbr | (save & toWrite));			
-			save = save << 2;
-			toWrite = toWrite << 8;
-		}
-
-		/*printbits2(nbr, 32);
-		ft_putchar('\n');*/
-		chars = ft_charsize(i_str[i]);
+		nbr = ft_utf8int(i_str[i]);
 		(*size) += chars;
 		while (chars--)
 			c_str[(*size) - chars - 1] = (t_utf8)(nbr >> (8 * (chars)));
-		i++;		
+		i++;
 	}
-	return c_str;
+	return (c_str);
 }
