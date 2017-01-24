@@ -67,31 +67,6 @@ void			ft_printf_putnbr_signed_print(
 	}
 }
 
-void			ft_printf_putnbr_signed_printwidth(
-	t_args *a, int neg)
-{
-	int			spaces;
-
-	if ((a->zero == -1 || a->precision > 0) && a->width != -1 && a->minus == -1)
-	{
-		if (a->precision != -1 && a->precision > a->tmp)
-			spaces = a->width - a->precision;
-		else
-			spaces = a->width - a->tmp;
-		if ((a->plus != -1 && !neg) || (a->space != -1 && !neg))
-			spaces--;
-		if (neg && a->zero != -1)
-			spaces--;
-		if (neg && a->zero == -1)
-			spaces--;
-		while (spaces-- > 0)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
-	}
-}
-
 void			ft_printf_putnbr_signed(
 	intmax_t nbr, t_args *a, char base, int neg)
 {

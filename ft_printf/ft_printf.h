@@ -86,7 +86,13 @@ int				ft_printf_execarg_undefineds(t_args *a);
 int				ft_printf_execarg_pbdioux(t_args *a, va_list ap);
 int				ft_printf_execarg_percent(t_args *a);
 void    		ft_printf_putnbr_signed_printargs(t_args *a, int neg);
+void			ft_printf_putnbr_signed_printwidth(t_args *a, int neg);
 void 			ft_printf_putnbr_signed_printzeros(t_args *a, int neg);
 void			ft_printf_putnbr_signed_printprecision(t_args *a, int initial_len);
 void			ft_printf_putnbr_signed_printafter(t_args *a);
+void			ft_printf_putnbr_unsigned_printwidth(t_args *a, uintmax_t nbr, char base);
+void			ft_printf_putnbr_unsigned_printhash(t_args *a, uintmax_t nbr, char base);
+void			ft_printf_putnbr_unsigned_printzero(t_args *a);
+void			ft_printf_putnbr_unsigned_printprecision(t_args *a, int initial_len);
+void 			ft_printf_putnbr_unsigned_printafter(t_args *a);
 #endif

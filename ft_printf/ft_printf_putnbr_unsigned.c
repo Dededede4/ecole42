@@ -12,7 +12,8 @@
 
 #include "ft_printf.h"
 
-uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
+uintmax_t		ft_printf_getarg_nbr_unsigned(
+	va_list args, t_args a)
 {
 	uintmax_t	nbr;
 
@@ -36,15 +37,17 @@ uintmax_t	ft_printf_getarg_nbr_unsigned(va_list args, t_args a)
 	return (nbr);
 }
 
-void	ft_printf_nbrlen_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
+void			ft_printf_nbrlen_unsigned_recursive(
+	uintmax_t nbr, t_args *a, char base)
 {
 	a->tmp++;
 	if (nbr == 0 && a->tmp != 0)
-		return;
+		return ;
 	ft_printf_nbrlen_unsigned_recursive(nbr / base, a, base);
 }
 
-void	ft_printf_putnbr_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
+void			ft_printf_putnbr_unsigned_recursive(
+	uintmax_t nbr, t_args *a, char base)
 {
 	uintmax_t	n;
 
@@ -64,80 +67,26 @@ void	ft_printf_putnbr_unsigned_recursive(uintmax_t nbr, t_args *a, char base)
 	}
 }
 
-void	ft_printf_putnbr_unsigned(uintmax_t nbr, t_args *a, char base)
+void			ft_printf_putnbr_unsigned(
+	uintmax_t nbr, t_args *a, char base)
 {
-	int 		spaces;
 	int			save;
-	uintmax_t	n;
 
 	ft_printf_nbrlen_unsigned_recursive(nbr, a, base);
 	save = a->tmp;
-	if ((a->zero == -1 || a->precision > 0) && a->width != -1 && a->minus == -1)
-	{
-		if (a->precision != -1 && a->precision > a->tmp)
-			spaces = a->width - a->precision;
-		else
-			spaces = a->width - a->tmp;
-		if (a->hash != -1 && (nbr > 0 || a->type == 'p'))
-			spaces--;
-		if (a->hash != -1 && ((nbr > 0 && base == 16) || a->type == 'p'))
-			spaces--;
-
-		while (spaces-- > 0)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
-	}
-	if(a->hash != -1)
-	{
-		if ((a->type == 'o' && nbr != 0 && a->precision <= a->tmp) || (a->type != 'o' && (nbr > 0 || a->type == 'p')))
-		{
-			ft_putchar('0');
-			a->tmp++;
-		}
-		if ((nbr > 0 && base == 16) || a->type == 'p')
-		{
-			ft_putchar((a->type == 'X' ? 'X' : 'x'));
-			a->tmp++;
-		}
-	}
-	if (a->zero != -1 &&  a->precision == -1 &&  a->width != -1 && a->minus == -1)
-	{
-		spaces = a->width - a->tmp;
-		while (spaces-- > 0)
-		{
-			ft_putchar('0');
-			a->tmp++;
-		}
-	}
-	if (a->precision != -1)
-	{
-		n = (a->precision > save) ? a->precision - save : 0;
-		while(n--)
-		{
-			write(1, "0", 1);
-			a->tmp++;
-		}
-	}
-
-
+	ft_printf_putnbr_unsigned_printwidth(a, nbr, base);
+	ft_printf_putnbr_unsigned_printhash(a, nbr, base);
+	ft_printf_putnbr_unsigned_printzero(a);
+	ft_printf_putnbr_unsigned_printprecision(a, save);
 	save = a->tmp;
 	a->tmp = -1;
-	if ((a->precision != 0 || (a->precision == 0 && nbr != 0)) || (a->hash != -1 && a->type == 'o' ))
+	if ((a->precision != 0 || (a->precision == 0 && nbr != 0))
+		|| (a->hash != -1 && a->type == 'o'))
 		ft_printf_putnbr_unsigned_recursive(nbr, a, base);
 	else if (a->type != 'p')
 		save = 0;
 	else if (a->type == 'p')
 		save--;
 	a->tmp = save;
-	if (a->width != -1 && a->minus != -1)
-	{
-		spaces = a->width - a->tmp;
-		while (spaces-- > 0)
-		{
-			ft_putchar(' ');
-			a->tmp++;
-		}
-	}
+	ft_printf_putnbr_unsigned_printafter(a);
 }

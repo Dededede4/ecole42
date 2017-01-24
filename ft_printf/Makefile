@@ -25,7 +25,7 @@ libft/ft_lstadd.c libft/ft_lstiter.c libft/ft_lstmap.c libft/ft_putchar_fd.c lib
 libft/ft_putendl_fd.c libft/ft_putnbr_fd.c libft/ft_intlen.c libft/ft_memchrf.c \
 ft_printf.c ft_printf_putstr.c ft_printf_readarg.c ft_unicode2utf8.c ft_printf_putnbr_signed.c \
 ft_intcpy.c ft_unicodedup.c ft_unicodelen.c ft_printf_execarg0.c ft_printf_putnbr_unsigned.c \
-ft_printf_execarg1.c ft_printf_execarg2.c ft_printf_putnbr_signed_args.c
+ft_printf_execarg1.c ft_printf_execarg2.c ft_printf_putnbr_signed_args.c ft_printf_putnbr_unsigned_args.c
 
 OBJ=ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_memmove.o \
 ft_memchr.o ft_memcmp.o ft_strlen.o ft_strdup.o ft_strcpy.o \
@@ -43,7 +43,7 @@ ft_putendl_fd.o ft_putnbr_fd.o ft_intlen.o ft_memchrf.o \
 ft_printf.o ft_printf_putstr.o ft_printf_readarg.o ft_unicode2utf8.o \
 ft_intcpy.o ft_unicodedup.o ft_unicodelen.o ft_printf_execarg0.o \
 ft_printf_execarg1.o ft_printf_execarg2.o ft_printf_putnbr_signed.o \
-ft_printf_putnbr_unsigned.o ft_printf_putnbr_signed_args.o
+ft_printf_putnbr_unsigned.o ft_printf_putnbr_signed_args.o ft_printf_putnbr_unsigned_args.o
 
 $(NAME): ft_printf.h
 	$(CC) $(CFLAGS) -c $(SRC)
