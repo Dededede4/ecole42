@@ -96,4 +96,11 @@ void			ft_printf_putnbr_unsigned_printzero(t_args *a);
 void			ft_printf_putnbr_unsigned_printprecision(t_args *a, int initial_len);
 void 			ft_printf_putnbr_unsigned_printafter(t_args *a);
 size_t			ft_printf_putstr_printwidth(t_unicode *str, t_args *a);
+t_bool			ft_isunicode(t_unicode c);
+t_bool			ft_isunicode_str(t_unicode *str);
+t_bool			ft_isascii_str(unsigned char *str);
+void			ft_printf_synonyms(t_args *a);
+int				ft_printf_return(int new_return);
+t_unicode		*ft_wstrdup(const unsigned char *str, size_t len);
+int				ft_vprintf_tested(const char *restrict str, va_list ap);
 #endif

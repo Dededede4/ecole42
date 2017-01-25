@@ -95,9 +95,6 @@ t_utf8			*ft_unicode2utf8(t_unicode *i_str, size_t *size)
 	{
 		chars = ft_charsize(i_str[i]);
 		save = i_str[i];
-		if (i_str[i] < 0 || i_str[i] > 1114112 ||
-			(i_str[i] >= 55296 && i_str[i] <= 57343))
-			return (NULL);
 		nbr = ft_utf8int(i_str[i]);
 		(*size) += chars;
 		while (chars--)

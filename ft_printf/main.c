@@ -85,6 +85,8 @@ int	main(void)
 	test_printf("%%%%%%%%");
 	test_printf("%%aa%%cc%%000%%");
 	test_printf("a%0cc%%000%%");
+	test_printf("a%1cc%%000%%");
+	test_printf("a%2cc%%000%%");
 	test_printf("%-10S", L"");
 	test_printf("%-10S", L"blabla");
 	test_printf("%-10S", L"blablablab");

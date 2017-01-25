@@ -23,17 +23,41 @@ int					ft_printf(const char *format, ...)
 	return (r);
 }
 
-int					ft_printf_return(int new_return)
+t_bool				ft_vprintf_test(const char *restrict str, va_list ap)
 {
-	static int		old_return = 0;
+	int		i;
+	char	*tmp;
+	t_args	a;
 
-	if (old_return == -1 && PERSIST_RETURN)
-		return (-1);
-	old_return = new_return;
-	return (new_return);
+	if (!*str)
+		return (TRUE);
+	tmp = ft_strchr(str, '%');
+	if (tmp == NULL)
+		return (TRUE);
+	i = tmp - str;
+	a = ft_printf_readarg(str + i);
+	ft_printf_synonyms(&a);
+	if (a.type == 'c' && a.lenght == SIZE_L
+		&& !ft_isunicode(va_arg(ap, t_unicode)))
+		return (FALSE);
+	else
+		va_arg(ap, void*);
+	return (ft_vprintf_test(str + i + a.nbr, ap));
 }
 
 int					ft_vprintf(const char *restrict str, va_list ap)
+{
+	va_list original;
+
+	va_copy(original, ap);
+	if (str == NULL)
+		return (ft_printf_return(-1));
+	if (!ft_vprintf_test(str, ap))
+		return (ft_printf_return(-1));
+	return (ft_vprintf_tested(str, original));
+}
+
+int					ft_vprintf_tested(const char *restrict str, va_list ap)
 {
 	int				i;
 	char			*tmp;
@@ -41,8 +65,6 @@ int					ft_vprintf(const char *restrict str, va_list ap)
 	int				printed;
 
 	i = 0;
-	if (str == NULL)
-		return (-1);
 	tmp = ft_strchr(str, '%');
 	if (tmp == NULL)
 	{
@@ -60,45 +82,4 @@ int					ft_vprintf(const char *restrict str, va_list ap)
 	if (a.err == 1)
 		return (ft_printf_return(-1));
 	return (ft_printf_return(ft_vprintf(str + i, ap) + printed));
-}
-
-void				ft_printf_synonyms(t_args *a)
-{
-	if (a->type == 'D')
-	{
-		a->type = 'd';
-		a->lenght = SIZE_L;
-	}
-	else if (a->type == 'O')
-	{
-		a->type = 'o';
-		a->lenght = SIZE_L;
-	}
-	else if (a->type == 'U')
-	{
-		a->type = 'u';
-		a->lenght = SIZE_L;
-	}
-	else if (a->type == 'C')
-	{
-		a->type = 'c';
-		a->lenght = SIZE_L;
-	}
-	else if (a->type == 'S')
-	{
-		a->type = 's';
-		a->lenght = SIZE_L;
-	}
-}
-
-t_unicode			*ft_wstrdup(const unsigned char *str, size_t len)
-{
-	t_unicode		*r;
-
-	if (!(r = malloc((len + 1) * sizeof(t_unicode))))
-		return (NULL);
-	r[len] = '\0';
-	while (len--)
-		r[len] = str[len];
-	return (r);
 }
