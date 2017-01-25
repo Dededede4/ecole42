@@ -53,7 +53,8 @@ int					ft_vprintf(const char *restrict str, va_list ap)
 	write(1, str, i);
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
-	ft_printf_execarg(&a, ap);
+	if (ft_printf_execarg(&a, ap) == 0)
+		return (0);
 	printed = i + a.tmp;
 	i += a.nbr;
 	if (a.err == 1)

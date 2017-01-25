@@ -101,8 +101,9 @@ int					ft_printf_execarg_undefineds(t_args *a)
 			return (-1);
 		ft_printf_wputstr(s, a, ft_putstr_ascii);
 		free(s);
+		return (1);
 	}
-	return (1);
+	return (0);
 }
 
 int					ft_printf_execarg_pbdioux(t_args *a, va_list ap)
