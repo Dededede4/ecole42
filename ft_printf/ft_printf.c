@@ -78,7 +78,7 @@ int					ft_vprintf_tested(const char *restrict str, va_list ap)
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
 	if (ft_printf_execarg(&a, ap) == 0)
-		return (0);
+		return (i);
 	printed = i + a.tmp;
 	i += a.nbr;
 	if (a.err == 1)

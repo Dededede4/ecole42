@@ -295,7 +295,7 @@ int	main(void)
 
 
 	// Errors cases
-
+	
 	// Alway return -1 now.
 	test_printf("Unicode comprises %C code points in the range", 1114112);
 	test_printf("test");
