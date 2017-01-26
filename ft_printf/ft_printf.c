@@ -37,9 +37,11 @@ t_bool				ft_vprintf_test(const char *restrict str, va_list ap)
 	i = tmp - str;
 	a = ft_printf_readarg(str + i);
 	ft_printf_synonyms(&a);
-	if (a.type == 'c' && a.lenght == SIZE_L
-		&& !ft_isunicode(va_arg(ap, t_unicode)))
-		return (FALSE);
+	if (a.type == 'c' && a.lenght == SIZE_L)
+	{
+		if (!ft_isunicode(va_arg(ap, t_unicode)))
+			return (FALSE);
+	}
 	else
 		va_arg(ap, void*);
 	return (ft_vprintf_test(str + i + a.nbr, ap));

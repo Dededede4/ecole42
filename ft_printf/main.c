@@ -264,6 +264,17 @@ int	main(void)
 	test_printf("{% s}", NULL);
 
 	test_printf("{%05.%}", 0);
+
+	test_printf("%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C \
+	%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C\
+	%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C",
+	' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-',
+	'.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';',
+	'<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+	'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
+	'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+	't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}');
 	// Comportements indéfini
 	/*test_printf("%ll#x", 9223372036854775807);
 	test_printf("%5+d", 42);
