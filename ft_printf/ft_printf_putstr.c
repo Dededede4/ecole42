@@ -26,7 +26,7 @@ int				ft_putstr_utf8(
 			? a->precision - 1 : size;
 	if (a->width != -1 && a->precision != -1)
 		len++;
-	if (a->precision == 0)
+	if (a->precision == 0 && a->type != 'u')
 		len = 0;
 	write(1, output, len);
 	free(output);
@@ -43,7 +43,7 @@ int				ft_putstr_ascii(
 	i = 0;
 	size = ft_unicodelen(str);
 	len = (a->precision < (int)size && a->precision > 0) ? a->precision : size;
-	if (a->precision == 0)
+	if (a->precision == 0 && a->type != 'u')
 		len = 0;
 	while (str[i] && i < len)
 	{

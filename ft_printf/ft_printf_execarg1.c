@@ -90,6 +90,7 @@ int					ft_printf_execarg_undefineds(t_args *a)
 	if (a->type != '\0')
 	{
 		c = a->type;
+		a->type = 'u';
 		if (a->lenght != SIZE_L)
 			s = ft_wstrdup((unsigned char*)(&c), 1);
 		else

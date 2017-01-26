@@ -242,7 +242,9 @@ int	main(void)
 	test_printf("%.10d", -42);
 
 	test_printf("%15.4S", L"ééééééééééé");
+	test_printf("%15.4S", L"éééééééééééééééééééé");
 	test_printf("%15.4S", L"我是一只猫。");
+	test_printf("%4.4S", L"我是一只猫。");
 	test_printf("%15.4s", "42 is the answer");
 	test_printf("%4.15S", L"我是一只猫。");
 	test_printf("%4.S", L"我是一只猫。");
@@ -264,6 +266,7 @@ int	main(void)
 	test_printf("{% s}", NULL);
 
 	test_printf("{%05.%}", 0);
+	test_printf("{%05.Z}", 0);
 
 	test_printf("%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C \
 	%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C\
