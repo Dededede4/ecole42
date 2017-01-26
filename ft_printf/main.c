@@ -245,6 +245,9 @@ int	main(void)
 	test_printf("%15.4S", L"éééééééééééééééééééé");
 	test_printf("%15.4S", L"我是一只猫。");
 	test_printf("%4.4S", L"我是一只猫。");
+	test_printf("%4.1S", L"é");
+	test_printf("%4.2S", L"é");
+	test_printf("%4.3S", L"éé");
 	test_printf("%15.4s", "42 is the answer");
 	test_printf("%4.15S", L"我是一只猫。");
 	test_printf("%4.S", L"我是一只猫。");

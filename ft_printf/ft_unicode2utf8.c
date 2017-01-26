@@ -84,18 +84,20 @@ t_utf8			*ft_unicode2utf8(t_unicode *i_str, size_t *size)
 	t_utf8		*c_str;
 	size_t		i;
 	int			nbr;
-	int			save;
+	size_t		maxbytes;
 	size_t		chars;
 
 	i = 0;
+	maxbytes = *size;
 	*size = 0;
 	if (!(c_str = (t_utf8*)ft_strnew(ft_strsize(i_str) + 1)))
 		return (NULL);
 	while (i_str[i])
 	{
 		chars = ft_charsize(i_str[i]);
-		save = i_str[i];
 		nbr = ft_utf8int(i_str[i]);
+		if (*size + chars > maxbytes)
+			return (c_str);
 		(*size) += chars;
 		while (chars--)
 			c_str[(*size) - chars - 1] = (t_utf8)(nbr >> (8 * (chars)));

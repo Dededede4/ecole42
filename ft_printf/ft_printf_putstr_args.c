@@ -22,8 +22,8 @@ size_t			ft_printf_putstr_printwidth(
 	spaces = (a->width > size) ? a->width - size : 0;
 	if (a->width != -1)
 	{
-
-		if (str[0] != 0 && a->precision != -1 && (a->precision <= size && a->type != 'u'))
+		if (str[0] != 0 && a->precision != -1 &&
+			(a->precision < size && a->type != 'u'))
 			spaces = (a->width > a->precision) ? a->width - a->precision : 0;
 		if (str[0] == 0 && a->type == 'c')
 		{

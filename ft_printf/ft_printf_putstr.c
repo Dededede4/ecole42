@@ -11,26 +11,30 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 int				ft_putstr_utf8(
 	t_unicode *str, t_args *a)
 {
 	size_t		size;
 	char		*output;
-	int			len;
+	size_t		len;
+	size_t		spaces;
 
+	len = (a->precision > 0) ? a->precision : -1;
+	if (a->precision == 0 && a->type != 'u')
+		len = 0;
+	size = len;
 	output = (char *)ft_unicode2utf8(str, &size);
 	if (output == NULL)
 		return (-1);
-	len = (a->precision < (int)size && a->precision > 0)
-			? a->precision - 1 : size;
-	if (a->width != -1 && a->precision != -1)
-		len++;
-	if (a->precision == 0 && a->type != 'u')
-		len = 0;
-	write(1, output, len);
+	spaces = (a->precision > (int)size && a->width > 0) ?
+		a->precision - size : 0;
+	while (spaces--)
+		ft_putchar(' ');
+	write(1, output, size);
 	free(output);
-	return (len);
+	return (size);
 }
 
 int				ft_putstr_ascii(
