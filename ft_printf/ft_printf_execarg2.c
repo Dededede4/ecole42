@@ -18,9 +18,7 @@ int					ft_printf_execarg_percent(t_args *a)
 	t_unicode		*s;
 
 	c = '%';
-	a->width = -1;
 	a->precision = -1;
-	a->zero = -1;
 	s = ft_wstrdup((unsigned char*)(&c), 1);
 	if (!s)
 		return (-1);
