@@ -240,7 +240,6 @@ int	main(void)
 	test_printf("%.5S", L"a");
 	test_printf("%15.4s", "42");
 	test_printf("%.10d", -42);
-
 	test_printf("%15.4S", L"ééééééééééé");
 	test_printf("%15.4S", L"éééééééééééééééééééé");
 	test_printf("%15.4S", L"我是一只猫。");
@@ -255,22 +254,18 @@ int	main(void)
 	test_printf("%%   %", "test");
 	test_printf("%4.s", "42");
 	test_printf("{%05.s}", 0);
-
 	test_printf("{%05.s}\n", "(nule)");
 	test_printf("{%5.s}\n", "(nule)");
 	test_printf("{%5s}\n", "(nule)");
 	test_printf("{%.5s}\n", "(nule)");
-
 	test_printf("{%05.s}\n", 0);
 	test_printf("{%5.s}\n", 0);
 	test_printf("{%0.s}\n", 0);
 	test_printf("{%s}", 0);
 	test_printf("{%S}", 0);
 	test_printf("{% s}", NULL);
-
 	test_printf("{%05.%}", 0);
 	test_printf("{%05.Z}", 0);
-
 	test_printf("%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C \
 	%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C\
 	%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C",
@@ -281,6 +276,10 @@ int	main(void)
 	'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
 	'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
 	't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}');
+	test_printf("@moulitest: %5.x %5.0x", 0, 0);
+	test_printf("@moulitest: %5.o %5.0o", 0, 0);
+	test_printf("@moulitest: %.d %.0d", 42, 43);
+	test_printf("@moulitest: %5.d %5.0d", 0, 0);
 	// Comportements indéfini
 	/*test_printf("%ll#x", 9223372036854775807);
 	test_printf("%5+d", 42);
