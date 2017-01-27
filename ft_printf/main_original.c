@@ -46,7 +46,9 @@ void	transform(void	*nbr)
 
 int		main(void)
 {
-	ft_printf("{%05.Z}", 0);
+	ft_putstr("|");
+	ft_printf("%5.x", 0);
+	ft_putstr("|");
 	/*printf("{%5.s}\n", "(nule)");
 	ft_printf("{%5.s}\n", L"(nule)");
 	printf("{%5.S}\n", "(nule)");

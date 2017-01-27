@@ -27,6 +27,8 @@ void			ft_printf_putnbr_unsigned_printwidth(
 			spaces--;
 		if (a->hash != -1 && ((nbr > 0 && base == 16) || a->type == 'p'))
 			spaces--;
+		if (a->precision == 0 && nbr == 0)
+			spaces++;
 		while (spaces-- > 0)
 		{
 			ft_putchar(' ');

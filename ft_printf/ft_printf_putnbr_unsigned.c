@@ -83,9 +83,7 @@ void			ft_printf_putnbr_unsigned(
 	if ((a->precision != 0 || (a->precision == 0 && nbr != 0))
 		|| (a->hash != -1 && a->type == 'o'))
 		ft_printf_putnbr_unsigned_recursive(nbr, a, base);
-	else if (a->type != 'p')
-		save = 0;
-	else if (a->type == 'p')
+	else
 		save--;
 	a->tmp = save;
 	ft_printf_putnbr_unsigned_printafter(a);

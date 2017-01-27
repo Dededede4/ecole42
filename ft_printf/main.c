@@ -276,6 +276,8 @@ int	main(void)
 	'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
 	'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
 	't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}');
+	test_printf("%5.x", 0);
+	test_printf("%5.x", 1);
 	test_printf("@moulitest: %5.x %5.0x", 0, 0);
 	test_printf("@moulitest: %5.o %5.0o", 0, 0);
 	test_printf("@moulitest: %.d %.0d", 42, 43);
