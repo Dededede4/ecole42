@@ -85,12 +85,12 @@ void			ft_printf_putnbr_signed(
 	ft_printf_putnbr_signed_printprecision(a, initial_len);
 	initial_len = a->tmp;
 	a->tmp = -1;
-	if (a->precision != 0)
+	if (a->precision != 0 || nbr != 0)
 	{
 		ft_printf_putnbr_signed_print(nbr, a, base, neg);
 		a->tmp = initial_len;
 	}
 	else
-		a->tmp = 0;
+		a->tmp = initial_len - 1;
 	ft_printf_putnbr_signed_printafter(a);
 }

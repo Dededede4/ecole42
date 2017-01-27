@@ -29,6 +29,8 @@ void			ft_printf_putnbr_signed_printwidth(
 			spaces--;
 		if (neg && a->zero == -1)
 			spaces--;
+		if (a->precision == 0)
+			spaces++;
 		while (spaces-- > 0)
 		{
 			ft_putchar(' ');
