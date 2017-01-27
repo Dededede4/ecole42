@@ -24,8 +24,6 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
-
-
 # define BUFF_SIZE 42
 
 typedef struct		s_parts_chars
@@ -53,17 +51,16 @@ typedef struct		s_list
 ** ended is equal to 1 if the fd is at the end of the file, otherwise 0.
 */
 
-typedef struct          s_buff
+typedef struct		s_buff
 {
-        int                             fd;
-        char                    *content;
-        char                    *content_start;
-        int                             ended;
-        struct s_buff   *next;
-}                                       t_buff;
+	int				fd;
+	char			*content;
+	char			*content_start;
+	int				ended;
+	struct s_buff	*next;
+}					t_buff;
 
-int                                     get_next_line(const int fd, char **line);
-
+int					get_next_line(const int fd, char **line);
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -78,19 +75,19 @@ char				*ft_strcpy(char *dst, const char *src);
 char				*ft_strncpy(char *dst, const char *src, size_t len);
 char				*ft_strcat(char *restrict s1, const char *restrict s2);
 char				*ft_strncat(char *restrict s1,
-								const char *restrict s2,
-								size_t n);
+		const char *restrict s2,
+		size_t n);
 size_t				ft_strlcat(char *restrict dst,
-								const char *restrict src,
-								size_t size);
+		const char *restrict src,
+		size_t size);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				*ft_strstr(const char *big, const char *little);
 int					ft_strcmp(char *s1, char *s2);
 char				*ft_strnstr(const char *big,
-								const char *little,
-								size_t len);
+		const char *little,
+		size_t len);
 int					ft_atoi(const char *str);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
@@ -110,8 +107,8 @@ char				*ft_strmap(char const *s, char (*f)(char));
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1,
-								char const *s2,
-								size_t n);
+		char const *s2,
+		size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
@@ -138,5 +135,5 @@ int					ft_factorial(int nb);
 void				ft_swap(int *a, int *b);
 int					ft_gnl(const int fd, char **line);
 int					ft_intlen(int n);
-void		*ft_memchrf(void *s, int (*f)(void *), size_t len);
+void				*ft_memchrf(void *s, int (*f)(void *), size_t len);
 #endif
