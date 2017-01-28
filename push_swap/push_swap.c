@@ -7,6 +7,8 @@ int		main(int argc, char **argv)
 	{
 		lst = ft_arraytolst(argv + 1, argc - 1);
 		ft_printlst(lst);
+		ft_printf("\n");
+		ft_pushswap_stupidsort(lst);
 	}
 	return (0);
 }
