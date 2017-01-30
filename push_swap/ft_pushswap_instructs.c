@@ -79,16 +79,20 @@ void		ft_pushswap_ra(t_stacks *stacks)
 {
 	t_vals	*first;
 	t_vals	*current;
+	t_vals	*before_last;
 
 	if (stacks->stacka->next == NULL)
 		return ;
 	first = stacks->stacka;
 	current = first;
-	stacks->stacka = first->next;
 	while (current->next)
+	{
+		before_last = current;
 		current = current->next;
+	}
+	stacks->stacka = current;
 	current->next = first;
-	first->next = NULL;
+	before_last->next = NULL;
 	ft_instructnew(stacks, "ra");
 }
 
@@ -113,7 +117,6 @@ void		ft_pushswap_rra(t_stacks *stacks)
 {
 	t_vals	*first;
 	t_vals	*current;
-	t_vals *before_last;
 
 	if (stacks->stacka->next == NULL)
 		return ;
@@ -121,15 +124,10 @@ void		ft_pushswap_rra(t_stacks *stacks)
 	current = first;
 	stacks->stacka = first->next;
 	while (current->next)
-	{
-		before_last = current;
 		current = current->next;
-	}
-	before_last->next = NULL;
 	current->next = first;
-	first = current;
-	first->next = NULL;
-	ft_instructnew(stacks, "ra");
+	current->next->next = NULL;
+	ft_instructnew(stacks, "rra");
 }
 
 void		ft_pushswap_rrb(t_stacks *stacks)
@@ -153,4 +151,32 @@ void		ft_pushswap_rrb(t_stacks *stacks)
 	first = current;
 	first->next = NULL;
 	ft_instructnew(stacks, "ra");
+}
+
+void		ft_pushswap_instruct(char instruct, t_stacks *stacks)
+{
+	if (instruct == INSTRUCT_SA)
+		ft_pushswap_sa(stacks);
+	else if (instruct == INSTRUCT_SB)
+		ft_pushswap_sb(stacks);
+	else if (instruct == INSTRUCT_SS)
+		ft_pushswap_ss(stacks);
+	else if (instruct == INSTRUCT_PA)
+		ft_pushswap_pa(stacks);
+	else if (instruct == INSTRUCT_PB)
+		ft_pushswap_pb(stacks);
+	else if (instruct == INSTRUCT_RA)
+		ft_pushswap_ra(stacks);
+	else if (instruct == INSTRUCT_RB)
+		ft_pushswap_rb(stacks);
+	else if (instruct == INSTRUCT_RRA)
+		ft_pushswap_rra(stacks);
+	else if (instruct == INSTRUCT_RRB)
+		ft_pushswap_rrb(stacks);
+	else
+	{
+		ft_putstr_fd("Error : ft_pushswap_instruct have unknown instruction.", 1);
+		exit(1);
+	}
+
 }
