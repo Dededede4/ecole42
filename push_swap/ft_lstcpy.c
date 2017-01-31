@@ -6,7 +6,6 @@ t_list	*ft_lstcpy(t_list *src)
 	t_list	*first;
 	t_list	*current;
 
-
 	first = NULL;
 	while (src)
 	{
