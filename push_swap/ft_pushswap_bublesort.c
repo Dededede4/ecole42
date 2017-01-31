@@ -80,6 +80,8 @@ t_instructs		*ft_pushswap_bublesort(t_vals *vals)
 
 	stacks = malloc(sizeof(t_stacks));
 	stacks->stacka = ft_lstcpy(vals);
+	stacks->instructs = NULL;
+	stacks->stackb = NULL;
 	len = (int)ft_lstlen(vals);
 
 	/*ft_printlst(stacks->stacka);

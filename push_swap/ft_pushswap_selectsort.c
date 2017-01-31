@@ -33,6 +33,7 @@ t_instructs		*ft_pushswap_selectsort(t_vals *vals)
 	stacks = malloc(sizeof(t_stacks));
 	stacks->stacka = ft_lstcpy(vals);
 	stacks->instructs = NULL;
+	stacks->stackb = NULL;
 	while (stacks->stacka)
 	{
 		moves = ft_pushswap_selectsort_findmin(stacks->stacka);
