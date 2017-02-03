@@ -21,6 +21,7 @@ int 		ft_pushswap_selectsort_findmin(t_vals *vals)
 		length++;
 		vals = vals->next;
 	}
+	//ft_printf("===>%d<=== (%d)\n", min_val, (min_pos <= (length / 2) ? min_pos : 0 - (length - min_pos)));
 	return (min_pos <= (length / 2) ? min_pos : 0 - (length - min_pos));
 }
 
@@ -40,9 +41,9 @@ t_instructs		*ft_pushswap_selectsort(t_vals *vals)
 		while (moves != 0)
 		{
 			if (moves > 0)
-				ft_pushswap_instruct(INSTRUCT_RRA, stacks);
-			else
 				ft_pushswap_instruct(INSTRUCT_RA, stacks);
+			else
+				ft_pushswap_instruct(INSTRUCT_RRA, stacks);
 			moves += (moves > 0) ? -1 : 1;
 		}
 		ft_pushswap_instruct(INSTRUCT_PB, stacks);
