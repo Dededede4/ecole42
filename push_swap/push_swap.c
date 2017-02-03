@@ -38,3 +38,45 @@ int		main(int argc, char **argv)
 	}
 	return (0);
 }
+
+/*
+
+
+int		main(int argc, char **argv)
+{
+	t_list	*lst;
+	t_stacks *stacks;
+	char 	instructs[] = {INSTRUCT_PB, INSTRUCT_PB, INSTRUCT_PB, INSTRUCT_PB, INSTRUCT_SA, INSTRUCT_SB, INSTRUCT_SS,
+		INSTRUCT_PA, INSTRUCT_RA, INSTRUCT_RB,	INSTRUCT_RRA,
+		INSTRUCT_RRB, 0};
+	char 	*instructs_str[] = {"INSTRUCT_PB", "INSTRUCT_PB", "INSTRUCT_PB", "INSTRUCT_PB", "INSTRUCT_SA", "INSTRUCT_SB", "INSTRUCT_SS",
+		"INSTRUCT_PA", "INSTRUCT_RA", "INSTRUCT_RB", "INSTRUCT_RRA",
+		"INSTRUCT_RRB", 0};
+	int 	i = 0;
+	if (argc > 8)
+	{
+		lst = ft_arraytolst(argv + 1, argc - 1);
+
+		stacks = malloc(sizeof(t_stacks));
+		stacks->stacka = lst;
+		stacks->instructs = NULL;
+		stacks->stackb = NULL;
+		ft_printf("A:");
+		ft_printlst(stacks->stacka);
+		ft_printf("\nB:");
+		ft_printlst(stacks->stackb);
+		ft_printf("\n\n");
+		while (instructs[i])
+		{
+			ft_printf("%s\n", instructs_str[i]);
+			ft_pushswap_instruct(instructs[i], stacks);
+			ft_printf("A:");
+			ft_printlst(stacks->stacka);
+			ft_printf("\nB:");
+			ft_printlst(stacks->stackb);
+			ft_printf("\n\n");
+			i++;
+		}
+	}
+	return (0);
+}*/

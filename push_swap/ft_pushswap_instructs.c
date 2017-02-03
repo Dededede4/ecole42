@@ -113,16 +113,20 @@ void		ft_pushswap_rra(t_stacks *stacks)
 {
 	t_vals	*first;
 	t_vals	*current;
+	t_vals	*before_last;
 
 	if (stacks->stacka->next == NULL)
 		return ;
 	first = stacks->stacka;
 	current = first;
-	stacks->stacka = first->next;
 	while (current->next)
+	{
+		before_last = current;
 		current = current->next;
+	}
 	current->next = first;
-	current->next->next = NULL;
+	stacks->stacka = current;
+	before_last->next = NULL;
 	ft_instructnew(stacks, "rra");
 }
 
@@ -130,23 +134,21 @@ void		ft_pushswap_rrb(t_stacks *stacks)
 {
 	t_vals	*first;
 	t_vals	*current;
-	t_vals *before_last;
+	t_vals	*before_last;
 
 	if (stacks->stackb->next == NULL)
 		return ;
 	first = stacks->stackb;
 	current = first;
-	stacks->stackb = first->next;
 	while (current->next)
 	{
 		before_last = current;
 		current = current->next;
 	}
-	before_last->next = NULL;
 	current->next = first;
-	first = current;
-	first->next = NULL;
-	ft_instructnew(stacks, "ra");
+	stacks->stackb = current;
+	before_last->next = NULL;
+	ft_instructnew(stacks, "rrb");
 }
 
 void		ft_pushswap_instruct(char instruct, t_stacks *stacks)

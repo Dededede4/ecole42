@@ -103,9 +103,9 @@ t_instructs		*ft_pushswap_bublesort(t_vals *vals)
 		{
 			
 			if (moves > 0)
-				ft_pushswap_instruct(INSTRUCT_RRA, stacks);
-			else if (moves < 0)
 				ft_pushswap_instruct(INSTRUCT_RA, stacks);
+			else if (moves < 0)
+				ft_pushswap_instruct(INSTRUCT_RRA, stacks);
 			moves += (moves > 0) ? -1 : 1;
 
 			//ft_printlst(stacks->stacka);
@@ -133,7 +133,7 @@ t_instructs		*ft_pushswap_bublesort(t_vals *vals)
 	}
 	while (index--)
 	{
-		ft_pushswap_instruct(INSTRUCT_RRA, stacks);
+		ft_pushswap_instruct(INSTRUCT_RA, stacks);
 		vals = vals->next;
 	}
 	/*ft_printf("Final :\n");
