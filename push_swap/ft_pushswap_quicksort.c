@@ -65,6 +65,19 @@ void			ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr)
 	}
 }
 
+t_bool			ft_pushswap_quicksort_isallfixed(t_vals **fixeds, t_vals *lst)
+{
+	while (lst)
+	{
+		if (!ft_pushswap_quicksort_isfixed(*fixeds, (*((int*)lst->content))))
+		{
+			return (FALSE);
+		}
+		lst = lst->next;
+	}
+	return (TRUE);
+}
+
 void			ft_pushswap_quicksort_fixalones(t_vals **fixeds, t_vals *lst)
 {
 	int length;
@@ -118,6 +131,8 @@ void 		ft_pushswap_quicksort_a2b_push(t_stacks *stacks, int nbr)
 		moves += (moves > 0) ? -1 : 1;
 	}
 	ft_pushswap_instruct(INSTRUCT_PB, stacks);
+	/*if (stacks->stackb->next && *((int*)stacks->stackb->content) < *((int*)stacks->stackb->next->content))
+		ft_pushswap_instruct(INSTRUCT_SB, stacks);*/
 	// pas besoin de faire ça si y'a un FIXED (mais comme c'est extrèmement probable…)
 	moves = sv_moves;
 	if (moves == 0)
@@ -142,8 +157,11 @@ void 		ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 
 	while (stacks->stacka)
 	{
+		if (ft_pushswap_quicksort_isallfixed(f_nbrs, stacks->stacka))
+			return ;
 		while (stacks->stacka && ft_pushswap_quicksort_isfixed(*f_nbrs, *((int*)stacks->stacka->content)))
 			ft_pushswap_instruct(INSTRUCT_PB, stacks);
+
 		if (stacks->stacka == NULL)
 			return ;
 		first = stacks->stacka;
@@ -199,6 +217,8 @@ void 		ft_pushswap_quicksort_b2a_push(t_stacks *stacks, int nbr)
 		moves += (moves > 0) ? -1 : 1;
 	}
 	ft_pushswap_instruct(INSTRUCT_PA, stacks);
+	/*if (stacks->stacka->next && *((int*)stacks->stacka->content) > *((int*)stacks->stacka->next->content))
+		ft_pushswap_instruct(INSTRUCT_SA, stacks);*/
 	// pas besoin de faire ça si y'a un FIXED (mais comme c'est extrèmement probable…)
 	moves = sv_moves;
 	if (moves == 0)
@@ -263,7 +283,7 @@ t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 	stacks->stackb = NULL;
 	stacks->instructs = NULL;
 	len = ft_lstlen(stacks->stacka);
-	while (len != ft_lstlen(f_nbrs))
+	while (!ft_pushswap_quicksort_issorted(stacks->stacka) && len != ft_lstlen(f_nbrs))
 	{
 		ft_pushswap_quicksort_a2b(stacks, &f_nbrs);
 		ft_printf("Stacka : \n");
