@@ -68,7 +68,7 @@ int 		ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 
 
 
-t_instructs		*ft_pushswap_bublesort(t_vals *vals)
+t_stacks		*ft_pushswap_bublesort(t_vals *vals)
 {
 	t_stacks *stacks;
 	int 		moves;
@@ -140,6 +140,6 @@ t_instructs		*ft_pushswap_bublesort(t_vals *vals)
 	ft_printlst(stacks->stacka);
 	ft_printf("\n");*/
 	//ft_printlst_str(stacks->instructs);
-	return stacks->instructs;
+	return stacks;
 }
 

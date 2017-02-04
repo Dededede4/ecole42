@@ -1,0 +1,102 @@
+
+
+pivot : 8, first: 1
+
+Stacka : 
+
+Stackb : 
+8 7 6 4 5 3 2 1 
+ Nombres fixes :
+8 
+
+
+
+pivot : 1, first: 7
+
+
+ 2 Stacka : 
+1 2 3 5 4 6 7 8 
+ 2 Stackb : 
+
+ 2 Nombres fixes :
+1 8 
+
+
+
+
+
+pivot : 7, first: 2
+
+Stacka : 
+
+Stackb : 
+8 7 6 4 5 3 2 1 
+ Nombres fixes :
+7 1 8 
+
+
+
+pivot : 2, first: 6
+
+
+ 2 Stacka : 
+1 2 3 5 4 6 7 8 
+ 2 Stackb : 
+
+ 2 Nombres fixes :
+2 7 1 8 
+
+
+
+
+
+pivot : 6, first: 3
+
+Stacka : 
+
+Stackb : 
+8 7 6 4 5 3 2 1 
+ Nombres fixes :
+6 2 7 1 8 
+
+
+
+pivot : 3, first: 4
+
+
+ 2 Stacka : 
+1 2 3 5 4 6 7 8 
+ 2 Stackb : 
+
+ 2 Nombres fixes :
+3 6 2 7 1 8 
+
+
+
+
+
+pivot : 4, first: 5
+
+
+
+pivot : 5, first: 5
+
+Stacka : 
+
+Stackb : 
+8 7 6 5 4 3 2 1 
+ Nombres fixes :
+5 4 3 6 2 7 1 8 
+
+
+ 2 Stacka : 
+1 2 3 4 5 6 7 8 
+ 2 Stackb : 
+
+ 2 Nombres fixes :
+5 4 3 6 2 7 1 8 
+
+
+
+Le gagnant est le bublesort !
+Instructions : 9

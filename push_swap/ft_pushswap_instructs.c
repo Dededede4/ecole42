@@ -97,7 +97,7 @@ void		ft_pushswap_rb(t_stacks *stacks)
 	t_vals	*first;
 	t_vals	*current;
 
-	if (stacks->stacka->next == NULL)
+	if (stacks->stackb->next == NULL)
 		return ;
 	first = stacks->stackb;
 	current = first;
@@ -176,5 +176,9 @@ void		ft_pushswap_instruct(char instruct, t_stacks *stacks)
 		ft_putstr_fd("Error : ft_pushswap_instruct have unknown instruction.", 1);
 		exit(1);
 	}
-
+	ft_printf("\nSTACK A: ");
+	ft_printlst(stacks->stacka);
+	ft_printf("\nSTACK B: ");
+	ft_printlst(stacks->stackb);
+	ft_printf("\n");
 }

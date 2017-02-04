@@ -9,6 +9,7 @@ t_bool 			ft_pushswap_quicksort_issorted(t_vals *lst)
 	{
 		if (p > *((int*)lst->content))
 			return (FALSE);
+		p = *((int*)lst->content);
 		lst = lst->next;
 	}
 	return (TRUE);
@@ -40,15 +41,17 @@ t_vals			*ft_pushswap_quicksort_findfirst(t_vals *fixeds, t_vals *lst)
 
 t_vals			*ft_pushswap_quicksort_findlast(t_vals *fixeds, t_vals *lst)
 {
-	while (lst->next)
+	t_vals	*before_last;
+
+	before_last = NULL;
+	while (lst)
 	{
 		if (ft_pushswap_quicksort_isfixed(fixeds, (*((int*)lst->content))))
-		{
-			return (lst);
-		}
+			return (before_last);
+		before_last = lst;
 		lst = lst->next;
 	}
-	return (lst);
+	return (before_last);
 }
 
 void			ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr)
@@ -93,7 +96,9 @@ void 		ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 	t_vals	*current;
 	t_vals	*first;
 	t_vals	*next;
+	int 	rollback;
 
+	rollback = 0;
 	while (stacks->stacka)
 	{
 		while (stacks->stacka && ft_pushswap_quicksort_isfixed(*f_nbrs, *((int*)stacks->stacka->content)))
@@ -103,26 +108,37 @@ void 		ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 		first = stacks->stacka;
 		current = ft_pushswap_quicksort_findlast(*f_nbrs, first);
 		pivot = *((int*)current->content);
+		////ft_printf("\n\npivot : %d, first: %d\n\n", pivot, *((int*)first->content));
 		current = first;
-		//ft_printf("start\n");
+		////ft_printf("start\n");
 		while (current && !ft_pushswap_quicksort_isfixed(*f_nbrs, (*((int*)current->content))))
 		{
 			next = current->next;
-			//ft_printf("\n%d <= %d\n", *((int*)current->content), pivot);
-			if (*((int*)current->content) <= pivot)
+			////ft_printf("\n%d <= %d\n", *((int*)current->content), pivot);
+			if (*((int*)current->content) < pivot)
 				ft_pushswap_instruct(INSTRUCT_PB, stacks);
-			else
+			else if (*((int*)current->content) > pivot)
+			{
 				ft_pushswap_instruct(INSTRUCT_RA, stacks);
-			if (*((int*)current->content) == pivot)
+				rollback++;
+			}
+			else
 			{
 				ft_pushswap_quicksort_setfixed(f_nbrs, pivot);
+				ft_pushswap_instruct(INSTRUCT_PB, stacks);
+				while (rollback--)
+				{
+					ft_pushswap_instruct(INSTRUCT_RRA, stacks);
+				}
+				rollback = 0;
 				break;
 			}
 			current = next;
-			//ft_printlst(stacks->stacka);
-			//ft_printf("\n");
+			////ft_printlst(stacks->stacka);
+			////ft_printf("\n");
 		}
 	}
+
 	ft_pushswap_quicksort_fixalones(f_nbrs, stacks->stackb);
 }
 
@@ -132,7 +148,9 @@ void 		ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 	t_vals	*current;
 	t_vals	*first;
 	t_vals	*next;
+	int 	rollback;
 
+	rollback = 0;
 	while (stacks->stackb)
 	{
 		while (stacks->stackb && ft_pushswap_quicksort_isfixed(*f_nbrs, *((int*)stacks->stackb->content)))
@@ -142,19 +160,29 @@ void 		ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 		first = stacks->stackb;
 		current = ft_pushswap_quicksort_findlast(*f_nbrs, first);
 		pivot = *((int*)current->content);
+		//ft_printf("\n\npivot : %d, first: %d\n\n", pivot, *((int*)first->content));
 		current = first;
 		//ft_printf("start\n");
 		while (current && !ft_pushswap_quicksort_isfixed(*f_nbrs, (*((int*)current->content))))
 		{
 			next = current->next;
 			//ft_printf("\n%d >= %d\n", *((int*)current->content), pivot);
-			if (*((int*)current->content) >= pivot)
+			if (*((int*)current->content) > pivot)
 				ft_pushswap_instruct(INSTRUCT_PA, stacks);
-			else
+			else if (*((int*)current->content) < pivot)
+			{
 				ft_pushswap_instruct(INSTRUCT_RB, stacks);
-			if (*((int*)current->content) == pivot)
+				rollback++;
+			}
+			else
 			{
 				ft_pushswap_quicksort_setfixed(f_nbrs, pivot);
+				ft_pushswap_instruct(INSTRUCT_PA, stacks);
+				while (rollback--)
+				{
+					ft_pushswap_instruct(INSTRUCT_RRB, stacks);
+				}
+				rollback = 0;
 				break;
 			}
 			current = next;
@@ -165,10 +193,11 @@ void 		ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 	ft_pushswap_quicksort_fixalones(f_nbrs, stacks->stacka);
 }
 
-t_instructs		*ft_pushswap_quicksort(t_vals *vals)
+t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 {
 	t_stacks *stacks;
 	t_vals	*f_nbrs;
+	//int i = 0;
 
 	f_nbrs = NULL;
 	stacks = malloc(sizeof(t_stacks));
@@ -180,9 +209,9 @@ t_instructs		*ft_pushswap_quicksort(t_vals *vals)
 		ft_pushswap_quicksort_a2b(stacks, &f_nbrs);
 		//ft_printf("Stacka : \n");
 		//ft_printlst(stacks->stacka);
-		//ft_printf("Stackb : \n");
+		//ft_printf("\nStackb : \n");
 		//ft_printlst(stacks->stackb);
-		//ft_printf("Nombres fixes :\n");
+		//ft_printf("\n Nombres fixes :\n");
 		//ft_printlst(f_nbrs);
 		//ft_printf("\n\n");
 		ft_pushswap_quicksort_b2a(stacks, &f_nbrs);
@@ -194,7 +223,10 @@ t_instructs		*ft_pushswap_quicksort(t_vals *vals)
 		//ft_printlst(f_nbrs);
 		//ft_printf("\n\n");
 		//ft_printf("\n\n");
+		/*if (i == 5)
+			exit(0);
+		i++;*/
 	}
-	// ft_printf("A T ON GAGNE ? =>%d<=\n\n\n", ft_lstlen(stacks->instructs));
-	return stacks->instructs;
+	// //ft_printf("A T ON GAGNE ? =>%d<=\n\n\n", ft_lstlen(stacks->instructs));
+	return stacks;
 }
