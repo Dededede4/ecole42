@@ -39,4 +39,6 @@ void		ft_pushswap_instruct(char instruct, t_stacks *stacks);
 int		*ft_intdup(int nbr);
 t_list	*ft_lstcpy(t_list *src);
 size_t 		ft_lstlen(t_list *lst);
+t_list		*ft_lstsort(t_list *lst);
+t_list	*ft_lstcpy_max(t_list *src, size_t max);
 #endif

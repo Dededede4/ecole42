@@ -1,4 +1,20 @@
 #include "push_swap.h"
+/*
+int		main(int argc, char **argv)
+{
+	t_list	*lst;
+
+	if (argc > 1)
+	{
+		lst = ft_arraytolst(argv + 1, argc - 1);
+		ft_printlst(lst);
+		ft_printf("\nmergesort...\n");
+		
+		ft_printlst(ft_lstsort(lst));	
+	}
+	return (0);
+}*/
+
 
 int		main(int argc, char **argv)
 {
