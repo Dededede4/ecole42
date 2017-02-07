@@ -153,6 +153,10 @@ void		ft_pushswap_rrb(t_stacks *stacks)
 
 void		ft_pushswap_instruct(char instruct, t_stacks *stacks)
 {
+	static int test = 0;
+
+	test++;
+	ft_printf("Instruction n°%d\n", test);
 	if (instruct == INSTRUCT_SA)
 		ft_pushswap_sa(stacks);
 	else if (instruct == INSTRUCT_SB)
@@ -176,9 +180,9 @@ void		ft_pushswap_instruct(char instruct, t_stacks *stacks)
 		ft_putstr_fd("Error : ft_pushswap_instruct have unknown instruction.", 1);
 		exit(1);
 	}
-	/*ft_printf("\nSTACK A: ");
+	ft_printf("\nSTACK A: ");
 	ft_printlst(stacks->stacka);
 	ft_printf("\nSTACK B: ");
 	ft_printlst(stacks->stackb);
-	ft_printf("\n");*/
+	ft_printf("\n");
 }
