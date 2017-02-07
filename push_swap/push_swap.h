@@ -41,4 +41,5 @@ t_list	*ft_lstcpy(t_list *src);
 size_t 		ft_lstlen(t_list *lst);
 t_list		*ft_lstsort(t_list *lst);
 t_list	*ft_lstcpy_max(t_list *src, size_t max);
+t_list		*ft_lstsort_rev(t_list *lst);
 #endif
