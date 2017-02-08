@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-t_list	*ft_lstcpy(t_list *src)
+t_list		*ft_lstcpy(t_list *src)
 {
 	t_list	*first;
 	t_list	*current;
@@ -35,7 +35,7 @@ t_list	*ft_lstcpy(t_list *src)
 	return (first);
 }
 
-t_list	*ft_lstcpy_max(t_list *src, size_t max)
+t_list		*ft_lstcpy_max(t_list *src, size_t max)
 {
 	t_list	*first;
 	t_list	*current;
