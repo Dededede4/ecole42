@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_end.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/02/08 15:51:05 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/08 15:51:08 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-void 	ft_lstadd_end(t_list **lst, t_list *new)
+void	ft_lstadd_end(t_list **lst, t_list *new)
 {
 	t_list	*current;
+
 	if (lst == NULL || new == NULL)
 		return ;
 	new->next = NULL;
@@ -15,5 +28,4 @@ void 	ft_lstadd_end(t_list **lst, t_list *new)
 	while (current->next)
 		current = current->next;
 	current->next = new;
-
 }
