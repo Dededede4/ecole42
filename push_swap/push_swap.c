@@ -20,11 +20,9 @@ int		main(int argc, char **argv)
 {
 	t_list	*lst;
 	t_stacks	*selectsort;
-	t_stacks	*bublesort;
 	t_stacks	*quicksort;
 
 	int 		len_selectsort;
-	int 		len_bublesort;
 	int 		len_quicksort;
 
 	if (argc > 1)
@@ -38,19 +36,10 @@ int		main(int argc, char **argv)
 		exit(0);*/
 		/*ft_printf("selectsort...\n");*/
 		selectsort = ft_pushswap_selectsort(lst);
-		/*ft_printf("bublesort...\n");*/
-		bublesort = ft_pushswap_bublesort(lst);
 		
 		len_selectsort = ft_lstlen(selectsort->instructs);
-		len_bublesort = ft_lstlen(bublesort->instructs);
 		len_quicksort = ft_lstlen(quicksort->instructs);
-		if ( len_bublesort <= len_selectsort && len_bublesort <= len_quicksort )
-		{
-			//ft_printf("Le gagnant est le bublesort !\nInstructions : %d\n", len_bublesort);
-			//ft_printlst(selectsort->stacka);
-			ft_printlst_str(bublesort->instructs);
-		}
-		else if ( len_selectsort <= len_bublesort && len_selectsort <= len_quicksort )
+		if ( len_selectsort <= len_quicksort )
 		{
 			//ft_printf("Le gagnant est le selectsort !\nInstructions : %d\n", len_selectsort);
 			//ft_printlst(selectsort->stacka);

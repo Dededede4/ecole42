@@ -33,7 +33,6 @@ void	ft_printlst_str(t_list *lst);
 
 
 t_stacks		*ft_pushswap_selectsort(t_vals *vals);
-t_stacks		*ft_pushswap_bublesort(t_vals *vals);
 t_stacks		*ft_pushswap_quicksort(t_vals *vals);
 
 void		ft_pushswap_instruct(char instruct, t_stacks *stacks);
