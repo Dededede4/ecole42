@@ -12,6 +12,8 @@
 # define INSTRUCT_RB 7
 # define INSTRUCT_RRA 8
 # define INSTRUCT_RRB 9
+# define INSTRUCT_RR 10
+# define INSTRUCT_RRR 11
 
 typedef t_list				t_instructs;
 typedef t_list				t_vals;
@@ -43,4 +45,5 @@ t_list		*ft_lstsort(t_list *lst);
 t_list	*ft_lstcpy_max(t_list *src, size_t max);
 t_list		*ft_lstsort_rev(t_list *lst);
 void 	ft_lstadd_end(t_list **lst, t_list *new);
+t_bool 			ft_intlst_issorted(t_vals *lst);
 #endif

@@ -1,20 +1,5 @@
 #include "push_swap.h"
 
-t_bool 			ft_pushswap_quicksort_issorted(t_vals *lst)
-{
-	int p;
-
-	p = *((int*)lst->content);
-	while(lst)
-	{
-		if (p > *((int*)lst->content))
-			return (FALSE);
-		p = *((int*)lst->content);
-		lst = lst->next;
-	}
-	return (TRUE);
-}
-
 t_bool 			ft_pushswap_quicksort_isfixed(t_vals *fixeds, int nbr)
 {
 	while(fixeds)
@@ -467,7 +452,7 @@ t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 	stacks->stackb = NULL;
 	stacks->instructs = NULL;
 	len = ft_lstlen(stacks->stacka);
-	while (!ft_pushswap_quicksort_issorted(stacks->stacka) && len != ft_lstlen(f_nbrs))
+	while (!ft_intlst_issorted(stacks->stacka) && len != ft_lstlen(f_nbrs))
 	{
 		ft_pushswap_quicksort_a2b(stacks, &f_nbrs);
 		/*ft_printf("Stacka : \n");

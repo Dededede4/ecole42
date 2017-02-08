@@ -10,42 +10,65 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.c"
+#include "push_swap.h"
 
-int     main(int argc, char **argv)
+int				ft_instructs_str2int(char *instruct)
 {
-	t_vals	vals;
-	char	*line;
+	if (ft_strcmp(instruct, "sa") == 0)
+		return (INSTRUCT_SA);
+	else if (ft_strcmp(instruct, "sb") == 0)
+		return (INSTRUCT_SB);
+	else if (ft_strcmp(instruct, "ss") == 0)
+		return (INSTRUCT_SS);
+	else if (ft_strcmp(instruct, "pa") == 0)
+		return (INSTRUCT_PA);
+	else if (ft_strcmp(instruct, "pb") == 0)
+		return (INSTRUCT_PB);
+	else if (ft_strcmp(instruct, "ra") == 0)
+		return (INSTRUCT_RA);
+	else if (ft_strcmp(instruct, "rb") == 0)
+		return (INSTRUCT_RB);
+	else if (ft_strcmp(instruct, "rr") == 0)
+		return (INSTRUCT_RR);
+	else if (ft_strcmp(instruct, "rra") == 0)
+		return (INSTRUCT_RRA);
+	else if (ft_strcmp(instruct, "rrb") == 0)
+		return (INSTRUCT_RRB);
+	else if (ft_strcmp(instruct, "rrr") == 0)
+		return (INSTRUCT_RRR);
+	return (0);
+}
+
+void			ft_wait_instructs(t_stacks *stacks)
+{
+	char		*line;
+
+	while (ft_gnl(0, &line))
+	{
+		ft_pushswap_instruct(ft_instructs_str2int(line), stacks);
+	}
+}
+
+int				main(int argc, char **argv)
+{
+	t_vals		*vals;
+	t_stacks	*stacks;
 
 	if (argc <= 1)
 	{
-		ft_putstr_fd(2, "Error\n");
+		ft_putstr_fd("Error\n", 2);
 		exit(0);
 	}
 	vals = ft_arraytolst(argv + 1, argc - 1);
-	while (ft_gnl(0, &line))
-	{
-		if (ft_strcmp(line, "sa") == 0)
-			ft_pushswap_instruct(INSTRUCT_SA, stacks);
-		else if (ft_strcmp(line, "sb") == 0)
-			ft_pushswap_instruct(INSTRUCT_SB, stacks);
-		else if (ft_strcmp(line, "ss") == 0)
-			ft_pushswap_instruct(INSTRUCT_SS, stacks);
-		else if (ft_strcmp(line, "pa") == 0)
-			ft_pushswap_instruct(INSTRUCT_PA, stacks);
-		else if (ft_strcmp(line, "pb") == 0)
-			ft_pushswap_instruct(INSTRUCT_PB, stacks);
-		else if (ft_strcmp(line, "ra") == 0)
-			ft_pushswap_instruct(INSTRUCT_RA, stacks);
-		else if (ft_strcmp(line, "rb") == 0)
-			ft_pushswap_instruct(INSTRUCT_RB, stacks);
-		else if (ft_strcmp(line, "rr") == 0)
-			ft_pushswap_instruct(INSTRUCT_RR, stacks);
-		else if (ft_strcmp(line, "rra") == 0)
-			ft_pushswap_instruct(INSTRUCT_RRA, stacks);
-		else if (ft_strcmp(line, "rrb") == 0)
-			ft_pushswap_instruct(INSTRUCT_RRB, stacks);
-		else if (ft_strcmp(line, "rrr") == 0)
-			ft_pushswap_instruct(INSTRUCT_RRR, stacks);
-	}	
+	stacks = malloc(sizeof(t_stacks));
+	if (!stacks)
+		return (0);
+	stacks->stacka = vals;
+	stacks->instructs = NULL;
+	stacks->stackb = NULL;
+	ft_wait_instructs(stacks);
+	if (ft_intlst_issorted(stacks->stacka) && stacks->stackb == NULL)
+		ft_printf("OK\n");
+	else
+		ft_printf("KO\n");
 }
