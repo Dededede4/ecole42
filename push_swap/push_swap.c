@@ -30,15 +30,15 @@ int		main(int argc, char **argv)
 	if (argc > 1)
 	{
 		lst = ft_arraytolst(argv + 1, argc - 1);
-		ft_printlst(lst);
-		ft_printf("\nquicksort...\n");
+		/*ft_printlst(lst);
+		ft_printf("\nquicksort...\n");*/
 		quicksort = ft_pushswap_quicksort(lst);
 		len_quicksort = ft_lstlen(quicksort->instructs);
-		ft_printf("Quicksort !\nInstructions : %d (max 700)\n", len_quicksort);
-		exit(0);
-		ft_printf("selectsort...\n");
+		/*ft_printf("Quicksort !\nInstructions : %d (max 700)\n", len_quicksort);
+		exit(0);*/
+		/*ft_printf("selectsort...\n");*/
 		selectsort = ft_pushswap_selectsort(lst);
-		ft_printf("bublesort...\n");
+		/*ft_printf("bublesort...\n");*/
 		bublesort = ft_pushswap_bublesort(lst);
 		
 		len_selectsort = ft_lstlen(selectsort->instructs);
@@ -46,23 +46,22 @@ int		main(int argc, char **argv)
 		len_quicksort = ft_lstlen(quicksort->instructs);
 		if ( len_bublesort <= len_selectsort && len_bublesort <= len_quicksort )
 		{
-			ft_printf("Le gagnant est le bublesort !\nInstructions : %d\n", len_bublesort);
-			ft_printlst(selectsort->stacka);
-			//ft_printlst_str(bublesort);
+			//ft_printf("Le gagnant est le bublesort !\nInstructions : %d\n", len_bublesort);
+			//ft_printlst(selectsort->stacka);
+			ft_printlst_str(bublesort->instructs);
 		}
 		else if ( len_selectsort <= len_bublesort && len_selectsort <= len_quicksort )
 		{
-			ft_printf("Le gagnant est le selectsort !\nInstructions : %d\n", len_selectsort);
-			ft_printlst(selectsort->stacka);
-			//ft_printlst_str(selectsort);
+			//ft_printf("Le gagnant est le selectsort !\nInstructions : %d\n", len_selectsort);
+			//ft_printlst(selectsort->stacka);
+			ft_printlst_str(selectsort->instructs);
 		}
 		else
 		{
-			ft_printf("Le gagnant est le quicksort !\nInstructions : %d\n", len_quicksort);
-			ft_printlst(quicksort->stacka);
-			if (len_quicksort < 100)
-				ft_printlst_str(quicksort->instructs);
+			//ft_printf("Le gagnant est le quicksort !\nInstructions : %d\n", len_quicksort);
+			ft_printlst_str(quicksort->instructs);
 		}
+
 		
 	}
 	return (0);

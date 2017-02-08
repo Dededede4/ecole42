@@ -252,33 +252,33 @@ void 		ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 
 		while (stacks->stacka)
 		{
-			ft_printf("a...\n");
+			//ft_printf("a...\n");
 			last = ft_pushswap_quicksort_findmin(stacks->stacka);
-			ft_printf("olala\n");
+			//ft_printf("olala\n");
 			if (ft_pushswap_quicksort_isfixed(*f_nbrs, last))
 			{
-				ft_printf("b...\n");
+				//ft_printf("b...\n");
 				ft_pushswap_quicksort_a2b_push(stacks, last);
-				ft_printf("c...\n");
+				//ft_printf("c...\n");
 			}
 			else
 				break;
 		}
-		ft_printf("sortie.\n");
+		//ft_printf("sortie.\n");
 			
 
 		if (stacks->stacka == NULL)
 			return ;
 		first = stacks->stacka;
 		pivot = ft_pushswap_quicksort_mediane(*f_nbrs, first);
-		ft_printf("\n\npivot : %d, first: %d\n", pivot, *((int*)first->content));
+		/*ft_printf("\n\npivot : %d, first: %d\n", pivot, *((int*)first->content));
 		ft_printf("Stacka : \n");
 		ft_printlst(stacks->stacka);
 		ft_printf("\nStackb : \n");
 		ft_printlst(stacks->stackb);
 		ft_printf("\n Nombres fixes :\n");
 		ft_printlst(*f_nbrs);
-		ft_printf("\n\n");
+		ft_printf("\n\n");*/
 		current = first;
 		current_fixed = ft_lstcpy(current);
 		//ft_printf("start\n");
@@ -411,14 +411,14 @@ void 		ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 			return ;
 		first = stacks->stackb;
 		pivot = ft_pushswap_quicksort_mediane(*f_nbrs, first);
-		ft_printf("\n\npivot : %d, first: %d\n", pivot, *((int*)first->content));
+		/*ft_printf("\n\npivot : %d, first: %d\n", pivot, *((int*)first->content));
 		ft_printf("Stacka : \n");
 		ft_printlst(stacks->stacka);
 		ft_printf("\nStackb : \n");
 		ft_printlst(stacks->stackb);
 		ft_printf("\n Nombres fixes :\n");
 		ft_printlst(*f_nbrs);
-		ft_printf("\n\n");
+		ft_printf("\n\n");*/
 		current = first;
 		current_fixed = ft_lstcpy(current);
 		//ft_printf("start\n");
@@ -490,13 +490,13 @@ t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 			exit(0);
 		i++;*/
 	}
-	ft_printf("\n");
-	ft_printlst(stacks->stacka);
+	//ft_printf("\n");
+	/*ft_printlst(stacks->stacka);
 
 	if (ft_pushswap_quicksort_issorted(stacks->stacka))
 		ft_printf("\n\n\n trie :) \n\n\n");
 	else
-		ft_printf("\n\n\n PAS TRIE DU TOUT :( :( \n\n\n");
+		ft_printf("\n\n\n PAS TRIE DU TOUT :( :( \n\n\n");*/
 	//ft_printlst_str(stacks->instructs);
 	// //ft_printf("A T ON GAGNE ? =>%d<=\n\n\n", ft_lstlen(stacks->instructs));
 	return stacks;
