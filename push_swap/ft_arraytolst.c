@@ -41,7 +41,7 @@ t_list		*ft_arraytolst(char **str, int size)
 		{
 			first = ft_lstnew(&val, sizeof(int));
 			current = first;
-			break ;
+			continue ;
 		}
 		current->next = ft_lstnew(&val, sizeof(int));
 		current = current->next;
