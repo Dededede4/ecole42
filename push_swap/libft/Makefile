@@ -35,7 +35,7 @@ ft_putstr.c ft_putendl.c ft_putnbr.c ft_putchar.c ft_putendl.c \
 ft_putnbr.c ft_putstr.c ft_lstnew.c ft_lstdelone.c ft_lstdel.c \
 ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_putchar_fd.c ft_putstr_fd.c \
 ft_putendl_fd.c ft_putnbr_fd.c ft_swap.c ft_cat.c ft_factorial.c \
-ft_foreach.c ft_range.c \
+ft_foreach.c ft_range.c ft_gnl.c \
 ft_printf.c ft_printf_putstr.c ft_printf_readarg.c ft_unicode2utf8.c ft_printf_putnbr_signed.c \
 ft_intcpy.c ft_unicodedup.c ft_unicodelen.c ft_printf_execarg0.c ft_printf_putnbr_unsigned.c \
 ft_printf_execarg1.c ft_printf_execarg2.c ft_printf_putnbr_signed_args.c ft_printf_putnbr_unsigned_args.c \
