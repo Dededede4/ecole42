@@ -45,4 +45,14 @@ t_list	*ft_lstcpy_max(t_list *src, size_t max);
 t_list		*ft_lstsort_rev(t_list *lst);
 void 	ft_lstadd_end(t_list **lst, t_list *new);
 t_bool 			ft_intlst_issorted(t_vals *lst);
+
+t_bool			ft_pushswap_quicksort_isfixed(t_vals *fixeds, int nbr);
+t_vals		*ft_pushswap_quicksort_findfirst(t_vals *fixeds, t_vals *lst);
+int		ft_pushswap_quicksort_findlast(t_vals *fixeds, t_vals *lst);
+int		ft_pushswap_quicksort_findmin(t_vals *lst);
+int		ft_pushswap_quicksort_findmax(t_vals *lst);
+int 		ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst);
+void			ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr);
+t_bool			ft_pushswap_quicksort_isallfixed(t_vals **fixeds, t_vals *lst);
+void			ft_pushswap_quicksort_fixalones(t_vals **fixeds, t_vals *lst);
 #endif
