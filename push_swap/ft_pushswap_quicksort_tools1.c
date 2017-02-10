@@ -12,14 +12,12 @@
 
 #include "push_swap.h"
 
-int 		ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst)
+int			ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst)
 {
-	int 	middle;
-	int 	i;
-	int 	len;
-	t_vals 	*sorted;
-	t_vals  *first;
-	t_vals  *cpy;
+	int		i;
+	int		len;
+	t_vals	*sorted;
+	t_vals	*first;
 
 	len = 0;
 	i = 0;
@@ -27,24 +25,23 @@ int 		ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst)
 	while (lst)
 	{
 		if (ft_pushswap_quicksort_isfixed(fixeds, (*((int*)lst->content))))
-			break;
+			break ;
 		len++;
 		lst = lst->next;
 	}
-	cpy = ft_lstcpy_max(first, len);
-	sorted = ft_lstsort(cpy);
-	middle = len / 2;
-	while (middle && sorted->next && !ft_pushswap_quicksort_isfixed(fixeds, (*((int*)sorted->content))))
+	sorted = ft_lstsort(ft_lstcpy_max(first, len));
+	while (len / 2 && sorted->next
+		&& !ft_pushswap_quicksort_isfixed(fixeds, (*((int*)sorted->content))))
 	{
-		if (i == middle )
-			return *((int*)sorted->content);
+		if (i == len / 2)
+			return (*((int*)sorted->content));
 		i++;
 		sorted = sorted->next;
 	}
-	return  (*((int*)first->content));
+	return (*((int*)first->content));
 }
 
-void			ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr)
+void		ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr)
 {
 	if (*fixeds == NULL)
 		*fixeds = ft_lstnew(&nbr, sizeof(int));
@@ -55,7 +52,7 @@ void			ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr)
 	}
 }
 
-t_bool			ft_pushswap_quicksort_isallfixed(t_vals **fixeds, t_vals *lst)
+t_bool		ft_pushswap_quicksort_isallfixed(t_vals **fixeds, t_vals *lst)
 {
 	while (lst)
 	{
@@ -68,7 +65,7 @@ t_bool			ft_pushswap_quicksort_isallfixed(t_vals **fixeds, t_vals *lst)
 	return (TRUE);
 }
 
-void			ft_pushswap_quicksort_fixalones(t_vals **fixeds, t_vals *lst)
+void		ft_pushswap_quicksort_fixalones(t_vals **fixeds, t_vals *lst)
 {
 	int length;
 	int prec;
