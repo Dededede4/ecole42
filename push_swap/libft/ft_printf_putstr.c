@@ -45,7 +45,8 @@ int				ft_putstr_ascii(
 
 	i = 0;
 	size = ft_unicodelen(str);
-	len = (a->precision < (int)size && a->precision > 0) ? a->precision : (int)size;
+	len = (a->precision < (int)size && a->precision > 0)
+		? a->precision : (int)size;
 	if (a->precision == 0 && a->type != 'u')
 		len = 0;
 	while (str[i] && i < len)
