@@ -19,8 +19,6 @@ void			ft_lstmove(t_list **lst, size_t len)
 	t_list		*current;
 	t_list		*before_current;
 
-	if (len == 0)
-		return ;
 	i = 0;
 	first = *lst;
 	current = first;
@@ -31,40 +29,44 @@ void			ft_lstmove(t_list **lst, size_t len)
 		{
 			*lst = current;
 			if (before_current)
+			{
 				before_current->next = NULL;
+				ft_freetvals(&first);
+			}
+			return ;
 		}
 		i++;
 		before_current = current;
 		current = current->next;
 	}
-	before_current->next = first;
 }
 
 int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 {
 	t_vals		*ovals;
+	t_vals		*first_ovals;
 	int			i;
 	int			p_val;
-	size_t		len;
-	int			tmp;
 
 	i = 0;
 	ovals = ft_lstcpy(vals);
-	len = ft_lstlen(vals);
 	ft_lstmove(&ovals, (size_t)start);
+	first_ovals = ovals;
 	p_val = *((int*)ovals->content);
 	while (ovals)
 	{
-		if (p_val > *((int*)ovals->content))
+		if (++i && p_val > *((int*)ovals->content))
 		{
-			tmp = (((i) + start) % (int)len);
-			tmp = ((tmp <= ((int)len / 2) ? tmp - 1 : ((0 - (int)len) + tmp)));
-			return (tmp);
+			ft_freetvals(&first_ovals);
+			return (((((--i) + start) % (int)ft_lstlen(vals)) <=
+				((int)ft_lstlen(vals) / 2) ? (((--i) + start) %
+				(int)ft_lstlen(vals)) - 1 : ((0 - (int)ft_lstlen(vals))
+				+ (((--i) + start) % (int)ft_lstlen(vals)))));
 		}
 		p_val = *((int*)ovals->content);
-		i++;
 		ovals = ovals->next;
 	}
+	ft_freetvals(&first_ovals);
 	return (-2000000);
 }
 
