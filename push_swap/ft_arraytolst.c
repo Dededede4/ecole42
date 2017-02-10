@@ -25,6 +25,17 @@ t_bool		ft_test_intsyntax(char *str)
 	return (r);
 }
 
+t_bool		ft_exist(int val, t_list *lst)
+{
+	while (lst)
+	{
+		if (*((int*)lst->content) == val)
+			return (TRUE);
+		lst = lst->next;
+	}
+	return (FALSE);
+}
+
 t_list		*ft_arraytolst(char **str, int size)
 {
 	t_list	*first;
@@ -36,12 +47,12 @@ t_list		*ft_arraytolst(char **str, int size)
 	first = NULL;
 	while (i < size)
 	{
-		if (!ft_test_intsyntax(str[i]))
+		val = ft_atoi(str[i]);
+		if (!ft_test_intsyntax(str[i++]) || ft_exist(val, first))
 		{
 			ft_putstr_fd("Error\n", 1);
 			exit(0);
 		}
-		val = ft_atoi(str[i++]);
 		if (first == NULL)
 		{
 			first = ft_lstnew(&val, sizeof(int));

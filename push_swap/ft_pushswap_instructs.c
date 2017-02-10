@@ -22,7 +22,7 @@ void		ft_instructnew(t_stacks *stacks, char *instruct_str)
 
 int			ft_exit(void)
 {
-	ft_putstr_fd("Error", 1);
+	ft_putstr_fd("Error\n", 1);
 	exit(0);
 	return (1);
 }

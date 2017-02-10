@@ -55,10 +55,7 @@ int				main(int argc, char **argv)
 	t_stacks	*stacks;
 
 	if (argc <= 1)
-	{
-		ft_putstr_fd("Error\n", 2);
 		exit(0);
-	}
 	vals = ft_arraytolst(argv + 1, argc - 1);
 	stacks = malloc(sizeof(t_stacks));
 	if (!stacks)
