@@ -12,31 +12,52 @@
 
 #include "push_swap.h"
 
-int		main(int argc, char **argv)
+void			ft_freestacks(t_stacks *s)
+{
+	ft_freetvals(&s->instructs);
+	ft_freetvals(&s->stacka);
+	free(s);
+}
+
+t_stacks		*ft_pushswap_bestinstructs(t_list *lst)
+{
+	t_stacks	*a;
+	t_stacks	*b;
+	int			len_a;
+	int			len_b;
+
+	a = ft_pushswap_quicksort(lst);
+	len_a = ft_lstlen(a->instructs);
+	b = ft_pushswap_selectsort(lst);
+	len_b = ft_lstlen(b->instructs);
+	if (len_a > len_b)
+	{
+		ft_freestacks(a);
+		a = b;
+		len_a = len_b;
+	}
+	else
+		ft_freestacks(b);
+	b = ft_pushswap_bublesort(lst);
+	len_b = ft_lstlen(b->instructs);
+	if (len_a > len_b)
+	{
+		ft_freestacks(a);
+		a = b;
+	}
+	return (a);
+}
+
+int				main(int argc, char **argv)
 {
 	t_list		*lst;
-	t_stacks	*selectsort;
-	t_stacks	*quicksort;
-	int			len_selectsort;
-	int			len_quicksort;
+	t_stacks	*best;
 
 	if (argc <= 1)
 		return (0);
 	lst = ft_arraytolst(argv + 1, argc - 1);
-	quicksort = ft_pushswap_quicksort(lst);
-	selectsort = ft_pushswap_selectsort(lst);
-	len_quicksort = ft_lstlen(quicksort->instructs);
-	len_selectsort = ft_lstlen(selectsort->instructs);
-	if (len_selectsort <= len_quicksort)
-		ft_printlst_str(selectsort->instructs);
-	else
-		ft_printlst_str(quicksort->instructs);
-	ft_freetvals(&quicksort->instructs);
-	ft_freetvals(&selectsort->instructs);
-	ft_freetvals(&quicksort->stacka);
-	ft_freetvals(&selectsort->stacka);
-	free(quicksort);
-	free(selectsort);
+	best = ft_pushswap_bestinstructs(lst);
+	ft_freestacks(best);
 	ft_freetvals(&lst);
 	return (0);
 }

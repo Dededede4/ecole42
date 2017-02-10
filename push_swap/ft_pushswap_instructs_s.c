@@ -22,7 +22,7 @@ void		ft_pushswap_sa(t_stacks *stacks)
 
 void		ft_pushswap_sb(t_stacks *stacks)
 {
-	if (stacks->stackb == NULL|| stacks->stackb->next == NULL)
+	if (stacks->stackb == NULL || stacks->stackb->next == NULL)
 		return ;
 	ft_instructnew(stacks, "sb");
 	ft_swap(stacks->stackb->content, stacks->stackb->next->content);

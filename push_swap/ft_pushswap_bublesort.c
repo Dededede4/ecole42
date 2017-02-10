@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pushswap_bublesort.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/02/10 19:39:52 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/10 19:39:53 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-void		ft_lstmove(t_list **lst, size_t len)
+void			ft_lstmove(t_list **lst, size_t len)
 {
-	size_t	i;
-	t_list	*first;
-	t_list	*current;
-	t_list	*before_current;
+	size_t		i;
+	t_list		*first;
+	t_list		*current;
+	t_list		*before_current;
 
 	if (len == 0)
-		return;
+		return ;
 	i = 0;
 	first = *lst;
 	current = first;
@@ -27,34 +39,24 @@ void		ft_lstmove(t_list **lst, size_t len)
 	}
 	before_current->next = first;
 }
-int 		ft_pushswap_bublesort_findsup(t_vals *vals, int start)
+
+int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 {
-	t_vals	*ovals;
-	//t_vals	*ovals_first;
-	int 	i;
-	int 	p_val;
-	size_t	len;
-	int 	tmp;
+	t_vals		*ovals;
+	int			i;
+	int			p_val;
+	size_t		len;
+	int			tmp;
 
 	i = 0;
 	ovals = ft_lstcpy(vals);
 	len = ft_lstlen(vals);
-	//ovals_first = ovals;
 	ft_lstmove(&ovals, (size_t)start);
-
-
-	/*ft_printf("Reconstitued ");
-	ft_printlst(ovals);
-	ft_printf("\n");*/
-
 	p_val = *((int*)ovals->content);
 	while (ovals)
 	{
-		//ft_printf("%d > %d\n", p_val, *((int*)ovals->content));
 		if (p_val > *((int*)ovals->content))
 		{
-			// return (((pos <= (length / 2) && pos >= 0) || (pos >= (length / 2) && pos < 0) ? pos : 0 - (length - pos)));
-			//ft_printf("i:%i start:%i\n", i, start);
 			tmp = (((i) + start) % (int)len);
 			tmp = ((tmp <= ((int)len / 2) ? tmp - 1 : ((0 - (int)len) + tmp)));
 			return (tmp);
@@ -63,83 +65,55 @@ int 		ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 		i++;
 		ovals = ovals->next;
 	}
-	return (-42);
+	return (-2000000);
 }
 
+void			ft_pushswap_bublesort_onmove(
+	t_stacks *stacks, int len, int moves, int *index)
+{
+	int			savemoves;
 
+	savemoves = moves;
+	while (moves != 0)
+	{
+		if (moves > 0)
+			ft_pushswap_instruct(INSTRUCT_RA, stacks);
+		else if (moves < 0)
+			ft_pushswap_instruct(INSTRUCT_RRA, stacks);
+		moves += (moves > 0) ? -1 : 1;
+	}
+	ft_pushswap_instruct(INSTRUCT_SA, stacks);
+	if (savemoves < 0)
+	{
+		*index = *index - savemoves;
+		*index = *index % len;
+	}
+	else if (savemoves > 0)
+	{
+		*index = (*index + (len - savemoves)) % len;
+	}
+}
 
 t_stacks		*ft_pushswap_bublesort(t_vals *vals)
 {
-	t_stacks *stacks;
-	int 		moves;
-	int 		savemoves;
-	int 		index;
-	int 		len;
-	//int 		debug;
-
+	t_stacks	*stacks;
+	int			moves;
+	int			index;
+	int			len;
 
 	stacks = malloc(sizeof(t_stacks));
 	stacks->stacka = ft_lstcpy(vals);
 	stacks->instructs = NULL;
 	stacks->stackb = NULL;
 	len = (int)ft_lstlen(vals);
-
-	/*ft_printlst(stacks->stacka);
-	ft_printf("\n\n");*/
 	index = 0;
-	//debug = 0;
-
-	while ((moves = ft_pushswap_bublesort_findsup(stacks->stacka, index)) != -42)
-	{
-		/*if (moves < 0)
-			moves++;
-		if (moves > 0)
-			moves--;*/
-		//moves--;
-		savemoves = moves;
-		
-		//ft_printf("Moves ==>%d<==\n", moves);
-		while (moves != 0)
-		{
-			
-			if (moves > 0)
-				ft_pushswap_instruct(INSTRUCT_RA, stacks);
-			else if (moves < 0)
-				ft_pushswap_instruct(INSTRUCT_RRA, stacks);
-			moves += (moves > 0) ? -1 : 1;
-
-			//ft_printlst(stacks->stacka);
-			//ft_printf("\n");
-		}
-		ft_pushswap_instruct(INSTRUCT_SA, stacks);
-		//ft_printlst(stacks->stacka);
-		
-		if (savemoves < 0)
-		{
-			index = index - savemoves;
-			index = index % len;
-		}
-		else if (savemoves > 0)
-		{
-			index = (index + (len - savemoves)) % len;
-		}
-		//ft_printf("\nIndex : %d\n\n", index);
-		/*debug++;
-		if (debug == 100)
-		{
-			ft_printf("stop");
-			exit(0);
-		}*/
-	}
+	while ((moves = ft_pushswap_bublesort_findsup(stacks->stacka, index))
+			!= -2000000)
+		ft_pushswap_bublesort_onmove(stacks, len, moves, &index);
 	while (index--)
 	{
 		ft_pushswap_instruct(INSTRUCT_RA, stacks);
 		vals = vals->next;
 	}
-	/*ft_printf("Final :\n");
-	ft_printlst(stacks->stacka);
-	ft_printf("\n");*/
-	//ft_printlst_str(stacks->instructs);
-	return stacks;
+	return (stacks);
 }
-
