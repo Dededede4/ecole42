@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pushswap_quicksort_tools0.c                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/02/10 13:47:51 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/10 13:47:53 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-t_bool 			ft_pushswap_quicksort_isfixed(t_vals *fixeds, int nbr)
+t_bool			ft_pushswap_quicksort_isfixed(t_vals *fixeds, int nbr)
 {
-	while(fixeds)
+	while (fixeds)
 	{
 		if (*((int*)fixeds->content) == nbr)
 			return (TRUE);
@@ -24,7 +36,7 @@ t_vals			*ft_pushswap_quicksort_findfirst(t_vals *fixeds, t_vals *lst)
 	return (NULL);
 }
 
-int 		ft_pushswap_quicksort_findlast(t_vals *fixeds, t_vals *lst)
+int				ft_pushswap_quicksort_findlast(t_vals *fixeds, t_vals *lst)
 {
 	t_vals	*before_last;
 
@@ -32,14 +44,14 @@ int 		ft_pushswap_quicksort_findlast(t_vals *fixeds, t_vals *lst)
 	while (lst)
 	{
 		if (ft_pushswap_quicksort_isfixed(fixeds, (*((int*)lst->content))))
-			return *((int*)before_last->content);
+			return (*((int*)before_last->content));
 		before_last = lst;
 		lst = lst->next;
 	}
-	return *((int*)before_last->content);
+	return (*((int*)before_last->content));
 }
 
-int 		ft_pushswap_quicksort_findmin(t_vals *lst)
+int				ft_pushswap_quicksort_findmin(t_vals *lst)
 {
 	int min;
 
@@ -53,7 +65,7 @@ int 		ft_pushswap_quicksort_findmin(t_vals *lst)
 	return (min);
 }
 
-int 		ft_pushswap_quicksort_findmax(t_vals *lst)
+int				ft_pushswap_quicksort_findmax(t_vals *lst)
 {
 	int max;
 
