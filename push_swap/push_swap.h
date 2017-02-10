@@ -39,6 +39,7 @@ typedef struct				s_stacks
 
 t_stacks					*ft_pushswap_selectsort(t_vals *vals);
 t_stacks					*ft_pushswap_quicksort(t_vals *vals);
+t_stacks					*ft_pushswap_bublesort(t_vals *vals);
 t_list						*ft_arraytolst(char **str, int size);
 int							*ft_intdup(int nbr);
 t_list						*ft_lstcpy(t_list *src);
