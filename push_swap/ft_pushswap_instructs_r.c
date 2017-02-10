@@ -14,7 +14,7 @@
 
 void		ft_pushswap_ra(t_stacks *stacks)
 {
-	if (stacks->stacka->next == NULL)
+	if (!stacks->stacka || !stacks->stacka->next)
 		return ;
 	ft_lstrotate(&(stacks->stacka));
 	ft_instructnew(stacks, "ra");
@@ -22,7 +22,7 @@ void		ft_pushswap_ra(t_stacks *stacks)
 
 void		ft_pushswap_rb(t_stacks *stacks)
 {
-	if (stacks->stackb->next == NULL)
+	if (!stacks->stackb || !stacks->stackb->next)
 		return ;
 	ft_lstrotate(&(stacks->stackb));
 	ft_instructnew(stacks, "rb");
@@ -30,10 +30,11 @@ void		ft_pushswap_rb(t_stacks *stacks)
 
 void		ft_pushswap_rr(t_stacks *stacks)
 {
-	if (stacks->stacka->next != NULL)
+	if (stacks->stacka && stacks->stacka->next)
 		ft_lstrotate(&(stacks->stacka));
-	if (stacks->stackb->next != NULL)
+	if (stacks->stackb && stacks->stackb->next)
 		ft_lstrotate(&(stacks->stackb));
-	if (stacks->stacka->next != NULL || stacks->stackb->next != NULL)
+	if ((stacks->stackb && stacks->stackb->next)
+		|| (stacks->stacka && stacks->stacka->next))
 		ft_instructnew(stacks, "rr");
 }

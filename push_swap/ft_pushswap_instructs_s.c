@@ -14,7 +14,7 @@
 
 void		ft_pushswap_sa(t_stacks *stacks)
 {
-	if (stacks->stacka->next == NULL)
+	if (stacks->stacka == NULL || stacks->stacka->next == NULL)
 		return ;
 	ft_instructnew(stacks, "sa");
 	ft_swap(stacks->stacka->content, stacks->stacka->next->content);
@@ -22,7 +22,7 @@ void		ft_pushswap_sa(t_stacks *stacks)
 
 void		ft_pushswap_sb(t_stacks *stacks)
 {
-	if (stacks->stackb->next == NULL)
+	if (stacks->stackb == NULL|| stacks->stackb->next == NULL)
 		return ;
 	ft_instructnew(stacks, "sb");
 	ft_swap(stacks->stackb->content, stacks->stackb->next->content);
@@ -33,12 +33,12 @@ void		ft_pushswap_ss(t_stacks *stacks)
 	t_bool	used;
 
 	used = FALSE;
-	if (stacks->stacka->next != NULL)
+	if (stacks->stacka && stacks->stacka->next != NULL)
 	{
 		ft_swap(stacks->stacka->content, stacks->stacka->next->content);
 		used = TRUE;
 	}
-	if (stacks->stackb->next != NULL)
+	if (stacks->stackb && stacks->stackb->next != NULL)
 	{
 		ft_swap(stacks->stackb->content, stacks->stackb->next->content);
 		used = TRUE;
