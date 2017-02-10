@@ -20,7 +20,7 @@ t_bool		ft_test_intsyntax(char *str)
 
 	nbr = ft_atoi(str);
 	strcmp = ft_itoa(nbr);
-	r = (ft_atoi(strcmp) == nbr);
+	r = (ft_strcmp(strcmp, str) == 0);
 	free(strcmp);
 	return (r);
 }
