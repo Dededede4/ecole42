@@ -55,7 +55,7 @@ void			ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 			break ;
 		ft_pushswap_quicksort_a2b_push(stacks, last);
 	}
-	if (stacks->stacka == NULL || (current = ft_lstcpy(stacks->stacka)))
+	if (stacks->stacka == NULL || !(current = ft_lstcpy(stacks->stacka)))
 		return ;
 	pivot = ft_pushswap_quicksort_mediane(*f_nbrs, stacks->stacka);
 	current_first = current;
@@ -113,7 +113,7 @@ void			ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 			break ;
 		ft_pushswap_quicksort_b2a_push(stacks, last);
 	}
-	if (stacks->stackb == NULL || (current = ft_lstcpy(stacks->stackb)))
+	if (stacks->stackb == NULL || !(current = ft_lstcpy(stacks->stackb)))
 		return ;
 	pivot = ft_pushswap_quicksort_mediane(*f_nbrs, stacks->stackb);
 	current_first = current;
