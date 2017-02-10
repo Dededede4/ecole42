@@ -23,7 +23,7 @@ ft_printlst.c ft_pushswap_instructs.c ft_pushswap_instructs_p.c \
 ft_pushswap_instructs_r.c ft_pushswap_instructs_rr.c \
 ft_pushswap_instructs_s.c ft_pushswap_quicksort.c \
 ft_pushswap_quicksort_tools0.c ft_pushswap_quicksort_tools1.c \
-ft_pushswap_selectsort.c ft_freetvals.c libft/libft.a
+ft_pushswap_selectsort.c ft_freetvals.c libft/libft.a ft_pushswap_bublesort.c
 
 OBJ=$(SRC:.c=.o)
 

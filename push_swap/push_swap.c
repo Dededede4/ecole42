@@ -57,6 +57,7 @@ int				main(int argc, char **argv)
 		return (0);
 	lst = ft_arraytolst(argv + 1, argc - 1);
 	best = ft_pushswap_bestinstructs(lst);
+	ft_printlst_str(best->instructs);
 	ft_freestacks(best);
 	ft_freetvals(&lst);
 	return (0);
