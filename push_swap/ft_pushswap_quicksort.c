@@ -45,6 +45,7 @@ void			ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 {
 	int			pivot;
 	t_vals		*current;
+	t_vals		*current_first;
 	int			last;
 
 	while (stacks->stacka)
@@ -54,16 +55,17 @@ void			ft_pushswap_quicksort_a2b(t_stacks *stacks, t_vals **f_nbrs)
 			break ;
 		ft_pushswap_quicksort_a2b_push(stacks, last);
 	}
-	if (stacks->stacka == NULL)
+	if (stacks->stacka == NULL || (current = ft_lstcpy(stacks->stacka)))
 		return ;
 	pivot = ft_pushswap_quicksort_mediane(*f_nbrs, stacks->stacka);
-	current = ft_lstcpy(stacks->stacka);
+	current_first = current;
 	while (current)
 	{
 		if (*((int*)current->content) < pivot)
 			ft_pushswap_quicksort_a2b_push(stacks, *((int*)current->content));
 		current = current->next;
 	}
+	ft_freetvals(&current_first);
 	ft_pushswap_quicksort_setfixed(f_nbrs, pivot);
 	ft_pushswap_quicksort_a2b_push(stacks, pivot);
 }
@@ -101,6 +103,7 @@ void			ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 {
 	int			pivot;
 	t_vals		*current;
+	t_vals		*current_first;
 	int			last;
 
 	while (stacks->stackb)
@@ -110,16 +113,17 @@ void			ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 			break ;
 		ft_pushswap_quicksort_b2a_push(stacks, last);
 	}
-	if (stacks->stackb == NULL)
+	if (stacks->stackb == NULL || (current = ft_lstcpy(stacks->stackb)))
 		return ;
 	pivot = ft_pushswap_quicksort_mediane(*f_nbrs, stacks->stackb);
-	current = ft_lstcpy(stacks->stackb);
+	current_first = current;
 	while (current)
 	{
 		if (*((int*)current->content) > pivot)
 			ft_pushswap_quicksort_b2a_push(stacks, *((int*)current->content));
 		current = current->next;
 	}
+	ft_freetvals(&current_first);
 	ft_pushswap_quicksort_setfixed(f_nbrs, pivot);
 	ft_pushswap_quicksort_b2a_push(stacks, pivot);
 }
@@ -145,5 +149,6 @@ t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 		while (stacks->stackb)
 			ft_pushswap_quicksort_b2a(stacks, &f_nbrs);
 	}
+	ft_freetvals(&f_nbrs);
 	return (stacks);
 }

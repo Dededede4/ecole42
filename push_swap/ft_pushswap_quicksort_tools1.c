@@ -12,15 +12,42 @@
 
 #include "push_swap.h"
 
-int			ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst)
+int			ft_pushswap_quicksort_getmediane
+	(t_vals *fixeds, t_vals *first, int len)
 {
 	int		i;
-	int		len;
+	t_vals	*cpy;
 	t_vals	*sorted;
+	t_vals	*sorted_first;
+	int		r;
+
+	i = 0;
+	cpy = ft_lstcpy_max(first, len);
+	sorted = ft_lstsort(cpy);
+	sorted_first = sorted;
+	ft_freetvals(&cpy);
+	while (len / 2 && sorted->next
+		&& !ft_pushswap_quicksort_isfixed(fixeds, (*((int*)sorted->content))))
+	{
+		if (i == len / 2)
+		{
+			r = *((int*)sorted->content);
+			ft_freetvals(&sorted_first);
+			return (r);
+		}
+		i++;
+		sorted = sorted->next;
+	}
+	ft_freetvals(&sorted_first);
+	return (*((int*)first->content));
+}
+
+int			ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst)
+{
+	int		len;
 	t_vals	*first;
 
 	len = 0;
-	i = 0;
 	first = lst;
 	while (lst)
 	{
@@ -29,16 +56,7 @@ int			ft_pushswap_quicksort_mediane(t_vals *fixeds, t_vals *lst)
 		len++;
 		lst = lst->next;
 	}
-	sorted = ft_lstsort(ft_lstcpy_max(first, len));
-	while (len / 2 && sorted->next
-		&& !ft_pushswap_quicksort_isfixed(fixeds, (*((int*)sorted->content))))
-	{
-		if (i == len / 2)
-			return (*((int*)sorted->content));
-		i++;
-		sorted = sorted->next;
-	}
-	return (*((int*)first->content));
+	return (ft_pushswap_quicksort_getmediane(fixeds, first, len));
 }
 
 void		ft_pushswap_quicksort_setfixed(t_vals **fixeds, int nbr)

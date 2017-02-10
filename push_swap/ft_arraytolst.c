@@ -14,10 +14,15 @@
 
 t_bool		ft_test_intsyntax(char *str)
 {
-	int nbr;
+	int		nbr;
+	char	*strcmp;
+	t_bool	r;
 
 	nbr = ft_atoi(str);
-	return (ft_atoi(ft_itoa(nbr)) == nbr);
+	strcmp = ft_itoa(nbr);
+	r = (ft_atoi(strcmp) == nbr);
+	free(strcmp);
+	return (r);
 }
 
 t_list		*ft_arraytolst(char **str, int size)

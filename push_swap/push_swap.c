@@ -20,17 +20,23 @@ int		main(int argc, char **argv)
 	int			len_selectsort;
 	int			len_quicksort;
 
-	if (argc > 1)
-	{
-		lst = ft_arraytolst(argv + 1, argc - 1);
-		quicksort = ft_pushswap_quicksort(lst);
-		selectsort = ft_pushswap_selectsort(lst);
-		len_quicksort = ft_lstlen(quicksort->instructs);
-		len_selectsort = ft_lstlen(selectsort->instructs);
-		if (len_selectsort <= len_quicksort)
-			ft_printlst_str(selectsort->instructs);
-		else
-			ft_printlst_str(quicksort->instructs);
-	}
+	if (argc <= 1)
+		return (0);
+	lst = ft_arraytolst(argv + 1, argc - 1);
+	quicksort = ft_pushswap_quicksort(lst);
+	selectsort = ft_pushswap_selectsort(lst);
+	len_quicksort = ft_lstlen(quicksort->instructs);
+	len_selectsort = ft_lstlen(selectsort->instructs);
+	if (len_selectsort <= len_quicksort)
+		ft_printlst_str(selectsort->instructs);
+	else
+		ft_printlst_str(quicksort->instructs);
+	ft_freetvals(&quicksort->instructs);
+	ft_freetvals(&selectsort->instructs);
+	ft_freetvals(&quicksort->stacka);
+	ft_freetvals(&selectsort->stacka);
+	free(quicksort);
+	free(selectsort);
+	ft_freetvals(&lst);
 	return (0);
 }

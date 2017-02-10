@@ -63,6 +63,7 @@ void		ft_lstsort_merge_rev(t_list **lst, size_t dup, size_t len)
 t_list		*ft_lstsort_rev(t_list *lst)
 {
 	t_list	**stacks;
+	t_list	*r;
 	size_t	i;
 
 	stacks = ft_memalloc((ft_lstlen(lst) + 1) * sizeof(void*));
@@ -74,5 +75,7 @@ t_list		*ft_lstsort_rev(t_list *lst)
 		i++;
 	}
 	ft_lstsort_merge_rev(stacks, 1, i);
-	return (stacks[0]);
+	r = stacks[0];
+	free(stacks);
+	return (r);
 }
