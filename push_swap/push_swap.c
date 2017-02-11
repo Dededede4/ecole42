@@ -12,11 +12,15 @@
 
 #include "push_swap.h"
 
-void			ft_freestacks(t_stacks *s)
+void			ft_freestacks(t_stacks **s)
 {
-	ft_freetvals(&s->instructs);
-	ft_freetvals(&s->stacka);
-	free(s);
+	if (*s == NULL)
+		return ;
+	ft_freetvals(&((*s)->instructs));
+	ft_freetvals(&((*s)->stacka));
+	ft_freetvals(&((*s)->stackb));
+	free(*s);
+	*s = NULL;
 }
 
 t_stacks		*ft_pushswap_bestinstructs(t_list *lst)
@@ -32,19 +36,19 @@ t_stacks		*ft_pushswap_bestinstructs(t_list *lst)
 	len_b = ft_lstlen(b->instructs);
 	if (len_a > len_b)
 	{
-		ft_freestacks(a);
+		ft_freestacks(&a);
 		a = b;
 		len_a = len_b;
 	}
 	else
-		ft_freestacks(b);
+		ft_freestacks(&b);
 	b = (len_a < 100) ? ft_pushswap_bublesort(lst) : b;
-	len_b = ft_lstlen(b->instructs);
-	if (len_a < 100 && len_a > len_b)
-		ft_freestacks(a);
+	len_b = (b) ? ft_lstlen(b->instructs) : 0;
+	if (b && len_a > len_b)
+		ft_freestacks(&a);
 	else
-		ft_freestacks(b);
-	return ((len_a > len_b) ? b : a);
+		ft_freestacks(&b);
+	return ((b && len_a > len_b) ? b : a);
 }
 
 int				main(int argc, char **argv)
@@ -57,7 +61,7 @@ int				main(int argc, char **argv)
 	lst = ft_arraytolst(argv + 1, argc - 1);
 	best = ft_pushswap_bestinstructs(lst);
 	ft_printlst_str(best->instructs);
-	ft_freestacks(best);
+	ft_freestacks(&best);
 	ft_freetvals(&lst);
 	return (0);
 }

@@ -46,6 +46,7 @@ void			ft_wait_instructs(t_stacks *stacks)
 	while (ft_gnl(0, &line))
 	{
 		ft_pushswap_instruct(ft_instructs_str2int(line), stacks);
+		free(line);
 	}
 }
 
@@ -68,4 +69,8 @@ int				main(int argc, char **argv)
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");
+	ft_freetvals(&stacks->stacka);
+	ft_freetvals(&stacks->stackb);
+	ft_freetvals(&stacks->instructs);
+	free(stacks);
 }

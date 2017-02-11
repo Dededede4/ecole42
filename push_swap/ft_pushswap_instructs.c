@@ -20,9 +20,13 @@ void		ft_instructnew(t_stacks *stacks, char *instruct_str)
 	ft_lstadd_end(&stacks->instructs, new);
 }
 
-int			ft_exit(void)
+int			ft_exit(t_stacks *stacks)
 {
 	ft_putstr_fd("Error\n", 1);
+	ft_freetvals(&stacks->stacka);
+	ft_freetvals(&stacks->stackb);
+	ft_freetvals(&stacks->instructs);
+	free(stacks);
 	exit(0);
 	return (1);
 }
@@ -51,6 +55,6 @@ void		ft_pushswap_instruct(char instruct, t_stacks *stacks)
 		ft_pushswap_rr(stacks);
 	else if (instruct == INSTRUCT_RRR)
 		ft_pushswap_rrr(stacks);
-	else if (ft_exit())
+	else if (ft_exit(stacks))
 		return ;
 }

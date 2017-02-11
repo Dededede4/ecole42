@@ -15,10 +15,13 @@
 void	ft_freecontent(void *content, size_t size)
 {
 	(void)size;
-	free(content);
+	if (content)
+		free(content);
 }
 
 void	ft_freetvals(t_vals **vals)
 {
+	if (vals == NULL || *vals == NULL)
+		return ;
 	ft_lstdel(vals, ft_freecontent);
 }
