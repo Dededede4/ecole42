@@ -112,7 +112,6 @@ t_stacks		*ft_pushswap_bublesort(t_vals *vals)
 	while ((moves = ft_pushswap_bublesort_findsup(stacks->stacka, index))
 			!= -2000000)
 		ft_pushswap_bublesort_onmove(stacks, len, moves, &index);
-		
 	while (index--)
 	{
 		ft_pushswap_instruct(INSTRUCT_RA, stacks);
