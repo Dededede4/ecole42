@@ -29,16 +29,14 @@ void			ft_lstmove(t_list **lst, size_t len)
 		{
 			*lst = current;
 			if (before_current)
-			{
 				before_current->next = NULL;
-				ft_freetvals(&first);
-			}
-			return ;
 		}
 		i++;
 		before_current = current;
 		current = current->next;
 	}
+	if (len > 0)
+		before_current->next = first;
 }
 
 int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)

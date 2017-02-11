@@ -41,11 +41,10 @@ t_stacks		*ft_pushswap_bestinstructs(t_list *lst)
 	b = (len_a < 100) ? ft_pushswap_bublesort(lst) : b;
 	len_b = ft_lstlen(b->instructs);
 	if (len_a < 100 && len_a > len_b)
-	{
 		ft_freestacks(a);
-		a = b;
-	}
-	return (a);
+	else
+		ft_freestacks(b);
+	return ((len_a > len_b) ? b : a);
 }
 
 int				main(int argc, char **argv)
