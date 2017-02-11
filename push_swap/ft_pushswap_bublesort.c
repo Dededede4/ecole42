@@ -59,9 +59,9 @@ int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 		{
 			ft_freetvals(&first_ovals);
 			return (((((--i) + start) % (int)ft_lstlen(vals)) <=
-				((int)ft_lstlen(vals) / 2) ? (((--i) + start) %
+				((int)ft_lstlen(vals) / 2) ? (((i) + start) %
 				(int)ft_lstlen(vals)) - 1 : ((0 - (int)ft_lstlen(vals))
-				+ (((--i) + start) % (int)ft_lstlen(vals)))));
+				+ (((i) + start) % (int)ft_lstlen(vals)))));
 		}
 		p_val = *((int*)ovals->content);
 		ovals = ovals->next;
@@ -112,6 +112,7 @@ t_stacks		*ft_pushswap_bublesort(t_vals *vals)
 	while ((moves = ft_pushswap_bublesort_findsup(stacks->stacka, index))
 			!= -2000000)
 		ft_pushswap_bublesort_onmove(stacks, len, moves, &index);
+		
 	while (index--)
 	{
 		ft_pushswap_instruct(INSTRUCT_RA, stacks);
