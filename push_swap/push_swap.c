@@ -38,9 +38,9 @@ t_stacks		*ft_pushswap_bestinstructs(t_list *lst)
 	}
 	else
 		ft_freestacks(b);
-	b = ft_pushswap_bublesort(lst);
+	b = (len_a < 100) ? ft_pushswap_bublesort(lst) : b;
 	len_b = ft_lstlen(b->instructs);
-	if (len_a > len_b)
+	if (len_a < 100 && len_a > len_b)
 	{
 		ft_freestacks(a);
 		a = b;
