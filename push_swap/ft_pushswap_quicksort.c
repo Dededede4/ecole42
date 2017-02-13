@@ -146,5 +146,6 @@ t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 			ft_pushswap_quicksort_b2a(stacks, &f_nbrs);
 	}
 	ft_freetvals(&f_nbrs);
+	ft_pushswap_instructs_simplificator(&stacks->instructs);
 	return (stacks);
 }
