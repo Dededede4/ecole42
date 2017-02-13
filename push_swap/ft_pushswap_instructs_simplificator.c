@@ -18,8 +18,8 @@ int 	ft_pushswap_instructs_simplificator_del(t_instructs	**lst, char *str1, char
 				*lst = current->next->next;
 			free(current->content);
 			free(current->next->content);
-			free(current);
 			free(current->next);
+			free(current);
 			return (1);
 		}
 		precedent = current;
