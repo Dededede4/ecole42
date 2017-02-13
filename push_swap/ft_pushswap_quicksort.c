@@ -127,9 +127,11 @@ void			ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 void			ft_pushswap_quicksort_fixgoodposition_a(t_vals **fixeds, t_vals *lst, int start)
 {
 	t_vals	*sorted;
+	t_vals	*sorted_first;
 	int		p;
 
 	sorted = ft_lstsort(lst);
+	sorted_first = sorted;
 	p = *((int*)lst->content);
 	while (lst)
 	{
@@ -140,15 +142,18 @@ void			ft_pushswap_quicksort_fixgoodposition_a(t_vals **fixeds, t_vals *lst, int
 		lst = lst->next;
 		sorted = sorted->next;
 	}
+	ft_freetvals(&sorted_first);
 }
 
 
 void			ft_pushswap_quicksort_fixgoodposition_b(t_vals **fixeds, t_vals *lst, int start)
 {
 	t_vals	*sorted;
+	t_vals	*sorted_first;
 	int		p;
 
 	sorted = ft_lstsort_rev(lst);
+	sorted_first = sorted;
 	p = *((int*)lst->content);
 	while (lst)
 	{
@@ -159,6 +164,7 @@ void			ft_pushswap_quicksort_fixgoodposition_b(t_vals **fixeds, t_vals *lst, int
 		lst = lst->next;
 		sorted = sorted->next;
 	}
+	ft_freetvals(&sorted_first);
 }
 
 t_stacks		*ft_pushswap_quicksort(t_vals *vals)
