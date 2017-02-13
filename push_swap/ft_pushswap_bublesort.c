@@ -116,5 +116,6 @@ t_stacks		*ft_pushswap_bublesort(t_vals *vals)
 		ft_pushswap_instruct(INSTRUCT_RA, stacks);
 		vals = vals->next;
 	}
+	ft_pushswap_instructs_simplificator(&stacks->instructs);
 	return (stacks);
 }

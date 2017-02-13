@@ -71,5 +71,6 @@ t_stacks		*ft_pushswap_selectsort(t_vals *vals)
 		ft_pushswap_instruct(INSTRUCT_PA, stacks);
 		vals = vals->next;
 	}
+	ft_pushswap_instructs_simplificator(&stacks->instructs);
 	return (stacks);
 }
