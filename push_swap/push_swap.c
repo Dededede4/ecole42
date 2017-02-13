@@ -39,16 +39,17 @@ t_stacks		*ft_pushswap_bestinstructs(t_list *lst)
 		ft_freestacks(&a);
 		a = b;
 		len_a = len_b;
+		b = NULL;
 	}
 	else
 		ft_freestacks(&b);
 	b = (len_a < 100) ? ft_pushswap_bublesort(lst) : b;
-	len_b = (b) ? ft_lstlen(b->instructs) : 0;
-	if (b && len_a > len_b)
+	len_b = (b) ? ft_lstlen(b->instructs) : INT_MAX;
+	if (len_a > len_b)
 		ft_freestacks(&a);
-	else
+	else if (b)
 		ft_freestacks(&b);
-	return ((b && len_a > len_b) ? b : a);
+	return ((len_a <= len_b) ? a : b);
 }
 
 int				main(int argc, char **argv)

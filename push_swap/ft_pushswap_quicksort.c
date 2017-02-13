@@ -17,7 +17,6 @@ void			ft_pushswap_quicksort_a2b_push(t_stacks *stacks, int nbr)
 	int			len;
 	int			pos;
 	int			moves;
-	int			sv_moves;
 	t_vals		*lst;
 
 	pos = 0;
@@ -29,7 +28,6 @@ void			ft_pushswap_quicksort_a2b_push(t_stacks *stacks, int nbr)
 		lst = lst->next;
 	}
 	moves = (pos > (len / 2)) ? pos - len : pos;
-	sv_moves = moves;
 	while (moves != 0)
 	{
 		if (moves > 0)
@@ -75,7 +73,6 @@ void			ft_pushswap_quicksort_b2a_push(t_stacks *stacks, int nbr)
 	int			len;
 	int			pos;
 	int			moves;
-	int			sv_moves;
 	t_vals		*lst;
 
 	pos = 0;
@@ -87,7 +84,6 @@ void			ft_pushswap_quicksort_b2a_push(t_stacks *stacks, int nbr)
 		lst = lst->next;
 	}
 	moves = (pos > (len / 2)) ? pos - len : pos;
-	sv_moves = moves;
 	while (moves != 0)
 	{
 		if (moves > 0)

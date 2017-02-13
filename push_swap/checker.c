@@ -73,4 +73,5 @@ int				main(int argc, char **argv)
 	ft_freetvals(&stacks->stackb);
 	ft_freetvals(&stacks->instructs);
 	free(stacks);
+	return (0);
 }

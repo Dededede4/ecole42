@@ -27,6 +27,8 @@
 # define INSTRUCT_RR 10
 # define INSTRUCT_RRR 11
 
+# define INT_MAX	+2147483647
+
 typedef t_list				t_instructs;
 typedef t_list				t_vals;
 

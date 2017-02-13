@@ -23,7 +23,7 @@ ft_printlst.c ft_pushswap_instructs.c ft_pushswap_instructs_p.c \
 ft_pushswap_instructs_r.c ft_pushswap_instructs_rr.c \
 ft_pushswap_instructs_s.c ft_pushswap_quicksort.c \
 ft_pushswap_quicksort_tools0.c ft_pushswap_quicksort_tools1.c \
-ft_pushswap_selectsort.c ft_freetvals.c libft/libft.a ft_pushswap_bublesort.c
+ft_pushswap_selectsort.c ft_freetvals.c ft_pushswap_bublesort.c libft/libft.a
 
 OBJ=$(SRC:.c=.o)
 
@@ -31,11 +31,11 @@ all: push_swap checker
 
 push_swap:
 	make -C libft
-	$(CC) $(CFLAGS) $(SRC) push_swap.c -o push_swap
+	$(CC) $(CFLAGS) push_swap.c $(SRC) -o push_swap
 
 checker:
 	make -C libft
-	$(CC) $(CFLAGS) $(SRC) checker.c -o checker
+	$(CC) $(CFLAGS) checker.c $(SRC) -o checker
 
 clean:
 	make -C libft clean
