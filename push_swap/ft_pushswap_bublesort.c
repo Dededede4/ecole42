@@ -45,27 +45,28 @@ int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 	t_vals		*first_ovals;
 	int			i;
 	int			p_val;
+	int 		last_i;
 
 	i = 0;
 	ovals = ft_lstcpy(vals);
 	ft_lstmove(&ovals, (size_t)start);
 	first_ovals = ovals;
 	p_val = *((int*)ovals->content);
+	last_i = -1;
 	while (ovals)
 	{
 		if (++i && p_val > *((int*)ovals->content))
-		{
-			ft_freetvals(&first_ovals);
-			return (((((--i) + start) % (int)ft_lstlen(vals)) <=
-				((int)ft_lstlen(vals) / 2) ? (((i) + start) %
-				(int)ft_lstlen(vals)) - 1 : ((0 - (int)ft_lstlen(vals))
-				+ (((i) + start) % (int)ft_lstlen(vals)))));
-		}
+			last_i = i - 1;
 		p_val = *((int*)ovals->content);
 		ovals = ovals->next;
 	}
 	ft_freetvals(&first_ovals);
-	return (-2000000);
+	if (last_i == -1)
+		return (-2000000);
+	return (((((last_i) + start) % (int)ft_lstlen(vals)) <=
+				((int)ft_lstlen(vals) / 2) ? (((last_i) + start) %
+				(int)ft_lstlen(vals)) - 1 : ((0 - (int)ft_lstlen(vals))
+				+ (((last_i) + start) % (int)ft_lstlen(vals)))));
 }
 
 void			ft_pushswap_bublesort_onmove(
