@@ -19,9 +19,10 @@ void	ft_freecontent(void *content, size_t size)
 		free(content);
 }
 
-void	ft_freetvals(t_vals **vals)
+int		ft_freetvals(t_vals **vals)
 {
 	if (vals == NULL || *vals == NULL)
-		return ;
+		return (1);
 	ft_lstdel(vals, ft_freecontent);
+	return (1);
 }

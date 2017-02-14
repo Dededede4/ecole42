@@ -45,7 +45,7 @@ int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 	t_vals		*first_ovals;
 	int			i;
 	int			p_val;
-	int 		last_i;
+	int			last_i;
 
 	i = 0;
 	ovals = ft_lstcpy(vals);
@@ -60,8 +60,7 @@ int				ft_pushswap_bublesort_findsup(t_vals *vals, int start)
 		p_val = *((int*)ovals->content);
 		ovals = ovals->next;
 	}
-	ft_freetvals(&first_ovals);
-	if (last_i == -1)
+	if (ft_freetvals(&first_ovals) && last_i == -1)
 		return (-2000000);
 	return (((((last_i) + start) % (int)ft_lstlen(vals)) <=
 				((int)ft_lstlen(vals) / 2) ? (((last_i) + start) %

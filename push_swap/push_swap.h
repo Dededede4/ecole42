@@ -88,6 +88,6 @@ void						ft_pushswap_sb(t_stacks *stacks);
 void						ft_pushswap_ss(t_stacks *stacks);
 void						ft_printlst(t_list *lst);
 void						ft_printlst_str(t_list *lst);
-void						ft_freetvals(t_vals **vals);
+int							ft_freetvals(t_vals **vals);
 void						ft_pushswap_instructs_simplificator(t_instructs	**lst);
 #endif
