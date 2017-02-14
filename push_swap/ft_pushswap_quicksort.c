@@ -124,49 +124,6 @@ void			ft_pushswap_quicksort_b2a(t_stacks *stacks, t_vals **f_nbrs)
 	ft_pushswap_quicksort_b2a_push(stacks, pivot);
 }
 
-void			ft_pushswap_quicksort_fixgoodposition_a(t_vals **fixeds, t_vals *lst, int start)
-{
-	t_vals	*sorted;
-	t_vals	*sorted_first;
-	int		p;
-
-	sorted = ft_lstsort(lst);
-	sorted_first = sorted;
-	p = *((int*)lst->content);
-	while (lst)
-	{
-		if (start-- < 0 && (ft_pushswap_quicksort_isfixed(*fixeds, p)/* || (lst->next && ft_pushswap_quicksort_isfixed(*fixeds, *((int*)lst->next->content)))*/)
-			&& *((int*)lst->content) == *((int*)sorted->content))
-				ft_pushswap_quicksort_setfixed(fixeds, *((int*)lst->content));
-		p = *((int*)lst->content);
-		lst = lst->next;
-		sorted = sorted->next;
-	}
-	ft_freetvals(&sorted_first);
-}
-
-
-void			ft_pushswap_quicksort_fixgoodposition_b(t_vals **fixeds, t_vals *lst, int start)
-{
-	t_vals	*sorted;
-	t_vals	*sorted_first;
-	int		p;
-
-	sorted = ft_lstsort_rev(lst);
-	sorted_first = sorted;
-	p = *((int*)lst->content);
-	while (lst)
-	{
-		if (start-- < 0 && (ft_pushswap_quicksort_isfixed(*fixeds, p)/* || (lst->next && ft_pushswap_quicksort_isfixed(*fixeds, *((int*)lst->next->content)))*/)
-			&& *((int*)lst->content) == *((int*)sorted->content))
-				ft_pushswap_quicksort_setfixed(fixeds, *((int*)lst->content));
-		p = *((int*)lst->content);
-		lst = lst->next;
-		sorted = sorted->next;
-	}
-	ft_freetvals(&sorted_first);
-}
-
 t_stacks		*ft_pushswap_quicksort(t_vals *vals)
 {
 	t_stacks	*stacks;

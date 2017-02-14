@@ -89,5 +89,10 @@ void						ft_pushswap_ss(t_stacks *stacks);
 void						ft_printlst(t_list *lst);
 void						ft_printlst_str(t_list *lst);
 int							ft_freetvals(t_vals **vals);
-void						ft_pushswap_instructs_simplificator(t_instructs	**lst);
+void						ft_pushswap_instructs_simplificator(
+								t_instructs	**lst);
+void						ft_pushswap_quicksort_fixgoodposition_a(
+								t_vals **fixeds, t_vals *lst, int start);
+void						ft_pushswap_quicksort_fixgoodposition_b(
+								t_vals **fixeds, t_vals *lst, int start);
 #endif
