@@ -24,21 +24,25 @@ ft_pushswap_instructs_r.c ft_pushswap_instructs_rr.c \
 ft_pushswap_instructs_s.c ft_pushswap_quicksort.c \
 ft_pushswap_quicksort_tools0.c ft_pushswap_quicksort_tools1.c \
 ft_pushswap_quicksort_tools2.c ft_pushswap_selectsort.c ft_freetvals.c \
-ft_pushswap_bublesort.c ft_pushswap_instructs_simplificator.c libft/libft.a
+ft_pushswap_bublesort.c ft_pushswap_instructs_simplificator.c
 
-OBJ=$(SRC:.c=.o)
+OBJS=$(SRC:.c=.o)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: push_swap checker
 
-push_swap:
+push_swap: $(OBJS) push_swap.o
 	make -C libft
-	$(CC) $(CFLAGS) push_swap.c $(SRC) -o push_swap
+	$(CC) $(CFLAGS) $(OBJS) push_swap.o ./libft/libft.a -o push_swap
 
-checker:
+checker: $(OBJS) checker.o
 	make -C libft
-	$(CC) $(CFLAGS) checker.c $(SRC) -o checker
+	$(CC) $(CFLAGS) $(OBJS) checker.o ./libft/libft.a -o checker
 
 clean:
+	$(RM) $(OBJS)
 	make -C libft clean
 
 fclean: clean
@@ -46,5 +50,8 @@ fclean: clean
 	make -C libft fclean
 
 re: fclean all
+
+libft/libft.a:
+	make -C libft
 
 .PHONY: clean fclean re all

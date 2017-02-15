@@ -18,10 +18,6 @@ CFLAGS=-Wall -Wextra -Werror
 
 RM=rm -f
 
-LDFLAGS=-L.
-
-LDLIBS=-lft
-
 SRC= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 ft_memchr.c ft_memcmp.c ft_strlen.c ft_strdup.c ft_strcpy.c \
 ft_strncpy.c ft_strcat.c ft_strncat.c ft_strlcat.c ft_strchr.c \
@@ -44,19 +40,21 @@ ft_printf_putstr_args.c ft_isascii_str.c ft_isunicode.c ft_isunicode_str.c ft_pr
 
 OBJ=$(SRC:.c=.o)
 
-$(NAME): libft.h
-	$(CC) $(CFLAGS) -c $(SRC)
+all: $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
-all: $(NAME)
-
 clean:
-	$(RM) $(OBJ)
+	$(RM) *.o
 
 fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re
