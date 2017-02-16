@@ -20,7 +20,7 @@ int				ft_pushswap_instructs_simplificator_del(
 
 	current = *lst;
 	precedent = NULL;
-	while (current->next)
+	while (current && current->next)
 	{
 		if (ft_strcmp(current->content, str1) == 0 &&
 			ft_strcmp(current->next->content, str2) == 0)

@@ -57,7 +57,7 @@ int				main(int argc, char **argv)
 	t_list		*lst;
 	t_stacks	*best;
 
-	if (argc <= 1)
+	if (argc <= 2)
 		return (0);
 	lst = ft_arraytolst(argv + 1, argc - 1);
 	best = ft_pushswap_bestinstructs(lst);
