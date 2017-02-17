@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_intlst_issorted.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 10:22:12 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/30 10:54:09 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/08 14:14:55 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/08 14:14:57 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void const *content, size_t content_size)
+t_bool	ft_intlst_issorted(t_list *lst)
 {
-	t_list	*new;
+	int p;
 
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (NULL);
-	if (content_size)
+	p = *((int*)lst->content);
+	while (lst)
 	{
-		new->content = malloc(content_size);
-		if (!new->content)
-			return (NULL);
-		new->content_size = content_size;
-		ft_memcpy(new->content, content, content_size);
+		if (p > *((int*)lst->content))
+			return (FALSE);
+		p = *((int*)lst->content);
+		lst = lst->next;
 	}
-	else
-	{
-		new->content = NULL;
-		new->content_size = 0;
-	}
-	new->next = NULL;
-	return (new);
+	return (TRUE);
 }

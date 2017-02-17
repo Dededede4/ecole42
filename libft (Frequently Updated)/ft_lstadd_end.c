@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_end.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 10:22:12 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/30 10:54:09 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/08 15:51:05 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/08 15:51:08 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void const *content, size_t content_size)
+void	ft_lstadd_end(t_list **lst, t_list *new)
 {
-	t_list	*new;
+	t_list	*current;
 
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (NULL);
-	if (content_size)
-	{
-		new->content = malloc(content_size);
-		if (!new->content)
-			return (NULL);
-		new->content_size = content_size;
-		ft_memcpy(new->content, content, content_size);
-	}
-	else
-	{
-		new->content = NULL;
-		new->content_size = 0;
-	}
+	if (lst == NULL || new == NULL)
+		return ;
 	new->next = NULL;
-	return (new);
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	current = *lst;
+	while (current->next)
+		current = current->next;
+	current->next = new;
 }

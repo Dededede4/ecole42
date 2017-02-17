@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 10:22:12 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/30 10:54:09 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/08 15:56:23 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/08 15:56:25 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void const *content, size_t content_size)
+size_t		ft_lstlen(t_list *lst)
 {
-	t_list	*new;
+	size_t	len;
 
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (NULL);
-	if (content_size)
+	len = 0;
+	while (lst != NULL)
 	{
-		new->content = malloc(content_size);
-		if (!new->content)
-			return (NULL);
-		new->content_size = content_size;
-		ft_memcpy(new->content, content, content_size);
+		len++;
+		lst = lst->next;
 	}
-	else
-	{
-		new->content = NULL;
-		new->content_size = 0;
-	}
-	new->next = NULL;
-	return (new);
+	return (len);
 }

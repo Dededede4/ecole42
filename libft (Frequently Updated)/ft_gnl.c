@@ -58,7 +58,8 @@ char				*ft_find_line(t_buff *buff)
 			free(tmp);
 			return (ft_find_line(buff));
 		}
-		else if (l == 0 && (buff->ended = 1))
+		free(tmp);
+		if (l == 0 && (buff->ended = 1))
 			return (buff->content);
 		return (NULL);
 	}

@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstrotate_reverse.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 10:22:12 by mprevot           #+#    #+#             */
-/*   Updated: 2016/11/30 10:54:09 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/10 14:49:33 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/10 14:49:35 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void const *content, size_t content_size)
+void		ft_lstrotate_reverse(t_list **lst)
 {
-	t_list	*new;
+	t_list	*first;
+	t_list	*current;
+	t_list	*before_last;
 
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (NULL);
-	if (content_size)
+	first = *lst;
+	current = first;
+	while (current->next)
 	{
-		new->content = malloc(content_size);
-		if (!new->content)
-			return (NULL);
-		new->content_size = content_size;
-		ft_memcpy(new->content, content, content_size);
+		before_last = current;
+		current = current->next;
 	}
-	else
-	{
-		new->content = NULL;
-		new->content_size = 0;
-	}
-	new->next = NULL;
-	return (new);
+	current->next = first;
+	*lst = current;
+	before_last->next = NULL;
 }
