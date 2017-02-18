@@ -15,6 +15,16 @@
 
 # include "libft/libft.h"
 
+
+
+# define START 1
+# define END 2
+# define FREE 3
+# define IGNORE 4
+# define OCCUPY 5
+
+typedef char			t_status;
+
 typedef struct			s_antler
 {
 	size_t				ant_nbr_global;
@@ -30,13 +40,13 @@ typedef struct			s_antler
 	struct s_way		*ways;	
 }						t_antler;
 
-typedef struct			s_way
+/*typedef struct			s_way
 {
 	struct s_room			*start;
 	size_t				len;
 
 	struct s_way		*next;
-}						t_way;
+}						t_way;*/
 
 typedef struct			s_room
 {
@@ -45,10 +55,13 @@ typedef struct			s_room
 	int					y;
 
 	t_bool				have_way;
-	t_bool				busy;				
+	t_bool				busy;
 	
 	struct s_room		*next;
 }						t_room;
+
+typedef struct s_list	t_wayroom;
+typedef struct s_list	t_ways;
 
 typedef struct			s_pipe
 {
@@ -65,4 +78,5 @@ t_room	*ft_findroom(char	*name, t_antler *antler);
 char	*ft_strjoin_multi(t_bool autofree, ...);
 t_bool		ft_isdigit_str(char *str);
 void	lemin_output(t_antler	*antler);
+void	error(void);
 #endif

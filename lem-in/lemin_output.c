@@ -20,6 +20,11 @@ void	lemin_output(t_antler	*antler)
 
 	cur_room = antler->rooms;
 	cur_pipe = antler->pipes;
+	ft_printf("Fourmies : %i\n", antler->ant_nbr_global);
+	if (antler->start)
+		ft_printf("Start : %s\n", antler->start->name);
+	if (antler->end)
+		ft_printf("End : %s\n", antler->end->name);
 	while (cur_room)
 	{
 		str = ft_room2str(cur_room);

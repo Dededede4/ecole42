@@ -37,3 +37,9 @@ t_room	*ft_findroom(char	*name, t_antler *antler)
 	}
 	return (NULL);
 }
+
+void	error(void)
+{
+	ft_putstr_fd("ERROR\n", STDERR_FILENO);
+	exit(0);
+}

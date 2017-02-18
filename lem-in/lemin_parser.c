@@ -12,11 +12,6 @@
 
 #include "lemin.h"
 
-void	error(void)
-{
-	ft_putstr_fd("ERROR\n", STDERR_FILENO);
-	exit(0);
-}
 
 void	lemin_parser_antnbr(t_antler *antler)
 {
@@ -31,7 +26,7 @@ void	lemin_parser_antnbr(t_antler *antler)
 	free(ant_nbr);
 }
 
-void	lemin_parser_room(char *line, t_antler *antler)
+void	lemin_parser_room(char *line, t_antler *antler, t_bool is_start, t_bool is_end)
 {
 	int		i;
 	char	*str;
@@ -39,6 +34,11 @@ void	lemin_parser_room(char *line, t_antler *antler)
 
 	if (!(room = malloc(sizeof(t_room))))
 		return ;
+	if (is_start)
+		antler->start = room;
+	if (is_end)
+		antler->end = room;
+	room->busy = FALSE;
 	i = 0;
 	if(!(str = ft_strchr(line, ' ')))
 		error();
@@ -73,7 +73,10 @@ void	lemin_parser_pipe(char *line, t_antler *antler)
 		return ;
 	i = 0;
 	if (!(str = ft_strchr(line, '-')))
+	{
+		ft_printf("bof\n");
 		error();
+	}
 	*str = '\0';
 	pipe->a = ft_findroom(line, antler);
 	i = (str - line) + 1;
@@ -84,6 +87,7 @@ void	lemin_parser_pipe(char *line, t_antler *antler)
 	if (ft_strcmp(str, line) == 0)
 	{
 		free(str);
+		ft_printf("bip\n");
 		error();
 	}
 	free(str);
@@ -96,6 +100,11 @@ t_antler	*lemin_parser(void)
 	char	*line;
 	t_antler	*antler;
 	t_bool	room_ended;
+	t_bool	next_first;
+	t_bool	next_end;
+	int 	nbr_first;
+	int 	nbr_end;
+
 
 	if (!(antler = malloc(sizeof(t_antler))))
 		return (NULL);
@@ -104,19 +113,43 @@ t_antler	*lemin_parser(void)
 	lemin_parser_antnbr(antler);
 	
 	room_ended = FALSE;
+	next_first = FALSE;
+	next_end = FALSE;
+	nbr_first = 0;
+	nbr_end = 0;
 	while (ft_gnl(STDIN_FILENO, &line))
 	{
-		if (ft_strchr(line, ' '))
+		if (*line != '#' && ft_strchr(line, ' '))
 		{
-			if (room_ended)
-				error();
-			lemin_parser_room(line, antler);
+			lemin_parser_room(line, antler, next_first, next_end);
 		}
-		else
+		else if (*line != '#')
 		{
 			room_ended = TRUE;
 			lemin_parser_pipe(line, antler);
 		}
+		next_first = FALSE;
+		next_end = FALSE;
+		if (ft_strcmp(line, "##start") == 0)
+		{
+			if (nbr_first == 1)
+				error();
+			next_first++;
+			next_first = TRUE;
+		}
+		else if (ft_strcmp(line, "##end") == 0)
+		{
+			if (nbr_end == 1)
+				error();
+			next_end++;
+			next_end = TRUE;
+		}
+		if ((next_first || next_end) && room_ended)
+		{
+			ft_printf("??\n");
+			error();
+		}
+
 		free(line);
 	}
 	return (antler);
