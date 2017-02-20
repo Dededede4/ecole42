@@ -38,7 +38,7 @@ void	lemin_parser_room(char *line, t_antler *antler, t_bool is_start, t_bool is_
 		antler->start = room;
 	if (is_end)
 		antler->end = room;
-	room->busy = FALSE;
+	room->have_way = FALSE;
 	i = 0;
 	if(!(str = ft_strchr(line, ' ')))
 		error();
@@ -150,7 +150,7 @@ t_antler	*lemin_parser(void)
 			error();
 		}
 
-		free(line);
+		//free(line);
 	}
 	return (antler);
 }

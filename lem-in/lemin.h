@@ -60,7 +60,7 @@ typedef struct			s_room
 	struct s_room		*next;
 }						t_room;
 
-typedef struct s_list	t_wayroom;
+typedef struct s_list	t_way;
 typedef struct s_list	t_ways;
 
 typedef struct			s_pipe
