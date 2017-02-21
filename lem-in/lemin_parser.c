@@ -39,6 +39,7 @@ void	lemin_parser_room(char *line, t_antler *antler, t_bool is_start, t_bool is_
 	if (is_end)
 		antler->end = room;
 	room->have_way = FALSE;
+	room->ant_no = 0;
 	i = 0;
 	if(!(str = ft_strchr(line, ' ')))
 		error();

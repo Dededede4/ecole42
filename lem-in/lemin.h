@@ -40,19 +40,13 @@ typedef struct			s_antler
 	struct s_way		*ways;	
 }						t_antler;
 
-/*typedef struct			s_way
-{
-	struct s_room			*start;
-	size_t				len;
-
-	struct s_way		*next;
-}						t_way;*/
 
 typedef struct			s_room
 {
 	char				*name;
 	int					x;
 	int					y;
+	int					ant_no;
 
 	t_bool				have_way;
 	t_bool				busy;
@@ -62,6 +56,7 @@ typedef struct			s_room
 
 typedef struct s_list	t_way;
 typedef struct s_list	t_ways;
+typedef struct s_list	t_ant;
 
 typedef struct			s_pipe
 {
@@ -79,4 +74,5 @@ char	*ft_strjoin_multi(t_bool autofree, ...);
 t_bool		ft_isdigit_str(char *str);
 void	lemin_output(t_antler	*antler);
 void	error(void);
+t_ways	*find_sortest_ways(t_antler *antler);
 #endif
