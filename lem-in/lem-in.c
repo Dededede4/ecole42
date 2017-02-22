@@ -35,7 +35,6 @@ t_bool		send_ants(t_antler *antler, t_ways	*ways, int *last_no)
 	//int		nbr_used_path;
 
 	isfirst = TRUE;
-	finish = TRUE;
 	while (ways)
 	{
 		way = (*((t_way**)ways->content))->next;
@@ -58,8 +57,6 @@ t_bool		send_ants(t_antler *antler, t_ways	*ways, int *last_no)
 			(*((t_room**)way->content))->ant_no = -1;
 			while (way)
 			{
-				if ((*((t_room**)way->content))->ant_no != -1)
-					finish = FALSE;
 				if ((*((t_room**)way->content))->ant_no != -1 && (*((t_room**)way->content))->ant_no != 0)
 					ft_printf("L%i-%s ", (*((t_room**)way->content))->ant_no, (*((t_room**)way->content))->name);
 				way = way->next;

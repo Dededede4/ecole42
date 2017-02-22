@@ -74,10 +74,7 @@ void	lemin_parser_pipe(char *line, t_antler *antler)
 		return ;
 	i = 0;
 	if (!(str = ft_strchr(line, '-')))
-	{
-		ft_printf("bof\n");
 		error();
-	}
 	*str = '\0';
 	pipe->a = ft_findroom(line, antler);
 	i = (str - line) + 1;
@@ -88,7 +85,6 @@ void	lemin_parser_pipe(char *line, t_antler *antler)
 	if (ft_strcmp(str, line) == 0)
 	{
 		free(str);
-		ft_printf("bip\n");
 		error();
 	}
 	free(str);
@@ -151,7 +147,8 @@ t_antler	*lemin_parser(void)
 			error();
 		}
 
-		//free(line);
+		free(line);
+		line = NULL;
 	}
 	return (antler);
 }

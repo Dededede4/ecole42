@@ -239,4 +239,6 @@ void					ft_lstrotate(t_list **lst);
 void					ft_lstrotate_reverse(t_list **lst);
 t_list					*ft_lstsort(t_list *lst);
 t_list					*ft_lstsort_rev(t_list *lst);
+void					ft_lstdel_content(t_list **alst);
+void 					ft_lstdelone_content(t_list **link);
 #endif
