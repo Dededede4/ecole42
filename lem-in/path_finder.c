@@ -46,7 +46,7 @@ void	freelst(t_way **ways)
 
 t_ways 	*get_next_way(t_antler *antler, t_way *way)
 {
-	t_pipe *pcurrent;
+	t_pipe		*pcurrent;
 	t_room 		*room;
 	t_room 		*room_next;
 	t_ways		*newways;
@@ -79,7 +79,6 @@ t_ways 	*get_next_way(t_antler *antler, t_way *way)
 
 		pcurrent = pcurrent->next;
 	}
-	//ft_printf("test hihi\n");
 	freelst(&newway);
 	return (newways);
 }
@@ -111,7 +110,7 @@ t_way	*find_sortest_way(t_antler *antler, int	*way_no)
 	{
 		way = (*(t_way**)ways->content);
 		futureways = get_next_way(antler, way);
-		ft_lstadd_end(&ways, futureways);
+		ft_lstadd_end(&first_ways, futureways);
 		way_return = way;
 		if (way && *way_no < i)
 		{
@@ -119,15 +118,15 @@ t_way	*find_sortest_way(t_antler *antler, int	*way_no)
 				way = way->next;
 			if ((*(t_room**)(way->content)) == antler->end)
 			{
-				/* La route la plus courte, ne pas oublier de free */
+				
 				*way_no = i;
 				cpy = ft_lstcpy(way_return);
 				ways = first_ways;
+				// à partir d'ici
 				while (ways)
 				{
 					way = (*(t_way**)ways->content);
 					freelst(&way);
-					ways->content = NULL;
 					ways = ways->next;
 				}
 				freelst(&first_ways);
@@ -149,7 +148,6 @@ t_way	*find_sortest_way(t_antler *antler, int	*way_no)
 		ways = ways->next;
 	}
 	freelst(&first_ways);
-
 	*way_no = -1;
 	return (NULL);
 }
