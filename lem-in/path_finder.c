@@ -144,7 +144,6 @@ t_way	*find_sortest_way(t_antler *antler, int	*way_no)
 	{
 		way = (*(t_way**)ways->content);
 		freelst(&way);
-		ways->content = NULL;
 		ways = ways->next;
 	}
 	freelst(&first_ways);

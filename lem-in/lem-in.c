@@ -86,7 +86,7 @@ int		main(void)
 	current = ways;
 	while (current)
 	{
-		freelst((t_way**)ways->content);
+		freelst((t_way**)current->content);
 		current = current->next;
 	}
 	freelst(&ways);
