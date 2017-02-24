@@ -16,15 +16,18 @@ char	*ft_strjoin_multi(t_bool autofree, ...)
 {
 	va_list			ap;
 	char			*str;
+	char			*strfree_arg;
 	char			*strfree;
 
 	va_start(ap, autofree);
 	str = NULL;
-	while ((strfree = va_arg(ap, char *)))
+	while ((strfree_arg = va_arg(ap, char *)))
 	{
-		str = ft_strjoin(str, strfree);
+		strfree = str;
+		str = ft_strjoin(str, strfree_arg);
+		free(strfree);
 		if (autofree)
-			free(strfree);
+			free(strfree_arg);
 	}
 	va_end(ap);
 	return (str);

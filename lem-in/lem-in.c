@@ -73,6 +73,7 @@ int		main(void)
 {
 	t_antler	*antler;
 	t_ways		*ways;
+	t_ways		*current;
 	int			nbr;
 	
 	if(!(antler = lemin_parser()))
@@ -82,4 +83,66 @@ int		main(void)
 	while (antler->ant_nbr_start)
 		send_ants(antler, ways, &nbr);
 	lemin_output(antler);
+	current = ways;
+	while (current)
+	{
+		freelst((t_way**)ways->content);
+		current = current->next;
+	}
+	freelst(&ways);
+
+	t_pipe *current_pipe;
+	t_pipe *next_pipe;
+
+	t_room *current_room;
+	t_room *next_room;
+
+	current_pipe = antler->pipes;
+	while (current_pipe)
+	{
+		next_pipe = current_pipe->next;
+		free(current_pipe);
+		current_pipe = next_pipe;
+	}
+
+	current_room = antler->rooms;
+	while (current_room)
+	{
+		next_room = current_room->next;
+		free(current_room->name);
+		free(current_room);
+		current_room = next_room;
+	}
+	free(antler);
+	return (0);
 }
+
+/*
+
+typedef struct			s_antler
+{
+	size_t				ant_nbr_global;
+	size_t				ant_nbr_start;
+	size_t				ant_nbr_end;
+
+
+	struct s_pipe		*pipes;
+	struct s_room		*rooms;
+	struct s_room		*start;
+	struct s_room		*end;
+
+	struct s_way		*ways;	
+}						t_antler;
+
+*/
+
+
+
+
+
+
+
+
+
+
+

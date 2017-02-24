@@ -58,6 +58,7 @@ void	lemin_parser_room(char *line, t_antler *antler, t_bool is_start, t_bool is_
 		free(line);
 		error();
 	}
+	free(str);
 	if (ft_findroom(room->name, antler)) // TODO X Y
 		error();
 	room->next = antler->rooms;

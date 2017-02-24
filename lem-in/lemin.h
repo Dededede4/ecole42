@@ -36,8 +36,6 @@ typedef struct			s_antler
 	struct s_room		*rooms;
 	struct s_room		*start;
 	struct s_room		*end;
-
-	struct s_way		*ways;	
 }						t_antler;
 
 
@@ -75,4 +73,5 @@ t_bool		ft_isdigit_str(char *str);
 void	lemin_output(t_antler	*antler);
 void	error(void);
 t_ways	*find_sortest_ways(t_antler *antler);
+void	freelst(t_way **ways);
 #endif
