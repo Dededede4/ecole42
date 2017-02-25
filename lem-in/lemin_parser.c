@@ -21,6 +21,8 @@ void	lemin_parser_antnbr(t_antler *antler)
 	if (!(ft_isdigit_str(ant_nbr)))
 		error();
 	antler->ant_nbr_global = ft_atoi(ant_nbr);
+	if (antler->ant_nbr_global == 0)
+		error();
 	antler->ant_nbr_start = antler->ant_nbr_global;
 	antler->ant_nbr_end = antler->ant_nbr_start;
 	free(ant_nbr);
@@ -110,6 +112,8 @@ t_antler	*lemin_parser(void)
 	antler->rooms = NULL;
 	antler->pipes = NULL;
 	antler->input = ft_strdup("");
+	antler->start = NULL;
+	antler->end = NULL;
 	lemin_parser_antnbr(antler);
 	
 	room_ended = FALSE;
@@ -147,10 +151,11 @@ t_antler	*lemin_parser(void)
 		}
 		if ((next_first || next_end) && room_ended)
 		{
-			ft_printf("??\n");
 			error();
 		}
 		free(line);
 	}
+	if (!antler->start || !antler->end)
+		error();
 	return (antler);
 }

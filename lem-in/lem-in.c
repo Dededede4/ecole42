@@ -114,6 +114,8 @@ int		main(void)
 	if(!(antler = lemin_parser()))
 		return (0);
 	ways = find_sortest_ways(antler);
+	if (!ways)
+		error();
 	ft_printf("%d\n%s\n", antler->ant_nbr_global, antler->input);
 	nbr = 0;
 	while (!isended((*((t_way**)ways->content))))
