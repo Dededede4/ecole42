@@ -30,6 +30,7 @@ typedef struct			s_antler
 	size_t				ant_nbr_global;
 	size_t				ant_nbr_start;
 	size_t				ant_nbr_end;
+	char				*input;
 
 
 	struct s_pipe		*pipes;

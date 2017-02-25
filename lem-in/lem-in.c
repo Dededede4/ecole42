@@ -27,47 +27,82 @@ void	move_ants(t_way *way)
 	}
 }
 
+void		ft_printmoves_positives(t_way 	*way)
+{
+	if (!((*((t_room**)way->content))->ant_no))
+		return ;
+	if (way->next)
+		ft_printmoves_positives(way->next);
+	ft_printf("L%i-%s ", (*((t_room**)way->content))->ant_no, (*((t_room**)way->content))->name);
+}
+
+void		ft_printmoves_negatives(t_way 	*way)
+{
+	if ((*((t_room**)way->content))->ant_no == 0)
+		return ;
+	if (way->next)
+		ft_printmoves_negatives(way->next);
+	if ((*((t_room**)way->content))->ant_no != -1)
+		ft_printf("L%i-%s ", (*((t_room**)way->content))->ant_no, (*((t_room**)way->content))->name);
+}
+
+t_bool	isended(t_way *way)
+{
+	way = way->next;
+	while (way)
+	{
+		if ((*((t_room**)way->content))->ant_no != -1)
+			return (FALSE);
+		way = way->next;
+	}
+	return (TRUE);
+}
+
 t_bool		send_ants(t_antler *antler, t_ways	*ways, int *last_no)
 {
 	t_way 	*way;
 	int		len;
 	t_bool	isfirst;
+	t_bool	have_print;
 	//int		nbr_used_path;
 
 	isfirst = TRUE;
+	have_print = FALSE;
 	while (ways)
 	{
 		way = (*((t_way**)ways->content))->next;
 		len = ft_lstlen(way);
-		if (len <= (int)antler->ant_nbr_start || isfirst)
+		if ((len <= (int)antler->ant_nbr_start || isfirst) && antler->ant_nbr_start != 0)
 		{
 			move_ants(way);
 			(*last_no)++;
 			(*((t_room**)way->content))->ant_no = *last_no;
 			antler->ant_nbr_start--;
-			while (way && (*((t_room**)way->content))->ant_no)
+			if (!isended(way))
 			{
-				ft_printf("L%i-%s ", (*((t_room**)way->content))->ant_no, (*((t_room**)way->content))->name);
-				way = way->next;
+				ft_printmoves_positives(way);
+				have_print = TRUE;
 			}
 		}
-		else
+		else if (antler->ant_nbr_start == 0)
 		{
 			move_ants(way);
 			(*((t_room**)way->content))->ant_no = -1;
-			while (way)
+			if (!isended(way))
 			{
-				if ((*((t_room**)way->content))->ant_no != -1 && (*((t_room**)way->content))->ant_no != 0)
-					ft_printf("L%i-%s ", (*((t_room**)way->content))->ant_no, (*((t_room**)way->content))->name);
-				way = way->next;
+				ft_printmoves_negatives(way);
+				have_print = TRUE;
 			}
 		}
 		isfirst = FALSE;
 		ways = ways->next;
 	}
-	ft_printf("\n");
+	if (have_print)
+		ft_printf("\n");
 	return (1);
 }
+
+
 
 int		main(void)
 {
@@ -79,10 +114,12 @@ int		main(void)
 	if(!(antler = lemin_parser()))
 		return (0);
 	ways = find_sortest_ways(antler);
+	ft_printf("%d\n%s\n", antler->ant_nbr_global, antler->input);
 	nbr = 0;
-	while (antler->ant_nbr_start)
+	while (!isended((*((t_way**)ways->content))))
 		send_ants(antler, ways, &nbr);
-	lemin_output(antler);
+	
+	
 	current = ways;
 	while (current)
 	{
@@ -113,6 +150,7 @@ int		main(void)
 		free(current_room);
 		current_room = next_room;
 	}
+	free(antler->input);
 	free(antler);
 	return (0);
 }

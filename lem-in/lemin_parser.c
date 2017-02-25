@@ -96,6 +96,7 @@ void	lemin_parser_pipe(char *line, t_antler *antler)
 t_antler	*lemin_parser(void)
 {
 	char	*line;
+
 	t_antler	*antler;
 	t_bool	room_ended;
 	t_bool	next_first;
@@ -108,6 +109,7 @@ t_antler	*lemin_parser(void)
 		return (NULL);
 	antler->rooms = NULL;
 	antler->pipes = NULL;
+	antler->input = ft_strdup("");
 	lemin_parser_antnbr(antler);
 	
 	room_ended = FALSE;
@@ -117,6 +119,7 @@ t_antler	*lemin_parser(void)
 	nbr_end = 0;
 	while (ft_gnl(STDIN_FILENO, &line))
 	{
+		antler->input = ft_strjoin_multi(TRUE, antler->input, ft_strdup(line), ft_strdup("\n"), NULL);
 		if (*line != '#' && ft_strchr(line, ' '))
 		{
 			lemin_parser_room(line, antler, next_first, next_end);
@@ -147,9 +150,7 @@ t_antler	*lemin_parser(void)
 			ft_printf("??\n");
 			error();
 		}
-
 		free(line);
-		line = NULL;
 	}
 	return (antler);
 }
