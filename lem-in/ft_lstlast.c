@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intlen.c                                        :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/17 14:30:05 by mprevot           #+#    #+#             */
-/*   Updated: 2017/02/17 14:30:06 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/27 17:58:53 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/27 17:58:55 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
 
-int		ft_intlen(int n)
+t_list	*ft_lstlast(t_list *list)
 {
-	int			len;
-
-	len = 1;
-	if (n < 0)
-		len++;
-	while (n /= 10)
-		len++;
-	return (len);
+	while (list->next)
+		list = list->next;
+	return (list);
 }

@@ -12,19 +12,38 @@
 
 #include "lemin.h"
 
-char	*ft_room2str(t_room *room)
+void		freelst(t_way **ways)
 {
-	return ft_strjoin_multi(TRUE, ft_strdup(room->name), ft_strdup(" "),
-		ft_itoa(room->x), ft_strdup(" "), ft_itoa(room->y), NULL);
+	t_ways	*current;
+	t_ways	*next;
+
+	if (!ways || !*ways)
+		return ;
+	current = *ways;
+	while (current)
+	{
+		next = current->next;
+		if (current->content)
+			free(current->content);
+		free(current);
+		current = next;
+	}
+	*ways = NULL;
 }
 
-char	*ft_pipe2str(t_pipe *pipe)
+char		*ft_room2str(t_room *room)
 {
-	return ft_strjoin_multi(FALSE, pipe->a->name, "-",
-		pipe->b->name, NULL);
+	return (ft_strjoin_multi(TRUE, ft_strdup(room->name), ft_strdup(" "),
+		ft_itoa(room->x), ft_strdup(" "), ft_itoa(room->y), NULL));
 }
 
-t_room	*ft_findroom(char	*name, t_antler *antler)
+char		*ft_pipe2str(t_pipe *pipe)
+{
+	return (ft_strjoin_multi(FALSE, pipe->a->name, "-",
+		pipe->b->name, NULL));
+}
+
+t_room		*ft_findroom(char *name, t_antler *antler)
 {
 	t_room	*room;
 
@@ -38,7 +57,7 @@ t_room	*ft_findroom(char	*name, t_antler *antler)
 	return (NULL);
 }
 
-void	error(void)
+void		error(void)
 {
 	ft_putstr_fd("ERROR\n", STDERR_FILENO);
 	exit(0);

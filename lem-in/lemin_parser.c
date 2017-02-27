@@ -12,8 +12,7 @@
 
 #include "lemin.h"
 
-
-void	lemin_parser_antnbr(t_antler *antler)
+void			lemin_parser_antnbr(t_antler *antler)
 {
 	char	*ant_nbr;
 
@@ -24,29 +23,26 @@ void	lemin_parser_antnbr(t_antler *antler)
 	if (antler->ant_nbr_global == 0)
 		error();
 	antler->ant_nbr_start = antler->ant_nbr_global;
-	antler->ant_nbr_end = antler->ant_nbr_start;
 	free(ant_nbr);
 }
 
-void	lemin_parser_room(char *line, t_antler *antler, t_bool is_start, t_bool is_end)
+void			lemin_parser_room(char *line, t_antler *antler,
+	t_bool is_start, t_bool is_end)
 {
 	int		i;
 	char	*str;
 	t_room	*room;
 
-	if (!(room = malloc(sizeof(t_room))))
-		return ;
-	if (is_start)
-		antler->start = room;
-	if (is_end)
-		antler->end = room;
-	room->have_way = FALSE;
-	room->ant_no = 0;
+	if (!(room = newroom(antler, is_start, is_end)))
+		error();
 	i = 0;
-	if(!(str = ft_strchr(line, ' ')))
+	if (!(str = ft_strchr(line, ' ')))
 		error();
 	*str = '\0';
+	if (ft_findroom(line, antler))
+		error();
 	room->name = ft_strdup(line);
+	*str = ' ';
 	i = (str - line) + 1;
 	room->x = ft_atoi(line + i);
 	str = ft_strchr(line + i, ' ');
@@ -55,26 +51,19 @@ void	lemin_parser_room(char *line, t_antler *antler, t_bool is_start, t_bool is_
 		error();
 	room->y = ft_atoi(line + i);
 	str = ft_room2str(room);
-	if (ft_strcmp(str, line) == 0)
-	{
-		free(line);
+	if (ft_strcmp(str, line) != 0)
 		error();
-	}
 	free(str);
-	if (ft_findroom(room->name, antler)) // TODO X Y
-		error();
-	room->next = antler->rooms;
-	antler->rooms = room;
 }
 
-void	lemin_parser_pipe(char *line, t_antler *antler)
+t_bool			lemin_parser_pipe(char *line, t_antler *antler)
 {
-	int i;
-	t_pipe	*pipe;
-	char	*str;
+	int			i;
+	t_pipe		*pipe;
+	char		*str;
 
 	if (!(pipe = malloc(sizeof(t_pipe))))
-		return ;
+		error();
 	i = 0;
 	if (!(str = ft_strchr(line, '-')))
 		error();
@@ -93,66 +82,36 @@ void	lemin_parser_pipe(char *line, t_antler *antler)
 	free(str);
 	pipe->next = antler->pipes;
 	antler->pipes = pipe;
+	return (TRUE);
 }
 
-t_antler	*lemin_parser(void)
+/*
+** 	b[0] room_ended = FALSE;
+**	b[1] next_first = FALSE;
+**	b[2] next_end = FALSE;
+*/
+
+t_antler		*lemin_parser(void)
 {
-	char	*line;
-
+	char		*line;
 	t_antler	*antler;
-	t_bool	room_ended;
-	t_bool	next_first;
-	t_bool	next_end;
-	int 	nbr_first;
-	int 	nbr_end;
+	t_bool		b[3];
 
-
-	if (!(antler = malloc(sizeof(t_antler))))
-		return (NULL);
-	antler->rooms = NULL;
-	antler->pipes = NULL;
-	antler->input = ft_strdup("");
-	antler->start = NULL;
-	antler->end = NULL;
+	antler = newantler();
 	lemin_parser_antnbr(antler);
-	
-	room_ended = FALSE;
-	next_first = FALSE;
-	next_end = FALSE;
-	nbr_first = 0;
-	nbr_end = 0;
+	ft_bzero(&b, 3);
 	while (ft_gnl(STDIN_FILENO, &line))
 	{
-		antler->input = ft_strjoin_multi(TRUE, antler->input, ft_strdup(line), ft_strdup("\n"), NULL);
+		antler->input = ft_strjoin_multi(TRUE, antler->input,
+			ft_strdup(line), ft_strdup("\n"), NULL);
 		if (*line != '#' && ft_strchr(line, ' '))
-		{
-			lemin_parser_room(line, antler, next_first, next_end);
-		}
+			lemin_parser_room(line, antler, b[1], b[2]);
 		else if (*line != '#')
-		{
-			room_ended = TRUE;
-			lemin_parser_pipe(line, antler);
-		}
-		next_first = FALSE;
-		next_end = FALSE;
-		if (ft_strcmp(line, "##start") == 0)
-		{
-			if (nbr_first == 1)
-				error();
-			next_first++;
-			next_first = TRUE;
-		}
-		else if (ft_strcmp(line, "##end") == 0)
-		{
-			if (nbr_end == 1)
-				error();
-			next_end++;
-			next_end = TRUE;
-		}
-		if ((next_first || next_end) && room_ended)
-		{
+			b[0] = lemin_parser_pipe(line, antler);
+		b[1] = (ft_strcmp(line, "##start") == 0);
+		b[2] = (ft_strcmp(line, "##end") == 0);
+		if ((b[1] || b[2]) && b[0])
 			error();
-		}
 		free(line);
 	}
 	if (!antler->start || !antler->end)

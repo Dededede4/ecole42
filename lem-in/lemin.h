@@ -15,8 +15,6 @@
 
 # include "libft/libft.h"
 
-
-
 # define START 1
 # define END 2
 # define FREE 3
@@ -29,16 +27,12 @@ typedef struct			s_antler
 {
 	size_t				ant_nbr_global;
 	size_t				ant_nbr_start;
-	size_t				ant_nbr_end;
 	char				*input;
-
-
 	struct s_pipe		*pipes;
 	struct s_room		*rooms;
 	struct s_room		*start;
 	struct s_room		*end;
 }						t_antler;
-
 
 typedef struct			s_room
 {
@@ -46,10 +40,7 @@ typedef struct			s_room
 	int					x;
 	int					y;
 	int					ant_no;
-
 	t_bool				have_way;
-	t_bool				busy;
-	
 	struct s_room		*next;
 }						t_room;
 
@@ -64,15 +55,25 @@ typedef struct			s_pipe
 	struct s_pipe		*next;
 }						t_pipe;
 
-
-t_antler	*lemin_parser(void);
-char	*ft_room2str(t_room *room);
-char	*ft_pipe2str(t_pipe *pipe);
-t_room	*ft_findroom(char	*name, t_antler *antler);
-char	*ft_strjoin_multi(t_bool autofree, ...);
-t_bool		ft_isdigit_str(char *str);
-void	lemin_output(t_antler	*antler);
-void	error(void);
-t_ways	*find_sortest_ways(t_antler *antler);
-void	freelst(t_way **ways);
+t_antler				*lemin_parser(void);
+char					*ft_room2str(t_room *room);
+char					*ft_pipe2str(t_pipe *pipe);
+t_room					*ft_findroom(char	*name, t_antler *antler);
+char					*ft_strjoin_multi(t_bool autofree, ...);
+t_bool					ft_isdigit_str(char *str);
+void					lemin_output(t_antler	*antler);
+void					error(void);
+t_ways					*find_sortest_ways(t_antler *antler);
+void					freelst(t_way **ways);
+t_list					*ft_lstlast(t_list *list);
+t_bool					isended(t_way *way);
+t_bool					send_ants(t_antler *antler,
+							t_ways	*ways, int *last_no);
+t_bool					ft_printmoves_positives(t_way *way);
+t_bool					ft_printmoves_negatives(t_way *way);
+t_room					*newroom(t_antler *antler,
+							t_bool is_start, t_bool is_end);
+t_antler				*newantler(void);
+t_bool					is_free(t_room *room, t_way *way);
+t_bool					usedway(t_way *way);
 #endif
