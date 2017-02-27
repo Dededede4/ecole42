@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin_multi.c                                 :+:      :+:    :+:   */
+/*   ft_intlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/17 14:38:27 by mprevot           #+#    #+#             */
-/*   Updated: 2017/02/17 14:38:30 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/17 14:30:05 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/17 14:30:06 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h"
+#include "libft.h"
 
-char	*ft_strjoin_multi(t_bool autofree, ...)
+int		ft_intlen(int n)
 {
-	va_list			ap;
-	char			*str;
-	char			*strfree_arg;
-	char			*strfree;
+	int			len;
 
-	va_start(ap, autofree);
-	str = NULL;
-	while ((strfree_arg = va_arg(ap, char *)))
-	{
-		strfree = str;
-		str = ft_strjoin(str, strfree_arg);
-		free(strfree);
-		if (autofree)
-			free(strfree_arg);
-	}
-	va_end(ap);
-	return (str);
+	len = 1;
+	if (n < 0)
+		len++;
+	while (n /= 10)
+		len++;
+	return (len);
 }

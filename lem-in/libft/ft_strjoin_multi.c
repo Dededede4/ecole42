@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit_str.c                                   :+:      :+:    :+:   */
+/*   ft_strjoin_multi.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/17 12:12:00 by mprevot           #+#    #+#             */
-/*   Updated: 2017/02/17 12:12:04 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/17 14:38:27 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/17 14:38:30 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h"
+#include "libft.h"
 
-t_bool		ft_isdigit_str(char *str)
+char	*ft_strjoin_multi(t_bool autofree, ...)
 {
-	int		i;
+	va_list			ap;
+	char			*str;
+	char			*strfree_arg;
+	char			*strfree;
 
-	i = 0;
-	while (str[i])
+	va_start(ap, autofree);
+	str = NULL;
+	while ((strfree_arg = va_arg(ap, char *)))
 	{
-		if (!ft_isdigit(str[i]))
-			return (FALSE);
-		i++;
+		strfree = str;
+		str = ft_strjoin(str, strfree_arg);
+		free(strfree);
+		if (autofree)
+			free(strfree_arg);
 	}
-	if (i == 0)
-		return (FALSE);
-	return (TRUE);
+	va_end(ap);
+	return (str);
 }

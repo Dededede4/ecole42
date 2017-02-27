@@ -241,4 +241,8 @@ t_list					*ft_lstsort(t_list *lst);
 t_list					*ft_lstsort_rev(t_list *lst);
 void					ft_lstdel_content(t_list **alst);
 void					ft_lstdelone_content(t_list **link);
+char					*ft_strjoin_multi(t_bool autofree, ...);
+t_bool					ft_isdigit_str(char *str);
+t_list					*ft_lstlast(t_list *list);
+int						ft_intlen(int n);
 #endif

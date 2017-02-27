@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intlen.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/17 14:30:05 by mprevot           #+#    #+#             */
-/*   Updated: 2017/02/17 14:30:06 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/17 12:12:00 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/17 12:12:04 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h"
+#include "libft.h"
 
-int		ft_intlen(int n)
+t_bool		ft_isdigit_str(char *str)
 {
-	int			len;
+	int		i;
 
-	len = 1;
-	if (n < 0)
-		len++;
-	while (n /= 10)
-		len++;
-	return (len);
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (FALSE);
+		i++;
+	}
+	if (i == 0)
+		return (FALSE);
+	return (TRUE);
 }
