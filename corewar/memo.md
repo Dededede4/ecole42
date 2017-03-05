@@ -1,4 +1,7 @@
-Les petites notes pour comprendre l'incompréhensible :
+### Définitions pour comprendre l'incompréhensible
 
-*PC* : Program Counter et ça fait très exactement…
-*carry* : C'est très simple
+* `PC` Mettre ici une définition de PC
+
+* `carry` Définition de carry
+
+* `registre` Définition de registre
