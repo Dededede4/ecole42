@@ -26,9 +26,9 @@ char *get_output_path(char *name)
 
 	tmp = ft_strrchr(name, '.');
 	if (!tmp)
-		return (ft_strdup(".s"));
+		return (ft_strdup(".cor"));
 	*tmp = '\0';
-	return (ft_strjoin_multi(FALSE, name, ".s", NULL));
+	return (ft_strjoin_multi(FALSE, name, ".cor", NULL));
 }
 
 void	write_exec_magic(int fd)
@@ -68,11 +68,16 @@ void	write_comment(int fdin, int fdout)
 		{
 			have_comment = TRUE;
 			str = ft_strtrim(line + ft_strlen(NAME_CMD_STRING));
-			ft_printf("Hey : %s\n", str);
-			if (ft_strlen(str) > PROG_NAME_LENGTH)
-				error("Name too long");
 			len = ft_strlen(str);
-			write(fdout, str, len);
+			if (*str != '"')
+				error("Name don't start by '\"'\n");
+			if (str[len - 1] != '"')
+				error("Name don't end by '\"'\n");
+			ft_printf("Hey : %s\n", str);
+			if (len > PROG_NAME_LENGTH)
+				error("Name too long");
+			
+			write(fdout, str + 1, len - 2);
 			free(str);
 			str = ft_memalloc(PROG_NAME_LENGTH - len);
 			write(fdout, str, PROG_NAME_LENGTH - len);
