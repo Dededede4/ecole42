@@ -40,29 +40,70 @@ void	write_exec_magic(int fd)
 
 	i = 3;
 	nbr = COREWAR_EXEC_MAGIC;
-	//write(fd, &nbr, 4);
 	revnbr = 0;
 	while (i >= 0)
 	{
 		((char*)(&revnbr))[i] = ((char*)(&nbr))[0];
-		ft_printf("%x, %x\n", revnbr, nbr);
-		//revnbr = revnbr << 8;
 		nbr = nbr >> 8;
 		i--;
 	}
 	write(fd, &revnbr, 4);
 }
 
+void	write_comment(int fdin, int fdout)
+{
+	char	*line;
+	char	*str;
+	t_bool 	have_comment;
+	t_bool	have_name;
+	int 	len;
+
+	have_comment = FALSE;
+	have_name = FALSE;
+	while (ft_gnl(fdin, &line))
+	{
+		if (*line == '\0' || ft_strcmp(line, ".") == 0)
+			continue;
+		else if (ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)) == 0 && !have_comment)
+		{
+			have_comment = TRUE;
+			str = ft_strtrim(line + ft_strlen(NAME_CMD_STRING));
+			ft_printf("Hey : %s\n", str);
+			if (ft_strlen(str) > PROG_NAME_LENGTH)
+				error("Name too long");
+			len = ft_strlen(str);
+			write(fdout, str, len);
+			free(str);
+			str = ft_memalloc(PROG_NAME_LENGTH - len);
+			write(fdout, str, PROG_NAME_LENGTH - len);
+			free(str);
+			exit(0);
+		}
+		else if (ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)) == 0 && !have_name)
+		{
+			// comment
+			have_name = TRUE;
+		}
+		else
+			break ;
+	}
+	if (!have_comment || !have_name)
+		error("Missing comment or name.\n");
+}
+
 int main(int argc, char **argv)
 {
 	char	*output_path;
-	int		fd;
+	int		fdin;
+	int		fdout;
 
 	if (argc != 2)
 		error("Usage : ./asm mychampion.s\n");
+	fdin = open(argv[1], O_RDONLY);
 	output_path = get_output_path(argv[1]);
-	fd = open(output_path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	write_exec_magic(fd);
+	fdout = open(output_path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	write_exec_magic(fdout);
+	write_comment(fdin, fdout);
 	//ft_putstr_fd("Hey !\n", fd);
 	exit(0);
 	return (0);
