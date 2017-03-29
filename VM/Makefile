@@ -6,7 +6,7 @@
 #    By: ntoniolo <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/13 14:54:46 by ntoniolo          #+#    #+#              #
-#    Updated: 2017/03/28 17:50:25 by ntoniolo         ###   ########.fr        #
+#    Updated: 2017/03/29 11:18:19 by gnebie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -217,22 +217,22 @@ $(OBJ3_DIR) :
 	mkdir $(OBJ3_DIR)
 
 $(OBJ_DIR)%.o : $(addprefix $(SRC_DIR), %.c) $(INC_FILES)
-	@(echo "\033[35m Preparation du terrin \033[31m\t\c")
-	@(echo "{\t$@\t}")
+	@(echo "\033[35m Preparation du terrin \033[0K\033[31m\t\c")
+	@(echo "\033[0K{\t$@\t}")
 	@($(CC) $(FLAGS) -I$(INC) -c -o $@ $< $(EXTRA_FLAGS))
 	@(echo "\033[2F\033[2K")
 
 $(OBJ_DIR)%.o : $(addprefix $(SRC2_DIR), %.c) $(INC_FILES)
-	@(echo "\033[33m Preparation des armes \033[31m\t\c")
-	@(echo "{\t$@\t}")
+	@(echo "\033[33m Preparation des armes\033[0K \033[31m\t\c")
+	@(echo "\033[0K{\t$@\t}")
 	@($(CC) $(FLAGS) -I$(INC) -c -o $@ $< $(EXTRA_FLAGS))
-	@(echo "\033[2F\033[2K")
+	@(echo "\033[2K\033[2F\033[2K")
 
 $(OBJ_DIR)%.o : $(addprefix $(SRC3_DIR), %.c) $(INC_FILES)
-	@(echo "\033[93m Demarage de la retransmition video \033[31m\t\c")
-	@(echo "{\t$@\t}")
+	@(echo "\033[93m Demarage de la retransmition video\033[0K \033[31m\t\c")
+	@(echo "\033[0K{\t$@\t}")
 	@($(CC) $(FLAGS) -I$(INC) -c -o $@ $< $(EXTRA_FLAGS))
-	@(echo "\033[2F\033[2K")
+	@(echo "\033[2K\033[2F\033[2K")
 
 clean :
 	@(rm -f $(addprefix $(OBJ_DIR), $(OBJ)) $(addprefix $(OBJ_DIR), $(OBJ2)) $(addprefix $(OBJ_DIR), $(OBJ3)))
