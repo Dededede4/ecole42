@@ -12,13 +12,6 @@ do
 	then
 		exit;
 	fi
-	TEST=`valgrind ../asm me.s 2>&1 | grep "definitely lost:" | cut -d : -f 2  | cut -d ' ' -f 5`
-	echo $TEST
-	if [ 24 -lt $TEST ]
-	then
-		valgrind ../asm me.s
-		exit;
-	fi
 	hexdump zaz.cor > zaz.txt
 	hexdump me.cor > me.txt
 	diff me.txt zaz.txt
