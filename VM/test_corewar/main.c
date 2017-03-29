@@ -6,7 +6,7 @@
 /*   By: ntoniolo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 17:58:40 by ntoniolo          #+#    #+#             */
-/*   Updated: 2017/03/28 00:27:21 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2017/03/29 11:15:01 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@ static void	tunnel(t_env *e, int argc, char **argv)
 {
 	if (!ft_strcmp(argv[1], "-all"))
 	{
-		e->dump = ft_atoi(argv[2]);
+		same_path(e, argc, argv);
 		if (!e->dump)
 			ft_error("Error");
 		run_test_all(e);
 	}
 	else if (!ft_strcmp(argv[1], "-unit"))
 	{
-		same_path(e, argc, argv);
 		e->dump = ft_atoi(argv[3]);
+		e->str_unit = argv[2];
 		if (!e->str_unit || !e->dump)
 			ft_error("Error");
 		run_test_unit(e);

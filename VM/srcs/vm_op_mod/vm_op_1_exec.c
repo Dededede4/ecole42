@@ -6,7 +6,7 @@
 /*   By: gnebie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 14:21:10 by gnebie            #+#    #+#             */
-/*   Updated: 2017/03/27 02:09:28 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2017/03/29 11:20:31 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void				vm_op_1_exec(t_datas *datas, t_process *process)
 	if (arg2 != -1)
 	{
 		vm_incr_lives(datas, arg1, arg2);
-		if (datas->flag & FLAG_V)
+		if (datas->flag & FLAG_V && !(datas->flag & FLAG_M))
 			ft_printf("Player %i (%s) is said to be alive\n",
 					datas->begin_champ[(int)process->champion - 1].champ_nbr,
 					datas->begin_champ[(int)process->champion - 1].champ_name);
