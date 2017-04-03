@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-if ($argc <= 1)
+if ($argc != 2)
 	exit();
 
 if ($argv[1] == "mais pourquoi cette demo ?")
