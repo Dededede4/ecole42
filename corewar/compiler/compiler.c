@@ -6,23 +6,15 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:06:53 by mprevot           #+#    #+#             */
-/*   Updated: 2017/03/05 14:07:19 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/03/21 13:39:16 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../shared/op.h"
-#include "../shared/libft/libft.h"
+#include "compiler.h"
 
-void error(char *str)
+char			*get_output_path(char *name)
 {
-	ft_putstr_fd(str, STDERR_FILENO);
-	exit(0);
-}
-
-char *get_output_path(char *name)
-{
-	char	*output_path;
-	char	*tmp;
+	char		*tmp;
 
 	tmp = ft_strrchr(name, '.');
 	if (!tmp)
@@ -31,85 +23,55 @@ char *get_output_path(char *name)
 	return (ft_strjoin_multi(FALSE, name, ".cor", NULL));
 }
 
-void	write_exec_magic(int fd)
+void			write_instruct(int fdout, t_instruct *current)
 {
-	int nbr;
-	int revnbr;
-	int i;
-	int size;
+	int			i;
+	int			y;
+	void		*val;
 
-	i = 3;
-	nbr = COREWAR_EXEC_MAGIC;
-	revnbr = 0;
-	while (i >= 0)
+	while (current)
 	{
-		((char*)(&revnbr))[i] = ((char*)(&nbr))[0];
-		nbr = nbr >> 8;
-		i--;
+		i = 0;
+		if (current->opcode)
+			write(fdout, ((char*)(&(current->opcode))), 1);
+		if (current->argcode)
+			write(fdout, ((char*)(&(current->argcode))), 1);
+		while (i < current->arg_nbrs)
+		{
+			y = 0;
+			val = &(current->args[i][2]);
+			while (y < current->args[i][1])
+			{
+				write(fdout, &(((char *)val)[current->args[i][1] - 1 - y]), 1);
+				y++;
+			}
+			i++;
+		}
+		current = current->next;
 	}
-	write(fd, &revnbr, 4);
 }
 
-void	write_comment(int fdin, int fdout)
+int				main(int argc, char **argv)
 {
-	char	*line;
-	char	*str;
-	t_bool 	have_comment;
-	t_bool	have_name;
-	int 	len;
-
-	have_comment = FALSE;
-	have_name = FALSE;
-	while (ft_gnl(fdin, &line))
-	{
-		if (*line == '\0' || ft_strcmp(line, ".") == 0)
-			continue;
-		else if (ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)) == 0 && !have_comment)
-		{
-			have_comment = TRUE;
-			str = ft_strtrim(line + ft_strlen(NAME_CMD_STRING));
-			len = ft_strlen(str);
-			if (*str != '"')
-				error("Name don't start by '\"'\n");
-			if (str[len - 1] != '"')
-				error("Name don't end by '\"'\n");
-			ft_printf("Hey : %s\n", str);
-			if (len > PROG_NAME_LENGTH)
-				error("Name too long");
-			
-			write(fdout, str + 1, len - 2);
-			free(str);
-			str = ft_memalloc(PROG_NAME_LENGTH - len);
-			write(fdout, str, PROG_NAME_LENGTH - len);
-			free(str);
-			exit(0);
-		}
-		else if (ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)) == 0 && !have_name)
-		{
-			// comment
-			have_name = TRUE;
-		}
-		else
-			break ;
-	}
-	if (!have_comment || !have_name)
-		error("Missing comment or name.\n");
-}
-
-int main(int argc, char **argv)
-{
-	char	*output_path;
-	int		fdin;
-	int		fdout;
+	char		*output_path;
+	int			fdin;
+	int			fdout;
+	t_header	header;
+	t_instruct	*instructs;
 
 	if (argc != 2)
 		error("Usage : ./asm mychampion.s\n");
 	fdin = open(argv[1], O_RDONLY);
 	output_path = get_output_path(argv[1]);
+	ft_bzero(&header, sizeof(t_header));
+	write_exec_magic(&header);
+	write_comment(fdin, &header);
+	instructs = compiler_compile(fdin);
+	header.prog_size = (unsigned int)get_instruct_size(instructs);
+	invert_byte(&header.prog_size);
 	fdout = open(output_path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	write_exec_magic(fdout);
-	write_comment(fdin, fdout);
-	//ft_putstr_fd("Hey !\n", fd);
+	write(fdout, &header, sizeof(t_header));
+	write_instruct(fdout, instructs);
 	exit(0);
 	return (0);
 }
