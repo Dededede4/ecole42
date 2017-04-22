@@ -1,0 +1,1 @@
+SELECT * FROM `distrib` WHERE id_distrib = 042 OR id_distrib BETWEEN 062 AND 69 OR id_distrib = 71 OR id_distrib BETWEEN 88 AND 90 OR nom LIKE '%YY%' OR nom LIKE '%y%y%' LIMIT 2, 5;

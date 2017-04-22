@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<script type="text/javascript">
+		var executions = 0;
+		var colors = ['green', 'blue', 'red'];
+		function bigger(div)
+		{
+			var newsize = (parseInt(div.style.width, 10) + 10);
+			if (newsize == 430)
+				newsize = 200;
+			div.style.width = newsize+'px';
+			div.style.height = newsize+'px';
+			div.style.borderRadius = newsize+'px';
+			div.style.backgroundColor = colors[executions % 3];
+			executions++;
+		}
+
+		function smaller(div)
+		{
+			var newsize = (parseInt(div.style.width, 10) - 5);
+			if (newsize == 195)
+				newsize = 200;
+			div.style.width = newsize+'px';
+			div.style.height = newsize+'px';
+			div.style.borderRadius = newsize+'px';
+			div.style.backgroundColor = colors[executions % 3];
+			executions++;
+		}
+		</script>
+	</head>
+	<body>
+		<div style="background-color:red; border-radius:200px;width:200px; height: 200px;"
+		onclick="bigger(this);"
+		onmouseout="smaller(this)"></div>
+	</body>
+</html>

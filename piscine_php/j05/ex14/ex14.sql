@@ -1,0 +1,1 @@
+SELECT etage_salle as etage, SUM(nbr_siege) as sieges FROM salle GROUP BY etage ORDER BY sieges DESC;

@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Javascript</title>
+	</head>
+	<body>
+	<form id="form">
+		<input type="text" id="nbr_left" />
+		<select id="operator">
+		  <option value="+">+</option>
+		  <option value="-">-</option>
+		  <option value="*">*</option>
+		  <option value="/">/</option>
+		  <option value="%">%</option>  
+		</select>
+		<input type="text" id="nbr_right" />
+		<input type="submit" value="Try me !" />
+	</form>
+	<script type="text/javascript">
+	function aff(str)
+	{
+		console.log(str);
+		alert(str);
+	}
+	document.getElementById('form').onsubmit =function(){
+
+		var l = document.getElementById('nbr_left').value;
+		var o = document.getElementById('operator').value;
+		var r = document.getElementById('nbr_right').value;
+		var pat = /^\d+$/
+		if (!pat.test(l) || !pat.test(r))
+		{
+			alert('Error :(');
+			return false;
+		}
+		l = parseInt(l);
+		r = parseInt(r);
+		if (o == '/' && r == 0)
+		{
+			aff('It\'s over 9000!');
+			return false;
+		}
+		var result;
+
+		if (o == '+')
+			result = l + r;
+		if (o == '-')
+			result = l - r;
+		if (o == '*')
+			result = l * r;
+		if (o == '/')
+			result = l / r;
+		if (o == '%')
+			result = l % r;
+		aff(result);
+		return false;
+	};
+	setInterval(function(){ alert("Please, use me..."); }, 3000);
+	</script>
+	</body>
+</html>

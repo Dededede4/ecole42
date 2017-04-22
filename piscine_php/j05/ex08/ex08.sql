@@ -1,0 +1,1 @@
+SELECT nom, prenom, DATE_FORMAT(date_naissance, '%Y-%m-%d') AS 'date_de_naissance' FROM fiche_personne WHERE EXTRACT(YEAR FROM date_naissance) = 01989 ORDER BY nom ASC;

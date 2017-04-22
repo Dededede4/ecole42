@@ -1,0 +1,1 @@
+SELECT ABS(DATEDIFF(MIN(date), MAX(date))) as uptime FROM historique_membre;
