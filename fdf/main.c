@@ -1,13 +1,11 @@
 #include "fdf.h"
 
-void	ft_mlx_3draw(void *mlx, void *win, t_position start, t_position stop)
+/*
+void 	parsing(void)
 {
-	t_pixel a = ft_mlx_getpixel(ft_abs(start.y + start.x), ft_abs(start.x - start.y - start.z));
-	t_pixel b = ft_mlx_getpixel(ft_abs(stop.y + stop.x), ft_abs(stop.x - stop.y - stop.z));
 
-	printf("%zu %zu\n%zu %zu\n\n", a.x, a.y, b.x, b.y);
-	ft_mlx_draw(mlx, win, a, b);
 }
+*/
 
 int		main(void)
 {
