@@ -1,16 +1,47 @@
 #include "fdf.h"
 
-/*
-void 	parsing(void)
-{
 
+int 	parsing(void)
+{
+	char *line;
+	char **splited;
+	size_t x;
+	size_t y;
+	size_t maxX;
+
+	y = 0;
+	maxX = 0;
+	while(ft_gnl(STDIN_FILENO, &line))
+	{
+		x = 0;
+		splited = ft_strsplit(line, ' ');
+		while(splited[x])
+		{
+			ft_mlx_getposition(x * 10, y * 10, ft_atoi(splited[x]));
+			ft_printf("%s,", splited[x]);
+			x++;
+		}
+		if (maxX != 0 && maxX != x)
+		{
+			// error
+		}
+		maxX = x;
+		ft_printf("\n");
+		// free line
+		// free splited
+		y++;
+	}
+	return (maxX);
 }
-*/
+
 
 int		main(void)
 {
 	void	*mlx;
 	void	*win;
+
+
+	parsing();
 
 	mlx = mlx_init();
 	win = mlx_new_window(mlx, 1000, 1000, "Coucou mon coco");
