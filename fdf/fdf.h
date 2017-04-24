@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 
-#include <stdlib.h>
 #include <mlx.h>
-#include <stdio.h>
+#include "libft/libft.h"
 
 typedef struct			s_pixel
 {
