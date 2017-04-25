@@ -99,6 +99,14 @@ t_position 	**parsing(char *path, int width)
 	return (NULL);
 }
 
+int	on_key_press(int keycode, void *param)
+{
+	(void)(param);
+	if (keycode == 53)
+		exit (0);
+	return 1;
+}
+
 
 int		main(int argc, char **argv)
 {
@@ -121,66 +129,14 @@ int		main(int argc, char **argv)
 	win = mlx_new_window(mlx, 1000, 1000, "Coucou mon coco");
 	while (positions[i + 1])
 	{
-		ft_printf("hey %i %% %i = %i\n", i + 1, width,  (i + 1) % width);
 		if ((i + 1) % width != 0)
 			ft_mlx_3draw(mlx, win, *(positions[i]), *(positions[i + 1]));
 		if (i + width < len)
 			ft_mlx_3draw(mlx, win, *(positions[i]), *(positions[i + width]));
 		i++;
 	}
-	//ft_printf("--->%i\n", width);
 
-	/*ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 0, 150), ft_mlx_getposition(0, 40, 150));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 0, 150), ft_mlx_getposition(10, 0, 150));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(10, 0, 150), ft_mlx_getposition(10, 40, 150));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 40, 150), ft_mlx_getposition(10, 40, 150));
-
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(10, 0, 150), ft_mlx_getposition(10, 0, 200));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 0, 150), ft_mlx_getposition(0, 0, 200));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 40, 150), ft_mlx_getposition(0, 40, 200));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(10, 40, 150), ft_mlx_getposition(10, 40, 200));
-
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 0, 200), ft_mlx_getposition(0, 40, 200));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 0, 200), ft_mlx_getposition(10, 0, 200));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(10, 0, 200), ft_mlx_getposition(10, 40, 200));
-	ft_mlx_3draw(mlx, win, ft_mlx_getposition(0, 40, 200), ft_mlx_getposition(10, 40, 200));*/
-
-
-
-
-
-
-
-
-	//ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(420, 420));
-	/*
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(12, 100));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(25, 100));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(100, 12));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(100, 25));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(100, 20));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(100, 40));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(100, 90));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(10, 10), ft_mlx_getpixel(500, 95));
-
-
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(990-42, 990- 42), ft_mlx_getpixel(990, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(990-12, 990-100), ft_mlx_getpixel(990, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(990-25, 990-100), ft_mlx_getpixel(990, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(900-100, 990- 12), ft_mlx_getpixel(990, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(900-100, 990- 25), ft_mlx_getpixel(990, 990));
-
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(990-42, 42), ft_mlx_getpixel(990, 10));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(990-12, 100), ft_mlx_getpixel(990, 10));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(990-25, 100), ft_mlx_getpixel(990, 10));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(900-100, 12), ft_mlx_getpixel(990, 10));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(900-100, 25), ft_mlx_getpixel(990, 10));
-
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(42, 990- 42), ft_mlx_getpixel(10, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(12, 990-100), ft_mlx_getpixel(10, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(25, 990-100), ft_mlx_getpixel(10, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(100, 990- 12), ft_mlx_getpixel(10, 990));
-	ft_mlx_draw(mlx, win, ft_mlx_getpixel(100, 990- 25), ft_mlx_getpixel(10, 990));*/
+	mlx_key_hook(win, on_key_press, NULL);
 
 	mlx_loop(mlx);	
 }
