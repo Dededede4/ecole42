@@ -1,13 +1,27 @@
 #include "fdf.h"
 
-int 	count(char **array)
+void	ft_error(char *str)
+{
+	ft_putstr_fd(str, STDERR_FILENO);
+	exit(0);
+}
+
+void ft_strsplit_del(char ***str)
 {
 	int i;
+	char *line;
 
 	i = 0;
-	while (array[i])
+	while ((*str)[i])
+	{
+		line = (*str)[i];
+		ft_strdel(&line);
 		i++;
-	return (i);
+	}
+	line = (*str)[i];
+	ft_strdel(&line);
+	free(*str);
+	*str = NULL;
 }
 
 int 	check_validity(char *path, int *width){
@@ -32,26 +46,21 @@ int 	check_validity(char *path, int *width){
 			while (splited[i])
 			{
 				if (!ft_isdigit_str(splited[i]))
-				{
-					// Error
-				}
+					ft_error("Error (no an digit)\n");
 				i++;
 			}
 			if (nbr == -1)
 				nbr = i;
-			else if (nbr != i){
-				// Error
-			}
+			else if (nbr != i)
+				ft_error("Error (no an rectangle)\n");
 			i++;
 			total += nbr;
-			// free line
-			// free strsplit
+			ft_memdel((void**)&line);
+			ft_strsplit_del(&splited);
 		}
 	}
 	else
-	{
-		// Error
-	}
+		ft_error("Error (bad file)\n");
 	close(fd);
 	*width = nbr;
 	return (total);
@@ -81,21 +90,19 @@ t_position 	**parsing(char *path, int width)
 			splited = ft_strsplit(line, ' ');
 			while(splited[x])
 			{
-				positions[i] = ft_mlx_mallocposition(x * 10, y * 10 + 200, 200 - (ft_atoi(splited[x])) *10);
-				ft_printf("%s,", splited[x]);
+				positions[i] = ft_mlx_mallocposition(x * 10, y * 10 + 200, 200 - (ft_atoi(splited[x])) * 1);
 				x++;
 				i++;
 			}
-			ft_printf("\n");
-			// free line
-			// free splited
+			ft_memdel((void**)&line);
+			ft_strsplit_del(&splited);
 			y++;
 		}
 		close(fd);
 		return (positions);
 	}
 	close(fd);
-	// Error
+	ft_error("Error (bad file)\n");
 	return (NULL);
 }
 
@@ -119,9 +126,7 @@ int		main(int argc, char **argv)
 
 	i = 0;
 	if (argc != 2)
-	{
-		// Error ?
-	}
+		ft_error("Usage : ./fdf file.fdf\n");
 	len = check_validity(argv[1], &width);
 	positions = parsing(argv[1], len);
 
@@ -135,8 +140,8 @@ int		main(int argc, char **argv)
 			ft_mlx_3draw(mlx, win, *(positions[i]), *(positions[i + width]));
 		i++;
 	}
-
 	mlx_key_hook(win, on_key_press, NULL);
-
-	mlx_loop(mlx);	
+	mlx_loop(mlx);
+	exit(0);
+	return (0);
 }
