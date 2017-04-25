@@ -32,3 +32,15 @@ t_position ft_mlx_getposition(size_t x, size_t y, size_t z)
 	val.c = 0xfffff;
 	return (val);
 }
+
+t_position *ft_mlx_mallocposition(size_t x, size_t y, size_t z)
+{
+	t_position *val;
+
+	val = ft_memalloc(sizeof(t_position));
+	val->x = x;
+	val->y = y;
+	val->z = z;
+	val->c = 0xfffff;
+	return (val);
+}

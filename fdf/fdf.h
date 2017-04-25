@@ -35,3 +35,4 @@ t_position ft_mlx_getposition(size_t x, size_t y, size_t z);
 void	ft_mlx_draw(void *mlx, void *win, t_pixel start, t_pixel stop);
 void	ft_mlx_3draw(void *mlx, void *win, t_position start, t_position stop);
 int		ft_abs(int val);
+t_position *ft_mlx_mallocposition(size_t x, size_t y, size_t z);
