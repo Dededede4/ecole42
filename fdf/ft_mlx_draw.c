@@ -12,64 +12,87 @@
 
 #include "fdf.h"
 
-int		ft_abs(int val)
+int			ft_abs(int val)
 {
 	return ((val < 0) ? 0 - val : val);
 }
 
-void	ft_mlx_draw(void *mlx, void *win, t_pixel start, t_pixel stop)
+void		ft_mlx_draw_put_a(void *mlx, void *win, t_pixel start, t_pixel stop)
 {
-	int ex = ft_abs(stop.x - start.x);
-	int ey = ft_abs(stop.y - start.y);
-	int dx = 2 * ex;
-	int dy = 2 * ey;
-	int Dx = ex;
-	int Dy = ey;
-	int i = 0;
-	int Xincr = 1;
-	int Yincr = 1;
+	int		len_x;
+	int		s_len_x;
+	int		d_len_y;
+	int		i;
 
-	if (start.x > stop.x)
-		Xincr = -1;
-	if (start.y > stop.y)
-		Yincr = -1;
-	if (Dx >= Dy)
+	i = 0;
+	len_x = ft_abs(stop.x - start.x);
+	s_len_x = len_x;
+	d_len_y = 2 * ft_abs(stop.y - start.y);
+	while (i <= s_len_x)
 	{
-		while (i <= Dx)
+		mlx_pixel_put(mlx, win, start.x, start.y, (int)start.c);
+		i++;
+		start.x += (start.x > stop.x) ? -1 : 1;
+		len_x -= d_len_y;
+		if (len_x < 0)
 		{
-			mlx_pixel_put(mlx, win, start.x, start.y, (int)start.c);
-			i++;
-			start.x += Xincr;
-			ex -= dy;
-			if (ex < 0)
-			{
-				start.y += Yincr;
-				ex += dx;
-			}
-		}
-	}
-	if (Dy > Dx)
-	{
-		while (i <= Dy)
-		{
-			mlx_pixel_put(mlx, win, start.x, start.y, (int)start.c);
-			i++;
-			start.y += Yincr;
-			ey -= dx;
-			if (ey < 0)
-			{
-				start.x += Xincr;
-				ey += dy;
-			}
+			start.y += (start.y > stop.y) ? -1 : 1;
+			len_x += 2 * s_len_x;
 		}
 	}
 }
 
-
-void	ft_mlx_3draw(void *mlx, void *win, t_position start, t_position stop)
+void		ft_mlx_draw_put_b(void *mlx, void *win, t_pixel start, t_pixel stop)
 {
-	t_pixel a = ft_mlx_getpixel(ft_abs(start.y + start.x), ft_abs(start.x - start.y - start.z));
-	t_pixel b = ft_mlx_getpixel(ft_abs(stop.y + stop.x), ft_abs(stop.x - stop.y - stop.z));
+	int		len_y;
+	int		s_len_y;
+	int		d_len_x;
+	int		i;
 
+	i = 0;
+	len_y = ft_abs(stop.y - start.y);
+	s_len_y = len_y;
+	d_len_x = 2 * ft_abs(stop.x - start.x);
+	while (i <= s_len_y)
+	{
+		mlx_pixel_put(mlx, win, start.x, start.y, (int)start.c);
+		i++;
+		start.y += (start.y > stop.y) ? -1 : 1;
+		len_y -= d_len_x;
+		if (len_y < 0)
+		{
+			start.x += (start.x > stop.x) ? -1 : 1;
+			len_y += 2 * s_len_y;
+		}
+	}
+}
+
+void		ft_mlx_draw(void *mlx, void *win, t_pixel start, t_pixel stop)
+{
+	int		len_x;
+	int		len_y;
+
+	len_x = ft_abs(stop.x - start.x);
+	len_y = ft_abs(stop.y - start.y);
+	if (len_x >= len_y)
+	{
+		ft_mlx_draw_put_a(mlx, win, start, stop);
+	}
+	else
+	{
+		ft_mlx_draw_put_b(mlx, win, start, stop);
+	}
+}
+
+void		ft_mlx_3draw(
+	void *mlx, void *win, t_position start, t_position stop)
+{
+	t_pixel a;
+	t_pixel b;
+
+	a = ft_mlx_getpixel(ft_abs(start.y + start.x),
+		ft_abs(start.x - start.y - start.z));
+	b = ft_mlx_getpixel(ft_abs(stop.y + stop.x),
+		ft_abs(stop.x - stop.y - stop.z));
 	ft_mlx_draw(mlx, win, a, b);
 }
