@@ -25,4 +25,4 @@ You can see https://github.com/Dededede4/ecole42/blob/master/ft_printf/main.c fo
 
 ================= To do list =================
 
-**fdf/** is an program taking an map to generate pixel by pixel an Wire-frame model with parallel perspective view
+**fdf/** is an program taking an map to generate pixel by pixel an Wire-frame model with parallel perspective view (Bresenham algorithm) 

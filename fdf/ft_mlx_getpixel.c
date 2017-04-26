@@ -12,9 +12,9 @@
 
 #include "fdf.h"
 
-t_pixel	ft_mlx_getpixel(size_t x, size_t y)
+t_pixel			ft_mlx_getpixel(size_t x, size_t y)
 {
-	t_pixel val;
+	t_pixel		val;
 
 	val.x = x;
 	val.y = y;
@@ -22,9 +22,9 @@ t_pixel	ft_mlx_getpixel(size_t x, size_t y)
 	return (val);
 }
 
-t_position ft_mlx_getposition(size_t x, size_t y, size_t z)
+t_position		ft_mlx_getposition(size_t x, size_t y, size_t z)
 {
-	t_position val;
+	t_position	val;
 
 	val.x = x;
 	val.y = y;
@@ -33,9 +33,9 @@ t_position ft_mlx_getposition(size_t x, size_t y, size_t z)
 	return (val);
 }
 
-t_position *ft_mlx_mallocposition(size_t x, size_t y, size_t z)
+t_position		*ft_mlx_mallocposition(size_t x, size_t y, size_t z)
 {
-	t_position *val;
+	t_position		*val;
 
 	val = ft_memalloc(sizeof(t_position));
 	val->x = x;
