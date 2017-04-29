@@ -41,10 +41,10 @@ void		draw_mandelbrot(float minX, float maxX, float minY, float maxY, void *win,
 	{
 		for (int y = 0; y < 999; ++y)
 		{
-			rc = minX + (maxX - minX) / 1500 * x;
-			ic = minY + (maxY - minY)/ 1000 * y;
-			rz = 0;
-			iz = 0;
+			rc = 0.285;
+			ic = 0.01;
+			rz = minX + (maxX - minX) / 1500 * x;
+			iz = minY + (maxY - minY)/ 1000 * y;
 			for (a = 0; a < 127; ++a)
 			{
 				r = rz;
