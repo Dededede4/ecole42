@@ -98,7 +98,7 @@ int 		motion_hook(int x,int y, t_fract *fract)
 {
 	if (x < 0 || x > WIN_X || y < 0 || y > WIN_Y)
 		return (0);
-	fract->julia_val = 0.100 + (0.500 * ((float)x / WIN_X));
+	fract->julia_val = 0 - ((((float)x / WIN_X)));
 	draw_mandelbrot(fract);
 	return (1);
 }
@@ -112,7 +112,7 @@ int				main(int argc, char **argv)
 
 	fract.mlx = mlx_init();
 	fract.win = mlx_new_window(fract.mlx, WIN_X, WIN_Y, "Coucou mon coco");
-	fract.type = 1;
+	fract.type = 2;
 	fract.minX = -2.4;
 	fract.maxX = 2.4;
 	fract.minY = -1.5;
@@ -120,8 +120,8 @@ int				main(int argc, char **argv)
 	fract.img = mlx_new_image(fract.mlx, WIN_X, WIN_Y);
 	fract.imgstr = mlx_get_data_addr(fract.img, &(bpp), &(s_l), &(endian));
 	fract.wait = FALSE;
-	fract.julia_val = 0.3;
-	fract.julia_vali = 0.5;
+	fract.julia_val = -0.76;
+	fract.julia_vali = 0.12;
 	draw_mandelbrot(&fract);
 	mlx_mouse_hook(fract.win, on_mouse_move, &fract);
 	mlx_hook(fract.win, 6, 0, motion_hook, &fract);
