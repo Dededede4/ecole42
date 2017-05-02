@@ -51,7 +51,7 @@ int				main(int argc, char **argv)
 	if (argc != 2)
 		ft_error("Usage : ./fdf file.fdf\n");
 	len = check_validity(argv[1], &width);
-	positions = parsing(argv[1], len);
+	positions = parsing(argv[1], len, width);
 	mlx = mlx_init();
 	win = mlx_new_window(mlx, 1000, 1000, "Coucou mon coco");
 	draw_all_positions(mlx, win, positions, width);

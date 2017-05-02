@@ -59,7 +59,8 @@ int				check_validity(char *path, int *width)
 	return (total);
 }
 
-void			parsing_gnl(int fd, t_position **positions)
+void			parsing_gnl(
+	int fd, t_position **positions, int size, int x_vals)
 {
 	char		*line;
 	char		**splited;
@@ -76,8 +77,9 @@ void			parsing_gnl(int fd, t_position **positions)
 		splited = ft_strsplit(line, ' ');
 		while (splited[x])
 		{
-			positions[i] = ft_mlx_mallocposition(x * 10,
-				y * 10 + 200, 200 - (ft_atoi(splited[x])) * 1);
+			positions[i] = ft_mlx_mallocposition(x * ((600 / x_vals * 10) / 16),
+				y * ((600 / (size / x_vals)) * 10 / 16) + 200,
+				200 - (ft_atoi(splited[x]) * 5));
 			x++;
 			i++;
 		}
@@ -87,7 +89,7 @@ void			parsing_gnl(int fd, t_position **positions)
 	}
 }
 
-t_position		**parsing(char *path, int width)
+t_position		**parsing(char *path, int width, int x_vals)
 {
 	t_position	**positions;
 	int			fd;
@@ -96,7 +98,7 @@ t_position		**parsing(char *path, int width)
 	fd = open(path, O_RDONLY);
 	if (fd > -1)
 	{
-		parsing_gnl(fd, positions);
+		parsing_gnl(fd, positions, width, x_vals);
 		close(fd);
 		return (positions);
 	}

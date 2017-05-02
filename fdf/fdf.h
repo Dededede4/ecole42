@@ -41,7 +41,8 @@ int						ft_abs(int val);
 t_position				*ft_mlx_mallocposition(
 	size_t x, size_t y, size_t z);
 int						check_validity(char *path, int *width);
-t_position				**parsing(char *path, int width);
+t_position				**parsing(
+	char *path, int width, int x_vals);
 void					ft_error(char *str);
 void					ft_strsplit_del(char ***str);
 #endif
