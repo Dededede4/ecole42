@@ -30,7 +30,7 @@ void			draw_all_positions(
 	while (positions[len])
 		len++;
 	i = 0;
-	while (positions[i + 1])
+	while (positions[i] && positions[i + 1])
 	{
 		if ((i + 1) % width != 0)
 			ft_mlx_3draw(mlx, win, *(positions[i]), *(positions[i + 1]));
