@@ -35,4 +35,12 @@ typedef struct			s_fract
 	float				julia_vali;
 }						t_fract;
 
+
+typedef struct			s_tmp_pixel
+{
+	size_t				x;
+	size_t				y;
+	struct s_tmp_pixel	*next;
+}						t_tmp_pixel;
+
 #endif
