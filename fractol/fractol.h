@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef FRACTOL_H
+# define FRACTOL_H
 
 # include <mlx.h>
 # include "libft/libft.h"
@@ -22,10 +22,10 @@
 typedef struct			s_fract
 {
 	char				type;
-	float				minX;
-	float				maxX;
-	float				minY;
-	float				maxY;
+	float				minx;
+	float				maxx;
+	float				miny;
+	float				maxy;
 	t_bool				wait;
 	void				*win;
 	void				*mlx;
@@ -35,6 +35,19 @@ typedef struct			s_fract
 	float				julia_vali;
 }						t_fract;
 
+typedef struct			s_fract_cals
+{
+	float				rc;
+	float				ic;
+	float				r;
+	float				rz;
+	float				iz;
+	int					a;
+	int					x;
+	int					y;
+	int					y2;
+	int					x2;
+}						t_fract_cals;
 
 typedef struct			s_tmp_pixel
 {
@@ -42,5 +55,7 @@ typedef struct			s_tmp_pixel
 	size_t				y;
 	struct s_tmp_pixel	*next;
 }						t_tmp_pixel;
+
+void					draw(t_fract *fract);
 
 #endif
