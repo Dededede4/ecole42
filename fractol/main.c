@@ -99,62 +99,40 @@ void		draw_mandelbrot(t_fract *fract)
 			}
 		}
 	}
-	/*if (fract->type == 3)
-	{
-		int max = WIN_X * WIN_Y * 4;
-		int i = 0;
-		while (i < max)
-		{
-			fract->imgstr[i] = ((unsigned char)fract->imgstr[i] < 200) ? 0 : fract->imgstr[i] - 200;
-			i++;
-		}
-	}*/
-	printf("fini\n");
 	mlx_put_image_to_window(fract->imgstr, fract->win, fract->img, 0, 0);
 
 }
 
 int				on_mouse_move(int button,int x,int y,t_fract *fract)
 {
-	if (!fract->wait)
+	if (button == 7 || button == 4)
 	{
-		fract->wait = TRUE;
-		// 7 down
-		// 5 up
-		printf("button: %i, x: %i, y: %i, ratioX: %f\n", button, x, y, (float)(x / (float)WIN_X));
-		//float left = ;
-		if (button == 7 || button == 4) // down
-		{
-			float x_s = fract->maxX - fract->minX;
-			float rx = x_s * x / WIN_X;
-			float toaddX = rx - ((fract->maxX - fract->minX) / 2);
+		float x_s = fract->maxX - fract->minX;
+		float rx = x_s * x / WIN_X;
+		float toaddX = rx - ((fract->maxX - fract->minX) / 2);
 
-			float y_s = fract->maxY - fract->minY;
-			float ry = y_s * y / WIN_Y;
-			float toaddY = ry - ((fract->maxY - fract->minY) / 2);
+		float y_s = fract->maxY - fract->minY;
+		float ry = y_s * y / WIN_Y;
+		float toaddY = ry - ((fract->maxY - fract->minY) / 2);
 
-			fract->minY += toaddY;
-			fract->maxY += toaddY;
-			fract->minX += toaddX;
-			fract->maxX += toaddX;
+		fract->minY += toaddY;
+		fract->maxY += toaddY;
+		fract->minX += toaddX;
+		fract->maxX += toaddX;
 
-			fract->minY *= 0.9;
-			fract->minX *= 0.9;
-			fract->maxY *= 0.9;
-			fract->maxX *= 0.9;
-			//printf("%f %f\n", applY, applX);
-			//printf("%f %f %f %f\n", fract->minY, fract->maxY, fract->minX, fract->maxX);
-		}
-		if (button == 5) // up
-		{
-			fract->minY *= 1.1;
-			fract->maxY *= 1.1;
-			fract->minX *= 1.1;
-			fract->maxX *= 1.1;
-		}
-		draw_mandelbrot(fract);
-		fract->wait = FALSE;
+		fract->minY *= 0.9;
+		fract->minX *= 0.9;
+		fract->maxY *= 0.9;
+		fract->maxX *= 0.9;
 	}
+	if (button == 5) // up
+	{
+		fract->minY *= 1.1;
+		fract->maxY *= 1.1;
+		fract->minX *= 1.1;
+		fract->maxX *= 1.1;
+	}
+	draw_mandelbrot(fract);
 	return (1);
 }
 
@@ -174,9 +152,24 @@ int				main(int argc, char **argv)
 	int			s_l;
 	int			endian;
 
+	if (argc != 2)
+	{
+		ft_putstr_fd("Usage : ./fractol [1-3]", STDERR_FILENO);
+		exit(0);
+	}
+	if (ft_strcmp(argv[1], "1") == 0)
+		fract.type = 1;
+	else if (ft_strcmp(argv[1], "2") == 0)
+		fract.type = 2;
+	else if (ft_strcmp(argv[1], "3") == 0)
+		fract.type = 3;
+	else
+	{
+		ft_putstr_fd("Usage : ./fractol [1-3]", STDERR_FILENO);
+		exit(0);
+	}
 	fract.mlx = mlx_init();
 	fract.win = mlx_new_window(fract.mlx, WIN_X, WIN_Y, "Coucou mon coco");
-	fract.type = 3;
 	fract.minX = -2.4;
 	fract.maxX = 2.4;
 	fract.minY = -1.5;
