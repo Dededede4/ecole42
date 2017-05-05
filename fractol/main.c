@@ -11,32 +11,29 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
 
 int					on_mouse_move(int button, int x, int y, t_fract *f)
 {
 	float			toaddx;
 	float			toaddy;
 
-	if (button == 7 || button == 4)
-	{
-		toaddx = ((f->maxx - f->minx) * x / WIN_X) - ((f->maxx - f->minx) / 2);
-		toaddy = (f->maxy - f->miny) * y / WIN_Y - ((f->maxy - f->miny) / 2);
-		f->miny += toaddy;
-		f->maxy += toaddy;
-		f->minx += toaddx;
-		f->maxx += toaddx;
-		f->miny *= 0.9;
-		f->minx *= 0.9;
-		f->maxy *= 0.9;
-		f->maxx *= 0.9;
-	}
-	if (button == 5)
-	{
-		f->miny *= 1.1;
-		f->maxy *= 1.1;
-		f->minx *= 1.1;
-		f->maxx *= 1.1;
-	}
+	if (button != 4 && button != 5)
+		return (0);
+	toaddx = 0 - (float)(f->minx - f->maxx) *
+	((float)x - (WIN_X / 2.0)) / (WIN_X / 2.0);
+	toaddy = 0 - (float)(f->miny - f->maxy) *
+	((float)y - (WIN_Y / 2.0)) / (WIN_Y / 2.0);
+	toaddx *= 0.2;
+	toaddy *= 0.2;
+	f->miny *= (button == 4) ? 0.9 : 1.1;
+	f->minx *= (button == 4) ? 0.9 : 1.1;
+	f->maxy *= (button == 4) ? 0.9 : 1.1;
+	f->maxx *= (button == 4) ? 0.9 : 1.1;
+	f->miny += (button == 4) ? toaddy : 0 - toaddy;
+	f->maxy += (button == 4) ? toaddy : 0 - toaddy;
+	f->minx += (button == 4) ? toaddx : 0 - toaddy;
+	f->maxx += (button == 4) ? toaddx : 0 - toaddy;
 	draw(f);
 	return (1);
 }
