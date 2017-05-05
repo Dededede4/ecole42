@@ -21,11 +21,11 @@ SRC= main.c draw.c
 OBJS=$(SRC:.c=.o)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o  $@ $<
 
-all: fdf
+all: fractol
 
-fdf: $(OBJS)
+fractol: $(OBJS)
 	make -C libft
 	$(CC) $(CFLAGS) -lmlx -framework OpenGL -framework AppKit $(OBJS) ./libft/libft.a -o fractol
 
@@ -34,7 +34,7 @@ clean:
 	make -C libft clean
 
 fclean: clean
-	$(RM) fdf
+	$(RM) fractol
 	make -C libft fclean
 
 re: fclean all
