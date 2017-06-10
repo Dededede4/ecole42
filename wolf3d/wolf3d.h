@@ -29,6 +29,7 @@
 # define MINIMAP_X 50
 # define MINIMAP_Y 550
 # define MINIMAP_BLOCK_SIZE 20
+# define MINIMAP_USER_SIZE  3
 # define MINIMAP_COLOR 100
 
 typedef struct			s_map
@@ -39,6 +40,9 @@ typedef struct			s_map
 	char				*imgstr;
 	int					imgstrlen;
 	char				mapstr[MAP_SIZE + 1];
+	float				user_posx;
+	float				user_posy;
+	float				user_deg;
 }						t_map;
 
 #endif

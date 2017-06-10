@@ -12,15 +12,15 @@
 
 #include "wolf3d.h"
 
-void	draw_square(t_map *map, int pos)
+void	draw_square(t_map *map, int pos, int w)
 {
 	int i;
 	int i2;
 	int bs;
 
-	bs = MINIMAP_BLOCK_SIZE * 4;
+	bs = w * 4;
 	i = 0;
-	while (i < MINIMAP_BLOCK_SIZE)
+	while (i < w)
 	{
 		i2 = 0;
 		while (i2 < bs)
@@ -76,13 +76,23 @@ void	memset_minimap(t_map *map)
 		while (y < MAP_W)
 		{
 			if (map->mapstr[map_pos++] == MAP_BLOCK)
-				draw_square(map, current);
+				draw_square(map, current, MINIMAP_BLOCK_SIZE);
 			current += MINIMAP_BLOCK_SIZE * 4;
 			y++;
 		}
 		current = start + (WIN_X * MINIMAP_BLOCK_SIZE * 4);
 		i++;
 	}
+}
+
+void	memset_minimap_user(t_map *map)
+{
+	int pos;
+
+	pos = ((MINIMAP_X) + (WIN_X * MINIMAP_Y)) * 4;
+	pos += ((map->user_posx * MINIMAP_BLOCK_SIZE) + (map->user_posy * MINIMAP_BLOCK_SIZE * WIN_X)) * 4;
+
+	draw_square(map, pos, MINIMAP_USER_SIZE);
 }
 
 t_map	*get_map()
@@ -104,13 +114,13 @@ t_map	*get_map()
 void	display_map(t_map *map)
 {
 	mlx_put_image_to_window(map->imgstr, map->win, map->img, 0, 0);
-	mlx_loop(map->mlx);
 }
 
 void	compute_map(t_map *map)
 {
 	memset_horizon(map);
 	memset_minimap(map);
+	memset_minimap_user(map);
 }
 
 void	hydrate_map(char *str, t_map *map)
@@ -120,6 +130,7 @@ void	hydrate_map(char *str, t_map *map)
 	int 	i;
 	int 	chars;
 	int     test_square;
+	int     y;
 
 	(void)map;
 	i = -1;
@@ -127,6 +138,7 @@ void	hydrate_map(char *str, t_map *map)
 	line = NULL;
 	fd = open(str, O_RDONLY);
 	test_square = -1;
+	y = 0;
 	if (fd < 1)
 	{
 		ft_printf("File error\n");
@@ -141,6 +153,11 @@ void	hydrate_map(char *str, t_map *map)
 			{
 				ft_printf("Unknow char\n");
 				exit(0);
+			}
+			if (line[i] == MAP_START)
+			{
+				map->user_posx = i + 0.5;
+				map->user_posy = y + 0.5;
 			}
 			if (chars > MAP_SIZE)
 			{
@@ -157,6 +174,7 @@ void	hydrate_map(char *str, t_map *map)
 		}
 		test_square = i;
 		ft_printf("%s\n", map->mapstr);
+		y++;
 	}
 	if (chars != MAP_SIZE)
 	{
@@ -164,6 +182,33 @@ void	hydrate_map(char *str, t_map *map)
 		exit(0);
 	}
 	ft_printf("%s\n", map->mapstr);
+}
+
+int					on_key_press(int keycode, t_map *map)
+{
+	(void)(map);
+	if (keycode == 53)
+		exit(0);
+	if (keycode == 126) // up
+	{
+		map->user_posy -= 0.1;
+	}
+	if (keycode == 125) // down
+	{
+		map->user_posy += 0.1;
+	}
+	if (keycode == 123) // left
+	{
+		map->user_posx -= 0.1;
+	}
+	if (keycode == 124) // right
+	{
+		map->user_posx += 0.1;
+	}
+	compute_map(map);
+	display_map(map);
+	ft_printf("%d", keycode);
+	return (1);
 }
 
 int main(int argc, char **argv)
@@ -179,5 +224,7 @@ int main(int argc, char **argv)
 	hydrate_map(argv[1], map);
 	compute_map(map);
 	display_map(map);
+	mlx_key_hook(map->win, on_key_press, map);
+	mlx_loop(map->mlx);
 	return (0);
 }
