@@ -27,3 +27,7 @@ You can see https://github.com/Dededede4/ecole42/blob/master/ft_printf/main.c fo
 **fdf/** is a program taking an map to generate pixel by pixel an Wire-frame model with parallel perspective view (Bresenham algorithm)
 
 **fractol/** is a program drawing fratals
+
+# Work in progress
+
+**wolf3d/** is a program for visualize a labyrinth in 3D using to the ray casting concept.
