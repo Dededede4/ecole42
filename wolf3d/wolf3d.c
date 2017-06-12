@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+#include <math.h>
+#include <stdio.h>
 
 void	draw_square(t_map *map, int pos, int w)
 {
@@ -211,6 +213,66 @@ int					on_key_press(int keycode, t_map *map)
 	return (1);
 }
 
+/**
+**           * A
+**          **
+**         * *
+**        *  *
+**     C * * * B
+** c = player
+**/
+
+t_bool		is_wall(t_map *map, int x, int y)
+{
+	return (map->mapstr[y * MAP_W + x] == MAP_BLOCK);
+}
+
+float		deg_to_rad(float deg)
+{
+	return (deg * (3.14159265 / 180));
+}
+
+float		get_wall(t_map *map, float deg)
+{
+	int repeat;
+	float c_b;
+	float a_d;
+	float a_e;
+	float a_c;
+	float a_b;
+	//float deg = 60; // On peut monter jusqu'à moins de 90deg
+	int x;
+	int y;
+	float hypo;
+
+	repeat = 0;
+	hypo = 0;
+
+	while (1)
+	{
+		c_b = (((int)map->user_posx + 1) - map->user_posx) + repeat;
+		//printf("cb = %f\n", c_b);
+		//printf("%f\n", deg_to_rad(deg));
+		//printf("%f\n", cos(deg_to_rad(deg)));
+		a_c = c_b / cos(deg_to_rad(deg)); // = hypothenuse
+		//printf("%f %f\n", cos(60), cos(60.0) );
+		//printf("%f / cos(%f) = %f\n", c_b, deg, c_b / cos(deg));
+		//printf("ac = %f\n", a_c);
+		a_b = c_b * tan(deg_to_rad(deg)); // = opposé
+		//printf("a_b = %f\n", a_b);
+		hypo += a_c;
+		x = map->user_posx + c_b;
+		y = map->user_posy - a_b;
+		if (is_wall(map, x, y))
+		{
+			a_e = hypo - ((int)hypo);
+			a_d = a_e * a_c / a_b;
+			return hypo - a_d;
+		}
+		repeat++;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	t_map	*map;
@@ -225,6 +287,12 @@ int main(int argc, char **argv)
 	compute_map(map);
 	display_map(map);
 	mlx_key_hook(map->win, on_key_press, map);
+	for (int i = 60; i < 90; ++i)
+	{
+		printf("%ddeg = %f\n\n", i, get_wall(map, i));
+		//exit(0);
+	}
+	
 	mlx_loop(map->mlx);
 	return (0);
 }
