@@ -244,11 +244,15 @@ float		get_wall(t_map *map, float deg)
 	int x;
 	int y;
 	float hypo;
+	float hypo_x;
+	float hypo_y;
 
 	repeat = 0;
-	hypo = 0;
+	hypo_x = -1;
+	hypo_y = -1;
 
-	while (1)
+
+	while (repeat < 15)
 	{
 		c_b = (((int)map->user_posx + 1) - map->user_posx) + repeat;
 		//printf("cb = %f\n", c_b);
@@ -260,17 +264,47 @@ float		get_wall(t_map *map, float deg)
 		//printf("ac = %f\n", a_c);
 		a_b = c_b * tan(deg_to_rad(deg)); // = opposé
 		//printf("a_b = %f\n", a_b);
-		hypo += a_c;
 		x = map->user_posx + c_b;
 		y = map->user_posy - a_b;
 		if (is_wall(map, x, y))
 		{
-			a_e = hypo - ((int)hypo);
-			a_d = a_e * a_c / a_b;
-			return hypo - a_d;
+			hypo_x = a_c;
+			break;
 		}
 		repeat++;
 	}
+
+	repeat = 0;
+	deg = 90 - deg;
+
+	while (repeat < 15)
+	{
+		c_b = (((int)map->user_posy + 1) - map->user_posy) + repeat;
+		//printf("cb = %f\n", c_b);
+		//printf("%f\n", deg_to_rad(deg));
+		//printf("%f\n", cos(deg_to_rad(deg)));
+		a_c = c_b / cos(deg_to_rad(deg)); // = hypothenuse
+		//printf("%f %f\n", cos(60), cos(60.0) );
+		//printf("%f / cos(%f) = %f\n", c_b, deg, c_b / cos(deg));
+		//printf("ac = %f\n", a_c);
+		a_b = c_b * tan(deg_to_rad(deg)); // = opposé
+		//printf("a_b = %f\n", a_b);
+		x = map->user_posx + a_b;
+		y = map->user_posy - a_c;
+		//printf("%d %d\n", x, y);
+		if (is_wall(map, x, y))
+		{
+			hypo_y = a_c;
+			break;
+		}
+		repeat++;
+	}
+
+	if (hypo_y < 0)
+		return (hypo_x);
+	if (hypo_x < 0)
+		return (hypo_y);
+	return ((hypo_y < hypo_x) ? hypo_y : hypo_x);
 }
 
 int main(int argc, char **argv)
