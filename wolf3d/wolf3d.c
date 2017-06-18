@@ -353,11 +353,13 @@ void	print_wall(t_map *map, int pixel)
 	degint = (deg);
 	degint = degint % 360;
 	deg = degint + (deg - (int)deg);
+	if (deg < 0)
+		deg = 360 + deg;
 	printf("%f\n", deg);
-		wall_dist = get_wall_0_90(map, deg);
-		//printf("olala->%f\n", wall_dist);
-		size = (WIN_Y / (float)WALL_DIV) / wall_dist;
-		print_wall_col(map, pixel, size);
+	wall_dist = get_wall_0_90(map, deg);
+	//printf("olala->%f\n", wall_dist);
+	size = (WIN_Y / (float)WALL_DIV) / wall_dist;
+	print_wall_col(map, pixel, size);
 	// size du pixel WIN_X - pixel =
 
 }
@@ -381,27 +383,43 @@ int					on_key_press(int keycode, t_map *map)
 	if (keycode == 126) // up
 	{
 		map->user_posy -= 0.1;
+		if (is_wall(map, map->user_posx, map->user_posy))
+			map->user_posy += 0.1;
 	}
 	if (keycode == 125) // down
 	{
 		map->user_posy += 0.1;
+		if (is_wall(map, map->user_posx, map->user_posy))
+			map->user_posy -= 0.1;
 	}
-	if (keycode == 123) // left
+	if (keycode == 37)
 	{
 		map->user_deg += 5;
 		if (map->user_deg > 360)
 			map->user_deg = 5;
 	}
-	if (keycode == 124) // right
+	if (keycode == 41)
 	{
 		map->user_deg -= 5;
 		if (map->user_deg < 0)
 			map->user_deg = 355;
 	}
+	if (keycode == 123)
+	{
+		map->user_posx -= 0.1;
+		if (is_wall(map, map->user_posx, map->user_posy))
+			map->user_posx += 0.1;
+	}
+	if (keycode == 124)
+	{
+		map->user_posx += 0.1;
+		if (is_wall(map, map->user_posx, map->user_posy))
+			map->user_posx -= 0.1;
+	}
 	map->user_deg = map->user_deg % 360;
 	compute_map(map);
 	display_map(map);
-	//ft_printf("%d", keycode);
+	ft_printf("%d", keycode);
 	return (1);
 }
 
