@@ -134,6 +134,7 @@ void	hydrate_map(char *str, t_map *map)
 	line = NULL;
 	fd = open(str, O_RDONLY);
 	test_square = -1;
+	map->user_deg = 90;
 	y = 0;
 	if (fd < 1)
 	{
@@ -346,16 +347,17 @@ void	print_wall(t_map *map, int pixel)
 	float deg;
 	float wall_dist;
 	float size;
+	int degint;
 
-	deg = (WIN_X - pixel) * (VIEW_DEG / (float)WIN_X) + 60; //user deg
-	//printf("%f\n", deg);
-	if (deg != 90)
-	{
+	deg = (WIN_X - pixel) * (VIEW_DEG / (float)WIN_X) + (map->user_deg - 30); //user deg
+	degint = (deg);
+	degint = degint % 360;
+	deg = degint + (deg - (int)deg);
+	printf("%f\n", deg);
 		wall_dist = get_wall_0_90(map, deg);
 		//printf("olala->%f\n", wall_dist);
 		size = (WIN_Y / (float)WALL_DIV) / wall_dist;
 		print_wall_col(map, pixel, size);
-	}
 	// size du pixel WIN_X - pixel =
 
 }
@@ -386,12 +388,17 @@ int					on_key_press(int keycode, t_map *map)
 	}
 	if (keycode == 123) // left
 	{
-		map->user_posx -= 0.1;
+		map->user_deg += 5;
+		if (map->user_deg > 360)
+			map->user_deg = 5;
 	}
 	if (keycode == 124) // right
 	{
-		map->user_posx += 0.1;
+		map->user_deg -= 5;
+		if (map->user_deg < 0)
+			map->user_deg = 355;
 	}
+	map->user_deg = map->user_deg % 360;
 	compute_map(map);
 	display_map(map);
 	//ft_printf("%d", keycode);

@@ -47,7 +47,7 @@ typedef struct			s_map
 	char				mapstr[MAP_SIZE + 1];
 	float				user_posx;
 	float				user_posy;
-	float				user_deg;
+	int					user_deg;
 }						t_map;
 
 typedef struct			s_pixel
