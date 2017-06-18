@@ -22,13 +22,16 @@ void	draw_square(t_map *map, int pos, int w)
 
 	bs = w * 4;
 	i = 0;
+	pos -= pos % 4;
 	while (i < w)
 	{
 		i2 = 0;
 		while (i2 < bs)
 		{
 			map->imgstr[pos + i2] = (unsigned char)MINIMAP_COLOR;
-			i2++;
+			map->imgstr[pos + i2 + 1] = (unsigned char)MINIMAP_COLOR;
+			map->imgstr[pos + i2 + 2] = (unsigned char)MINIMAP_COLOR;
+			i2+=4;
 		}
 		pos += (WIN_X * 4);
 		i++;
@@ -328,6 +331,8 @@ void	print_wall_col(t_map *map, int x, int pixels_wall)
 
 	//printf("====>%d\n", x);
 	i = 1;
+	if (WIN_Y < pixels_wall)
+		pixels_wall = WIN_Y;
 	top = ((((WIN_Y - pixels_wall) / 2) * WIN_X) * 4);
 	//printf("top = %d\n", top);
 	while (i < pixels_wall)
@@ -336,6 +341,7 @@ void	print_wall_col(t_map *map, int x, int pixels_wall)
 		map->imgstr[(x * 4) + (top)] = (unsigned char)255;
 		map->imgstr[(x * 4) + (top) + 1] = (unsigned char)255;
 		map->imgstr[(x * 4) + (top) + 2] = (unsigned char)255;
+		map->imgstr[(x * 4) + (top) + 3] = (unsigned char)0;
 		top+=WIN_X * 4;
 		i++;
 	}
@@ -388,9 +394,11 @@ int					on_key_press(int keycode, t_map *map)
 	}
 	if (keycode == 125) // down
 	{
-		map->user_posy += 0.1;
+		map->user_posy += 0.3;
 		if (is_wall(map, map->user_posx, map->user_posy))
-			map->user_posy -= 0.1;
+			map->user_posy -= 0.3;
+		else
+			map->user_posy -= 0.2;
 	}
 	if (keycode == 37)
 	{
@@ -412,8 +420,10 @@ int					on_key_press(int keycode, t_map *map)
 	}
 	if (keycode == 124)
 	{
-		map->user_posx += 0.1;
+		map->user_posx += 0.2;
 		if (is_wall(map, map->user_posx, map->user_posy))
+			map->user_posx -= 0.2;
+		else
 			map->user_posx -= 0.1;
 	}
 	map->user_deg = map->user_deg % 360;
