@@ -205,7 +205,7 @@ float		deg_to_rad(float deg)
 	return (deg * (3.14159265 / 180));
 }
 
-float		get_wall_0_90(t_map *map, float realdeg)
+float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
 {
 	int repeat;
 	float c_b;
@@ -219,6 +219,8 @@ float		get_wall_0_90(t_map *map, float realdeg)
 	float hypo;
 	float hypo_x;
 	float hypo_y;
+	char orientation_x;
+	char orientation_y;
 
 	repeat = 0;
 	hypo_x = -1;
@@ -267,6 +269,7 @@ float		get_wall_0_90(t_map *map, float realdeg)
 		if (is_wall(map, x, y))
 		{
 			//printf("Check des x %d %d %f (%f:%f) -> %f %f %f\n", x, y, a_c, deg, realdeg, c_b, a_b, a_c);
+			orientation_x = (x < map->user_posx) ? EAST : WEST;
 			hypo_x = a_c;
 			break;
 		}
@@ -308,69 +311,35 @@ float		get_wall_0_90(t_map *map, float realdeg)
 		if (is_wall(map, x, y))
 		{
 			//printf("Check des y %d %d %f (%f:%f) -> %f %f %f\n", x, y, a_c, deg, realdeg, c_b, a_b, a_c);
-			hypo_y = a_c;
-=======
-	hypo_x = -1;
-	hypo_y = -1;
-
-
-	while (repeat < 15)
-	{
-		c_b = (((int)map->user_posx + 1) - map->user_posx) + repeat;
-		//printf("cb = %f\n", c_b);
-		//printf("%f\n", deg_to_rad(deg));
-		//printf("%f\n", cos(deg_to_rad(deg)));
-		a_c = c_b / cos(deg_to_rad(deg)); // = hypothenuse
-		//printf("%f %f\n", cos(60), cos(60.0) );
-		//printf("%f / cos(%f) = %f\n", c_b, deg, c_b / cos(deg));
-		//printf("ac = %f\n", a_c);
-		a_b = c_b * tan(deg_to_rad(deg)); // = opposé
-		//printf("a_b = %f\n", a_b);
-		x = map->user_posx + c_b;
-		y = map->user_posy - a_b;
-		if (is_wall(map, x, y))
-		{
-			hypo_x = a_c;
-			break;
-		}
-		repeat++;
-	}
-
-	repeat = 0;
-	deg = 90 - deg;
-
-	while (repeat < 15)
-	{
-		c_b = (((int)map->user_posy + 1) - map->user_posy) + repeat;
-		//printf("cb = %f\n", c_b);
-		//printf("%f\n", deg_to_rad(deg));
-		//printf("%f\n", cos(deg_to_rad(deg)));
-		a_c = c_b / cos(deg_to_rad(deg)); // = hypothenuse
-		//printf("%f %f\n", cos(60), cos(60.0) );
-		//printf("%f / cos(%f) = %f\n", c_b, deg, c_b / cos(deg));
-		//printf("ac = %f\n", a_c);
-		a_b = c_b * tan(deg_to_rad(deg)); // = opposé
-		//printf("a_b = %f\n", a_b);
-		x = map->user_posx + a_b;
-		y = map->user_posy - a_c;
-		//printf("%d %d\n", x, y);
-		if (is_wall(map, x, y))
-		{
+			orientation_y = (y < map->user_posy) ? NORTH : SOUTH;
 			hypo_y = a_c;
 			break;
 		}
 		repeat++;
 	}
 
->>>>>>> d7d86b8b11f8203385393f4054c88581c99fc4a3
 	if (hypo_y < 0)
+	{
+		*orientation = orientation_x;
 		return (hypo_x);
+	}
 	if (hypo_x < 0)
+	{
+		*orientation = orientation_y;
 		return (hypo_y);
-	return ((hypo_y < hypo_x) ? hypo_y : hypo_x);
+	}
+	if (hypo_y < hypo_x){
+		*orientation = orientation_y;
+		return hypo_y;
+	}
+	else
+	{
+		*orientation = orientation_x;
+		return hypo_x;
+	}
 }
 
-void	print_wall_col(t_map *map, int x, int pixels_wall)
+void	print_wall_col(t_map *map, int x, int pixels_wall, char o)
 {
 	int top;
 	int i;
@@ -385,9 +354,9 @@ void	print_wall_col(t_map *map, int x, int pixels_wall)
 	while (i < pixels_wall)
 	{
 		//printf("%d\n", (x * 4) + top);
-		map->imgstr[(x * 4) + (top)] = (unsigned char)255;
-		map->imgstr[(x * 4) + (top) + 1] = (unsigned char)255;
-		map->imgstr[(x * 4) + (top) + 2] = (unsigned char)255;
+		map->imgstr[(x * 4) + (top)] = (unsigned char)255 / o;
+		map->imgstr[(x * 4) + (top) + 1] = (unsigned char)255 / o;
+		map->imgstr[(x * 4) + (top) + 2] = (unsigned char)255 / o;
 		map->imgstr[(x * 4) + (top) + 3] = (unsigned char)0;
 		top+=WIN_X * 4;
 		i++;
@@ -401,6 +370,7 @@ void	print_wall(t_map *map, int pixel)
 	float wall_dist;
 	float size;
 	int degint;
+	char o;
 
 	deg = (WIN_X - pixel) * (VIEW_DEG / (float)WIN_X) + (map->user_deg - 30); //user deg
 	degint = (deg);
@@ -409,10 +379,10 @@ void	print_wall(t_map *map, int pixel)
 	if (deg < 0)
 		deg = 360 + deg;
 	printf("%f\n", deg);
-	wall_dist = get_wall_0_90(map, deg);
+	wall_dist = get_wall_0_90(map, deg, &o);
 	//printf("olala->%f\n", wall_dist);
 	size = (WIN_Y / (float)WALL_DIV) / wall_dist;
-	print_wall_col(map, pixel, size);
+	print_wall_col(map, pixel, size, o);
 	// size du pixel WIN_X - pixel =
 
 }
@@ -494,39 +464,9 @@ int main(int argc, char **argv)
 
 	map = get_map();
 	
-	if (ft_strcmp(argv[1], "test") == 0)
-	{
-		//printf("hey\n");
-		hydrate_map("labyrinthe.map", map);
-		//printf("%f %f\n", map->user_posx, map->user_posy);
-		/*map->user_posx = 5.67;
-		map->user_posy = 10.79;*/
-		/*
-		map->user_posx = 5.70;
-		map->user_posy = 10.80;*/
-
-		for (int i = 90; i < 120; i += 5)
-		{
-			if (i != 90)
-			{
-				testval = get_wall_0_90(map, (float)i);
-				//printf("%i = %f\n", i, testval);
-				printf("%f\n", testval);
-			}
-			
-		}
-		exit(0);
-		compute_map(map);
-		display_map(map);
-		//mlx_loop(map->mlx);
-		exit(0);
-	}
-	else
-	{
 		hydrate_map(argv[1], map);	
 		compute_map(map);
 		display_map(map);
-	}
 	//printf("%ddeg = %f\n\n", 75, get_wall_0_90(map, 75));
 	/* for (int i = 1; i < 180; i += 10)
 	{

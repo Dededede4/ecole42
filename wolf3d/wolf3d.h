@@ -37,6 +37,12 @@
 
 # define FRAME_LIMIT WIN_X
 
+# define NORTH 1
+# define SOUTH 2
+# define EAST 3
+# define WEST 4
+
+
 typedef struct			s_map
 {
 	void				*win;
