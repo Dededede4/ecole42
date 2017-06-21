@@ -62,6 +62,16 @@ typedef struct			s_pixel
 	int				y;
 }						t_pixel;
 
+typedef struct          s_walldist
+{
+	int repeat;
+	float c_b;
+	float a_c;
+	float a_b;
+	int x;
+	int y;
+}					t_walldist;
+
 float		get_wall(t_map *map, float deg);
 float		deg_to_rad(float deg);
 t_bool		is_wall(t_map *map, int x, int y);
@@ -81,4 +91,5 @@ void				on_key_press_123(t_map *map);
 void				on_key_press_124(t_map *map);
 void	draw_square(t_map *map, int pos, int w);
 void	compute_map(t_map *map);
+float		get_wall_distance(t_map *map, float realdeg, char *orientation);
 #endif

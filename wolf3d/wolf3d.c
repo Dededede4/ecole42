@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-#include <math.h>
 
 void	draw_square(t_map *map, int pos, int w)
 {
@@ -58,126 +57,7 @@ float		deg_to_rad(float deg)
 	return (deg * (3.14159265 / 180));
 }
 
-float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
-{
-	int repeat;
-	float c_b;
-	float a_c;
-	float a_b;
-	int x;
-	int y;
-	float hypo_x;
-	float hypo_y;
-	char orientation_x;
-	char orientation_y;
 
-	repeat = 0;
-	hypo_x = -1;
-	hypo_y = -1;
-	float deg;
-
-	if (realdeg < 90)
-		deg = realdeg;
-	else if (realdeg < 180)
-		deg = 180 - realdeg;
-	else if (realdeg < 270)
-		deg = realdeg - 180;
-	else
-		deg = 360 - realdeg;
-	while (repeat < 15)
-	{
-		if (realdeg < 90 || realdeg > 270)
-			c_b = (((int)map->user_posx + 1) - map->user_posx) + repeat;
-		else
-			c_b = (map->user_posx - ((int)map->user_posx)) + repeat;
-
-		a_c = c_b / cos(deg_to_rad(deg));
-		a_b = c_b * tan(deg_to_rad(deg));
-
-		if (realdeg < 90 || realdeg > 270)
-		{
-			x = map->user_posx + c_b;
-		}
-		else
-		{
-			x = map->user_posx - c_b;
-			x--;
-		}
-
-		if (realdeg < 180)
-		{
-			y = map->user_posy - a_b;
-		}
-		else
-		{
-			y = map->user_posy + a_b;
-		}
-		if (is_wall(map, x, y))
-		{
-			orientation_x = (x < map->user_posx) ? EAST : WEST;
-			hypo_x = a_c;
-			break;
-		}
-		repeat++;
-	}
-
-	repeat = 0;
-	deg = 90 - deg;
-	while (repeat < 15)
-	{
-		if (realdeg < 180)
-			c_b = (map->user_posy - ((int)map->user_posy)) + repeat;
-		else
-			c_b = (((int)map->user_posy + 1) - map->user_posy) + repeat;
-		a_c = c_b / cos(deg_to_rad(deg));
-		a_b = c_b * tan(deg_to_rad(deg));
-		if (realdeg < 90 || realdeg > 270)
-		{
-			x = map->user_posx + a_b;
-		}
-		else
-		{
-			x = map->user_posx - a_b;
-		}
-
-		if (realdeg < 180)
-		{
-			y = map->user_posy - c_b;
-			y--;
-		}
-		else
-		{
-			y = map->user_posy + c_b;
-		}
-		if (is_wall(map, x, y))
-		{
-			orientation_y = (y < map->user_posy) ? NORTH : SOUTH;
-			hypo_y = a_c;
-			break;
-		}
-		repeat++;
-	}
-
-	if (hypo_y < 0)
-	{
-		*orientation = orientation_x;
-		return (hypo_x);
-	}
-	if (hypo_x < 0)
-	{
-		*orientation = orientation_y;
-		return (hypo_y);
-	}
-	if (hypo_y < hypo_x){
-		*orientation = orientation_y;
-		return hypo_y;
-	}
-	else
-	{
-		*orientation = orientation_x;
-		return hypo_x;
-	}
-}
 
 void	print_wall_col(t_map *map, int x, int pixels_wall, char o)
 {
@@ -213,7 +93,7 @@ void	print_wall(t_map *map, int pixel)
 	deg = degint + (deg - (int)deg);
 	if (deg < 0)
 		deg = 360 + deg;
-	wall_dist = get_wall_0_90(map, deg, &o);
+	wall_dist = get_wall_distance(map, deg, &o);
 	size = (WIN_Y / (float)WALL_DIV) / wall_dist;
 	print_wall_col(map, pixel, size, o);
 }
