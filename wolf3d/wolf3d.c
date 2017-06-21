@@ -12,7 +12,6 @@
 
 #include "wolf3d.h"
 #include <math.h>
-#include <stdio.h>
 
 void	draw_square(t_map *map, int pos, int w)
 {
@@ -43,15 +42,14 @@ void	memset_horizon(t_map *map)
 	int i;
 	int middle = map->imgstrlen / 2;
 
-	//ft_printf("%d\n", map->imgstrlen);
 	i = 0;
 	while (i < map->imgstrlen)
 	{
 		if (i < middle)
-		{//87ceeb	
-			map->imgstr[i + 0] = 0xEB; // Bleu
-			map->imgstr[i + 1] = 0xCE;// vert 
-			map->imgstr[i + 2] = 0x87; // rouge
+		{
+			map->imgstr[i + 0] = 0xEB;
+			map->imgstr[i + 1] = 0xCE;
+			map->imgstr[i + 2] = 0x87;
 		}
 		else
 		{
@@ -71,7 +69,6 @@ void	memset_minimap(t_map *map)
 	int y;
 	int map_pos;
 
-	//ft_printf("%s\n", map->mapstr);
 	map_pos = 0;
 	i = 0;
 	while (i < MAP_W)
@@ -95,7 +92,6 @@ void	memset_minimap_user(t_map *map)
 	int pos;
 
 	pos = ((MINIMAP_X) + (WIN_X * MINIMAP_Y)) * 4;
-	printf("%d\n", pos);
 	pos += ((map->user_posx * MINIMAP_BLOCK_SIZE) + (map->user_posy * MINIMAP_BLOCK_SIZE * WIN_X)) * 4;
 
 	draw_square(map, pos, MINIMAP_USER_SIZE);
@@ -173,7 +169,6 @@ void	hydrate_map(char *str, t_map *map)
 			exit(0);
 		}
 		test_square = i;
-		//ft_printf("%s\n", map->mapstr);
 		y++;
 	}
 	if (chars != MAP_SIZE)
@@ -181,7 +176,6 @@ void	hydrate_map(char *str, t_map *map)
 		ft_printf("Bad map size\n");
 		exit(0);
 	}
-	//ft_printf("%s\n", map->mapstr);
 }
 
 /**
@@ -209,14 +203,10 @@ float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
 {
 	int repeat;
 	float c_b;
-	float a_d;
-	float a_e;
 	float a_c;
 	float a_b;
-	//float deg = 60; // On peut monter jusqu'à moins de 90deg
 	int x;
 	int y;
-	float hypo;
 	float hypo_x;
 	float hypo_y;
 	char orientation_x;
@@ -235,8 +225,6 @@ float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
 		deg = realdeg - 180;
 	else
 		deg = 360 - realdeg;
-	//printf("-->%f\n", realdeg);
-	//printf("-->%f\n", deg);
 	while (repeat < 15)
 	{
 		if (realdeg < 90 || realdeg > 270)
@@ -265,10 +253,8 @@ float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
 		{
 			y = map->user_posy + a_b;
 		}
-		//ft_printf("is_wall ? %d %d;\n", x, y);
 		if (is_wall(map, x, y))
 		{
-			//printf("Check des x %d %d %f (%f:%f) -> %f %f %f\n", x, y, a_c, deg, realdeg, c_b, a_b, a_c);
 			orientation_x = (x < map->user_posx) ? EAST : WEST;
 			hypo_x = a_c;
 			break;
@@ -277,7 +263,6 @@ float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
 	}
 
 	repeat = 0;
-	// Check des y
 	deg = 90 - deg;
 	while (repeat < 15)
 	{
@@ -300,17 +285,13 @@ float		get_wall_0_90(t_map *map, float realdeg, char *orientation)
 		{
 			y = map->user_posy - c_b;
 			y--;
-			//printf("c_b -> %f pos -> %f result -> %f\n", c_b, map->user_posy, map->user_posy - c_b);
-
 		}
 		else
 		{
 			y = map->user_posy + c_b;
 		}
-		//ft_printf("is_wall ? %d %d;\n", x, y);
 		if (is_wall(map, x, y))
 		{
-			//printf("Check des y %d %d %f (%f:%f) -> %f %f %f\n", x, y, a_c, deg, realdeg, c_b, a_b, a_c);
 			orientation_y = (y < map->user_posy) ? NORTH : SOUTH;
 			hypo_y = a_c;
 			break;
@@ -343,17 +324,13 @@ void	print_wall_col(t_map *map, int x, int pixels_wall, char o)
 {
 	int top;
 	int i;
-	int stop = WIN_Y * 4;
 
-	//printf("====>%d\n", x);
 	i = 1;
 	if (WIN_Y < pixels_wall)
 		pixels_wall = WIN_Y;
 	top = ((((WIN_Y - pixels_wall) / 2) * WIN_X) * 4);
-	//printf("top = %d\n", top);
 	while (i < pixels_wall)
 	{
-		//printf("%d\n", (x * 4) + top);
 		map->imgstr[(x * 4) + (top)] = (unsigned char)255 / o;
 		map->imgstr[(x * 4) + (top) + 1] = (unsigned char)255 / o;
 		map->imgstr[(x * 4) + (top) + 2] = (unsigned char)255 / o;
@@ -372,25 +349,20 @@ void	print_wall(t_map *map, int pixel)
 	int degint;
 	char o;
 
-	deg = (WIN_X - pixel) * (VIEW_DEG / (float)WIN_X) + (map->user_deg - 30); //user deg
-	degint = (deg);
-	degint = degint % 360;
+	deg = (WIN_X - pixel) * (VIEW_DEG / (float)WIN_X) + (map->user_deg - 30);
+	degint = (int)deg % 360;
 	deg = degint + (deg - (int)deg);
 	if (deg < 0)
 		deg = 360 + deg;
-	printf("%f\n", deg);
 	wall_dist = get_wall_0_90(map, deg, &o);
-	//printf("olala->%f\n", wall_dist);
 	size = (WIN_Y / (float)WALL_DIV) / wall_dist;
 	print_wall_col(map, pixel, size, o);
-	// size du pixel WIN_X - pixel =
-
 }
 
 void	compute_map(t_map *map)
 {
 	memset_horizon(map);
-	for (int i = 1; i < FRAME_LIMIT; ++i)
+	for (int i = 0; i < FRAME_LIMIT; ++i)
 	{
 		print_wall(map, i);
 	}
@@ -446,7 +418,6 @@ int					on_key_press(int keycode, t_map *map)
 	map->user_deg = map->user_deg % 360;
 	compute_map(map);
 	display_map(map);
-	ft_printf("%d", keycode);
 	return (1);
 }
 
@@ -454,27 +425,16 @@ int					on_key_press(int keycode, t_map *map)
 int main(int argc, char **argv)
 {
 	t_map	*map;
-	float	testval;
 
 	if (argc != 2)
 	{
 		ft_printf("Usage : ./wolf3d labyrinthe.map\n");
 		exit(0);
 	}
-
-	map = get_map();
-	
-		hydrate_map(argv[1], map);	
-		compute_map(map);
-		display_map(map);
-	//printf("%ddeg = %f\n\n", 75, get_wall_0_90(map, 75));
-	/* for (int i = 1; i < 180; i += 10)
-	{
-		if (i != 90)
-			printf("%ddeg = %f\n\n", i, get_wall_0_90(map, i));
-		//printf("%ddeg = %f\n\n", i, get_wall_90_180(map, i));
-	}*/
-	
+	map = get_map();	
+	hydrate_map(argv[1], map);	
+	compute_map(map);
+	display_map(map);
 	mlx_key_hook(map->win, on_key_press, map);
 	mlx_loop(map->mlx);
 	return (0);
