@@ -12,62 +12,68 @@
 
 #include "wolf3d.h"
 
-void	hydrate_map(char *str, t_map *map)
+void		puterr(char *str)
 {
-	int 	fd;
-	char	*line;
-	int 	i;
-	int 	chars;
-	int     test_square;
-	int     y;
+	ft_printf(str);
+	exit(0);
+}
 
-	(void)map;
-	i = -1;
-	chars = 0;
-	line = NULL;
-	fd = open(str, O_RDONLY);
-	test_square = -1;
-	map->user_deg = 90;
-	y = 0;
-	if (fd < 1)
+int			hydrate_map_gnl_check(t_map *map, char *line, int *chars, int *y)
+{
+	int		i;
+
+	i = 0;
+	while (line[i])
 	{
-		ft_printf("File error\n");
-		exit(0);
+		if (line[i] != MAP_BLOCK && line[i] != MAP_START &&
+			line[i] != MAP_STOP && line[i] != MAP_EMPTY)
+			puterr("Unknow char\n");
+		if (line[i] == MAP_START)
+		{
+			map->user_posx = i + 0.5;
+			map->user_posy = *y + 0.5;
+		}
+		if (*chars > MAP_SIZE)
+			puterr("Too much chars\n");
+		map->mapstr[(*chars)++] = line[i];
+		i++;
 	}
+	return (i);
+}
+
+int			hydrate_map_gnl(t_map *map, int fd)
+{
+	char	*line;
+	int		chars;
+	int		test_square;
+	int		y;
+	int		i;
+
+	line = NULL;
+	chars = 0;
+	test_square = -1;
+	y = 0;
 	while (ft_gnl(fd, &line))
 	{
-		i = 0;
-		while (line[i])
-		{
-			if (line[i] != MAP_BLOCK && line[i] != MAP_START &&  line[i] != MAP_STOP &&  line[i] != MAP_EMPTY)
-			{
-				ft_printf("Unknow char\n");
-				exit(0);
-			}
-			if (line[i] == MAP_START)
-			{
-				map->user_posx = i + 0.5;
-				map->user_posy = y + 0.5;
-			}
-			if (chars > MAP_SIZE)
-			{
-				ft_printf("Too much chars\n");
-				exit(0);
-			}
-			map->mapstr[chars++] = line[i];
-			i++;
-		}
+		i = hydrate_map_gnl_check(map, line, &chars, &y);
 		if (test_square != -1 && test_square != i)
-		{
-			ft_printf("Not a sqare\n");
-			exit(0);
-		}
+			puterr("Not a sqare\n");
 		test_square = i;
 		y++;
 	}
+	return (chars);
+}
+
+void		hydrate_map(char *str, t_map *map)
+{
+	int		fd;
+	int		chars;
+
+	fd = open(str, O_RDONLY);
+	map->user_deg = 90;
+	if (fd < 1)
+		puterr("File error\n");
+	chars = hydrate_map_gnl(map, fd);
 	if (chars != MAP_SIZE)
-	{
-		ft_printf("Bad map size\n");
-		exit(0);
-	}
+		puterr("Bad map size\n");
 }
