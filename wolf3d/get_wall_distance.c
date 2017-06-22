@@ -13,6 +13,20 @@
 #include "wolf3d.h"
 #include <math.h>
 
+float		deg_to_rad(float deg)
+{
+	return (deg * (3.14159265 / 180));
+}
+
+/*
+**           * A
+**          **
+**         * *
+**        *  *
+**     C * * * B
+** c = player
+*/
+
 float		get_wall_distance_x(t_map *map, float deg, float realdeg, char *o)
 {
 	t_walldist v;

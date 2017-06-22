@@ -42,7 +42,6 @@
 # define EAST 3
 # define WEST 4
 
-
 typedef struct			s_map
 {
 	void				*win;
@@ -58,38 +57,39 @@ typedef struct			s_map
 
 typedef struct			s_pixel
 {
-	int				x;
-	int				y;
+	int					x;
+	int					y;
 }						t_pixel;
 
-typedef struct          s_walldist
+typedef struct			s_walldist
 {
-	int repeat;
-	float c_b;
-	float a_c;
-	float a_b;
-	int x;
-	int y;
-}					t_walldist;
+	int					repeat;
+	float				c_b;
+	float				a_c;
+	float				a_b;
+	int					x;
+	int					y;
+}						t_walldist;
 
-float		get_wall(t_map *map, float deg);
-float		deg_to_rad(float deg);
-t_bool		is_wall(t_map *map, int x, int y);
-
-void	memset_horizon(t_map *map);
-void	memset_minimap(t_map *map);
-void	memset_minimap_user(t_map *map);
-void	hydrate_map(char *str, t_map *map);
-t_map		*get_map(void);
-int			on_key_press(int keycode, t_map *map);
-void		display_map(t_map *map);
-void				on_key_press_126(t_map *map);
-void				on_key_press_125(t_map *map);
-void				on_key_press_37(t_map *map);
-void				on_key_press_41(t_map *map);
-void				on_key_press_123(t_map *map);
-void				on_key_press_124(t_map *map);
-void	draw_square(t_map *map, int pos, int w);
-void	compute_map(t_map *map);
-float		get_wall_distance(t_map *map, float realdeg, char *orientation);
+float					get_wall(t_map *map, float deg);
+float					deg_to_rad(float deg);
+t_bool					is_wall(t_map *map, int x, int y);
+void					memset_horizon(t_map *map);
+void					memset_minimap(t_map *map);
+void					memset_minimap_user(t_map *map);
+void					hydrate_map(char *str, t_map *map);
+t_map					*get_map(void);
+int						on_key_press(int keycode, t_map *map);
+void					display_map(t_map *map);
+void					on_key_press_126(t_map *map);
+void					on_key_press_125(t_map *map);
+void					on_key_press_37(t_map *map);
+void					on_key_press_41(t_map *map);
+void					on_key_press_123(t_map *map);
+void					on_key_press_124(t_map *map);
+void					draw_square(t_map *map, int pos, int w);
+void					compute_map(t_map *map);
+float					get_wall_distance(
+	t_map *map, float realdeg, char *orientation);
+void					print_wall(t_map *map, int pixel);
 #endif

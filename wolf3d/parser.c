@@ -30,8 +30,8 @@ int			hydrate_map_gnl_check(t_map *map, char *line, int *chars, int *y)
 			puterr("Unknow char\n");
 		if (line[i] == MAP_START)
 		{
-			map->user_posx = i + 0.5;
-			map->user_posy = *y + 0.5;
+			map->user_posx = i + 0.6;
+			map->user_posy = *y + 0.6;
 		}
 		if (*chars > MAP_SIZE)
 			puterr("Too much chars\n");

@@ -12,6 +12,30 @@
 
 #include "wolf3d.h"
 
+void	draw_square(t_map *map, int pos, int w)
+{
+	int	i;
+	int	i2;
+	int bs;
+
+	bs = w * 4;
+	i = 0;
+	pos -= pos % 4;
+	while (i < w)
+	{
+		i2 = 0;
+		while (i2 < bs)
+		{
+			map->imgstr[pos + i2] = (unsigned char)MINIMAP_COLOR;
+			map->imgstr[pos + i2 + 1] = (unsigned char)MINIMAP_COLOR;
+			map->imgstr[pos + i2 + 2] = (unsigned char)MINIMAP_COLOR;
+			i2 += 4;
+		}
+		pos += (WIN_X) * 4;
+		i++;
+	}
+}
+
 void	memset_horizon(t_map *map)
 {
 	int i;
