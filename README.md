@@ -28,6 +28,8 @@ You can see https://github.com/Dededede4/ecole42/blob/master/ft_printf/main.c fo
 
 **fractol/** is a program drawing fratals
 
+**wolf3d/** is a program for visualize a labyrinth in 3D using to the ray casting concept.
+
 # Work in progress
 
-**wolf3d/** is a program for visualize a labyrinth in 3D using to the ray casting concept.
+**libft/** is a small implementation of the ls program.
