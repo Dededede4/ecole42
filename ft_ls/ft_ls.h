@@ -11,3 +11,13 @@
 /* ************************************************************************** */
 
 #include "libft/libft.h"
+
+typedef struct			s_inputsize
+{
+	int							col1;
+	int							col2;
+	int							col3;
+	int							col4;
+	int							col5;
+}						t_inputsize;
+

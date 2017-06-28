@@ -26,6 +26,84 @@
 // Pour ctime
 #include <time.h>
 
+
+// Pour errno
+#include <errno.h>
+
+#include <string.h>
+
+void	ft_putstr_right(char const *s, size_t place)
+{
+	size_t	spaces;
+
+	spaces = place - ft_strlen(s);
+	while (place && spaces--)
+		ft_putchar(' ');
+	while (*s)
+		ft_putchar(*(s++));
+}
+
+void	ft_putnbr_right(int nbr, size_t place)
+{
+	size_t	spaces;
+
+	spaces = place - ft_intlen(nbr);
+	while (place && spaces--)
+		ft_putchar(' ');
+	ft_putnbr(nbr);
+}
+
+void	ft_putstr_left(char const *s, size_t place)
+{
+	size_t	spaces;
+
+	spaces = place - ft_strlen(s);
+	while (*s)
+		ft_putchar(*(s++));
+	while (place && spaces--)
+		ft_putchar(' ');
+}
+
+
+t_inputsize	get_col_size(char *path)
+{
+	t_inputsize		size;
+	DIR				*d;
+	struct dirent	*pd;
+	struct stat		fileStat;
+	struct passwd *pwd;
+	struct group *gwd;
+
+	size.col1 = 0;
+	size.col2 = 0;
+	size.col3 = 0;
+	size.col4 = 0;
+	size.col5 = 0;
+
+	size.col1 = 10;
+	d = opendir(path);
+	while ((pd = readdir(d)) != NULL) {
+		if(stat(pd->d_name,&fileStat) < 0)   
+			ft_err("err\n");
+		if (ft_intlen(fileStat.st_nlink) > size.col2)
+			size.col2 = ft_intlen(fileStat.st_nlink);
+
+		pwd = getpwuid(fileStat.st_uid);
+		if (ft_strlen(pwd->pw_name) > size.col3)
+			size.col3 = ft_strlen(pwd->pw_name);
+
+		gwd = getgrgid(fileStat.st_gid);
+		if (ft_strlen(gwd->gr_name) > size.col4)
+			size.col4 = ft_strlen(gwd->gr_name);
+
+		
+		if (ft_intlen(fileStat.st_size) > size.col5)
+			size.col5 = ft_intlen(fileStat.st_size);
+    }
+	closedir(d);
+	return (size);
+}
+
 void	ll_file_hr_permissions(int chmod)
 {
 	ft_printf( (S_ISDIR(chmod)) ? "d" : "-");
@@ -38,22 +116,23 @@ void	ll_file_hr_permissions(int chmod)
     ft_printf( (chmod & S_IROTH) ? "r" : "-");
     ft_printf( (chmod & S_IWOTH) ? "w" : "-");
     ft_printf( (chmod & S_IXOTH) ? "x" : "-");
+    // TODO : + @
 }
 
-void	ll_file_hr_user(int uid)
+void	ll_file_hr_user(int uid, t_inputsize inputsize)
 {
 	struct passwd *pwd;
 
 	pwd = getpwuid(uid);
-	ft_printf(pwd->pw_name);
+	ft_putstr_left(pwd->pw_name, inputsize.col3);
 }
 
-void	ll_file_hr_group(int gid)
+void	ll_file_hr_group(int gid, t_inputsize inputsize)
 {
 	struct group *pwd;
 
 	pwd = getgrgid(gid);
-	ft_printf(pwd->gr_name);
+	ft_putstr_left(pwd->gr_name, inputsize.col4);
 }
 
 void	ll_file_datetime(const time_t *clock)
@@ -63,7 +142,7 @@ void	ll_file_datetime(const time_t *clock)
 
 	str = ctime(clock);
 	split = ft_strsplit(str, ' ');
-	ft_printf("%s %s %.5s", split[1], split[2], split[3]);
+	ft_printf("%3s %2s %.5s", split[1], split[2], split[3]);
 }
 
 void	ll_total(char *path)
@@ -78,28 +157,34 @@ void	ll_total(char *path)
 	if (d == NULL)
 		ft_err("Cannot open directory"); 
 	while ((pd = readdir(d)) != NULL) {
-		if(stat(pd->d_name,&fileStat) < 0)    
+		
+		if(stat(pd->d_name,&fileStat) < 0)   
+		{
+			ft_printf("%s%s\n",path, pd->d_name);
+			ft_printf(strerror(errno));
     		ft_err("Connot open file (2)");
+		}
 		total += fileStat.st_blocks;
     }
     ft_printf("total %d\n", total);
 	closedir(d);
 }
 
-void	ll_file(char *path)
+void	ll_file(char *path, t_inputsize	inputsize)
 {
 	struct stat fileStat;
 
 	if(stat(path,&fileStat) < 0)    
     	ft_err("Connot open file (1)");
     ll_file_hr_permissions(fileStat.st_mode);
-    ft_printf("  %3d",fileStat.st_nlink); // TODO : remplace "3"
     ft_printf(" ");
-    ll_file_hr_user(fileStat.st_uid); // Size ?
+    ft_putnbr_right(fileStat.st_nlink, inputsize.col2);
+    ft_printf(" ");
+    ll_file_hr_user(fileStat.st_uid, inputsize);
     ft_printf("  ");
-    ll_file_hr_group(fileStat.st_gid); // Size ?
+    ll_file_hr_group(fileStat.st_gid, inputsize);
     ft_printf("  ");
-    ft_printf("%7d", fileStat.st_size); // Size ?
+    ft_putnbr_right(fileStat.st_size, inputsize.col5);
     ft_printf(" ");
     ll_file_datetime(&fileStat.st_mtime);
     ft_printf(" ");
@@ -122,17 +207,20 @@ void	lstdir(char *path)
 {
 	DIR *d;
 	struct dirent *pd;
+	t_inputsize	inputsize;
 
 	d = opendir(path);
 	if (d == NULL)
 		ft_err("Cannot open directory");
 	ll_total(path);
+	inputsize = get_col_size(path);
 	while ((pd = readdir(d)) != NULL) {
+		// Todo : add path to the name
 		if (FALSE) // TODO : long display ?
             ft_printf("%s\n", pd->d_name);
         else
         {
-        	ll_file(pd->d_name);
+        	ll_file(pd->d_name, inputsize);
         }
     }
 	closedir(d);
@@ -142,6 +230,7 @@ void	lstdir(char *path)
 
 int		main(int argc, char **argv)
 {
+	errno = 0;
 	if (argc != 2)
 		ft_err("Bad args");
 	lstdir(argv[1]);
