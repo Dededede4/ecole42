@@ -203,7 +203,7 @@ void	ll_file(char *path, t_inputsize	inputsize)
     ft_printf("The file %s a symbolic link\n", (S_ISLNK(fileStat.st_mode)) ? "is" : "is not");*/
 }
 
-void	lstdir(char *path)
+void	lstdir(char *path, t_params *p)
 {
 	DIR *d;
 	struct dirent *pd;
@@ -212,11 +212,12 @@ void	lstdir(char *path)
 	d = opendir(path);
 	if (d == NULL)
 		ft_err("Cannot open directory");
-	ll_total(path);
+	if (p->l)
+		ll_total(path);
 	inputsize = get_col_size(path);
 	while ((pd = readdir(d)) != NULL) {
 		// Todo : add path to the name
-		if (FALSE) // TODO : long display ?
+		if (!p->l)
             ft_printf("%s\n", pd->d_name);
         else
         {
@@ -230,22 +231,20 @@ void	lstdir(char *path)
 
 int		main(int argc, char **argv)
 {
-	int		i;
 	t_params	*p;
+	t_path		*current;
 
 	p = extractParams(argc, argv);
-	i = 1;
+	current = p->paths;
 	errno = 0;
-	if (argc == 1)
-		lstdir(".");
-	else
-		while (i < argc)
-		{
-			if (argc > 2)
-				ft_printf("%s:\n", argv[i]);
-			lstdir(argv[i++]);
-			if (i != argc)
-				ft_putchar('\n');
-		}
+	while (current)
+	{
+		if (p->paths->next)
+			ft_printf("%s:\n", current->path);
+		lstdir(current->path, p);
+		if (current->next != NULL)
+			ft_putchar('\n');
+		current = current->next;
+	}
 
 }

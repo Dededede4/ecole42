@@ -12,6 +12,8 @@
 
 #include "ft_ls.h"
 
+
+
 t_params	*readLetters(char *chars, t_params *params)
 {
 	while (*chars)
@@ -31,9 +33,10 @@ t_params	*readLetters(char *chars, t_params *params)
 		else
 		{
 			*(chars + 1) = 0;
-			ft_putstr_error(ft_strjoin("ls: illegal option -- ", chars));
-			ft_putstr_error("\nusage: ls [-lRart] [file ...]");
-			return (NULL);
+			ft_putstr_fd("ls: illegal option -- ", STDERR_FILENO);
+			ft_putstr_fd(chars, STDERR_FILENO);
+			ft_putstr_fd("\nusage: ls [-lRart] [file ...]", STDERR_FILENO);
+			exit(0);
 		}
 		chars++;
 	}

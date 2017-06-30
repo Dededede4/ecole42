@@ -39,4 +39,4 @@ typedef struct      s_params
 
 t_params        *extractParams(int argc, char **argv);
 t_params        *readLetters(char *chars, t_params *params);
-
+void	lst_path_add_end(t_path *file, t_path *new_file);
