@@ -230,9 +230,20 @@ void	lstdir(char *path)
 
 int		main(int argc, char **argv)
 {
+	int	i;
+
+	i = 1;
 	errno = 0;
-	if (argc != 2)
-		ft_err("Bad args");
-	lstdir(argv[1]);
+	if (argc == 1)
+		lstdir(".");
+	else
+		while (i < argc)
+		{
+			if (argc > 2)
+				ft_printf("%s:\n", argv[i]);
+			lstdir(argv[i++]);
+			if (i != argc)
+				ft_putchar('\n');
+		}
 
 }
