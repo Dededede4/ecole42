@@ -230,8 +230,10 @@ void	lstdir(char *path)
 
 int		main(int argc, char **argv)
 {
-	int	i;
+	int		i;
+	t_params	*p;
 
+	p = extractParams(argc, argv);
 	i = 1;
 	errno = 0;
 	if (argc == 1)
