@@ -38,7 +38,8 @@ ft_printf_execarg1.c ft_printf_execarg2.c ft_printf_putnbr_signed_args.c ft_prin
 ft_printf_putstr_args.c ft_isascii_str.c ft_isunicode.c ft_isunicode_str.c ft_printf_tools.c \
 ft_intdup.c ft_intlst_issorted.c ft_lstadd_end.c ft_lstcpy.c ft_lstlen.c \
 ft_lstrotate.c ft_lstrotate_reverse.c ft_lstsort.c ft_lstsort_rev.c \
-ft_intlen.c ft_isdigit_str.c ft_lstlast.c ft_strjoin_multi.c ft_err.c
+ft_intlen.c ft_isdigit_str.c ft_lstlast.c ft_strjoin_multi.c ft_err.c \
+ft_putstr_right.c ft_putstr_left.c ft_putnbr_right.c ft_putstr_error.c
 
 
 OBJ=$(SRC:.c=.o)

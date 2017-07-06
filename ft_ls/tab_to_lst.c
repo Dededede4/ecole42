@@ -1,49 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lstFile.c                                          :+:      :+:    :+:   */
+/*   tab_to_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <mprevot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/25 18:17:52 by mprevot           #+#    #+#             */
-/*   Updated: 2014/12/05 11:20:02 by mprevot          ###   ########.fr       */
+/*   Created: 2014/12/03 13:32:29 by mprevot           #+#    #+#             */
+/*   Updated: 2014/12/05 11:15:17 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	lst_file_add_end(t_file *file, t_file *new_file)
-{
-	while (file->next)
-		file = file->next;
-	file->next = new_file;
-}
-
-void	lst_path_add_end(t_path *file, t_path *new_file)
-{
-	while (file->next)
-		file = file->next;
-	file->next = new_file;
-}
-
-size_t	lst_len(t_file *file)
+void	tab_to_lst(t_file **data, size_t len)
 {
 	size_t i;
 
 	i = 0;
-	while (file && ++i)
-		file = file->next;
-	return (i);
+	data[len - 1]->next = NULL;
+	while (i < len)
+	{
+		data[i]->next = data[i + 1];
+		i++;
+	}
 }
 
 
-
-size_t	lst_len_path(t_path *file)
+void	tab_to_lst_path(t_path **data, size_t len)
 {
 	size_t i;
 
 	i = 0;
-	while (file && ++i)
-		file = file->next;
-	return (i);
+	data[len - 1]->next = NULL;
+	while (i < len)
+	{
+		data[i]->next = data[i + 1];
+		i++;
+	}
 }
