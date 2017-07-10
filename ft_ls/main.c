@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 	params->paths = sort_lst_path(params->paths, tri_asc_ascii_path);
 	if (params->t)
 		params->paths = sort_lst_path(params->paths, tri_asc_time_path);
-	if (params->r && !params->R)
+	if (params->r && params->paths)
 		params->paths = sort_lst_revert_path(params->paths);
 
 	// Les fichiers avant puis les directory
@@ -51,9 +51,9 @@ int main(int argc, char **argv)
 		file = sort_lst(file, tri_asc_ascii);
 		if (params->t)
 			file = sort_lst(file, tri_asc_time);
-		if (params->r && !params->R)
+		if (params->r)
 			file = sort_lst_revert(file);
-		if (params->R)
+		if (params->R && !params->R)
 			recursive_long_display(current, file, params);
 		else
 		{

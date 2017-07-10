@@ -48,7 +48,7 @@ t_width		*calculate_cols(t_file *file)
 
 void	sort_display(t_path	*pcur, t_file *file, t_params *params)
 {
-	if (((file && file->next && params->R) || params->R || params->nbr_paths >= 2) && file->type == 'd')
+	if (((file && file->next && params->R) || params->R || params->nbr_paths >= 2) && isDirectory(pcur->path))
 	{
 		if (!(params->nbr_paths <= 1 && ft_strcmp(pcur->path, params->paths->path) == 0))
 
@@ -58,7 +58,6 @@ void	sort_display(t_path	*pcur, t_file *file, t_params *params)
 			ft_printf("%s:\n", pcur->path);
 		}
 	}
-
 	if (file->error)
 	{
 		ft_putstr_error(file->error);

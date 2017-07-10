@@ -18,17 +18,19 @@ void recursive_long_display(t_path *pcur, t_file *file, t_params *param)
 
 	if (!file)
 		return ;
+	if (param->r)
+		file = sort_lst_revert(file);
 	if (param->l)
 		long_display(pcur, file, param);
 	else
 		sort_display(pcur, file, param);
-	if (!file || !file->next)
-		return ;
-	file = file->next;
-	if (param->r)
-		file = sort_lst_revert(file);
 	while (file)
 	{
+		if (!file->name)
+		{
+			file = file->next;
+			continue;
+		}
 		if (!param->a && file->name[0] == '.')
 		{
 			file = file->next;
