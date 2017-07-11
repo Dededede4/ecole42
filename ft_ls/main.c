@@ -22,6 +22,8 @@ int main(int argc, char **argv)
 	t_file		*file;
 	t_path		*current;
 	t_bool		s;
+	int			leneff;
+	int			len;
 
 	errno = 0;
 	params = extractParams(argc, argv);
@@ -35,10 +37,12 @@ int main(int argc, char **argv)
 	// Les fichiers avant puis les directory
 	s = FALSE;
 	current = params->paths;
+	leneff = 0;
 	while (current)
 	{
 		if (isDirectory(current->path))
 		{
+			leneff++;
 			current = current->next;
 			continue;
 		}
@@ -47,6 +51,7 @@ int main(int argc, char **argv)
 			current = current->next;
 			continue;
 		}
+		len++;
 		s = TRUE;
 		file = sort_lst(file, tri_asc_ascii);
 		if (params->t)
@@ -58,14 +63,19 @@ int main(int argc, char **argv)
 		else
 		{
 			if (params->l)
+			{
 				long_display(current, file, params);
+			}
 			else
 				sort_display(current, file, params);
 		}
 		current = current->next;
 	}
-	if (s)
+	if (len && leneff > 0)
+	{
 		ft_putchar('\n');
+	}
+
 	current = params->paths;
 	while (current)
 	{

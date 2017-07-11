@@ -82,6 +82,15 @@ char *find_name_by_path(char *path)
 	return path;
 }
 
+char *find_folder_by_path(char *path)
+{
+	char *find;
+
+	if (ft_strchr(path, '/'))
+		return ft_strdup(path);
+	return ft_strdup(".");
+}
+
 int isDirectory(const char *path) {
    struct stat statbuf;
    if (stat(path, &statbuf) != 0)
@@ -114,7 +123,7 @@ t_file *findfiles(t_path *path)
 		{
 			file = ft_memalloc(sizeof(*file));
 			file->error = NULL;
-			file->dir = ft_strdup(path->path);
+			file->dir = find_folder_by_path(path->path);
 			file->name = ft_strdup(dirent->d_name);
 			file->path = ft_strjoin(file->dir, ft_strjoin("/", file->name));
 			set_right(file);
@@ -130,7 +139,7 @@ t_file *findfiles(t_path *path)
 	{
 		file = ft_memalloc(sizeof(*file));
 		file->error = NULL;
-		file->dir = ft_strdup(path->path);
+		file->dir = find_folder_by_path(path->path);
 		file->name = ft_strdup(find_name_by_path(path->path));
 		file->path = ft_strjoin(file->dir, ft_strjoin("/", file->name));
 		set_right(file);
