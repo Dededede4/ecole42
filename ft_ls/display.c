@@ -11,19 +11,18 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-t_width		*calculate_cols(t_file *file)
+t_width		*calculate_cols(t_file *file, t_params *params)
 {
 	t_width	*width;
 
-	width = malloc(sizeof(*width));
-	width->links = 0;
-	width->owner = 0;
-	width->group = 0;
-	width->bytes = 0;
-	width->minor = 0;
-	width->major = 0;
+	width = ft_memalloc(sizeof(*width));
 	while (file)
 	{
+		if (!params->a && file->name[0] == '.')
+		{
+			file = file->next;
+			continue;
+		}
 		if (width->links < (int)ft_intlen(file->links))
 			width->links = (int)ft_intlen(file->links);
 		if (width->owner < (int)ft_strlen(file->owner))
@@ -38,8 +37,8 @@ t_width		*calculate_cols(t_file *file)
 				width->major = (int)ft_intlen(file->major);
 			if (width->minor < (int)ft_intlen(file->minor))
 				width->minor = (int)ft_intlen(file->minor);
-			if (width->major + width->minor + 2 > width->bytes)
-				width->bytes = width->major + width->minor + 2;
+			if (width->major + width->minor > width->bytes)
+				width->bytes = width->major + width->minor;
 		}
 		file = file->next;
 	}
@@ -85,7 +84,10 @@ void	ll_total(t_file *file, t_params *params)
 	len = 0;
 	while(file)
 	{
-		total += file->blocks;
+		if (params->a)
+			total += file->blocks;
+		else if (file->name[0] != '.')
+			total += file->blocks;
 		file = file->next;
 		len++;
 	}
@@ -99,8 +101,16 @@ void	ll_file_datetime(const time_t *clock)
 	char	**split;
 
 	str = ctime(clock);
+
+	//printf("\n(%s)\n", str);
 	split = ft_strsplit(str, ' ');
-	ft_printf("%3s %2s %.5s", split[1], split[2], split[3]);
+	if (*clock > time(NULL) - (3600 * 24 * 30 * 6) && *clock <= time(NULL))
+		ft_printf("%3s %2s %.5s", split[1], split[2], split[3]);
+	else
+		if (ft_atoi(split[4]) >= 10000)
+			ft_printf("%3s %2s %6d", split[1], split[2], ft_atoi(split[4]));
+		else
+			ft_printf("%3s %2s %5d", split[1], split[2], ft_atoi(split[4]));
 }
 
 void    long_display(t_path	*pcur, t_file *file, t_params *params)
@@ -126,7 +136,7 @@ void    long_display(t_path	*pcur, t_file *file, t_params *params)
 		return ;
 	}
 	ll_total(file, params);
-	width = calculate_cols(file);
+	width = calculate_cols(file, params);
 	while (file)
 	{
 		if (!params->a && file->name[0] == '.')

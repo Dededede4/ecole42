@@ -40,8 +40,8 @@ void	get_right(t_file *file, struct stat fstat)
 	file->right[4] = (fstat.st_mode & S_IWGRP) ? 'w' : '-';
 	file->right[5] = (fstat.st_mode & S_IXGRP) ? 'x' : '-';
 	file->right[6] = (fstat.st_mode & S_IROTH) ? 'r' : '-';
-	file->right[7] = (fstat.st_mode & S_IXOTH) ? 'x' : '-';
-	file->right[8] = (fstat.st_mode & S_IWOTH) ? 'w' : '-';
+	file->right[7] = (fstat.st_mode & S_IWOTH) ? 'w' : '-';
+	file->right[8] = (fstat.st_mode & S_IXOTH) ? 'x' : '-';
 	file->right[9] = 0;
 }
 
