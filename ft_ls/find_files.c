@@ -45,6 +45,15 @@ void	get_right(t_file *file, struct stat fstat)
 	file->right[9] = 0;
 }
 
+char *find_name_by_path(char *path)
+{
+	char *find;
+
+	if ((find = ft_strrchr(path, '/')))
+		return find + 1;
+	return path;
+}
+
 void	set_right(t_file *file)
 {
 	struct stat		fstat;
@@ -71,22 +80,21 @@ void	set_right(t_file *file)
 		file->major = (file->type == 'c' || file->type == 'b') ? major(fstat.st_rdev) : 0;
 		file->minor = (file->type == 'c' || file->type == 'b') ? minor(fstat.st_rdev) : 0;
 	}
+	else
+	{
+		ft_err(ft_strjoin_multi(FALSE, "ls: ", find_name_by_path(file->path), ": No such file or directory\n", NULL));
+	}
 }
 
-char *find_name_by_path(char *path)
-{
-	char *find;
 
-	if ((find = ft_strrchr(path, '/')))
-		return find + 1;
-	return path;
-}
 
 char *find_folder_by_path(char *path)
 {
 	char *find;
 
 	if (ft_strchr(path, '/'))
+		return ft_strdup(path);
+	if (isDirectory(path))
 		return ft_strdup(path);
 	return ft_strdup(".");
 }

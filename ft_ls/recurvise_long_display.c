@@ -18,6 +18,8 @@ void recursive_long_display(t_path *pcur, t_file *file, t_params *param)
 
 	if (!file)
 		return ;
+	if (param->t)
+		file = sort_lst(file, tri_asc_time);
 	if (param->r)
 		file = sort_lst_revert(file);
 	if (param->l)
