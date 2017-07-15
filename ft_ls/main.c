@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 	s = FALSE;
 	current = params->paths;
 	leneff = 0;
+	len = 0;
 	while (current)
 	{
 		if (isDirectory(current->path))
@@ -105,5 +106,6 @@ int main(int argc, char **argv)
 		}
 		current = current->next;
 	}
+	exit(0);
 	return (0);
 }

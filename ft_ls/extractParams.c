@@ -58,12 +58,11 @@ t_params	*extractParams(int argc, char **argv)
 	{
 		if (argv[i][0] == '-' && ft_strlen(argv[i]) >= 2)
 		{
-			if (!(readLetters(argv[i], params)))
-				return (NULL);
+			readLetters(argv[i], params);
 		}
 		else
 		{
-			paths = malloc(sizeof(*paths));
+			paths = ft_memalloc(sizeof(*paths));
 			paths->path = argv[i];
 			paths->next = NULL;
 			params->nbr_paths++;
@@ -80,7 +79,7 @@ t_params	*extractParams(int argc, char **argv)
 	}
 	if (!params->paths)
 	{
-		paths = malloc(sizeof(*paths));
+		paths = ft_memalloc(sizeof(*paths));
 		paths->path = ".";
 		paths->next = NULL;
 		params->paths = paths;

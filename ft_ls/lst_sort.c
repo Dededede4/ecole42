@@ -31,12 +31,17 @@ t_file *sort_lst(t_file *f, int (*func)(void*, void*))
 {
 	size_t	len;
 	void	**data;
+	void	**first;
+	t_file	*r;
 
 	len = 0;
 	data = (void **)lst_to_tab(f, &len);
+	first = data;
 	bubblesort(data, func, len);
 	tab_to_lst((t_file **)data, len);
-	return data[0];
+	r = data[0];
+	ft_memdel((void**)&first);
+	return r;
 }
 
 
@@ -80,12 +85,17 @@ t_path *sort_lst_path(t_path *f, int (*func)(void*, void*))
 {
 	size_t	len;
 	void	**data;
+	void	**first;
+	t_path *r;
 
 	len = 0;
 	data = (void **)lst_to_tab_path(f, &len);
+	first = data;
 	bubblesort(data, func, len);
 	tab_to_lst_path((t_path **)data, len);
-	return data[0];
+	r = data[0];
+	ft_memdel((void **)&first);
+	return r;
 }
 
 

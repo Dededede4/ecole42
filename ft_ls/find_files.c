@@ -112,11 +112,9 @@ t_file *findfiles(t_path *path)
 	t_file			*file_tmp;
 	DIR				*dir;
 	struct dirent	*dirent;
-	struct stat		*stat;
 
 	if (isDirectory(path->path))
 	{
-		stat = malloc(sizeof(stat));
 		file_tmp = NULL;
 		if (!(dir = opendir(path->path)))
 		{
@@ -133,7 +131,7 @@ t_file *findfiles(t_path *path)
 			file->error = NULL;
 			file->dir = find_folder_by_path(path->path);
 			file->name = ft_strdup(dirent->d_name);
-			file->path = ft_strjoin(file->dir, ft_strjoin("/", file->name));
+			file->path = ft_strjoin_multi(TRUE, ft_strdup(file->dir), ft_strjoin("/", file->name), NULL);
 			set_right(file);
 			file->next = NULL;
 			if (!file_tmp)

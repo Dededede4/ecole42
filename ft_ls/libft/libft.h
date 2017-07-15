@@ -256,6 +256,7 @@ int						ft_intlen(int n);
 t_bool					ft_err(char *str);
 void					ft_putstr_left(char const *s, size_t place);
 void					ft_putstr_right(char const *s, size_t place);
+void	ft_putnbr_right(int nbr, size_t place);
 void   				ft_putnbr_right(int nbr, size_t place);
 void					ft_putstr_error(char *str);
 #endif

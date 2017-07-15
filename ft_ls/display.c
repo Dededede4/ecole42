@@ -147,7 +147,7 @@ void    long_display(t_path	*pcur, t_file *file, t_params *params)
 		ft_putchar(file->type);
 		ft_putstr(file->right);
 		ft_putstr("  ");
-		ft_putstr_right(ft_itoa(file->links), width->links);
+		ft_putnbr_right(file->links, width->links);
 		ft_putchar(' ');
 		ft_putstr_left(file->owner, width->owner);
 		ft_putstr("  ");
@@ -155,12 +155,12 @@ void    long_display(t_path	*pcur, t_file *file, t_params *params)
 		ft_putstr("  ");
 		if (file->type == 'c' || file->type == 'b')
 		{
-			ft_putstr_right(ft_itoa(file->major), width->major);
+			ft_putnbr_right(file->major, width->major);
 			ft_putstr(", ");
-			ft_putstr_right(ft_itoa(file->minor), width->minor);
+			ft_putnbr_right(file->minor, width->minor);
 		}
 		else
-			ft_putstr_right(ft_itoa(file->bytes), width->bytes);
+			ft_putnbr_right(file->bytes, width->bytes);
 		ft_putchar(' ');
 		ll_file_datetime(&file->mtime);
 		ft_putchar(' ');
