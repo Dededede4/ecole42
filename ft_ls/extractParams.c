@@ -12,6 +12,27 @@
 
 #include "ft_ls.h"
 
+t_bool 		checkLetter(char c, t_params *params)
+{
+	if (c == 'l')
+		params->l = TRUE;
+	else if (c == 'R')
+		params->R = TRUE;
+	else if (c == 'a')
+		params->a = TRUE;
+	else if (c == 'r')
+		params->r = TRUE;
+	else if (c == 't')
+		params->t = TRUE;
+	else if (c == 's')
+		params->s = TRUE;
+	else if (c == '1')
+		;
+	else
+		return (FALSE);
+	return (TRUE);
+}
+
 t_params	*readLetters(char *chars, t_params *params)
 {
 	while (*chars)
@@ -20,21 +41,7 @@ t_params	*readLetters(char *chars, t_params *params)
 			return (params);
 		if (*chars == '-')
 			chars++;
-		if (*chars == 'l')
-			params->l = TRUE;
-		else if (*chars == 'R')
-			params->R = TRUE;
-		else if (*chars == 'a')
-			params->a = TRUE;
-		else if (*chars == 'r')
-			params->r = TRUE;
-		else if (*chars == 't')
-			params->t = TRUE;
-		else if (*chars == 's')
-			params->s = TRUE;
-		else if (*chars == '1')
-			;
-		else
+		if (!checkLetter(*chars, params))
 		{
 			*(chars + 1) = 0;
 			ft_putstr_error(ft_strjoin("ls: illegal option -- ", chars));
@@ -44,6 +51,18 @@ t_params	*readLetters(char *chars, t_params *params)
 		chars++;
 	}
 	return (params);
+}
+
+void extractParams_1(char *path, t_path *paths, t_params *params)
+{
+	paths = ft_memalloc(sizeof(*paths));
+	paths->path = path;
+	paths->next = NULL;
+	params->nbr_paths++;
+	if (params->paths)
+		lst_path_add_end(params->paths, paths);
+	else
+		params->paths = paths;
 }
 
 t_params	*extractParams(int argc, char **argv)
@@ -57,24 +76,9 @@ t_params	*extractParams(int argc, char **argv)
 	while (i < argc)
 	{
 		if (argv[i][0] == '-' && ft_strlen(argv[i]) >= 2)
-		{
 			readLetters(argv[i], params);
-		}
 		else
-		{
-			paths = ft_memalloc(sizeof(*paths));
-			paths->path = argv[i];
-			paths->next = NULL;
-			params->nbr_paths++;
-			if (params->paths)
-			{
-				lst_path_add_end(params->paths, paths);
-			}
-			else
-			{
-				params->paths = paths;
-			}	
-		}
+			extractParams_1(argv[i], paths, params);
 		i++;
 	}
 	if (!params->paths)
