@@ -91,7 +91,7 @@ void		bubblesort(void **data, int (*f)(void *, void *), size_t len);
 size_t		lst_len(t_file *file);
 t_file		**lst_to_tab(t_file *file, size_t *i);
 void		tab_to_lst(t_file **data, size_t i);
-void recursive_long_display(t_path *pcur, t_file *file, t_params *param);
+t_file *recursive_long_display(t_path *pcur, t_file *file, t_params *param);
 t_file *sort_lst(t_file *f, int (*func)(void*, void*));
 int		tri_asc_size(void *f1, void *f2);
 int		tri_asc_time(void *f1, void *f2);
