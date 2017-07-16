@@ -71,19 +71,15 @@ void	set_right(t_file *file)
 		file->mtime = fstat.st_mtime;
 		file->lststatchg = fstat.st_ctimespec;
 		file->blocks = fstat.st_blocks;
-		pw = getpwuid(fstat.st_uid);
-		gr = getgrgid(fstat.st_gid);
-		if (pw)
+		if ((pw = getpwuid(fstat.st_uid)))
 			file->owner = pw->pw_name;
-		if (gr)
+		if ((gr = getgrgid(fstat.st_gid)))
 			file->group = gr->gr_name;
 		file->major = (file->type == 'c' || file->type == 'b') ? major(fstat.st_rdev) : 0;
 		file->minor = (file->type == 'c' || file->type == 'b') ? minor(fstat.st_rdev) : 0;
 	}
 	else
-	{
 		ft_err(ft_strjoin_multi(FALSE, "ls: ", find_name_by_path(file->path), ": No such file or directory\n", NULL));
-	}
 }
 
 
@@ -106,51 +102,64 @@ int isDirectory(const char *path) {
    return S_ISDIR(statbuf.st_mode);
 }
 
-t_file *findfiles(t_path *path)
+t_file *findfiles_dir_while(t_path *path, struct dirent *dirent)
+{
+	t_file	*file;
+
+	file = ft_memalloc(sizeof(*file));
+	file->error = NULL;
+	file->dir = find_folder_by_path(path->path);
+	file->name = ft_strdup(dirent->d_name);
+	file->path = ft_strjoin_multi(TRUE, ft_strdup(file->dir), ft_strjoin("/", file->name), NULL);
+	set_right(file);
+	file->next = NULL;
+	return (file);
+}
+
+t_file *findfiles_dir(t_path *path)
 {
 	t_file			*file;
 	t_file			*file_tmp;
 	DIR				*dir;
 	struct dirent	*dirent;
 
-	if (isDirectory(path->path))
-	{
-		file_tmp = NULL;
-		if (!(dir = opendir(path->path)))
-		{
-			file = ft_memalloc(sizeof(*file));
-			file->next = NULL;
-			file->dir = ft_strdup(path->path);
-			file->type = 'd';
-			file->error = ft_strjoin_multi(FALSE, "ls: ", find_name_by_path(path->path), ": ", strerror(errno), "\n", NULL);
-			return (file);
-		}
-		while ((dirent = readdir(dir)))
-		{
-			file = ft_memalloc(sizeof(*file));
-			file->error = NULL;
-			file->dir = find_folder_by_path(path->path);
-			file->name = ft_strdup(dirent->d_name);
-			file->path = ft_strjoin_multi(TRUE, ft_strdup(file->dir), ft_strjoin("/", file->name), NULL);
-			set_right(file);
-			file->next = NULL;
-			if (!file_tmp)
-				file_tmp = file;
-			else
-				lst_file_add_end(file_tmp, file);
-		}
-		closedir(dir);
-	}
-	else
+	file_tmp = NULL;
+	if (!(dir = opendir(path->path)))
 	{
 		file = ft_memalloc(sizeof(*file));
-		file->error = NULL;
-		file->dir = find_folder_by_path(path->path);
-		file->name = ft_strdup(find_name_by_path(path->path));
-		file->path = ft_strjoin(file->dir, ft_strjoin("/", file->name));
-		set_right(file);
 		file->next = NULL;
+		file->dir = ft_strdup(path->path);
+		file->type = 'd';
+		file->error = ft_strjoin_multi(FALSE, "ls: ", find_name_by_path(path->path), ": ", strerror(errno), "\n", NULL);
 		return (file);
 	}
+	while ((dirent = readdir(dir)))
+	{
+		file = findfiles_dir_while(path, dirent);
+		if (!file_tmp)
+			file_tmp = file;
+		else
+			lst_file_add_end(file_tmp, file);
+	}
+	closedir(dir);
 	return (file_tmp);
+}
+
+t_file *findfiles_nodir(t_path *path)
+{
+	t_file			*file;
+
+	file = ft_memalloc(sizeof(*file));
+	file->error = NULL;
+	file->dir = find_folder_by_path(path->path);
+	file->name = ft_strdup(find_name_by_path(path->path));
+	file->path = ft_strjoin(file->dir, ft_strjoin("/", file->name));
+	set_right(file);
+	file->next = NULL;
+	return (file);
+}
+
+t_file *findfiles(t_path *path)
+{
+	return ((isDirectory(path->path)) ? findfiles_dir(path) : findfiles_nodir(path));
 }
