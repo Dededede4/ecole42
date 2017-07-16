@@ -11,101 +11,71 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-// Pour errno
 #include <errno.h>
 
-#include <stdio.h> // pd
-
-int main(int argc, char **argv)
+int		main_onwhile(t_bool after, t_path *current, t_params *params)
 {
-	t_params	*params;
 	t_file		*file;
+
+	if ((after && !isDirectory(current->path)) ||
+		(!after && isDirectory(current->path)))
+		return 1;
+	if (!(file = findfiles(current)))
+		return 0;
+	file = sort_lst(file, tri_asc_ascii);
+	if (params->t)
+		file = sort_lst(file, tri_asc_time);
+	if (params->r && !params->R)
+		file = sort_lst_revert(file);
+	if (params->R && after)
+		recursive_long_display(current, file, params);
+	else
+	{
+		if (params->l)
+			long_display(current, file, params);
+		else
+			sort_display(current, file, params);
+	}
+	return (0);
+}
+
+void	main_print(t_params *params)
+{
 	t_path		*current;
-	t_bool		s;
 	int			leneff;
 	int			len;
 
-	errno = 0;
-	params = extractParams(argc, argv);
-
-	params->paths = sort_lst_path(params->paths, tri_asc_ascii_path);
-	if (params->t)
-		params->paths = sort_lst_path(params->paths, tri_asc_time_path);
-	if (params->r && params->paths)
-		params->paths = sort_lst_revert_path(params->paths);
-
-	// Les fichiers avant puis les directory
-	s = FALSE;
 	current = params->paths;
 	leneff = 0;
 	len = 0;
 	while (current)
 	{
-		if (isDirectory(current->path))
-		{
-			leneff++;
-			current = current->next;
-			continue;
-		}
-		if (!(file = findfiles(current)))
-		{
-			current = current->next;
-			continue;
-		}
+		leneff += main_onwhile(FALSE, current, params);
 		len++;
-		s = TRUE;
-		file = sort_lst(file, tri_asc_ascii);
-		if (params->t)
-			file = sort_lst(file, tri_asc_time);
-		if (params->r)
-			file = sort_lst_revert(file);
-		if (params->R && !params->R)
-			recursive_long_display(current, file, params);
-		else
-		{
-			if (params->l)
-			{
-				long_display(current, file, params);
-			}
-			else
-				sort_display(current, file, params);
-		}
 		current = current->next;
 	}
-	if (len && leneff > 0)
-	{
+	if (len > leneff && leneff)
 		ft_putchar('\n');
-	}
-
 	current = params->paths;
 	while (current)
 	{
-		if (!isDirectory(current->path))
-		{
-			current = current->next;
-			continue;
-		}
-		if (!(file = findfiles(current)))
-		{
-			current = current->next;
-			continue;
-		}
-		file = sort_lst(file, tri_asc_ascii);
-		if (params->t)
-			file = sort_lst(file, tri_asc_time);
-		if (params->r && !params->R)
-			file = sort_lst_revert(file);
-		if (params->R)
-			recursive_long_display(current, file, params);
-		else
-		{
-			if (params->l)
-				long_display(current, file, params);
-			else
-				sort_display(current, file, params);
-		}
+		main_onwhile(TRUE, current, params);
 		current = current->next;
 	}
+}
+
+int main(int argc, char **argv)
+{
+	t_params	*params;
+	t_file		*file;
+
+	errno = 0;
+	params = extractParams(argc, argv);
+	params->paths = sort_lst_path(params->paths, tri_asc_ascii_path);
+	if (params->t)
+		params->paths = sort_lst_path(params->paths, tri_asc_time_path);
+	if (params->r && params->paths)
+		params->paths = sort_lst_revert_path(params->paths);
+	main_print(params);
 	exit(0);
-	return (0);
 }
