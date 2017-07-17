@@ -67,7 +67,6 @@ void	main_print(t_params *params)
 int		main(int argc, char **argv)
 {
 	t_params	*params;
-	t_file		*file;
 
 	errno = 0;
 	params = extractparams(argc, argv);

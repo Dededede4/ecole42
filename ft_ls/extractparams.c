@@ -73,6 +73,7 @@ t_params	*extractparams(int argc, char **argv)
 
 	i = 1;
 	params = ft_memalloc(sizeof(*params));
+	paths = NULL;
 	while (i < argc)
 	{
 		if (argv[i][0] == '-' && ft_strlen(argv[i]) >= 2)

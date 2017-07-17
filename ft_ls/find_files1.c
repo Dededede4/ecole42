@@ -84,8 +84,6 @@ void	set_right(t_file *file)
 
 char	*find_folder_by_path(char *path)
 {
-	char *find;
-
 	if (ft_strchr(path, '/'))
 		return (ft_strdup(path));
 	if (isdirectory(path))

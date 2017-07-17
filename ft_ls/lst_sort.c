@@ -34,6 +34,7 @@ time_t	get_time(char *path)
 	struct stat		fstat;
 	time_t			null;
 
+	null = 0;
 	if (lstat(path, &fstat) >= 0)
 		return (fstat.st_mtimespec.tv_sec);
 	ft_err("error\n");
