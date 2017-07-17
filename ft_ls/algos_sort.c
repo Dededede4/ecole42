@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void bubblesort(void **data, int (*f)(void *, void *), size_t len)
+void		bubblesort(void **data, int (*f)(void *, void *), size_t len)
 {
 	size_t	i;
 	void	*tmp;

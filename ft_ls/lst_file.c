@@ -36,8 +36,6 @@ size_t	lst_len(t_file *file)
 	return (i);
 }
 
-
-
 size_t	lst_len_path(t_path *file)
 {
 	size_t i;

@@ -24,10 +24,6 @@
 # include <time.h>
 # include <stdio.h>
 
-
-# define ft_major(dev) ((int)(((unsigned int) (dev) >> 8) & 0xff))
-# define ft_minor(dev) ((int)((dev) & 0xff))
-
 typedef	struct		s_file
 {
 	char			right[10];
@@ -52,11 +48,11 @@ typedef	struct		s_file
 	struct s_file	*next;
 }					t_file;
 
-typedef struct      s_path
+typedef struct		s_path
 {
-	char            *path;
-	struct s_path   *next;
-}                   t_path;
+	char			*path;
+	struct s_path	*next;
+}					t_path;
 
 typedef struct		s_width
 {
@@ -68,10 +64,10 @@ typedef struct		s_width
 	int				major;
 }					t_width;
 
-typedef struct      s_params
+typedef struct		s_params
 {
 	t_bool			l;
-	t_bool			R;
+	t_bool			rr;
 	t_bool			a;
 	t_bool			r;
 	t_bool			t;
@@ -80,30 +76,56 @@ typedef struct      s_params
 	struct s_path	*paths;
 }					t_params;
 
-void		lst_file_add_end(t_file *file, t_file *new_file);
-void		lst_path_add_end(t_path *file, t_path *new_file);
-t_params	*extractParams(int argc, char **argv);
-t_file		*findfiles(t_path *path);
-void	sort_display(t_path	*pcur, t_file *file, t_params *params);
-void    long_display(t_path	*pcur, t_file *file, t_params *params);
-char    	*get_date(const time_t *clock);
-void		bubblesort(void **data, int (*f)(void *, void *), size_t len);
-size_t		lst_len(t_file *file);
-t_file		**lst_to_tab(t_file *file, size_t *i);
-void		tab_to_lst(t_file **data, size_t i);
-t_file *recursive_long_display(t_path *pcur, t_file *file, t_params *param);
-t_file *sort_lst(t_file *f, int (*func)(void*, void*));
-int		tri_asc_size(void *f1, void *f2);
-int		tri_asc_time(void *f1, void *f2);
-int		tri_asc_ascii(void *f1, void *f2);
-t_file 	*sort_lst_revert(t_file *f);
-void	tab_to_lst_path(t_path **data, size_t len);
-t_path **lst_to_tab_path(t_path *file, size_t *i);
-t_path *sort_lst_path(t_path *f, int (*func)(void*, void*));
-int		tri_asc_ascii_path(void *f1, void *f2);
-size_t	lst_len_path(t_path *file);
-int		tri_asc_size_path(void *f1, void *f2);
-int		tri_asc_time_path(void *f1, void *f2);
-t_path 	*sort_lst_revert_path(t_path *f);
-int isDirectory(const char *path);
+void				lst_file_add_end(t_file *file, t_file *new_file);
+void				lst_path_add_end(t_path *file, t_path *new_file);
+t_params			*extractparams(int argc, char **argv);
+t_file				*findfiles(t_path *path);
+void				sort_display(t_path	*pcur, t_file *file, t_params *params);
+void				long_display(t_path	*pcur, t_file *file, t_params *params);
+char				*get_date(const time_t *clock);
+void				bubblesort(
+	void **data, int (*f)(void *, void *), size_t len);
+size_t				lst_len(t_file *file);
+t_file				**lst_to_tab(t_file *file, size_t *i);
+void				tab_to_lst(t_file **data, size_t i);
+t_file				*recursive_long_display(
+	t_path *pcur, t_file *file, t_params *param);
+t_file				*sort_lst(t_file *f, int (*func)(void*, void*));
+int					tri_asc_size(void *f1, void *f2);
+int					tri_asc_time(void *f1, void *f2);
+int					tri_asc_ascii(void *f1, void *f2);
+t_file				*sort_lst_revert(t_file *f);
+void				tab_to_lst_path(t_path **data, size_t len);
+t_path				**lst_to_tab_path(t_path *file, size_t *i);
+t_path				*sort_lst_path(t_path *f, int (*func)(void*, void*));
+int					tri_asc_ascii_path(void *f1, void *f2);
+size_t				lst_len_path(t_path *file);
+int					tri_asc_size_path(void *f1, void *f2);
+int					tri_asc_time_path(void *f1, void *f2);
+t_path				*sort_lst_revert_path(t_path *f);
+int					isdirectory(const char *path);
+void				set_width(t_width *width, t_file *file);
+t_width				*calculate_cols(t_file *file, t_params *params);
+void				sort_display(t_path *pcur, t_file *file, t_params *params);
+void				ll_total(t_file *file, t_params *params);
+void				long_display_1(
+	t_path *pcur, t_file *file, t_params *params);
+void				long_display_while_1(t_file *file, t_width *width);
+void				long_display_while_2(t_file *file, t_width *width);
+void				long_display_while_3(t_file *file);
+char				type_to_char(mode_t c);
+void				get_right(t_file *file, struct stat fstat);
+char				*find_name_by_path(char *path);
+void				set_right(t_file *file);
+char				*find_folder_by_path(char *path);
+t_file				*sort_lst_revert(t_file *f);
+t_path				*sort_lst_revert_path(t_path *f);
+int					tri_asc_size_path(void *f1, void *f2);
+int					tri_asc_time_path(void *f1, void *f2);
+int					tri_asc_ascii_path(void *f1, void *f2);
+int					tri_asc_size(void *f1, void *f2);
+int					tri_asc_time(void *f1, void *f2);
+int					tri_asc_ascii(void *f1, void *f2);
+int					get_bytes(char *path);
+time_t				get_time(char *path);
 #endif

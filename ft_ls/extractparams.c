@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extractParams.c                                    :+:      :+:    :+:   */
+/*   extractparams.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <mprevot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,12 +12,12 @@
 
 #include "ft_ls.h"
 
-t_bool 		checkLetter(char c, t_params *params)
+t_bool		checkletter(char c, t_params *params)
 {
 	if (c == 'l')
 		params->l = TRUE;
 	else if (c == 'R')
-		params->R = TRUE;
+		params->rr = TRUE;
 	else if (c == 'a')
 		params->a = TRUE;
 	else if (c == 'r')
@@ -33,7 +33,7 @@ t_bool 		checkLetter(char c, t_params *params)
 	return (TRUE);
 }
 
-t_params	*readLetters(char *chars, t_params *params)
+t_params	*readletters(char *chars, t_params *params)
 {
 	while (*chars)
 	{
@@ -41,7 +41,7 @@ t_params	*readLetters(char *chars, t_params *params)
 			return (params);
 		if (*chars == '-')
 			chars++;
-		if (!checkLetter(*chars, params))
+		if (!checkletter(*chars, params))
 		{
 			*(chars + 1) = 0;
 			ft_putstr_error(ft_strjoin("ls: illegal option -- ", chars));
@@ -53,7 +53,7 @@ t_params	*readLetters(char *chars, t_params *params)
 	return (params);
 }
 
-void extractParams_1(char *path, t_path *paths, t_params *params)
+void		extractparams_1(char *path, t_path *paths, t_params *params)
 {
 	paths = ft_memalloc(sizeof(*paths));
 	paths->path = path;
@@ -65,20 +65,20 @@ void extractParams_1(char *path, t_path *paths, t_params *params)
 		params->paths = paths;
 }
 
-t_params	*extractParams(int argc, char **argv)
+t_params	*extractparams(int argc, char **argv)
 {
 	t_params	*params;
 	t_path		*paths;
-	int 		i;
+	int			i;
 
 	i = 1;
 	params = ft_memalloc(sizeof(*params));
 	while (i < argc)
 	{
 		if (argv[i][0] == '-' && ft_strlen(argv[i]) >= 2)
-			readLetters(argv[i], params);
+			readletters(argv[i], params);
 		else
-			extractParams_1(argv[i], paths, params);
+			extractparams_1(argv[i], paths, params);
 		i++;
 	}
 	if (!params->paths)

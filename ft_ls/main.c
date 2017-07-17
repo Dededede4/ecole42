@@ -17,17 +17,17 @@ int		main_onwhile(t_bool after, t_path *current, t_params *params)
 {
 	t_file		*file;
 
-	if ((after && !isDirectory(current->path)) ||
-		(!after && isDirectory(current->path)))
-		return 1;
+	if ((after && !isdirectory(current->path)) ||
+		(!after && isdirectory(current->path)))
+		return (1);
 	if (!(file = findfiles(current)))
-		return 0;
+		return (0);
 	file = sort_lst(file, tri_asc_ascii);
 	if (params->t)
 		file = sort_lst(file, tri_asc_time);
-	if (params->r && !params->R)
+	if (params->r && !params->rr)
 		file = sort_lst_revert(file);
-	if (params->R && after)
+	if (params->rr && after)
 		recursive_long_display(current, file, params);
 	else
 	{
@@ -64,13 +64,13 @@ void	main_print(t_params *params)
 	}
 }
 
-int main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_params	*params;
 	t_file		*file;
 
 	errno = 0;
-	params = extractParams(argc, argv);
+	params = extractparams(argc, argv);
 	params->paths = sort_lst_path(params->paths, tri_asc_ascii_path);
 	if (params->t)
 		params->paths = sort_lst_path(params->paths, tri_asc_time_path);

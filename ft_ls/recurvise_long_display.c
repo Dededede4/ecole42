@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void free_tfile(t_file **file)
+void	free_tfile(t_file **file)
 {
 	t_file	*current;
 	t_file	*next;
@@ -33,16 +33,17 @@ void free_tfile(t_file **file)
 	}
 }
 
-void recursive_long_display_while(t_file *file, t_params *param)
+void	recursive_long_display_while(t_file *file, t_params *param)
 {
 	t_file	*f;
-	t_path tmp_path;
+	t_path	tmp_path;
 
 	if (!file->name)
 		return ;
 	if (!param->a && file->name[0] == '.')
 		return ;
-	if (file->type == 'd' && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+	if (file->type == 'd' &&
+		ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 	{
 		tmp_path.path = file->path;
 		tmp_path.next = NULL;
@@ -51,12 +52,12 @@ void recursive_long_display_while(t_file *file, t_params *param)
 	}
 }
 
-t_file *recursive_long_display(t_path *pcur, t_file *file, t_params *param)
+t_file	*recursive_long_display(t_path *pcur, t_file *file, t_params *param)
 {
 	t_file	*first;
 
 	if (!file)
-		return NULL;
+		return (NULL);
 	if (param->t)
 		file = sort_lst(file, tri_asc_time);
 	if (param->r)
@@ -71,5 +72,5 @@ t_file *recursive_long_display(t_path *pcur, t_file *file, t_params *param)
 		recursive_long_display_while(file, param);
 		file = file->next;
 	}
-	return first;
+	return (first);
 }

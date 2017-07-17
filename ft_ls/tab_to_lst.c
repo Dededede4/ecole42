@@ -14,7 +14,7 @@
 
 void	tab_to_lst(t_file **data, size_t len)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	data[len - 1]->next = NULL;
@@ -25,10 +25,9 @@ void	tab_to_lst(t_file **data, size_t len)
 	}
 }
 
-
 void	tab_to_lst_path(t_path **data, size_t len)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	data[len - 1]->next = NULL;

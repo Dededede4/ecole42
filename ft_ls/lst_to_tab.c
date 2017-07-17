@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-t_file **lst_to_tab(t_file *file, size_t *i)
+t_file		**lst_to_tab(t_file *file, size_t *i)
 {
 	t_file	**tab;
 	size_t	j;
@@ -30,8 +30,7 @@ t_file **lst_to_tab(t_file *file, size_t *i)
 	return (tab);
 }
 
-
-t_path **lst_to_tab_path(t_path *file, size_t *i)
+t_path		**lst_to_tab_path(t_path *file, size_t *i)
 {
 	t_path	**tab;
 	size_t	j;
