@@ -55,7 +55,7 @@ t_unicode			*ft_wstrdup(const unsigned char *str, size_t len)
 {
 	t_unicode		*r;
 
-	if (!(r = malloc((len + 1) * sizeof(t_unicode))))
+	if (!(r = ft_memalloc((len + 1) * sizeof(t_unicode))))
 		return (NULL);
 	r[len] = '\0';
 	while (len--)

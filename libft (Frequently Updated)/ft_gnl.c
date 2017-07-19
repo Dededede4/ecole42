@@ -3,89 +3,142 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: gnebie <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/18 15:38:32 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/22 13:02:46 by mprevot          ###   ########.fr       */
+/*   Created: 2016/11/21 13:47:58 by gnebie            #+#    #+#             */
+/*   Updated: 2017/03/24 16:17:17 by gnebie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_buff				*ft_get_buff(int fd)
-{
-	static t_buff	*firstbuff;
-	t_buff			*buff;
-	t_buff			*last;
+/*
+** 1 regarde si dans le tampon il y a une /n
+** 		si oui renvoie la partie de la ligne avec \n et stoque un pointeur de
+** l'endroit d'arret puis fin de la fonction.
+** 2 si non lit la premiere boucle colle le resultat avec le tampon(s'il y a)
+** free le tampon
+**		puis regarde dans la boucle si il y a un \n
+**		si oui, renvoie la partie de la ligne avec un \n et stoque l'endroit ou
+** il s'est arreter puis fin de la fonction.
+**		la string devient le tampon
+*/
 
-	buff = firstbuff;
-	while (buff)
+int			memfind(void *str, size_t len)
+{
+	size_t		i;
+
+	i = 0;
+	if (len != 0 && (((char *)str)[i] == '\n' || ((char *)str)[i] == 26))
+		i++;
+	while (i < len && ((char *)str)[i] != '\n' && ((char *)str)[i] != 26)
 	{
-		if (buff->fd == fd)
-			return (buff);
-		last = buff;
-		buff = buff->next;
+		if (((char *)str)[i] == '\n' || ((char *)str)[i] == 26)
+			break ;
+		i++;
 	}
-	if (!(buff = (t_buff *)malloc(sizeof(t_buff))))
-		return (NULL);
-	buff->fd = fd;
-	buff->ended = 0;
-	if (!(buff->content = ft_strnew(0)))
-		return (NULL);
-	buff->content_start = buff->content;
-	buff->next = NULL;
-	if (!firstbuff)
-		firstbuff = buff;
-	else
-		last->next = buff;
-	return (buff);
+	if (i == len)
+		return (0);
+	return (i);
 }
 
-char				*ft_find_line(t_buff *buff)
+int			verif(char **line, void *string, int len, t_fd *mail)
 {
-	char			*rest;
-	char			*tmp;
-	int				l;
+	int		i;
+	int		j;
+	void	*tampon;
 
-	if (!(rest = ft_strchr(buff->content, '\n')))
+	i = 0;
+	j = 0;
+	while (((char *)string)[i] != '\n' && ((char *)string)[i] != 26 && i < len)
+		i++;
+	if (!(*line = ft_memalloc(sizeof(char) * i + 1)))
+		return (-1);
+	while (i > j)
 	{
-		tmp = ft_strnew(BUFF_SIZE);
-		if ((l = read(buff->fd, tmp, BUFF_SIZE)) > 0)
-		{
-			buff->content = ft_strjoin(buff->content, tmp);
-			free(buff->content_start);
-			buff->content_start = buff->content;
-			free(tmp);
-			return (ft_find_line(buff));
-		}
-		free(tmp);
-		if (l == 0 && (buff->ended = 1))
-			return (buff->content);
-		return (NULL);
+		line[0][j] = ((char *)string)[j];
+		j++;
 	}
-	*rest = '\0';
-	tmp = buff->content;
-	buff->content = ++rest;
-	return (ft_strdup(tmp));
-}
-
-int					ft_gnl(const int fd, char **line)
-{
-	t_buff			*buff;
-
-	if (fd < 0 || line == NULL)
+	if (!(tampon = ft_memalloc(len - j + 1)))
 		return (-1);
-	buff = ft_get_buff(fd);
-	if (!buff)
-	{
-		return (-1);
-	}
-	if (buff->ended)
-		return (0);
-	*line = ft_find_line(buff);
-	if (*line == NULL)
-		return (-1);
-	if (buff->ended && **line == '\0')
-		return (0);
+	if (((char *)string)[j] == '\n' || ((char *)string)[j] == 26)
+		j++;
+	mail->lastbuff = 0;
+	while (j < len)
+		((char *)tampon)[mail->lastbuff++] = ((char *)string)[j++];
+	mail->tampon = tampon;
+	free(string);
 	return (1);
+}
+
+int			concat(t_fd *mail, void **buff, int *j)
+{
+	void	*tmp;
+	int		i;
+
+	i = *j;
+	if (!(tmp = ft_memalloc(sizeof(char) * mail->lastbuff + i + 1)))
+		return (-1);
+	if (mail->tampon)
+	{
+		ft_memcpy(tmp, mail->tampon, mail->lastbuff + 1);
+		free(mail->tampon);
+	}
+	ft_memcpy(&tmp[mail->lastbuff], buff[0], i + 1);
+	mail->lastbuff = mail->lastbuff + i;
+	mail->tampon = tmp;
+	return (0);
+}
+
+int			read_my_line(t_fd *mail, char **line)
+{
+	int		i;
+	void	*buff;
+
+	if (memfind(mail->tampon, mail->lastbuff) > 0)
+		return (verif(line, mail->tampon, mail->lastbuff, mail));
+	i = BUFF_SIZE;
+	if (!(buff = ft_memalloc(sizeof(char) * BUFF_SIZE + 1)))
+		return (-1);
+	while (i == BUFF_SIZE)
+	{
+		if ((i = read(mail->fd_n, buff, BUFF_SIZE)) < 1 && mail->lastbuff == 0)
+			break ;
+		if (concat(mail, &buff, &i) == -1)
+			return (-1);
+		if (i != BUFF_SIZE || memfind(mail->tampon, mail->lastbuff) > 0)
+		{
+			free(buff);
+			return (verif(line, mail->tampon, mail->lastbuff, mail));
+		}
+	}
+	free(buff);
+	return (0);
+}
+
+int			ft_gnl(const int fd, char **line)
+{
+	static t_fd		*begin = NULL;
+	t_fd			*list;
+	t_fd			*mail;
+
+	if (fd < 0 || !line || (line[0] = NULL) != NULL || read(fd, *line, 0) == -1)
+		return (-1);
+	list = begin;
+	while (list && list->next && list->fd_n != fd)
+		list = list->next;
+	if (!list || list->fd_n != fd)
+	{
+		mail = malloc(sizeof(t_fd));
+		mail->next = NULL;
+		mail->tampon = NULL;
+		mail->fd_n = fd;
+		mail->lastbuff = 0;
+		if (!begin)
+			begin = mail;
+		else
+			list->next = mail;
+		return (read_my_line(mail, line));
+	}
+	return (read_my_line(list, line));
 }

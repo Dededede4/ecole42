@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s)
+char		*ft_strtrim(char const *s)
 {
 	size_t	d;
 	size_t	f;
@@ -28,4 +28,13 @@ char	*ft_strtrim(char const *s)
 	while (s[f] == ' ' || s[f] == '\t' || s[f] == '\n')
 		f--;
 	return (ft_strsub(s, d, f - d + 1));
+}
+
+char		*ft_strtrim_free(char **str)
+{
+	char	*tmp;
+
+	tmp = ft_strtrim(*str);
+	ft_memdel((void**)str);
+	return (tmp);
 }

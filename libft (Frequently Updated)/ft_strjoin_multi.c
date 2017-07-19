@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin_multi.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/14 16:17:53 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/01 14:13:09 by mprevot          ###   ########.fr       */
+/*   Created: 2017/02/17 14:38:27 by mprevot           #+#    #+#             */
+/*   Updated: 2017/02/17 14:38:30 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strjoin_multi(t_bool autofree, ...)
 {
-	char	*s2;
-	int		len;
+	va_list			ap;
+	char			*str;
+	char			*strfree_arg;
+	char			*strfree;
 
-	len = ft_strlen(s1) + 1;
-	s2 = ft_memalloc((sizeof(*s2) * len));
-	if (!s2)
-		return (NULL);
-	ft_memcpy(s2, s1, len);
-	return (s2);
+	va_start(ap, autofree);
+	str = NULL;
+	while ((strfree_arg = va_arg(ap, char *)))
+	{
+		strfree = str;
+		str = ft_strjoin(str, strfree_arg);
+		free(strfree);
+		if (autofree)
+			free(strfree_arg);
+	}
+	va_end(ap);
+	return (str);
 }

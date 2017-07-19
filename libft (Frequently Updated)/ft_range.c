@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
 int		*ft_range(int min, int max)
 {
@@ -20,7 +20,7 @@ int		*ft_range(int min, int max)
 	i = 0;
 	if (min >= max)
 		return (NULL);
-	tab = malloc(sizeof(int) * (max - min));
+	tab = ft_memalloc(sizeof(int) * (max - min));
 	while (min + i < max)
 	{
 		tab[i] = min + i;

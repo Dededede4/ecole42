@@ -6,7 +6,7 @@
 #    By: mprevot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/01 11:18:53 by mprevot           #+#    #+#              #
-#    Updated: 2016/12/02 17:57:54 by mprevot          ###   ########.fr        #
+#    Updated: 2017/02/24 17:54:48 by mprevot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME=libft.a
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -Werror
+CFLAGS=-g -Wall -Wextra -Werror
 
 RM=rm -f
 
@@ -37,7 +37,9 @@ ft_intcpy.c ft_unicodedup.c ft_unicodelen.c ft_printf_execarg0.c ft_printf_putnb
 ft_printf_execarg1.c ft_printf_execarg2.c ft_printf_putnbr_signed_args.c ft_printf_putnbr_unsigned_args.c \
 ft_printf_putstr_args.c ft_isascii_str.c ft_isunicode.c ft_isunicode_str.c ft_printf_tools.c \
 ft_intdup.c ft_intlst_issorted.c ft_lstadd_end.c ft_lstcpy.c ft_lstlen.c \
-ft_lstrotate.c ft_lstrotate_reverse.c ft_lstsort.c ft_lstsort_rev.c
+ft_lstrotate.c ft_lstrotate_reverse.c ft_lstsort.c ft_lstsort_rev.c \
+ft_intlen.c ft_isdigit_str.c ft_lstlast.c ft_strjoin_multi.c ft_err.c \
+ft_putstr_right.c ft_putstr_left.c ft_putnbr_right.c ft_putstr_error.c
 
 
 OBJ=$(SRC:.c=.o)
@@ -45,17 +47,24 @@ OBJ=$(SRC:.c=.o)
 all: $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	@(echo "\033[32m Librairie :[ \033[31m\t\c")
+	@(echo "$@ \033[32m]\033[0m \033[0K")
+	@($(CC) $(CFLAGS) -c -o $@ $<)
+	@(echo "\033[2F")
 
 $(NAME): $(OBJ)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@(ar rc $(NAME) $(OBJ))
+	@(ranlib $(NAME))
+	@(echo "\033[2K\033[2F")
+	@(echo "\n\033[32m Librairie compilée\033[0m";)
 
 clean:
-	$(RM) *.o
+	@($(RM) $(OBJ))
+#	@(echo "\033[32m Librairie : clean des .o \033[0m\t")
 
 fclean: clean
-	$(RM) $(NAME)
+	@($(RM) $(NAME))
+#	@(echo "\033[32m Librairie : clean de libft.a \033[0m\t")
 
 re: fclean all
 

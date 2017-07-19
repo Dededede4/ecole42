@@ -40,6 +40,14 @@
 # define TRUE 1
 # define FALSE 0
 
+typedef struct			s_fd
+{
+	int					fd_n;
+	int					lastbuff;
+	void				*tampon;
+	struct s_fd			*next;
+}						t_fd;
+
 typedef struct			s_parts_chars
 {
 	size_t				i;
@@ -168,7 +176,7 @@ void					ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void					ft_cat(char *path);
 void					ft_foreach(int *tab, int length, void (*f)(int*));
-void					*ft_range(int min, int max);
+int						*ft_range(int min, int max);
 int						ft_factorial(int nb);
 void					ft_swap(int *a, int *b);
 int						ft_gnl(const int fd, char **line);
@@ -239,4 +247,16 @@ void					ft_lstrotate(t_list **lst);
 void					ft_lstrotate_reverse(t_list **lst);
 t_list					*ft_lstsort(t_list *lst);
 t_list					*ft_lstsort_rev(t_list *lst);
+void					ft_lstdel_content(t_list **alst);
+void					ft_lstdelone_content(t_list **link);
+char					*ft_strjoin_multi(t_bool autofree, ...);
+t_bool					ft_isdigit_str(char *str);
+t_list					*ft_lstlast(t_list *list);
+int						ft_intlen(int n);
+t_bool					ft_err(char *str);
+void					ft_putstr_left(char const *s, size_t place);
+void					ft_putstr_right(char const *s, size_t place);
+void					ft_putnbr_right(int nbr, size_t place);
+void					ft_putnbr_right(int nbr, size_t place);
+void					ft_putstr_error(char *str);
 #endif
