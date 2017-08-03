@@ -1,4 +1,6 @@
 #include "minishell.h"
+#include <stdio.h>
+void            ft_loadenv();
 
 typedef struct			s_env
 {
@@ -7,10 +9,18 @@ typedef struct			s_env
 	struct s_env		*next;
 }						t_env;
 
+extern char **environ;
+
 t_env		**ft_env()
 {
 	static t_env	*l = NULL;
+	static t_bool	first = TRUE;
 
+	if (TRUE == first)
+	{
+		first = FALSE;
+		ft_loadenv();
+	}
 	return (&l);		
 }
 
@@ -94,14 +104,14 @@ void		ft_putenv(char *str)
 	ft_strdel(&value);
 }
 
-void		ft_loadenv(char **env)
+void		ft_loadenv()
 {
 	int i;
 
 	i = 0;
-	while(env[i])
+	while(environ[i])
 	{
-		ft_putenv(env[i]);
+		ft_putenv(environ[i]);
 		i++;
 	}
 }
@@ -133,6 +143,24 @@ char		*ft_whereis(char *cmd_name)
 	return (current);
 }
 
+
+void		ft_execwait(char *path, char **av)
+{
+	pid_t	father;
+	int	osef;
+
+	osef = 0;
+	father = fork();
+	if (father > 0)
+	{
+		wait(&osef);
+	}
+	else
+	{
+		execve(path, av, NULL);
+	}
+}
+
 void		execute(char *command)
 {
 	char **argc;
@@ -147,18 +175,18 @@ void		execute(char *command)
 		ft_putstr_error("Command no found.\n");
 		return ;
 	}
-	ft_printf("%s\n", whereis);
+	//ft_printf("%s\n", whereis);
+	ft_execwait(whereis, argc);
 	// Trouver la command dans PATH
 	// echo ; cd ; setenv ; unsetenv ; env ; exit
 
 }
 
-int		main(int argc, char **argv, char **env)
+int		main(int argc, char **argv)
 {
 	char *command;
 
 	command = NULL;
-	ft_loadenv(env);
 	while (42)
 	{
 		ft_printf("$>");
