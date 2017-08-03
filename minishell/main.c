@@ -106,8 +106,48 @@ void		ft_loadenv(char **env)
 	}
 }
 
-void		execute(char *cammand)
+char		**command2argv(char *command)
 {
+	return ft_strsplit(command, ' ');
+}
+
+char		*ft_whereis(char *cmd_name)
+{
+	char	*path;
+	char	**paths;
+	char	*current;
+	int	i;
+
+	i = 0;
+	path = ft_getenv("PATH");
+	paths = ft_strsplit(path, ':');
+	while (paths[i])
+	{
+		current = ft_strjoin_multi(FALSE, paths[i], "/", cmd_name, NULL);
+		if (access(current, X_OK) == 0)
+			break ;
+		ft_strdel(&current);
+		i++;
+	}
+	// TODO : leaks
+	return (current);
+}
+
+void		execute(char *command)
+{
+	char **argc;
+	char *whereis;
+
+	argc = command2argv(command);
+	if (!argc[0])
+		return ;
+	whereis = ft_whereis(argc[0]);
+	if (!whereis)
+	{
+		ft_putstr_error("Command no found.\n");
+		return ;
+	}
+	ft_printf("%s\n", whereis);
 	// Trouver la command dans PATH
 	// echo ; cd ; setenv ; unsetenv ; env ; exit
 
@@ -119,7 +159,6 @@ int		main(int argc, char **argv, char **env)
 
 	command = NULL;
 	ft_loadenv(env);
-	ft_printf(ft_getenv("PATH"));
 	while (42)
 	{
 		ft_printf("$>");
