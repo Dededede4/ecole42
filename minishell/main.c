@@ -201,7 +201,7 @@ void		putargv(char **argv)
 	ft_putchar('\n');
 }
 
-t_bool		execbuiltin(char **argv, char *command)
+t_bool		execbuiltin(char **argv)
 {
 	int i;
 
@@ -210,7 +210,7 @@ t_bool		execbuiltin(char **argv, char *command)
 		chdir(argv[1]);
 	else if(ft_strequ(argv[0], "exit"))
 		exit(0);
-	else if(ft_strequ(argv[0], "echo") && argv[1])
+	else if(ft_strequ(argv[0], "echo"))
 		putargv(argv);
 	else if(ft_strequ(argv[0], "setenv") && argv[1] && argv[2])
 		ft_setenv(argv[1], argv[2], 1);
@@ -227,24 +227,22 @@ t_bool		execbuiltin(char **argv, char *command)
 
 void		execute(char *command)
 {
-	char **argc;
+	char **argv;
 	char *whereis;
 	t_bool	isbuildin;
 
-	argc = command2argv(command);
-	if (!argc[0])
+	argv = command2argv(command);
+	if (!argv[0])
 		return ;
-	whereis = ft_whereis(argc[0]);
-	isbuildin = execbuiltin(argc, command);
+	whereis = ft_whereis(argv[0]);
+	isbuildin = execbuiltin(argv);
 	if (!isbuildin && !whereis)
 	{
 		ft_putstr_error("Command no found.\n");
 		return ;
 	}
 	if (!isbuildin)
-		ft_execwait(whereis, argc);
-	// echo ; setenv ; unsetenv ; env t
-
+		ft_execwait(whereis, argv);
 }
 
 int		main(int argc, char **argv)
