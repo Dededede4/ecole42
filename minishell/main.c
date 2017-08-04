@@ -79,6 +79,28 @@ char		*ft_getenv(char *name)
 	return (NULL);
 }
 
+void		ft_delenv(char *name)
+{
+	t_env *env;
+	t_env *tmp;
+	t_env *prev;
+
+	env = *(ft_env());
+	while (env)
+	{
+		if (ft_strequ(name, env->key))
+		{
+			prev->next = env->next;
+			ft_strdel(&env->key);
+			ft_strdel(&env->value);
+			ft_memdel((void**)&env);
+			return ;	
+		}
+		prev = env;
+		env = env->next;
+	}
+}
+
 char		*ft_strdup_len(char *str, size_t len)
 {
 	size_t	i;
@@ -161,24 +183,46 @@ void		ft_execwait(char *path, char **av)
 	}
 }
 
+t_bool		execbuiltin(char **argv)
+{
+	if (ft_strequ(argv[0], "cd") && argv[1])
+		chdir(argv[1]);
+	else if(ft_strequ(argv[0], "exit"))
+		exit(0);
+	else if(ft_strequ(argv[0], "echo"))
+		ft_putendl(argv[1]);
+	else if(ft_strequ(argv[0], "setenv") && argv[1] && argv[2])
+		ft_setenv(argv[1], argv[2], 1);
+	else if (ft_strequ(argv[0], "export") && argv[1])
+		ft_putenv(argv[1]);
+	else if (ft_strequ(argv[0], "unsetenv") && argv[1])
+		ft_delenv(argv[1]);
+	else if (ft_strequ(argv[0], "env"))
+		ft_displayenv();
+	else
+		return (FALSE);
+	return (TRUE);
+}
+
 void		execute(char *command)
 {
 	char **argc;
 	char *whereis;
+	t_bool	isbuildin;
 
 	argc = command2argv(command);
 	if (!argc[0])
 		return ;
 	whereis = ft_whereis(argc[0]);
-	if (!whereis)
+	isbuildin = execbuiltin(argc);
+	if (!isbuildin && !whereis)
 	{
 		ft_putstr_error("Command no found.\n");
 		return ;
 	}
-	//ft_printf("%s\n", whereis);
-	ft_execwait(whereis, argc);
-	// Trouver la command dans PATH
-	// echo ; cd ; setenv ; unsetenv ; env ; exit
+	if (!isbuildin)
+		ft_execwait(whereis, argc);
+	// echo ; setenv ; unsetenv ; env t
 
 }
 
