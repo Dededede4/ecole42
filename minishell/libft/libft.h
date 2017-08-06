@@ -83,6 +83,13 @@ typedef struct			s_args
 	int					err;
 }						t_args;
 
+typedef struct			s_env
+{
+	char				*key;
+	char				*value;
+	struct s_env		*next;
+}						t_env;
+
 /*
 ** (for ft_gnl())
 ** t_buff store the buffer for a specific fd :
@@ -158,6 +165,7 @@ char					*ft_strsub(
 char					*ft_strjoin(char const *s1, char const *s2);
 char					*ft_strtrim(char const *s);
 char					**ft_strsplit(char const *s, char c);
+void					ft_strsplit_del(char ***str);
 char					*ft_itoa(int n);
 void					ft_putchar(char c);
 void					ft_putstr(char const *s);
@@ -259,4 +267,14 @@ void					ft_putstr_right(char const *s, size_t place);
 void					ft_putnbr_right(int nbr, size_t place);
 void					ft_putnbr_right(int nbr, size_t place);
 void					ft_putstr_error(char *str);
+void					ft_displayenv();
+char					*ft_getenv(char *name);
+void					ft_putenv(char *str);
+t_env					**ft_env();
+void					ft_loadenv();
+void					ft_setenv(char *name, char *value, int overwrite);
+void					ft_delenv(char *name);
+void					ft_delallenv();
+char					*ft_strdup_len(char *str, size_t len);
+char					*ft_whereis(char *cmd_name);
 #endif
