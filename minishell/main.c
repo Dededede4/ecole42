@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include <stdio.h>
+
 void            ft_loadenv();
 
 typedef struct			s_env
@@ -10,6 +11,21 @@ typedef struct			s_env
 }						t_env;
 
 extern char **environ;
+
+void		ft_strsplit_del(char ***str)
+{
+	int		i;
+	char	**s;
+
+	i = 0;
+	s = *str;
+	while (s[i])
+	{
+		ft_strdel(s + i);
+		i++;
+	}
+	ft_memdel((void**)&s);
+}
 
 t_env		**ft_env()
 {
@@ -82,22 +98,47 @@ char		*ft_getenv(char *name)
 void		ft_delenv(char *name)
 {
 	t_env *env;
-	t_env *tmp;
 	t_env *prev;
+	t_env *tmp;
+	t_env **root;
 
+	root = ft_env();
 	env = *(ft_env());
+	prev = NULL;
+	tmp = NULL;
 	while (env)
 	{
 		if (ft_strequ(name, env->key))
 		{
-			prev->next = env->next;
+			if (!prev)
+				tmp = env->next;
+			else
+				prev->next = env->next;
 			ft_strdel(&env->key);
 			ft_strdel(&env->value);
 			ft_memdel((void**)&env);
+			if (tmp)
+				*root = tmp;
 			return ;	
 		}
 		prev = env;
 		env = env->next;
+	}
+}
+
+void		ft_delallenv()
+{
+	t_env *env;
+	t_env *next;
+
+	env = *(ft_env());
+	while (env)
+	{
+		next = env->next;
+		ft_strdel(&env->key);
+		ft_strdel(&env->value);
+		ft_memdel((void**)&env);
+		env = next;
 	}
 }
 
@@ -148,6 +189,7 @@ char		*ft_whereis(char *cmd_name)
 	char	*path;
 	char	**paths;
 	char	*current;
+	char	*r;
 	int	i;
 
 	if (access(cmd_name, X_OK) == 0)
@@ -155,16 +197,20 @@ char		*ft_whereis(char *cmd_name)
 	i = 0;
 	path = ft_getenv("PATH");
 	paths = ft_strsplit(path, ':');
+	r = NULL;
 	while (paths[i])
 	{
 		current = ft_strjoin_multi(FALSE, paths[i], "/", cmd_name, NULL);
-		if (access(current, X_OK) == 0)
-			break ;
+		if (!r && access(current, X_OK) == 0)
+		{
+			r = ft_strdup(current);
+		}
 		ft_strdel(&current);
+		ft_strdel(paths + i);
 		i++;
 	}
-	// TODO : leaks
-	return (current);
+	ft_memdel((void**)(&paths));
+	return (r);
 }
 
 
@@ -209,7 +255,11 @@ t_bool		execbuiltin(char **argv)
 	if (ft_strequ(argv[0], "cd") && argv[1])
 		chdir(argv[1]);
 	else if(ft_strequ(argv[0], "exit"))
+	{
+		ft_strsplit_del(&argv);
+		ft_delallenv();
 		exit(0);
+	}
 	else if(ft_strequ(argv[0], "echo"))
 		putargv(argv);
 	else if(ft_strequ(argv[0], "setenv") && argv[1] && argv[2])
@@ -232,17 +282,24 @@ void		execute(char *command)
 	t_bool	isbuildin;
 
 	argv = command2argv(command);
-	if (!argv[0])
+	if (!argv || !argv[0])
+	{
+		ft_strsplit_del(&argv);
 		return ;
+	}
 	whereis = ft_whereis(argv[0]);
 	isbuildin = execbuiltin(argv);
 	if (!isbuildin && !whereis)
 	{
+		ft_strdel(&whereis);
+		ft_strsplit_del(&argv);
 		ft_putstr_error("Command no found.\n");
 		return ;
 	}
 	if (!isbuildin)
 		ft_execwait(whereis, argv);
+	ft_strdel(&whereis);
+	ft_strsplit_del(&argv);
 }
 
 int		main(int argc, char **argv)
@@ -254,7 +311,8 @@ int		main(int argc, char **argv)
 	{
 		ft_printf("$>");
 		ft_gnl(STDIN_FILENO, &command);
-		execute(command);
+		if (command && *command)
+			execute(command);
 		ft_strdel(&command);
 	}
 	exit(0);
