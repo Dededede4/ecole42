@@ -34,6 +34,4 @@ You can see https://github.com/Dededede4/ecole42/blob/master/ft_printf/main.c fo
 
 # Work in progress
 
-**camagru/** is a small Instagram-like written in php
-
 **minishell/** a shell interpreter
