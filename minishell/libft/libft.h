@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/11 12:21:34 by mprevot           #+#    #+#             */
-/*   Updated: 2016/12/02 18:39:57 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/08/10 21:44:03 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,4 +277,7 @@ void					ft_delenv(char *name);
 void					ft_delallenv();
 char					*ft_strdup_len(char *str, size_t len);
 char					*ft_whereis(char *cmd_name);
+void					ft_execwait(char *path, char **av);
+int						ft_countenv(void);
+char					**ft_getpcur(void);
 #endif

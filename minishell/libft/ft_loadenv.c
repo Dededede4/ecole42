@@ -6,7 +6,7 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/06 12:08:36 by mprevot           #+#    #+#             */
-/*   Updated: 2017/08/06 12:08:44 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/08/10 21:29:07 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,10 @@ t_env		**ft_env(void)
 	return (&l);
 }
 
-void		ft_loadenv(char **environ)
+t_bool		ft_setenvempty(char *name, char *value)
 {
-	int i;
-
-	i = 0;
-	while (environ[i])
-	{
-		ft_putenv(environ[i]);
-		i++;
-	}
-}
-
-void		ft_setenv(char *name, char *value, int overwrite)
-{
-	t_env	*env;
 	t_env	**root;
+	t_env	*env;
 
 	if (!(*(root = ft_env())))
 	{
@@ -42,13 +30,28 @@ void		ft_setenv(char *name, char *value, int overwrite)
 		env->key = ft_strdup(name);
 		env->value = ft_strdup(value);
 		*root = env;
-		return ;
+		return (TRUE);
 	}
-	env = *root;
+	return (FALSE);
+}
+
+void		ft_setenv(char *name, char *value, int overwrite)
+{
+	t_env	*env;
+
+	if (ft_setenvempty(name, value))
+		return ;
+	env = *ft_env();
 	while (env)
 	{
 		if (ft_strcmp(env->key, name) == 0 && 0 == overwrite)
 			return ;
+		if (ft_strcmp(env->key, name) == 0)
+		{
+			ft_strdel(&env->value);
+			env->value = ft_strdup(value);
+			return ;
+		}
 		if (NULL == env->next)
 		{
 			env->next = ft_memalloc(sizeof(t_env));

@@ -6,7 +6,7 @@
 #    By: mprevot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/01 11:18:53 by mprevot           #+#    #+#              #
-#    Updated: 2017/08/06 12:58:13 by mprevot          ###   ########.fr        #
+#    Updated: 2017/08/10 21:38:54 by mprevot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,12 @@ CFLAGS=-Wall -Wextra -Werror
 
 RM=rm -f
 
-SRC= main.c
+SRC= main.c builtin.c
 
 OBJS=$(SRC:.c=.o)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -g -o $@ $<
 
 all: ft_ls
 
