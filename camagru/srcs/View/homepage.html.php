@@ -1,0 +1,1 @@
+Coucou mes <a href="<?= $this->path('is_my_name_ah', array('LOL')) ?>">cocos</a> :)
