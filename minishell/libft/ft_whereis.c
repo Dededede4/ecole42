@@ -23,16 +23,15 @@ char		*ft_whereis(char *cmd_name)
 	if (access(cmd_name, X_OK) == 0)
 		return (ft_strdup(cmd_name));
 	i = 0;
-	path = ft_getenv("PATH");
+	if (!(path = ft_getenv("PATH")))
+		return (NULL);
 	paths = ft_strsplit(path, ':');
 	r = NULL;
 	while (paths[i])
 	{
 		current = ft_strjoin_multi(FALSE, paths[i], "/", cmd_name, NULL);
 		if (!r && access(current, X_OK) == 0)
-		{
 			r = ft_strdup(current);
-		}
 		ft_strdel(&current);
 		ft_strdel(paths + i);
 		i++;

@@ -6,67 +6,11 @@
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/06 12:41:15 by mprevot           #+#    #+#             */
-/*   Updated: 2017/08/06 13:00:32 by mprevot          ###   ########.fr       */
+/*   Updated: 2017/08/10 21:49:23 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-
-void		ft_execwait(char *path, char **av)
-{
-	pid_t	father;
-	int		osef;
-
-	osef = 0;
-	father = fork();
-	if (father > 0)
-		wait(&osef);
-	else
-		execve(path, av, NULL);
-}
-
-void		putargv(char **argv)
-{
-	int i;
-
-	i = 1;
-	while (argv[i])
-	{
-		ft_putstr(argv[i]);
-		if (NULL != argv[i + 1])
-			ft_putchar(' ');
-		i++;
-	}
-	ft_putchar('\n');
-}
-
-t_bool		execbuiltin(char **argv)
-{
-	int i;
-
-	i = 0;
-	if (ft_strequ(argv[0], "cd") && argv[1])
-		chdir(argv[1]);
-	else if (ft_strequ(argv[0], "exit"))
-	{
-		ft_strsplit_del(&argv);
-		ft_delallenv();
-		exit(0);
-	}
-	else if (ft_strequ(argv[0], "echo"))
-		putargv(argv);
-	else if (ft_strequ(argv[0], "setenv") && argv[1] && argv[2])
-		ft_setenv(argv[1], argv[2], 1);
-	else if (ft_strequ(argv[0], "export") && argv[1])
-		ft_putenv(argv[1]);
-	else if (ft_strequ(argv[0], "unsetenv") && argv[1])
-		ft_delenv(argv[1]);
-	else if (ft_strequ(argv[0], "env"))
-		ft_displayenv();
-	else
-		return (FALSE);
-	return (TRUE);
-}
+#include "minishell.h"
 
 void		execute(char *command)
 {
