@@ -25,9 +25,8 @@ class Kernel
         );
 
         $container->set('config_explorer', new ConfigExplorer());
-        $container->set('resolver',
-            new Resolver($container->get('config_explorer'), $container->get('config_parser'), $container));
-        $container->set('engine', new PhpEngine($container->get('resolver')));
+        $container->set('resolver', new Resolver($container->get('config_explorer'), $container->get('config_parser'), $container));
+        $container->set('engine', new PhpEngine($container->get('resolver'), $request));
         $this->container = $container;
 
         return $this->get('resolver')->executeController($request);

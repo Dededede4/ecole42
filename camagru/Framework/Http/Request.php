@@ -8,4 +8,9 @@ class Request implements RequestInterface
     {
         return $_SERVER['PATH_INFO'] ?? '/';
     }
+
+    public function getScriptName()
+    {
+        return $_SERVER['SCRIPT_NAME'];
+    }
 }

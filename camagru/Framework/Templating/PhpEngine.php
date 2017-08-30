@@ -2,20 +2,22 @@
 
 namespace Framework\Templating;
 
+use framework\http\Request;
 use Framework\Routing\Resolver;
 
 class PhpEngine
 {
     private $resolver;
 
-    public function __construct(Resolver $resolver)
+    public function __construct(Resolver $resolver, Request $request)
     {
         $this->resolver = $resolver;
+        $this->request = $request;
     }
 
     public function path($routeName, $args = array())
     {
-        return $this->resolver->generatePath($routeName, $args);
+        return $this->resolver->generatePath($routeName, $this->request, $args);
     }
 
     public function render($path, array $vars = array())
