@@ -32,7 +32,7 @@ class ConfigClassParser implements ConfigParserInterface
     {
         return array(
             'controller' => $rm->class.':'.$rm->name,
-            'params' => $this->parseText($rm->getDocComment()),
+            'params' => $this->parseText($rm->getDocComment())
         );
     }
 

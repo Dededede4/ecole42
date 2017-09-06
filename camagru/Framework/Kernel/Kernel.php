@@ -7,7 +7,9 @@ use Framework\Http\RequestInterface;
 use Framework\Parser\ConfigExplorer;
 use Framework\Routing\Resolver;
 use Framework\Parser\ConfigClassParser;
+use Framework\Parser\ConfigFileClassParser;
 use Framework\Templating\PhpEngine;
+use Framework\ORM\EntityManager;
 
 class Kernel
 {
@@ -27,6 +29,10 @@ class Kernel
         $container->set('config_explorer', new ConfigExplorer());
         $container->set('resolver', new Resolver($container->get('config_explorer'), $container->get('config_parser'), $container));
         $container->set('engine', new PhpEngine($container->get('resolver'), $request));
+        $container->set('entity_manager', new EntityManager(new ConfigFileClassParser()));
+
+        $container->get('entity_manager')->schemaUpdate();
+
         $this->container = $container;
 
         return $this->get('resolver')->executeController($request);

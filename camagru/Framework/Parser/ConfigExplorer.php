@@ -11,7 +11,7 @@ class ConfigExplorer
 
     private $lines;
 
-    public $ilines;
+    private $ilines;
 
     public function load(ConfigParserInterface $c)
     {
