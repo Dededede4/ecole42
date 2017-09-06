@@ -21,30 +21,21 @@ class EntityManager
         $config = $this->parser->getConfig();
     }
 
-    public function schemaUpdate()
+    public function schemaCreate()
     {
-        return;
-        var_dump($this->parser->setPath(ROOTDIR.'/srcs/Entity', 'Entity', 'Entity\\'));
-        die;
+        $results = $this->parser->setPath(ROOTDIR.'/srcs/Entity', 'Entity', 'Entity\\');
 
-        /*
-         * $q = new Query();
-            $q->selectIn('user')
-                ->addAndWhere('user = \'dededede4\'')
-                ->addOrWhere('admin = 1');
-
-            echo new MysqlBuilder($q)."\n";
-            $q->updateIn('user');
-            echo new MysqlBuilder($q)."\n";
-            $q->deleteIn('user');
-            echo new MysqlBuilder($q)."\n";
-
+        foreach ($results as $result)
+        {
             $q = new Query();
-            $q->create('user')
-                ->addCol('PersonID int')
-                ->addCol('LastName varchar(255)');
+            $q->create($result['fileconfig']['table'][0]);
+            foreach ($result['results'] as $col)
+            {
+                $q->addCol($col['name'][0].' '.implode(' ', $col['type']));
+            }
             echo new MysqlBuilder($q)."\n";
-         */
+        }
+        die;
     }
 
 }

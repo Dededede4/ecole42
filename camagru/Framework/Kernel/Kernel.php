@@ -31,7 +31,7 @@ class Kernel
         $container->set('engine', new PhpEngine($container->get('resolver'), $request));
         $container->set('entity_manager', new EntityManager(new ConfigFileClassParser()));
 
-        $container->get('entity_manager')->schemaUpdate();
+        $container->get('entity_manager')->schemaCreate();
 
         $this->container = $container;
 

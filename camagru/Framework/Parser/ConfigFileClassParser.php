@@ -20,6 +20,7 @@ class ConfigFileClassParser extends ConfigClassParser
                 }
                 $globalconfig[] = array(
                     'class' => $class,
+                    'fileconfig' => $this->parseText($rc->getDocComment()),
                     'results' => $results,
                 );
             }

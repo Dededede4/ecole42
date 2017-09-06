@@ -2,7 +2,7 @@
 
 namespace Framework\ORM;
 
-class Query implements QueryInterface, QueryInterface
+class Query implements QueryInterface
 {
     private $action;
 
