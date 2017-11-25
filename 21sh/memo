@@ -1,0 +1,10 @@
+remettre le -Werror dans le makefile de la libfremettre le -Werror dans le makefile de la libftt
+
+remottre le ft_foreach
+
+à faire rapidement :
+
+quand on est en début de ligne et qu'on appuie sur entrée, peut-être qu'il faut créer une nouvelle ligne ?
+
+- bloquer la flèche droite si on a pas taper de texte (et bloquer les flèches pour pas qu'elles aillent se balader partout)
+- 
