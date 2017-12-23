@@ -10,4 +10,37 @@ typedef struct			s_command
 	struct s_command	*prev;
 	struct s_command	*next;
 	struct s_command	*historic_pos;
+	size_t				cc_pos_start;
+	size_t				cc_pos_stop;
+	t_bool				cc_mode_enabled;
 }						t_command;
+
+typedef struct			s_container
+{
+	char				*clipboard;
+	t_command			*t_command;
+}						t_container;
+
+
+
+typedef struct			s_token
+{
+	unsigned int 		*str;
+	struct s_token		*next;
+}						t_token;
+
+typedef struct			s_instruct
+{
+	unsigned int		*program_name;
+	t_token				*program_args;
+	int 				pipe_to_fd;
+	int 				pipe_from_fd;
+	struct s_instruct	*pipe_to_instruct;
+	unsigned int		*pipe_to_file;
+	t_bool				replace_file;
+unsigned int		*pipe_from_file;
+//	int					stdrr;
+//	int					stdin;
+//	int					stout;
+	struct s_instruct	*next;
+}					t_instruct;

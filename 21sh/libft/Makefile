@@ -45,6 +45,7 @@ ft_env_tools2.c ft_execwait.c
 
 
 OBJ=$(SRC:.c=.o)
+includes=.
 
 all: $(NAME)
 
@@ -54,7 +55,7 @@ all: $(NAME)
 	@($(CC) $(CFLAGS) -c -o $@ $<)
 	@(echo "\033[2F")
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(includes) 
 	@(ar rc $(NAME) $(OBJ))
 	@(ranlib $(NAME))
 	@(echo "\033[2K\033[2F")
