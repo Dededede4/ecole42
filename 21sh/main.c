@@ -204,8 +204,12 @@ void	ft_delete_char(unsigned int **str, size_t pos)
 }
 // TODO être sûr de bien tout comprendre
 // TODO j'ai toujours pas la lib un ft_exet ???
+
+struct termios attrib_old;
+
 void			t_init()
 {
+	
 	char           *name_term;
 	struct termios term;
 
@@ -221,6 +225,16 @@ void			t_init()
 	term.c_cc[VTIME] = 0;
 	if (tcsetattr(0, TCSADRAIN, &term) == -1)
 		exit(0);
+}
+
+void			t_save()
+{
+	tcgetattr( 0, &attrib_old);
+}
+
+void			t_restore()
+{
+	tcsetattr(0, TCSANOW, &attrib_old);
 }
 
 t_bool t_enable_insert_mode()
@@ -442,11 +456,13 @@ t_bool display_input_validate(unsigned int buff, t_command **command)
 
 	if ('\n' == buff)
 	{
+		ft_putchar('\n');
 		/*
 		ft_printf("\nExecuter ");
 		ft_uintput(((t_command *)(*command))->str);
 		ft_printf("\n");*/
 		execute(*command);
+		ft_putstr("$ ");
 		if(NULL == ((t_command *)(*command))->str || '\0' == ((t_command *)(*command))->str[0])
 			return (TRUE);
 		(*command)->pos = ft_uintlen((*command)->str);
@@ -636,36 +652,34 @@ void complete_buff(unsigned int *buff)
 }
 
 
-void display_input(t_command **command)
+char 	*display_input_heredoc(char *stop)
 {
-	unsigned int buff;
-	unsigned int *clipboard;
+	char *line;
+	char *input;
 
-	buff = 0;
-	clipboard = NULL;
-	while (1) {
-		if (read(STDIN_FILENO, &buff, 1) > 0)
+	line = NULL;
+	input = NULL;
+	t_restore();
+	ft_putstr("heredoc> ");
+	while (42)
+	{
+		ft_gnl(STDIN_FILENO, &line);
+		if (ft_strlen(line)) // todo control ctrl d
 		{
-			complete_buff(&buff);
-			//ft_printf("%b\n", buff);
-			if (27 == buff)
+			if (ft_strequ(line, stop))
 			{
-				ft_printf("ah ?");
-				cc_clear(*command);
-				continue ;
+				ft_memdel(&line);
+				t_init();
+				return (!input ? ft_strdup("") : input);
 			}
-			//ft_printf("\n%b - %d\n", buff, buff);
-			if (display_input_ondelete(buff, *command)) {cc_clear(*command);}
-			else if (display_input_validate(buff, command)) {cc_clear(*command);}
-			else if (display_input_left(buff, *command)) {}
-			else if (display_input_right(buff, *command)) {}
-			else if (display_input_historic(buff, *command)) {cc_clear(*command);}
-			else if (display_input_copypast(buff, *command, &clipboard)) {}
-			//
-			else if (display_input_insert(buff, *command)) {cc_clear(*command);}
-
+			if (!input)
+				input = ft_strdup(line);
+			else
+				input = ft_strjoin_multi(FALSE, input, ft_strdup("\n"), line, NULL);
+			ft_putstr("heredoc> ");
 		}
-		buff = 0;
+		else
+			ft_memdel(&line);
 	}
 }
 
@@ -676,6 +690,7 @@ void display_input(t_command **command)
 
 	buff = 0;
 	clipboard = NULL;
+	ft_putstr("$ ");
 	while (1) {
 		if (read(STDIN_FILENO, &buff, 1) > 0)
 		{
@@ -708,6 +723,7 @@ unsigned int *              shell_input()
 	t_command		*command;
 
 	command = ft_memalloc(sizeof(t_command));
+	t_save();
 	t_init();
 	t_enable_insert_mode();
 	display_input(&command);

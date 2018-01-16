@@ -35,6 +35,7 @@ typedef struct			s_instruct
 	t_token				*program_args;
 	int 				pipe_to_fd;
 	int 				pipe_from_fd;
+	char 				*pipe_from_str;
 	struct s_instruct	*pipe_to_instruct;
 	unsigned int		*pipe_to_file;
 	t_bool				replace_file;

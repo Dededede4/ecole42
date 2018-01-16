@@ -4,6 +4,7 @@ void ft_uintput(unsigned int *str);
 unsigned int	*ft_uintdup(unsigned int *s1);
 unsigned int	*ft_uintnew(size_t size);
 char *ft_uint_to_char(unsigned int *input);
+char 	*display_input_heredoc(char *stop);
 
 char		*ft_memdup(char *mem, size_t len)
 {
@@ -227,28 +228,6 @@ int			ft_atoi_uint(const unsigned int *str)
 		return (0 - result);
 }
 
-char *heredoc(unsigned int *stop)
-{
-	char *input;
-	char *global;
-	char *tmp;
-
-	global = NULL;
-	ft_putstr("> ");
-	input = NULL;
-	while(ft_gnl(STDIN_FILENO, &input))
-	{
-		ft_printf("what?");
-		tmp = ft_uint_to_char(stop);
-		if (0 == ft_strcmp(tmp, input))
-			return (global);
-		global = ft_strjoin_multi(TRUE, global, input);
-	}
-	ft_printf("fin");
-	return (global);
-}
-
-
 t_instruct *command2instruct(t_command *command)
 {
 	size_t	i;
@@ -257,6 +236,7 @@ t_instruct *command2instruct(t_command *command)
 	t_instruct	*first_instruct;
 	t_token		*token;
 	t_token		*arg;
+	t_token		*lastarg;
 	char 		*tmp;
 
 	arg = NULL;
@@ -307,6 +287,7 @@ t_instruct *command2instruct(t_command *command)
 	while(instruct)
 	{
 		arg = instruct->program_args;
+		lastarg = arg;
 		while (arg && arg->next)
 		{
 			// TODO obtenir les FD et juste donner des FD
@@ -329,9 +310,9 @@ t_instruct *command2instruct(t_command *command)
 			{
 				ft_printf("go\n");
 				if (arg->next->next)
-					ft_putstr(heredoc(arg->next->next->str));
+					instruct->pipe_from_str = display_input_heredoc(ft_uint_to_char(arg->next->next->str));
 				else
-					ft_putstr(heredoc(L"<<"));
+					instruct->pipe_from_str = display_input_heredoc("<<");
 				// TODO il faut une fonction de type ft_uinttoi
 				/*if (!arg->next->next){} // TODO error
 				instruct->pipe_form_fd = arg->next->next->str;*/
@@ -356,8 +337,19 @@ t_instruct *command2instruct(t_command *command)
 
 
 			// on note les |
-			// on note les  >&- et les aggrégations de descripteurs de fichiers
+			if ('|' == *arg->str && arg->next && '|' != *arg->next->str)
+			{
+				lastarg->next = NULL;
+				arg = arg->next; // TODO fuite mém
+				instruct->next = ft_memalloc(sizeof(*(instruct->next)));
+				instruct->next->program_name = arg->str;
+				instruct->next->program_args = arg->next;
+				arg = instruct->next->program_args;
+				instruct = instruct->next;
+			}
 			
+			// on note les  >&- et les aggrégations de descripteurs de fichiers
+			lastarg = arg;
 			arg = arg->next;
 		}
 		instruct = instruct->next;
@@ -365,16 +357,25 @@ t_instruct *command2instruct(t_command *command)
 	return (first_instruct);
 }
 
+
+/*
+Si stdin = 42, alors "42" doit être le fd "1" du programme enfant
+Si stdout = 23, alors "23" doit être le fd "2" du programme enfant
+*/
 void		ft_execwait_std(char *path, char **av, int stdin/*, int stdout*/)
 {
 	pid_t	father;
 	int		osef;
 	char	**pcur;
 
+	t_restore();
 	osef = 0;
 	father = fork();
 	if (father > 0)
+	{
 		wait(&osef);
+		t_init();
+	}
 	else
 	{
 		if (dup2(stdin, STDIN_FILENO) == -1) {
@@ -422,14 +423,14 @@ void	execute(t_command *command)
 	while(instruct)
 	{
 		//ft_printf("\nIl faut executer ");
+		
 		tmp = ft_uint_to_char(instruct->program_name);
 
 		ft_execwait_std(tmp, instruct_to_agrv(instruct), instruct->pipe_from_fd);
-		
+
 		//ft_uintput(instruct->program_name);
 		//ft_printf("et le printer vers le fd %i", instruct->pipe_from_fd);
 		//ft_putstr("\n");
 		instruct = instruct->next;
 	}
-	ft_printf("fin");
 }
