@@ -1,0 +1,63 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#contentZone{
+            background-image: url("{% static "img/fight.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+
+    #movie {
+    	width: 100px;
+    	position: relative;
+    	left:240px;
+    	top:10px;
+    	height: 136px;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	top: 70px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+    #moviedesc {
+    	display: inline;
+    	position:relative;
+    	left:150px;
+    	right:8px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    	font-size: 10px;
+    }
+
+    #userdesc {
+        display: inline;
+        position:relative;
+        top:50px;
+        left:90px;
+        font-family: "gameboy", Helvetica, Arial, sans-serif;
+        font-size: 10px;
+    }
+</style>
+{%endblock%}
+
+{% block content %}
+	<p id="moviedesc">Force : {{ movie.strength }}, chance : {{ chance }}%<br/></p>
+	<img id="movie" src="{{ movie.image }}">
+    <p id="userdesc">Force:{{ dm.get_strength }}  {{ dm.get_balls }}x</p>
+
+	<p id="text">{% if not success %}
+                    A - Launch movieball !{% if try and not success %}<br/>You missed !{% endif %}
+                {% else %}
+                    You catched it !
+                {% endif %}
+                <br/>B - Worldmap
+                </p>
+{% endblock %}
+
+
+{% block ButtonA_href%}{% if not success and dm.get_balls > 0 %}{% url 'battletry' id=id %}{% else %}#{%endif%}{%endblock%}
+
+{% block ButtonB_href%}{% url 'worldmap' %}{%endblock%}

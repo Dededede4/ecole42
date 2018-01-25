@@ -1,0 +1,69 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#menu {
+		background-color:#fff;
+		position: relative;
+		left:0;
+		right:0;
+		height: 40px;
+		font-family: "gameboy", Helvetica, Arial, sans-serif;
+
+	}
+	#map {
+		position: relative;
+		left:0;
+		right:0;
+		height: 300px;
+	}
+	#user{
+		position:relative;
+
+		/*La postion x et y du pixel en haut à gauche du personnage*/
+		left: {{ dm.get_coord_percentX }}%;
+		top: {{ dm.get_coord_percentY }}%;
+	}
+	.pkball{
+		margin-left:-5px;
+	}
+	#contentZone{
+            background-image: url("{% static "img/herbe.png" %}");
+    }
+</style>
+{%endblock%}
+
+
+{% block content %}
+	<div id="menu">
+		<span style="font-size: 200%;">{{ dm.get_balls }}x</span> <!-- nb de pokeball -->
+		<img src="{% static "img/pokeball.png" %}" class="pkball" alt="">
+		<span>	{% if goFight == True %}
+					Moviemon! PRESS A
+				{% endif %}
+				{% if goBall == True %}
+					Movieball! PRESS A
+				{% endif %}
+		</span>
+	</div>
+	<div id="map">
+		<img id="user" src="
+			{%if dm.getdir == 0%}{% static "img/pokemon_user.png" %}{%endif%}
+			{%if dm.getdir == 2%}{% static "img/pokemon_user_right.png" %}{%endif%}
+			{%if dm.getdir == 1%}{% static "img/pokemon_user_left.png" %}{%endif%}
+			{%if dm.getdir == 3%}{% static "img/pokemon_user_top.png" %}{%endif%}
+			" alt="user">
+	</div>
+{% endblock %}
+
+{% block ButtonRight_href %}{% url 'worldmap_right' %}{%endblock%}
+{% block ButtonUp_href %}{% url 'worldmap_up' %}{%endblock%}
+{% block ButtonDown_href %}{% url 'worldmap_down' %}{%endblock%}
+{% block ButtonLeft_href %}{% url 'worldmap_left' %}{%endblock%}
+
+{% block ButtonRight_select %}{% url 'moviedex' %}{%endblock%}
+{% block ButtonRight_start %}{% url 'option' %}{%endblock%}
+
+
+{% block ButtonA_href %}{% if goBall %}{% url 'addball' %}{% endif %}{% if goFight %}{% url 'battle' id=movieid %}{% endif %}{%endblock%}

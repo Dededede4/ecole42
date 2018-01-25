@@ -1,0 +1,36 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#contentZone{
+            background-image: url("{% static "img/justborder.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+    #title {
+    	position: relative;
+    	left:60px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	top:170px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+</style>
+{%endblock%}
+
+{% block content %}
+<audio style="display: none;" autoplay>
+  <source src="{% static "sounds/titre.ogg" %}" type="audio/ogg">
+</audio>
+	<h1 id="title">MOVIEMON</h1>
+	<p id="text">A - New Game<br/>B - Load</p>
+{% endblock %}
+
+
+{% block ButtonA_href%}{% url 'title_screen_new_game' %}{%endblock%}
+{% block ButtonB_href%}{% url 'load_pass' id=0 %}{%endblock%}

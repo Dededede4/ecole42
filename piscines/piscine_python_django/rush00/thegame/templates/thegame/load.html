@@ -1,0 +1,63 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#contentZone{
+            background-image: url("{% static "img/justborder.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+    #title {
+    	position: relative;
+    	left:130px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	top:60px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+    .desc {
+    	position: relative;
+    	left:20px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+</style>
+{%endblock%}
+
+{% block content %}
+<h1 id="title">LOAD</h1>
+
+{% if A %}
+<p class="desc">{% if cursor == 0 %}►{%endif%} SLOT A : {{countA}}/{{maxA}} </p>
+{% else %}
+<p class="desc">{% if cursor == 0 %}►{%endif%} SLOT A : FREE </p>
+{% endif %}
+
+{% if B == None %}
+<p class="desc">{% if cursor == 1 %}►{%endif%} SLOT B : FREE </p>
+{% else %}
+<p class="desc">{% if cursor == 1 %}►{%endif%} SLOT B : {{countB}}/{{maxB}} </p>
+{% endif %}
+
+{% if C == None %}
+<p class="desc">{% if cursor == 2 %}►{%endif%} SLOT C : FREE </p>
+{% else %}
+<p class="desc">{% if cursor == 2 %}►{%endif%} SLOT C : {{countC}}/{{maxC}} </p>
+{% endif %}
+
+<p id="text">A - Load<br/>B - Cancel</p>
+{% endblock %}
+
+<!-- TODO : contrôle A à définir -->
+{% block ButtonB_href%}{% url 'title_screen' %}{%endblock%}
+
+{% block ButtonA_href%}{% url 'load_real' id=cursor %}{%endblock%}
+
+{% block ButtonUp_href%}{% url 'load_pass' id=prev %}{%endblock%}
+{% block ButtonDown_href%}{% url 'load_pass' id=next %}{%endblock%}
+

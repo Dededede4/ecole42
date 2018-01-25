@@ -1,0 +1,45 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>The Game</title>
+        
+        <style>
+        @font-face {
+            font-family: "gameboy";
+            src: url('{% static "font/GameBoy.ttf" %}') format('truetype');
+        }
+        #contentZone{
+            font-family: "Gill Sans MT", "Gill Sans";
+        }
+        html { 
+          background: url('{% static "img/ecole.jpg" %}') no-repeat center center fixed; 
+        }
+        </style>
+        <link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+        {% block styles %}{%endblock%}
+    </head>
+    <body>
+        <div id ="contentZoneWrapper">
+            <div id="contentZone">
+                {% block content %}
+                	<h1>Capturez les Moviemon cachés !</h1><br>
+                {% endblock %}
+            </div>
+            <img src="{% static "img/gameboy.png" %}" usemap="#image-map" id="img_big_gameboy">
+        </div>
+        
+
+        <map name="image-map">
+            <area target="" alt="ButtonA" title="ButtonA" href="{% block ButtonA_href%}#{%endblock%}" coords="854,764,49" shape="circle">
+            <area target="" alt="ButtonB" title="ButtonB" href="{% block ButtonB_href%}#{%endblock%}" coords="741,817,49" shape="circle">
+            <area target="" alt="ButtonRight" title="ButtonRight" href="{% block ButtonRight_href%}#{%endblock%}" coords="425,767,482,835" shape="rect">
+            <area target="" alt="ButtonUp" title="ButtonUp" href="{% block ButtonUp_href%}#{%endblock%}" coords="358,711,427,769" shape="rect">
+            <area target="" alt="ButtonLeft" title="ButtonLeft" href="{% block ButtonLeft_href%}#{%endblock%}" coords="303,765,363,834" shape="rect">
+            <area target="" alt="ButtonDown" title="ButtonDown" href="{% block ButtonDown_href%}#{%endblock%}" coords="358,834,426,890" shape="rect">
+            <area target="" alt="ButtonSelect" title="ButtonSelect" href="{% block ButtonRight_select%}#{%endblock%}" coords="474,1005,547,970,548,956,539,947,530,946,463,980,460,986,467,995" shape="poly">
+            <area target="" alt="ButtonStart" title="ButtonStart" href="{% block ButtonRight_start%}#{%endblock%}" coords="592,1006,667,968,664,950,656,943,582,976,582,990" shape="poly">
+        </map>
+    </body>
+</html>

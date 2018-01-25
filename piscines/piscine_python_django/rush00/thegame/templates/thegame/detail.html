@@ -1,0 +1,58 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<!-- 	#contentZone{
+            background-image: url("{% static "img/justborder.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    } -->
+<style>
+
+    #title {
+    	position: relative;
+    	left:75px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	top:170px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+	#movie {
+    	width: 100px;
+    	height: 136px;
+    	float:right;
+    }
+    #desc {
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    	font-size:10px;
+    	width:270px;
+    }
+</style>
+{%endblock%}
+
+<!-- affichage : le nom, le poster, le realisateur, l’année, le rating, le synopsis et les acteurs du Moviemon ainsi que ’B - Back’ -->
+{% block content %}
+	<table>
+	<tr>
+	  <td id="desc">{{ name }}<br/>
+		strength : {{ strength }}<br/>
+		rating : {{ rating }}<br/>
+		actors : {{ actors }}<br/>
+		year : {{ year }}<br/>
+		director : {{ director }}<br/>
+		{% if catched %}
+		catched<br/>
+		{% endif %}
+		<br/><br/>
+		B - Back
+		</td>
+	  <td><img id="movie" src="{{ image }}"></td>
+	</tr>
+	</table>
+
+{% endblock %}
+
+{% block ButtonB_href%}{% url 'moviedex' %}{%endblock%}

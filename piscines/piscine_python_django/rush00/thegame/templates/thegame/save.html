@@ -1,0 +1,47 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#contentZone{
+            background-image: url("{% static "img/justborder.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+    #title {
+    	position: relative;
+    	left:110px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	top:60px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+    .desc {
+    	position: relative;
+    	left:20px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+</style>
+{%endblock%}
+
+{% block content %}
+	<h1 id="title">SAVES</h1>
+	<p class="desc">{% if current == 0 %}►{%endif%} SLOT A : {% if A %}{{countA}}/{{maxA}}{%else%}FREE{%endif%}</p>
+	<p class="desc">{% if current == 1 %}►{%endif%} SLOT B : {% if B %}{{countB}}/{{maxB}}{%else%}FREE{%endif%}</p>
+	<p class="desc">{% if current == 2 %}►{%endif%} SLOT C : {% if C %}{{countC}}/{{maxC}}{%else%}FREE{%endif%}</p>
+	<p id="text">A - Save<br/>B - Cancel</p>
+{% endblock %}
+
+{% block ButtonUp_href%}{% url 'save_pass' pass42=prev %}{%endblock%}
+{% block ButtonDown_href%}{% url 'save_pass' pass42=next %}{%endblock%}
+
+{% block ButtonA_href%}
+	{% url 'save_real' id=current %} 
+{%endblock%}
+
+{% block ButtonB_href%}{% url 'option' %}{%endblock%}

@@ -1,0 +1,53 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#contentZone{
+            background-image: url("{% static "img/justborder.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+
+    .movie {
+    	margin-left:10px;
+    	margin-top:10px;
+    	height: 95px;
+    	width:70px;
+    	display: inline;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+    #wrapper {
+    	height: 228px;
+    }
+
+    #selected {
+    	border: 5px solid blue;
+    }
+</style>
+{%endblock%}
+
+
+<!-- Liste des moviemons capturés -->
+{% block content %}
+
+	<div id="wrapper">
+		{% for val in movies %}
+			<img class="movie" src="{% if val.catched %}{{ val.image }}{% else %}{% static "img/prout.png" %}{%endif%}" {% if forloop.first %}id="selected"{%endif%}>
+		{% endfor %}
+	</div>
+
+	<p id="text">A - More information<br/>select - Back</p>
+{% endblock %}
+
+{% block ButtonA_href%}{% if movies.0.catched %}{% url 'detail' id=pos %}{% endif %}{%endblock%}
+
+{% block ButtonRight_select %}{% url 'worldmap' %}{%endblock%}
+
+{% block ButtonRight_href%}{% url 'moviedex_pos' pos=next %}{%endblock%}
+
+{% block ButtonLeft_href%}{% url 'moviedex_pos' pos=past %}{%endblock%}

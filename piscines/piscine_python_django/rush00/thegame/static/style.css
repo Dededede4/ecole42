@@ -1,0 +1,22 @@
+#img_big_gameboy {
+    width: 1200px;
+    display: block;
+    margin: auto;
+    margin-top: -337px;
+}
+
+#contentZone {
+ 	top: 170px;
+ 	left: 410px;
+ 	position: relative;
+ 	border: 2px solid #000;
+ 	width: 377px;
+ 	height: 340px;
+ 	display: block;
+ 	background-color:#fff;
+}
+
+#contentZoneWrapper{
+	width: 1200px;
+	margin:auto;
+}

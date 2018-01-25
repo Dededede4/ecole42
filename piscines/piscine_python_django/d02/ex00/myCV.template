@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>{title}</title>
+		<style type="text/css">
+			table
+			{
+				border: solid;
+				border-collapse: collapse;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>{firstname} {lastname} ({age} ans)</h1>
+		<p>Profession : {profession}</p>
+		<table>
+			<tr>
+				<th>Sujet</th>
+				<th>Contenu</th>
+			</tr>
+			<tr>
+				<td>Compétences</td>
+				<td>
+					<ul>
+						<li>Je sais diriginer une companie de type interplanaitaire</li>
+						<li>Je sais faire des pâtes au beurre</li>
+						<li>HTML et CSS haut niveau</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>Parcours</td>
+				<td style="background-color: #424242;">
+					<ul>
+						<li>Facebook (10 ans)</li>
+						<li>Google (20 ans)</li>
+						<li>Twitter (3 jours)</li>
+						<li>École 42 (3 ans et 6 mois)</li>
+						<li>Brevet des collèges australien (12 ans)</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

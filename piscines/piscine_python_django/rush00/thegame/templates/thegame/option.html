@@ -1,0 +1,33 @@
+{% extends "thegame/base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+<style>
+	#contentZone{
+            background-image: url("{% static "img/justborder.png" %}");
+            background-position: bottom;
+            background-repeat: no-repeat;
+    }
+    #title {
+    	position: relative;
+    	left:75px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+    #text {
+    	position: relative;
+    	left:20px;
+    	top:170px;
+    	font-family: "gameboy", Helvetica, Arial, sans-serif;
+    }
+
+</style>
+{%endblock%}
+
+{% block content %}
+	<h1 id="title">OPTIONS</h1>
+	<p id="text">A - Save<br/>B - Quit<br/>start - Cancel</p>
+{% endblock %}
+
+{% block ButtonRight_start %}{% url 'worldmap' %}{%endblock%}
+{% block ButtonA_href%}{% url 'save_list' %}{%endblock%}
+{% block ButtonB_href%}{% url 'title_screen' %}{%endblock%}

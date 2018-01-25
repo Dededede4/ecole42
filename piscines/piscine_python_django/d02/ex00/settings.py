@@ -1,0 +1,5 @@
+firstname = "Émile"
+lastname = "PRÉVOT"
+title = "Mon super CV"
+age = "25"
+profession = "développeur"
