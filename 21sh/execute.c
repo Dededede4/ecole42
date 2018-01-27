@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <unistd.h>
 void ft_uintput(unsigned int *str);
 unsigned int	*ft_uintdup(unsigned int *s1);
 unsigned int	*ft_uintnew(size_t size);
@@ -244,6 +244,7 @@ t_instruct *command2instruct(t_command *command)
 	if (!token)
 		return NULL; // ?
 	instruct = ft_memalloc(sizeof(*instruct));
+	instruct->pipe_from_fd = 1;
 	instruct->program_name = token->str;
 	first_instruct = instruct;
 
@@ -257,6 +258,7 @@ t_instruct *command2instruct(t_command *command)
 				arg = NULL;
 				token = token->next;
 				instruct->next = ft_memalloc(sizeof(*instruct));
+				instruct->pipe_from_fd = 1;
 				instruct = instruct->next;
 				instruct->program_name = ft_uintdup(token->str);
 			}
@@ -287,7 +289,7 @@ t_instruct *command2instruct(t_command *command)
 	while(instruct)
 	{
 		arg = instruct->program_args;
-		lastarg = arg;
+		lastarg = NULL;
 		while (arg && arg->next)
 		{
 			// TODO obtenir les FD et juste donner des FD
@@ -301,11 +303,9 @@ t_instruct *command2instruct(t_command *command)
 			}
 			
 			// On note les <<
-			ft_putstr("-->");
-			ft_uintput(arg->str);
-			ft_putstr("<-->");
-			ft_uintput(arg->next->str);
-			ft_putstr("<--");
+			
+			/*ft_uintput(arg->next->str);
+			ft_putstr("<--");*/
 			if ('<' == *arg->str && '<' == *arg->next->str)
 			{
 				ft_printf("go\n");
@@ -339,13 +339,24 @@ t_instruct *command2instruct(t_command *command)
 			// on note les |
 			if ('|' == *arg->str && arg->next && '|' != *arg->next->str)
 			{
-				lastarg->next = NULL;
 				arg = arg->next; // TODO fuite mém
-				instruct->next = ft_memalloc(sizeof(*(instruct->next)));
-				instruct->next->program_name = arg->str;
-				instruct->next->program_args = arg->next;
-				arg = instruct->next->program_args;
-				instruct = instruct->next;
+				if (lastarg == NULL)
+				{
+					instruct->program_args = NULL;
+				}
+				else
+				{
+					lastarg->next = NULL;
+				}
+				
+				instruct->pipe_to_instruct = ft_memalloc(sizeof(*(instruct->pipe_to_instruct)));
+				instruct->pipe_to_instruct->program_name = arg->str;
+				if (arg->next && '|' != *arg->next->str)
+					instruct->pipe_to_instruct->program_args = arg->next;
+				/*ft_printf("\n\n\n");
+				ft_uintput(instruct->pipe_to_instruct->program_name);
+				ft_printf("\n\n\n");*/
+				instruct = instruct->pipe_to_instruct;
 			}
 			
 			// on note les  >&- et les aggrégations de descripteurs de fichiers
@@ -357,32 +368,19 @@ t_instruct *command2instruct(t_command *command)
 	return (first_instruct);
 }
 
-
-/*
-Si stdin = 42, alors "42" doit être le fd "1" du programme enfant
-Si stdout = 23, alors "23" doit être le fd "2" du programme enfant
-*/
-void		ft_execwait_std(char *path, char **av, int stdin/*, int stdout*/)
+void		ft_execwait(char *path, char **av)
 {
 	pid_t	father;
 	int		osef;
 	char	**pcur;
 
-	t_restore();
 	osef = 0;
 	father = fork();
 	if (father > 0)
-	{
 		wait(&osef);
-		t_init();
-	}
 	else
 	{
-		if (dup2(stdin, STDIN_FILENO) == -1) {
-          perror("dup2");
-          return;
-        }
-        close(stdin);
+
 		pcur = ft_getpcur();
 		execve(path, av, pcur);
 		ft_strsplit_del(&pcur);
@@ -415,22 +413,71 @@ char 			**instruct_to_agrv(t_instruct *instruct)
 	return argv;
 }
 
+void exec_instrut_simple(t_instruct *instruct)
+{
+	char 		*tmp;
+
+	tmp = ft_uint_to_char(instruct->program_name);
+
+	ft_execwait(tmp, instruct_to_agrv(instruct));
+}
+
+t_instruct *instructs_pipe_chain(t_instruct *instruct, int savefd0, int savefd1, int fd)
+{
+	int 	p[2];
+	int 	tmp;
+
+	if (instruct->pipe_to_instruct)
+	{
+		if (-1 == fd)
+		{
+			pipe(p);
+		    dup2(p[1], 1);
+			exec_instrut_simple(instruct);
+			close(p[1]);
+			return instructs_pipe_chain(instruct->pipe_to_instruct, savefd0, savefd1, p[0]);
+		}
+		else
+		{
+			dup2(fd, 0);
+		    pipe(p);
+		    dup2(p[1], 1);
+			exec_instrut_simple(instruct);
+		    close(p[1]);
+
+			return instructs_pipe_chain(instruct->pipe_to_instruct, savefd0, savefd1, p[0]);	
+		}
+	}
+	else
+	{
+		//exit(0);
+		dup2(fd, 0);
+		dup2(savefd1, 1);
+		
+		exec_instrut_simple(instruct);
+		dup2(savefd0, 0);
+		//exit(0);
+		return instruct->next;
+	}
+}
+
+
 void	execute(t_command *command)
 {
 	t_instruct	*instruct = command2instruct(command);
 	t_token		*token;
-	char 		*tmp;
+	
 	while(instruct)
 	{
-		//ft_printf("\nIl faut executer ");
+		if (instruct->pipe_to_instruct)
+		{
+			instruct = instructs_pipe_chain(instruct, dup(0), dup(1), -1);
+		}
+		else
+		{
+			exec_instrut_simple(instruct);
+			instruct = instruct->next;
+		}
 		
-		tmp = ft_uint_to_char(instruct->program_name);
-
-		ft_execwait_std(tmp, instruct_to_agrv(instruct), instruct->pipe_from_fd);
-
-		//ft_uintput(instruct->program_name);
-		//ft_printf("et le printer vers le fd %i", instruct->pipe_from_fd);
-		//ft_putstr("\n");
-		instruct = instruct->next;
 	}
 }
