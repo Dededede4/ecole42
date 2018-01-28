@@ -462,7 +462,7 @@ t_bool display_input_validate(unsigned int buff, t_command **command)
 		ft_uintput(((t_command *)(*command))->str);
 		ft_printf("\n");*/
 		execute(*command);
-		ft_putstr("$ ");
+		ft_putstr("$> ");
 		if(NULL == ((t_command *)(*command))->str || '\0' == ((t_command *)(*command))->str[0])
 			return (TRUE);
 		(*command)->pos = ft_uintlen((*command)->str);
@@ -670,12 +670,16 @@ char 	*display_input_heredoc(char *stop)
 			{
 				ft_memdel(&line);
 				t_init();
+
 				return (!input ? ft_strdup("") : input);
 			}
 			if (!input)
+			{
 				input = ft_strdup(line);
+				input = ft_strjoin_multi(TRUE, input, ft_strdup("\n"), NULL);
+			}
 			else
-				input = ft_strjoin_multi(FALSE, input, ft_strdup("\n"), line, NULL);
+				input = ft_strjoin_multi(TRUE, input, line, ft_strdup("\n"), NULL);
 			ft_putstr("heredoc> ");
 		}
 		else
@@ -687,12 +691,13 @@ void display_input(t_command **command)
 {
 	unsigned int buff;
 	unsigned int *clipboard;
+	int test;
 
 	buff = 0;
 	clipboard = NULL;
-	ft_putstr("$ ");
+	ft_putstr("$> ");
 	while (1) {
-		if (read(STDIN_FILENO, &buff, 1) > 0)
+		if (test = read(STDIN_FILENO, &buff, 1) > 0)
 		{
 			complete_buff(&buff);
 			//ft_printf("%b\n", buff);
@@ -712,6 +717,11 @@ void display_input(t_command **command)
 			//
 			else if (display_input_insert(buff, *command)) {cc_clear(*command);}
 
+		}
+		else
+		{
+			ft_printf("dsl mec");
+			exit(0);
 		}
 		buff = 0;
 	}

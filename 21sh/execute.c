@@ -41,8 +41,6 @@ unsigned int	*ft_uinttrim(unsigned int const *s)
 
 	if (!s)
 		return (NULL);
-	ft_printf("\nla->");
-	ft_uintput(s);
 	d = 0;
 	while (s[d] == ' ' || s[d] == '\t' || s[d] == '\n')
 		d++;
@@ -51,9 +49,16 @@ unsigned int	*ft_uinttrim(unsigned int const *s)
 	f = ft_uintlen(s) - 1;
 	while (s[f] == ' ' || s[f] == '\t' || s[f] == '\n')
 		f--;
-	ft_printf("\nla2->");
-	ft_uintput(s);
 	return (ft_uintsub(s, d, f - d + 1));
+}
+
+unsigned int		*ft_uinttrim_free(unsigned int **str)
+{
+	unsigned int	*tmp;
+
+	tmp = ft_uinttrim(*str);
+	ft_memdel((void**)str);
+	return (tmp);
 }
 
 size_t	get_word_pos(unsigned int *str, size_t start)
@@ -84,21 +89,14 @@ size_t	get_word_pos(unsigned int *str, size_t start)
 				// au milieu
 			}
 		}
-		else if ('\t' == str[i] || ' ' == str[i])
+		if ('\t' == str[i + 1] || ' ' == str[i + 1] || ';' == str[i + 1] || '>' == str[i + 1] ||  '<' == str[i + 1] || '|' == str[i + 1])
 		{
 			if (!quote)
 			{
-					return i;
+				return i;
 			}
 		}
-		else if ('\t' == str[i + 1] || ' ' == str[i + 1] || ';' == str[i + 1] || '>' == str[i + 1] ||  '<' == str[i + 1] || '|' == str[i + 1])
-		{
-			if (!quote)
-			{
-					return i;
-			}
-		}
-		else if (';' == str[i] || '>' == str[i] || '<' == str[i] || '|' == str[i])
+		if ('\t' == str[i] || ' ' == str[i] || ';' == str[i] || '>' == str[i] ||  '<' == str[i] || '|' == str[i])
 		{
 			if (!quote)
 			{
@@ -108,6 +106,27 @@ size_t	get_word_pos(unsigned int *str, size_t start)
 		i++;
 	}
 	return (i); // TODO ERREUR
+}
+
+unsigned int *clear_escapes_startend(unsigned int *str)
+{
+	unsigned int *cpy;
+	int i;
+
+	if ('\'' != str[0] && '"' != str[0])
+		return ft_uintdup(str);
+	// On retire le premier
+	i = 0;
+	cpy = ft_uintdup(str);
+	while(str[i + 1])
+	{
+		cpy[i] = str[i + 1];
+		i++;
+	}
+	// On retire le dernier
+	cpy[i - 1] = '\0';
+	return cpy;
+
 }
 
 unsigned int *clear_escapes(unsigned int *str)
@@ -138,8 +157,14 @@ unsigned int *clear_escapes(unsigned int *str)
 	}
 	str[new_i] = str[original_i];
 	str[new_i + 1] = '\0';
-	return str;
-
+	if (new_i > 2)
+	{
+		return clear_escapes_startend(str);
+	}
+	else
+	{
+		return str;
+	}
 }
 
 t_token		*tokenize(unsigned int *str) // todo char **;
@@ -162,8 +187,11 @@ t_token		*tokenize(unsigned int *str) // todo char **;
 	{
 		if (' ' != str[i] && '\t' != str[i])
 		{
-			stop = get_word_pos(str, i) + 1;
-			
+			stop = get_word_pos(str, i);
+			/*ft_putstr("(");
+			ft_uintputchar(str + i);
+			ft_uintputchar(str + stop);
+			ft_putstr(")");*/
 			if (NULL == token)
 			{
 				token = ft_memalloc(sizeof(*token));
@@ -174,9 +202,16 @@ t_token		*tokenize(unsigned int *str) // todo char **;
 				token->next = ft_memalloc(sizeof(*token));
 				token = token->next;
 			}
-			token->str = ft_memdup(str + i, (stop - i) * 4);
+
+			token->str = ft_memdup(str + i, (stop - i + 1) * 4);
+			
+			token->str = ft_uinttrim_free(&(token->str));
+			/*ft_putstr("(");
+			ft_uintput(token->str);
+			ft_putstr(")");*/
 			token->str = clear_escapes(token->str);
-			i = stop;
+			
+			i = stop + 1;
 		}
 		else
 			i++;
@@ -228,12 +263,26 @@ int			ft_atoi_uint(const unsigned int *str)
 		return (0 - result);
 }
 
+int 		heredoc(char *stop)
+{
+	char *str;
+	int p[2];
+
+	pipe(p);
+	str = display_input_heredoc(stop);
+	ft_putstr_fd(str, p[1]);
+	ft_strdel(&str);
+	close(p[1]);
+	return p[0];
+}
+
 t_instruct *command2instruct(t_command *command)
 {
 	size_t	i;
 	size_t end;
 	t_instruct	*instruct;
 	t_instruct	*first_instruct;
+	t_instruct *tmpinstruct;
 	t_token		*token;
 	t_token		*arg;
 	t_token		*lastarg;
@@ -244,7 +293,7 @@ t_instruct *command2instruct(t_command *command)
 	if (!token)
 		return NULL; // ?
 	instruct = ft_memalloc(sizeof(*instruct));
-	instruct->pipe_from_fd = 1;
+	instruct->pipe_to_fd = dup(1);
 	instruct->program_name = token->str;
 	first_instruct = instruct;
 
@@ -258,12 +307,12 @@ t_instruct *command2instruct(t_command *command)
 				arg = NULL;
 				token = token->next;
 				instruct->next = ft_memalloc(sizeof(*instruct));
-				instruct->pipe_from_fd = 1;
+				instruct->pipe_to_fd = dup(1);
 				instruct = instruct->next;
 				instruct->program_name = ft_uintdup(token->str);
 			}
 			else
-				return first_instruct;
+				break;
 			// fin de la commande
 		}
 		else // un argument normal
@@ -292,14 +341,26 @@ t_instruct *command2instruct(t_command *command)
 		lastarg = NULL;
 		while (arg && arg->next)
 		{
-			// TODO obtenir les FD et juste donner des FD
-
+			if (arg->ignore_me)
+			{
+				arg = arg->next;
+				continue;
+			}
 			// On va noter les >>
 			if ('>' == *arg->str && '>' == *arg->next->str)
 			{
 				if (!arg->next->next){} // TODO error
-				instruct->pipe_to_file = arg->next->next->str;
+				instruct->pipe_to_file = ft_uint_to_char(arg->next->next->str);
 				instruct->replace_file = FALSE;
+				if (0 == ft_uintcmp(lastarg->str, L"2"))
+				{
+					instruct->aggregate_fd = TRUE;
+					lastarg->ignore_me = TRUE;
+				}
+
+				arg->ignore_me = TRUE;
+				arg->next->ignore_me = TRUE;
+				arg->next->next->ignore_me = TRUE;
 			}
 			
 			// On note les <<
@@ -308,11 +369,16 @@ t_instruct *command2instruct(t_command *command)
 			ft_putstr("<--");*/
 			if ('<' == *arg->str && '<' == *arg->next->str)
 			{
-				ft_printf("go\n");
+				arg->ignore_me = TRUE;
+				arg->next->ignore_me = TRUE;
+				
 				if (arg->next->next)
-					instruct->pipe_from_str = display_input_heredoc(ft_uint_to_char(arg->next->next->str));
+				{
+					instruct->pipe_from_fd = heredoc(ft_uint_to_char(arg->next->next->str));
+					arg->next->next->ignore_me = TRUE;
+				}
 				else
-					instruct->pipe_from_str = display_input_heredoc("<<");
+					instruct->pipe_from_fd = heredoc("<<");
 				// TODO il faut une fonction de type ft_uinttoi
 				/*if (!arg->next->next){} // TODO error
 				instruct->pipe_form_fd = arg->next->next->str;*/
@@ -322,17 +388,27 @@ t_instruct *command2instruct(t_command *command)
 			// on note les >
 			if ('>' == *arg->str && '>' != *arg->next->str)
 			{
-				if (!arg->next->next){} // TODO error
-				instruct->pipe_to_file = arg->next->next->str;
+				if (!arg->next){} // TODO error
+				if (0 == ft_uintcmp(lastarg->str, L"2"))
+				{
+					instruct->aggregate_fd = TRUE;
+					lastarg->ignore_me = TRUE;
+				}
+				instruct->pipe_to_file = ft_uint_to_char(arg->next->str);//
 				instruct->replace_file = TRUE;
+
+				arg->ignore_me = TRUE;
+				arg->next->ignore_me = TRUE;
 			}
 
 			// on note les <
 			if ('<' == *arg->str && '<' != *arg->next->str)
 			{
 				if (!arg->next->next){} // TODO error
-				tmp = ft_uint_to_char(arg->next->str);
-				instruct->pipe_from_fd = open(tmp, O_RDONLY);
+				instruct->pipe_from_file = ft_uint_to_char(arg->next->str);//
+
+				arg->ignore_me = TRUE;
+				arg->next->ignore_me = TRUE;
 			}
 
 
@@ -348,8 +424,9 @@ t_instruct *command2instruct(t_command *command)
 				{
 					lastarg->next = NULL;
 				}
-				
+				tmpinstruct = instruct->next;
 				instruct->pipe_to_instruct = ft_memalloc(sizeof(*(instruct->pipe_to_instruct)));
+				instruct->pipe_to_instruct->pipe_to_fd = dup(1);
 				instruct->pipe_to_instruct->program_name = arg->str;
 				if (arg->next && '|' != *arg->next->str)
 					instruct->pipe_to_instruct->program_args = arg->next;
@@ -357,6 +434,7 @@ t_instruct *command2instruct(t_command *command)
 				ft_uintput(instruct->pipe_to_instruct->program_name);
 				ft_printf("\n\n\n");*/
 				instruct = instruct->pipe_to_instruct;
+				instruct->next = tmpinstruct;
 			}
 			
 			// on note les  >&- et les aggrégations de descripteurs de fichiers
@@ -398,7 +476,8 @@ char 			**instruct_to_agrv(t_instruct *instruct)
 	size = 0;
 	while(arg)
 	{
-		size++;
+		if (!arg->ignore_me)
+			size++;
 		arg = arg->next;
 	}
 	arg = instruct->program_args;
@@ -407,22 +486,152 @@ char 			**instruct_to_agrv(t_instruct *instruct)
 	argv[i++] = ft_uint_to_char(instruct->program_name);
 	while(arg)
 	{
-		argv[i++] = ft_uint_to_char(arg->str);
+		if (!arg->ignore_me)
+			argv[i++] = ft_uint_to_char(arg->str);
 		arg = arg->next;
 	}
 	return argv;
 }
 
+
+
+
+
+void		putargv(char **argv)
+{
+	int i;
+
+	i = 1;
+	while (argv[i])
+	{
+		ft_putstr(argv[i]);
+		if (NULL != argv[i + 1])
+			ft_putchar(' ');
+		i++;
+	}
+	ft_putchar('\n');
+}
+
+void		log_and_chdir(char *path)
+{
+	char	*absolute;
+	char	*save;
+
+	if (!path)
+		return ;
+	save = ft_strdup(path);
+	absolute = getcwd(ft_strnew(256), 256);
+	ft_setenv("OLDPWD", absolute, TRUE);
+	ft_strdel(&absolute);
+	chdir(save);
+	ft_strdel(&save);
+	absolute = getcwd(ft_strnew(256), 256);
+	ft_setenv("PWD", absolute, TRUE);
+	ft_strdel(&absolute);
+}
+
+void		execbuiltin_cd(char **argv)
+{
+	if (!argv[1] && ft_getenv("HOME"))
+		log_and_chdir(ft_getenv("HOME"));
+	else if (ft_strequ(argv[1], "-"))
+		log_and_chdir(ft_getenv("OLDPWD"));
+	else if (argv[1])
+		log_and_chdir(argv[1]);
+}
+
+t_bool		execbuiltin(char **argv)
+{
+	if (ft_strequ(argv[0], "cd"))
+		execbuiltin_cd(argv);
+	else if (ft_strequ(argv[0], "exit"))
+	{
+		ft_strsplit_del(&argv);
+		ft_delallenv();
+		exit(0);
+	}
+	else if (ft_strequ(argv[0], "echo"))
+		putargv(argv);
+	else if (ft_strequ(argv[0], "setenv") && argv[1] && argv[2])
+		ft_setenv(argv[1], argv[2], 1);
+	else if (ft_strequ(argv[0], "export") && argv[1])
+		ft_putenv(argv[1]);
+	else if (ft_strequ(argv[0], "unsetenv") && argv[1])
+		ft_delenv(argv[1]);
+	else if (ft_strequ(argv[0], "env"))
+		ft_displayenv();
+	else
+		return (FALSE);
+	return (TRUE);
+}
+
+
+void		instruct_file2fd(t_instruct *instruct)
+{
+	char val;
+
+	val = O_WRONLY | O_CREAT;
+	if (instruct->pipe_from_file)
+	{
+		instruct->pipe_from_fd = open(instruct->pipe_from_file, O_RDONLY);
+	}
+	if (instruct->pipe_to_file)
+	{
+		val = val | O_TRUNC;
+	}
+	else 
+	{
+		val = val | O_APPEND;
+	}
+
+	if (ft_strequ(instruct->pipe_to_file, "&1"))
+	{
+		ft_strdel(&(instruct->pipe_to_file));
+		instruct->pipe_to_file = NULL;
+		instruct->pipe_to_fd = dup(1);
+	}
+	else if (ft_strequ(instruct->pipe_to_file, "&-"))
+	{
+		instruct->pipe_to_fd = open("/dev/null", O_WRONLY);
+	}
+	else if (instruct->pipe_to_file)
+	{
+		instruct->pipe_to_fd = open(instruct->pipe_to_file, val, 0755);
+	}
+
+}
+
+void		instruct_file2fd_chain(t_instruct *instruct)
+{
+	while (instruct)
+	{
+		instruct_file2fd(instruct);
+		instruct = instruct->pipe_to_instruct;
+	}	
+}
+
+
 void exec_instrut_simple(t_instruct *instruct)
 {
 	char 		*tmp;
+	char	*whereis;
+	t_bool	isbuildin;
 
 	tmp = ft_uint_to_char(instruct->program_name);
-
-	ft_execwait(tmp, instruct_to_agrv(instruct));
+	whereis = ft_whereis(tmp);
+	isbuildin = execbuiltin(instruct_to_agrv(instruct));
+	if (!isbuildin && !whereis)
+	{
+		ft_strdel(&whereis);
+		ft_putstr_error("Command no found.\n");
+		return ;
+	}
+	if (!isbuildin)
+		ft_execwait(whereis, instruct_to_agrv(instruct));
+	ft_strdel(&whereis); 
 }
 
-t_instruct *instructs_pipe_chain(t_instruct *instruct, int savefd0, int savefd1, int fd)
+t_instruct *instructs_pipe_chain(t_instruct *instruct, int savefd0, int savefd1, int savefd2, int fd)
 {
 	int 	p[2];
 	int 	tmp;
@@ -432,33 +641,77 @@ t_instruct *instructs_pipe_chain(t_instruct *instruct, int savefd0, int savefd1,
 		if (-1 == fd)
 		{
 			pipe(p);
+			dup2(instruct->pipe_from_fd, 0);
+			if (instruct->aggregate_fd)
+			{
+				dup2(p[1], 2);
+			}
 		    dup2(p[1], 1);
 			exec_instrut_simple(instruct);
 			close(p[1]);
-			return instructs_pipe_chain(instruct->pipe_to_instruct, savefd0, savefd1, p[0]);
+			dup2(savefd2, 2);
+			close(instruct->pipe_from_fd);
+			return instructs_pipe_chain(instruct->pipe_to_instruct, savefd0, savefd1, savefd2, p[0]);
 		}
 		else
 		{
 			dup2(fd, 0);
 		    pipe(p);
 		    dup2(p[1], 1);
+		    if (instruct->aggregate_fd)
+			{
+				dup2(p[1], 2);
+			}
 			exec_instrut_simple(instruct);
 		    close(p[1]);
+		    dup2(savefd2, 2);
 
-			return instructs_pipe_chain(instruct->pipe_to_instruct, savefd0, savefd1, p[0]);	
+			return instructs_pipe_chain(instruct->pipe_to_instruct, savefd0, savefd1, savefd2, p[0]);	
 		}
 	}
 	else
 	{
 		//exit(0);
 		dup2(fd, 0);
-		dup2(savefd1, 1);
-		
+		dup2(instruct->pipe_to_fd, 1);
+		if (instruct->aggregate_fd)
+		{
+			dup2(instruct->pipe_to_fd, 2);
+		}
 		exec_instrut_simple(instruct);
 		dup2(savefd0, 0);
+		dup2(savefd1, 1);
+		dup2(savefd2, 2);
+		
 		//exit(0);
 		return instruct->next;
 	}
+}
+
+t_instruct	*instruct_pipe_fd(t_instruct *instruct)
+{
+	int savefd2;
+	int savefd1;
+	int savefd0;
+
+
+	savefd0 = dup(0);
+	savefd1 = dup(1);
+	savefd2 = dup(2);
+	if (instruct->aggregate_fd)
+	{
+		dup2(instruct->pipe_to_fd, 2);
+	}
+	dup2(instruct->pipe_to_fd, 1);
+	dup2(instruct->pipe_from_fd, 0);
+	exec_instrut_simple(instruct);
+	close(instruct->pipe_to_fd);
+	close(instruct->pipe_from_fd);
+	
+	dup2(savefd0, 0);
+	dup2(savefd1, 1);
+	dup2(savefd2, 2);
+	return instruct->next;
 }
 
 
@@ -471,13 +724,21 @@ void	execute(t_command *command)
 	{
 		if (instruct->pipe_to_instruct)
 		{
-			instruct = instructs_pipe_chain(instruct, dup(0), dup(1), -1);
+			instruct_file2fd_chain(instruct);
+			instruct = instructs_pipe_chain(instruct, dup(0), dup(1), dup(2), -1);
 		}
 		else
 		{
-			exec_instrut_simple(instruct);
-			instruct = instruct->next;
-		}
-		
+			if (instruct->pipe_from_file || instruct->pipe_to_file)
+			{
+				instruct_file2fd_chain(instruct);
+				instruct = instruct_pipe_fd(instruct);
+			}
+			else
+			{
+				exec_instrut_simple(instruct);
+				instruct = instruct->next;	
+			}
+		}		
 	}
 }

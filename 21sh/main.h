@@ -26,6 +26,7 @@ typedef struct			s_container
 typedef struct			s_token
 {
 	unsigned int 		*str;
+	t_bool				ignore_me;
 	struct s_token		*next;
 }						t_token;
 
@@ -37,9 +38,10 @@ typedef struct			s_instruct
 	int 				pipe_from_fd;
 	char 				*pipe_from_str;
 	struct s_instruct	*pipe_to_instruct;
-	unsigned int		*pipe_to_file;
 	t_bool				replace_file;
 unsigned int		*pipe_from_file;
+unsigned int		*pipe_to_file;
+t_bool				aggregate_fd;
 //	int					stdrr;
 //	int					stdin;
 //	int					stout;

@@ -4,7 +4,23 @@ remottre le ft_foreach
 
 à faire rapidement :
 
-quand on est en début de ligne et qu'on appuie sur entrée, peut-être qu'il faut créer une nouvelle ligne ?
+- 
+
+
+
+Reste à faire :
+
+
+- Se déplacer de mot à mot
+- Se déplacer de ligne en ligne
+
+- Ctrl C / Ctrl D
 
 - bloquer la flèche droite si on a pas taper de texte (et bloquer les flèches pour pas qu'elles aillent se balader partout)
-- 
+
+- virer les tabulation
+
+- Les fuites mémoires
+
+- Norme
+
