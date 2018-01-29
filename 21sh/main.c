@@ -1,4 +1,5 @@
 #include "main.h"
+#include<signal.h>
 
 void cc_clear(t_command *command)
 {
@@ -360,15 +361,76 @@ t_bool display_input_left(unsigned int buff, t_command *command)
 
 t_bool display_input_right(unsigned int buff, t_command *command)
 {
+	struct winsize w;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+
 	if (4414235 == buff)
 	{
 		if (command->pos == ft_uintlen(command->str))
 			return (TRUE);
-		if (t_move_right())
-			command->pos++;
+
+
+	    if ((command->pos < w.ws_col && command->pos + 3 == w.ws_col) ||
+	    	command->pos > w.ws_col && command->pos % w.ws_col == 0)
+	    {
+	        tputs(tgetstr("do", NULL), 1, ft_putchar);
+	        tputs(tgoto(tgetstr("ch", NULL), 0, 0), 1, ft_putchar);//ch
+	        tputs(tgetstr("nd", NULL), 1, ft_putchar);
+	    }
+	    else
+	        tputs(tgetstr("nd", NULL), 1, ft_putchar);
+		command->pos++;
 		return (TRUE);
 	}
 	return (FALSE);
+}
+
+t_bool display_input_supermoves(unsigned int buff, t_command *command)
+{
+	struct winsize w;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	int i;
+
+	i = 0;
+	//ft_putchar(buff);
+	if(buff == 1096489755) // haut
+	{
+		while (i < w.ws_col)
+		{
+			display_input_left(4479771, command);
+			i++;
+		}
+		return TRUE;
+	}
+	if(buff == 1113266971) // bas
+	{
+		while (i < w.ws_col)
+		{
+			display_input_right(4414235, command);
+			i++;
+		}
+		return TRUE;
+	}
+	if (buff == 1130044187) // droite
+	{
+		display_input_right(4414235, command);
+		while (command->pos < ft_uintlen(command->str) && ' ' != command->str[command->pos])
+		{
+			display_input_right(4414235, command);
+		}
+		return TRUE;
+	}
+	if (buff == 1146821403)// gauche
+	{
+		if (command->pos != 0)
+			display_input_left(4479771, command);
+		while (command->pos != 0 && ' ' != command->str[command->pos])
+		{
+			display_input_left(4479771, command);
+		}
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void clear_input(t_command *command)
@@ -629,6 +691,22 @@ void complete_buff(unsigned int *buff)
 			if (68 == newbuff) // gauche
 				*buff = 4479771;
 		}
+		else if(27 == newbuff)
+		{
+			read(STDIN_FILENO, &newbuff, 1);
+			if (91 == newbuff)
+			{
+				read(STDIN_FILENO, &newbuff, 1);
+				if (65 == newbuff) // haut
+					*buff = 1096489755;
+				if (66 == newbuff) // bas
+					*buff = 1113266971;
+				if (67 == newbuff) // droite
+					*buff = 1130044187;
+				if (68 == newbuff) // gauche
+					*buff = 1146821403;
+			}
+		}
 		else if ('c' == newbuff || 'p' == newbuff || 'C' == newbuff || 's' == newbuff) // copy, paste, cut
 		{
 			*buff = *buff << 8;
@@ -687,6 +765,74 @@ char 	*display_input_heredoc(char *stop)
 	}
 }
 
+
+void sig_handler(int signo)
+{
+    if (signo == SIGINT)
+    {
+        //printf("received SIGINT\n");
+    }
+    if (signo == SIGQUIT)
+    {
+    	// printf("received SIGQUIT\n");
+    }
+    /*else if (signo == SIGKILL)
+        printf("received SIGKILL\n");
+    else if (signo == SIGSTOP)
+        printf("received SIGSTOP\n");*/
+}
+
+
+void enable_signals()
+{
+	signal(SIGINT, sig_handler);
+	//signal(SIGQUIT, sig_handler);
+}
+
+
+
+
+
+void display_input(t_command **command)
+{
+	unsigned int buff;
+	unsigned int *clipboard;
+
+	buff = 0;
+	clipboard = NULL;
+	ft_putstr("$> ");
+	while (read(STDIN_FILENO, &buff, 1) > 0) {
+		if ('\t' == buff)
+		{
+			buff = 0;
+			continue;
+		}
+		if (4 == buff)
+			return ;
+		complete_buff(&buff);
+		if (27 == buff)
+		{
+			ft_printf("ah ?");
+			cc_clear(*command);
+			continue ;
+		}
+
+		//ft_printf("\n%b - %d\n", buff, buff);
+		if (display_input_ondelete(buff, *command)) {cc_clear(*command);}
+		else if (display_input_validate(buff, command)) {cc_clear(*command);}
+		else if (display_input_supermoves(buff, *command)){}
+		else if (display_input_left(buff, *command)) {}
+		else if (display_input_right(buff, *command)) {}
+
+		else if (display_input_historic(buff, *command)) {cc_clear(*command);}
+		else if (display_input_copypast(buff, *command, &clipboard)) {}
+		//
+		else if (display_input_insert(buff, *command)) {cc_clear(*command);}
+		buff = 0;
+	}
+}
+
+/*
 void display_input(t_command **command)
 {
 	unsigned int buff;
@@ -725,7 +871,7 @@ void display_input(t_command **command)
 		}
 		buff = 0;
 	}
-}
+}*/
 
 
 unsigned int *              shell_input()
@@ -736,6 +882,7 @@ unsigned int *              shell_input()
 	t_save();
 	t_init();
 	t_enable_insert_mode();
+	enable_signals();
 	display_input(&command);
 	return ft_uintnew(0);
 }
@@ -745,6 +892,7 @@ int              main(int argc, char **argv, char **environ)
 	(void)argc;
 	(void)argv;
 	ft_loadenv(environ);
+	
 	shell_input();
 	return (0);
 }
