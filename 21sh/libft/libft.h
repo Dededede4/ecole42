@@ -277,7 +277,7 @@ void					ft_delenv(char *name);
 void					ft_delallenv();
 char					*ft_strdup_len(char *str, size_t len);
 char					*ft_whereis(char *cmd_name);
-void					ft_execwait(char *path, char **av);
+//void					ft_execwait(char *path, char **av);
 int						ft_countenv(void);
 char					**ft_getpcur(void);
 #endif

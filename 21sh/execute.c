@@ -284,12 +284,15 @@ t_instruct *command2instruct(t_command *command)
 	t_instruct	*first_instruct;
 	t_instruct *tmpinstruct;
 	t_token		*token;
+	t_token		*first_token;
+	t_token		*first_token_tmp;
 	t_token		*arg;
 	t_token		*lastarg;
 	char 		*tmp;
 
 	arg = NULL;
 	token = tokenize(command->str);
+	first_token = token;
 	if (!token)
 		return NULL; // ?
 	instruct = ft_memalloc(sizeof(*instruct));
@@ -330,6 +333,13 @@ t_instruct *command2instruct(t_command *command)
 			arg->str = ft_uintdup(token->str);
 		}
 		token = token->next;
+	}
+	while (first_token)
+	{
+		first_token_tmp = first_token->next;
+		ft_memdel(first_token->str);
+		ft_memdel(first_token);
+		first_token = first_token_tmp;
 	}
 
 	// Maintenant on va convertir les redirections

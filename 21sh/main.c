@@ -216,10 +216,11 @@ void			t_init()
 
 	if ((name_term = ft_getenv("TERM")) == NULL)
 		exit(0);
-	if (tgetent(NULL, name_term) == ERR)
-		exit(0);
+	/*if (tgetent(NULL, name_term) == ERR)
+		exit(0);*/
 	if (tcgetattr(0, &term) == -1)
 		exit(0);
+
 	term.c_lflag &= ~(ICANON);
 	term.c_lflag &= ~(ECHO);
 	term.c_cc[VMIN] = 1;
@@ -375,7 +376,7 @@ t_bool display_input_right(unsigned int buff, t_command *command)
 	    {
 	        tputs(tgetstr("do", NULL), 1, ft_putchar);
 	        tputs(tgoto(tgetstr("ch", NULL), 0, 0), 1, ft_putchar);//ch
-	        tputs(tgetstr("nd", NULL), 1, ft_putchar);
+	        tputs(tgetstr("nd", NULL), 1, ft_putchar); //?
 	    }
 	    else
 	        tputs(tgetstr("nd", NULL), 1, ft_putchar);
@@ -831,47 +832,6 @@ void display_input(t_command **command)
 		buff = 0;
 	}
 }
-
-/*
-void display_input(t_command **command)
-{
-	unsigned int buff;
-	unsigned int *clipboard;
-	int test;
-
-	buff = 0;
-	clipboard = NULL;
-	ft_putstr("$> ");
-	while (1) {
-		if (test = read(STDIN_FILENO, &buff, 1) > 0)
-		{
-			complete_buff(&buff);
-			//ft_printf("%b\n", buff);
-			if (27 == buff)
-			{
-				ft_printf("ah ?");
-				cc_clear(*command);
-				continue ;
-			}
-			//ft_printf("\n%b - %d\n", buff, buff);
-			if (display_input_ondelete(buff, *command)) {cc_clear(*command);}
-			else if (display_input_validate(buff, command)) {cc_clear(*command);}
-			else if (display_input_left(buff, *command)) {}
-			else if (display_input_right(buff, *command)) {}
-			else if (display_input_historic(buff, *command)) {cc_clear(*command);}
-			else if (display_input_copypast(buff, *command, &clipboard)) {}
-			//
-			else if (display_input_insert(buff, *command)) {cc_clear(*command);}
-
-		}
-		else
-		{
-			ft_printf("dsl mec");
-			exit(0);
-		}
-		buff = 0;
-	}
-}*/
 
 
 unsigned int *              shell_input()
