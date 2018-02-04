@@ -108,23 +108,24 @@ size_t	get_word_pos(unsigned int *str, size_t start)
 	return (i); // TODO ERREUR
 }
 
-unsigned int *clear_escapes_startend(unsigned int *str)
+unsigned int *clear_escapes_startend(unsigned int **str)
 {
 	unsigned int *cpy;
 	int i;
 
-	if ('\'' != str[0] && '"' != str[0])
-		return ft_uintdup(str);
+	if ('\'' != (*str)[0] && '"' != (*str)[0])
+		return ft_uintdup((*str));
 	// On retire le premier
 	i = 0;
-	cpy = ft_uintdup(str);
-	while(str[i + 1])
+	cpy = ft_uintdup((*str));
+	while((*str)[i + 1])
 	{
-		cpy[i] = str[i + 1];
+		cpy[i] = (*str)[i + 1];
 		i++;
 	}
 	// On retire le dernier
 	cpy[i - 1] = '\0';
+	ft_memdel(str);
 	return cpy;
 
 }
@@ -159,7 +160,7 @@ unsigned int *clear_escapes(unsigned int *str)
 	str[new_i + 1] = '\0';
 	if (new_i > 2)
 	{
-		return clear_escapes_startend(str);
+		return clear_escapes_startend(&str);
 	}
 	else
 	{
@@ -276,6 +277,18 @@ int 		heredoc(char *stop)
 	return p[0];
 }
 
+t_token *deltoken(t_token **delme)
+{
+	t_token *next;
+
+	next = (*delme)->next;
+	ft_memdel(&((*delme)->str));
+	ft_memdel(delme);
+	return next;
+}
+
+t_token *test = NULL;
+
 t_instruct *command2instruct(t_command *command)
 {
 	size_t	i;
@@ -287,6 +300,7 @@ t_instruct *command2instruct(t_command *command)
 	t_token		*arg;
 	t_token		*lastarg;
 	char 		*tmp;
+
 
 	arg = NULL;
 	token = tokenize(command->str);
@@ -305,7 +319,7 @@ t_instruct *command2instruct(t_command *command)
 			if (token->next)
 			{
 				arg = NULL;
-				token = token->next;
+				token = deltoken(token);
 				instruct->next = ft_memalloc(sizeof(*instruct));
 				instruct->pipe_to_fd = dup(1);
 				instruct = instruct->next;
@@ -329,7 +343,7 @@ t_instruct *command2instruct(t_command *command)
 			}
 			arg->str = ft_uintdup(token->str);
 		}
-		token = token->next;
+		token = deltoken(token);
 	}
 
 	// Maintenant on va convertir les redirections
@@ -415,7 +429,7 @@ t_instruct *command2instruct(t_command *command)
 			// on note les |
 			if ('|' == *arg->str && arg->next && '|' != *arg->next->str)
 			{
-				arg = arg->next; // TODO fuite mém
+				arg = arg->next; // TODO test
 				if (lastarg == NULL)
 				{
 					instruct->program_args = NULL;
@@ -610,25 +624,41 @@ void		instruct_file2fd_chain(t_instruct *instruct)
 	}	
 }
 
+void	del_argv(char **argv)
+{
+	int i = 0;
+
+	while (argv[i])
+	{
+		ft_memdel(&(argv[i]));
+		i++;
+	}
+	ft_memdel(argv);
+}
 
 void exec_instrut_simple(t_instruct *instruct)
 {
 	char 		*tmp;
 	char	*whereis;
 	t_bool	isbuildin;
+	char 			**argv;
 
 	tmp = ft_uint_to_char(instruct->program_name);
 	whereis = ft_whereis(tmp);
-	isbuildin = execbuiltin(instruct_to_agrv(instruct));
+	ft_memdel(&tmp);
+	argv = instruct_to_agrv(instruct);
+	isbuildin = execbuiltin(argv);
 	if (!isbuildin && !whereis)
 	{
 		ft_strdel(&whereis);
 		ft_putstr_error("Command no found.\n");
+		del_argv(argv);
 		return ;
 	}
 	if (!isbuildin)
-		ft_execwait(whereis, instruct_to_agrv(instruct));
+		ft_execwait(whereis, argv);
 	ft_strdel(&whereis); 
+	del_argv(argv);
 }
 
 t_instruct *instructs_pipe_chain(t_instruct *instruct, int savefd0, int savefd1, int savefd2, int fd)
@@ -719,7 +749,10 @@ void	execute(t_command *command)
 {
 	t_instruct	*instruct = command2instruct(command);
 	t_token		*token;
-	
+	t_instruct 	*first;
+	t_instruct 	*tmp;
+
+	first = instruct;
 	while(instruct)
 	{
 		if (instruct->pipe_to_instruct)
@@ -739,6 +772,20 @@ void	execute(t_command *command)
 				exec_instrut_simple(instruct);
 				instruct = instruct->next;	
 			}
-		}		
+		}
+	}
+
+	instruct = first;
+	while (instruct)
+	{
+		tmp = instruct->next;
+		ft_memdel(&instruct->program_name);
+		ft_memdel(&instruct->program_args);
+		ft_memdel(&instruct->pipe_from_str);
+		ft_memdel(&instruct->pipe_to_instruct);
+		ft_memdel(&instruct->pipe_from_file);
+		ft_memdel(&instruct->pipe_to_file);
+		ft_memdel(&instruct);
+		instruct = tmp;
 	}
 }

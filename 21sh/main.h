@@ -1,7 +1,19 @@
+#ifndef MAIN_H
+# define MAIN_H
+
 #include <curses.h>
 #include <term.h>
 
 #include "libft/libft.h"
+
+#define SUPERMOVE_LEFT	1146821403
+#define SUPERMOVE_RIGHT	1130044187
+#define SUPERMOVE_DOWN	1113266971
+#define SUPERMOVE_UP	1096489755
+
+#define MOVE_LEFT		4479771
+#define MOVE_RIGHT		4414235
+
 
 typedef struct			s_command
 {
@@ -47,3 +59,30 @@ t_bool				aggregate_fd;
 //	int					stout;
 	struct s_instruct	*next;
 }					t_instruct;
+
+
+unsigned int		*ft_uintnew(size_t size);
+unsigned int		*ft_uintjoin(unsigned int const *s1, unsigned int const *s2);
+unsigned int		*ft_uintjoin_multi(t_bool autofree, ...);
+unsigned int		*ft_uintdup_len(unsigned int *str, size_t len);
+char				*ft_uint_to_char(unsigned int *input);
+size_t				ft_uintlen(unsigned int *s);
+void				ft_uintputchar(unsigned int *str);
+void				ft_uintput(unsigned int *str);
+unsigned int		*ft_uintdup(unsigned int *s1);
+void				ft_uintdel(unsigned int **as);
+void				ft_insert_char(
+	unsigned int **str, unsigned int c, size_t pos);
+void				ft_delete_char(unsigned int **str, size_t pos);
+void				t_init(void);
+void				t_save(void);
+void				t_restore(void);
+t_bool				t_delete_after_cursor(void);
+t_bool				t_start_under(void);
+t_bool				t_stop_under(void);
+t_bool				t_enable_insert_mode(void);
+t_bool				t_disable_insert_mode(void);
+t_bool				t_move_left(void);
+t_bool				t_move_right(void);
+t_bool				t_delete_last_char(void);
+#endif
