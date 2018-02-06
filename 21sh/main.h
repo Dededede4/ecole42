@@ -3,6 +3,7 @@
 
 #include <curses.h>
 #include <term.h>
+#include <signal.h>
 
 #include "libft/libft.h"
 
@@ -13,6 +14,15 @@
 
 #define MOVE_LEFT		4479771
 #define MOVE_RIGHT		4414235
+#define MOVE_TOP		4283163
+#define MOVE_DOWN		4348699
+
+#define ACTION_COPY		7011
+#define ACTION_PAST		7024
+#define ACTION_CUT		6979
+#define ACTION_SELECT	7027
+
+#define KEY_ESC			27
 
 
 typedef struct			s_command
@@ -85,4 +95,11 @@ t_bool				t_disable_insert_mode(void);
 t_bool				t_move_left(void);
 t_bool				t_move_right(void);
 t_bool				t_delete_last_char(void);
+void				clear_input(t_command *command);
+void				clear_input_soft(t_command *command);
+t_bool				display_input_ondelete(unsigned int buff, t_command *command);
+t_bool				display_input_insert(unsigned int buff, t_command *command);
+void				execute(t_command *command);
+t_bool				display_input_copypast(
+	unsigned int buff, t_command *command, unsigned int **clipboard);
 #endif
