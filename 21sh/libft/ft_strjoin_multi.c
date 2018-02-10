@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_strjoin_multi(t_bool autofree, ...)
+char	*ft_strjoin_multi(int autofree, ...)
 {
 	va_list			ap;
 	char			*str;

@@ -41,7 +41,7 @@ t_bool	display_input_insert(unsigned int buff, t_command *command)
 	unsigned char	*b;
 	size_t			savepos;
 
-	b = &buff;
+	b = (unsigned char*)&buff;
 	i = 0;
 	savepos = command->pos;
 	t_delete_after_cursor();

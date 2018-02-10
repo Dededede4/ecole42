@@ -39,7 +39,7 @@ unsigned int		*ft_uintjoin(unsigned int const *s1, unsigned int const *s2)
 	return (new);
 }
 
-unsigned int		*ft_uintjoin_multi(t_bool autofree, ...)
+unsigned int		*ft_uintjoin_multi(int autofree, ...)
 {
 	va_list			ap;
 	unsigned int	*str;
@@ -81,7 +81,7 @@ char				*ft_uint_to_char(unsigned int *input)
 	i_output = 0;
 	while (input[i])
 	{
-		s = input + i;
+		s = (unsigned char*)(input + i);
 		if (s[0] > 0)
 			o[i_output++] = s[0];
 		if (s[1] > 0)

@@ -22,7 +22,7 @@ t_bool		display_input_copypast_cut(
 	{
 		command->cc_pos_stop = command->pos;
 		command->cc_mode_enabled = FALSE;
-		ft_strdel(clipboard);
+		ft_memdel((void**)clipboard);
 		min = (command->cc_pos_start < command->cc_pos_stop) ?
 			command->cc_pos_start : command->cc_pos_stop;
 		max = (command->cc_pos_start < command->cc_pos_stop) ?
@@ -51,7 +51,7 @@ t_bool		display_input_copypast_copy(
 	{
 		command->cc_pos_stop = command->pos;
 		command->cc_mode_enabled = FALSE;
-		ft_strdel(clipboard);
+		ft_memdel((void**)clipboard);
 		min = (command->cc_pos_start < command->cc_pos_stop) ?
 			command->cc_pos_start : command->cc_pos_stop;
 		max = (command->cc_pos_start < command->cc_pos_stop) ?

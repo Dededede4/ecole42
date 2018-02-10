@@ -12,11 +12,11 @@
 
 #include "main.h"
 
-size_t				ft_uintlen(unsigned int *s)
+size_t				ft_uintlen(unsigned int const *s)
 {
 	size_t		i;
 
-	if (NULL == s || NULL == *s)
+	if (NULL == s)
 		return (0);
 	i = 0;
 	while (s[i])
@@ -24,11 +24,11 @@ size_t				ft_uintlen(unsigned int *s)
 	return (i);
 }
 
-void				ft_uintputchar(unsigned int *str)
+void				ft_uintputchar(unsigned int const *str)
 {
 	unsigned char	*s;
 
-	s = str;
+	s = (unsigned char *)str;
 	if (s[0] > 0)
 		ft_putchar(s[0]);
 	if (s[1] > 0)
@@ -44,9 +44,9 @@ void				ft_uintput(unsigned int *str)
 	size_t			y;
 	unsigned char	*s;
 
-	if (NULL == str || NULL == *str)
+	if (NULL == str)
 		return ;
-	s = str;
+	s = (unsigned char *)str;
 	y = 0;
 	while (str[y])
 	{
@@ -55,7 +55,7 @@ void				ft_uintput(unsigned int *str)
 	}
 }
 
-unsigned int		*ft_uintdup(unsigned int *s1)
+unsigned int		*ft_uintdup(unsigned int const *s1)
 {
 	unsigned int	*s2;
 	size_t			len;

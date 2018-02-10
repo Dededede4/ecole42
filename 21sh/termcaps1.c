@@ -19,7 +19,7 @@ t_bool		t_enable_insert_mode(void)
 	str = tgetstr("im", NULL);
 	if (!str)
 		return (FALSE);
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
 
@@ -30,7 +30,7 @@ t_bool		t_disable_insert_mode(void)
 	str = tgetstr("ei", NULL);
 	if (!str)
 		return (FALSE);
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
 
@@ -44,7 +44,7 @@ t_bool		t_move_left(void)
 		ft_printf("\nBINGO !\n");
 		return (FALSE);
 	}
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
 
@@ -55,7 +55,7 @@ t_bool		t_move_right(void)
 	str = tgetstr("nd", NULL);
 	if (!str)
 		return (FALSE);
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
 
@@ -72,6 +72,6 @@ t_bool		t_delete_last_char(void)
 	if (!str)
 		return (FALSE);
 	t_move_left();
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }

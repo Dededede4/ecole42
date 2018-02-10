@@ -22,7 +22,7 @@ void	clear_input(t_command *command)
 	}
 	t_move_left();
 	t_delete_after_cursor();
-	ft_memdel(&(command->str));
+	ft_memdel((void**)&(command->str));
 }
 
 void	clear_input_soft(t_command *command)

@@ -50,7 +50,6 @@ void display_input(t_command **command)
 		complete_buff(&buff);
 		if (27 == buff)
 		{
-			ft_printf("ah ?");
 			cc_clear(*command);
 			continue ;
 		}

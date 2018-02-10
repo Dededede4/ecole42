@@ -67,5 +67,6 @@ t_bool			display_input_historic(unsigned int buff, t_command *command)
 	if (display_input_historic_top(buff, command))
 		return (TRUE);
 	if (display_input_historic_down(buff, command))
-		return (FALSE);
+		return (TRUE);
+	return (FALSE);
 }

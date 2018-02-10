@@ -36,14 +36,14 @@ t_bool	display_input_right(unsigned int buff, t_command *command)
 		if (command->pos == ft_uintlen(command->str))
 			return (TRUE);
 		if ((command->pos < w.ws_col && command->pos + 3 == w.ws_col) ||
-			command->pos > w.ws_col && command->pos % w.ws_col == 0)
+			(command->pos > w.ws_col && command->pos % w.ws_col == 0))
 		{
-			tputs(tgetstr("do", NULL), 1, ft_putchar);
-			tputs(tgoto(tgetstr("ch", NULL), 0, 0), 1, ft_putchar);
-			tputs(tgetstr("nd", NULL), 1, ft_putchar);
+			tputs(tgetstr("do", NULL), 1, ft_putchar2);
+			tputs(tgoto(tgetstr("ch", NULL), 0, 0), 1, ft_putchar2);
+			tputs(tgetstr("nd", NULL), 1, ft_putchar2);
 		}
 		else
-			tputs(tgetstr("nd", NULL), 1, ft_putchar);
+			tputs(tgetstr("nd", NULL), 1, ft_putchar2);
 		command->pos++;
 		return (TRUE);
 	}

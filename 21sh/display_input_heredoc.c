@@ -27,7 +27,7 @@ char	*display_input_heredoc(char *stop)
 		{
 			if (ft_strequ(line, stop))
 			{
-				ft_memdel(&line);
+				ft_memdel((void**)&line);
 				t_init();
 				return (!input ? ft_strdup("") : input);
 			}
@@ -37,6 +37,7 @@ char	*display_input_heredoc(char *stop)
 			ft_putstr("heredoc> ");
 		}
 		else
-			ft_memdel(&line);
+			ft_memdel((void**)&line);
 	}
+	return ft_strdup("");
 }

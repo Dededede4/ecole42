@@ -4,6 +4,10 @@
 #include <curses.h>
 #include <term.h>
 #include <signal.h>
+#include <errno.h>
+
+#include <sys/ioctl.h>
+
 
 #include "libft/libft.h"
 
@@ -61,8 +65,8 @@ typedef struct			s_instruct
 	char 				*pipe_from_str;
 	struct s_instruct	*pipe_to_instruct;
 	t_bool				replace_file;
-unsigned int		*pipe_from_file;
-unsigned int		*pipe_to_file;
+char		*pipe_from_file;
+char		*pipe_to_file;
 t_bool				aggregate_fd;
 //	int					stdrr;
 //	int					stdin;
@@ -73,13 +77,13 @@ t_bool				aggregate_fd;
 
 unsigned int		*ft_uintnew(size_t size);
 unsigned int		*ft_uintjoin(unsigned int const *s1, unsigned int const *s2);
-unsigned int		*ft_uintjoin_multi(t_bool autofree, ...);
+unsigned int		*ft_uintjoin_multi(int autofree, ...);
 unsigned int		*ft_uintdup_len(unsigned int *str, size_t len);
 char				*ft_uint_to_char(unsigned int *input);
-size_t				ft_uintlen(unsigned int *s);
-void				ft_uintputchar(unsigned int *str);
+size_t				ft_uintlen(unsigned int const *s);
+void				ft_uintputchar(unsigned int const *str);
 void				ft_uintput(unsigned int *str);
-unsigned int		*ft_uintdup(unsigned int *s1);
+unsigned int		*ft_uintdup(unsigned int const *s1);
 void				ft_uintdel(unsigned int **as);
 void				ft_insert_char(
 	unsigned int **str, unsigned int c, size_t pos);
@@ -102,4 +106,15 @@ t_bool				display_input_insert(unsigned int buff, t_command *command);
 void				execute(t_command *command);
 t_bool				display_input_copypast(
 	unsigned int buff, t_command *command, unsigned int **clipboard);
+t_bool	display_input_right(unsigned int buff, t_command *command);
+void show_command(t_command *command);
+t_bool display_input_left2(char *buff, t_command *command);
+t_bool	display_input_left(unsigned int buff, t_command *command);
+int ft_putchar2(int c);
+void		complete_buff(unsigned int *buff);
+t_bool			display_input_validate(unsigned int buff, t_command **command);
+t_bool				display_input_supermoves(
+	unsigned int buff, t_command *command);
+t_bool			display_input_historic(
+	unsigned int buff, t_command *command);
 #endif

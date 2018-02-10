@@ -19,7 +19,7 @@ t_bool		t_delete_after_cursor(void)
 	str = tgetstr("cd", NULL);
 	if (!str)
 		return (FALSE);
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
 
@@ -30,7 +30,7 @@ t_bool		t_start_under(void)
 	str = tgetstr("so", NULL);
 	if (!str)
 		return (FALSE);
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
 
@@ -41,6 +41,6 @@ t_bool		t_stop_under(void)
 	str = tgetstr("se", NULL);
 	if (!str)
 		return (FALSE);
-	tputs(str, ft_strlen(str), ft_putchar);
+	tputs(str, ft_strlen(str), ft_putchar2);
 	return (TRUE);
 }
