@@ -716,6 +716,7 @@ t_instruct *instructs_pipe_chain(t_instruct *instruct, int savefd0, int savefd1,
 		{
 			dup2(instruct->pipe_to_fd, 2);
 		}
+
 		exec_instrut_simple(instruct);
 		dup2(savefd0, 0);
 		dup2(savefd1, 1);
@@ -807,6 +808,10 @@ void	execute(t_command *command)
 			if (instruct->pipe_from_file || instruct->pipe_to_file)
 			{
 				instruct_file2fd_chain(instruct);
+				instruct = instruct_pipe_fd(instruct);
+			}
+			else if (instruct->pipe_from_fd)
+			{
 				instruct = instruct_pipe_fd(instruct);
 			}
 			else
