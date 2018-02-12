@@ -559,6 +559,8 @@ void		execbuiltin_cd(char **argv)
 	else if (argv[1])
 		log_and_chdir(argv[1]);
 }
+extern char **environ;
+
 
 t_bool		execbuiltin(char **argv)
 {
@@ -569,6 +571,7 @@ t_bool		execbuiltin(char **argv)
 		ft_strsplit_del(&argv);
 		ft_delallenv();
 		t_restore();
+		execve("/usr/bin/reset", (char *[15]){"/usr/bin/reset"}, environ);
 		exit(0);
 	}
 	else if (ft_strequ(argv[0], "echo"))

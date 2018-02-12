@@ -28,11 +28,11 @@ char	*display_input_heredoc(char *stop)
 			if (ft_strequ(line, stop))
 			{
 				ft_memdel((void**)&line);
-				t_init();
+				t_init(false);
 				return (!input ? ft_strdup("") : input);
 			}
 			input = (!input) ?
-				ft_strjoin_multi(TRUE, ft_strdup(line), ft_strdup("\n"), NULL)
+				ft_strjoin_multi(TRUE, line, ft_strdup("\n"), NULL)
 				: ft_strjoin_multi(TRUE, input, line, ft_strdup("\n"), NULL);
 			ft_putstr("heredoc> ");
 		}

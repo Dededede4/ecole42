@@ -15,13 +15,16 @@ void show_command(t_command *command)
 	command->pos = ft_uintlen(command->str);
 }
 
+extern char **environ;
+
 void sig_handler(int signo)
 {
     if (signo == SIGINT)
     {
     }
-    if (signo == SIGQUIT)
+    if (signo == SIGQUIT || signo == SIGTERM)
     {
+    	execve("/usr/bin/reset", (char *[15]){"/usr/bin/reset"}, environ);
     }
 }
 
@@ -29,6 +32,9 @@ void sig_handler(int signo)
 void enable_signals()
 {
 	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	signal(SIGTERM, sig_handler);
+
 }
 
 void display_input(t_command **command)
@@ -70,8 +76,7 @@ unsigned int *              shell_input()
 	t_command		*command;
 
 	command = ft_memalloc(sizeof(t_command));
-	t_save();
-	t_init();
+	t_init(TRUE);
 	t_enable_insert_mode();
 	enable_signals();
 	display_input(&command);

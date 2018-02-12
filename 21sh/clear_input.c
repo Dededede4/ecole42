@@ -20,7 +20,6 @@ void	clear_input(t_command *command)
 	{
 		display_input_left(4479771, command);
 	}
-	t_move_left();
 	t_delete_after_cursor();
 	ft_memdel((void**)&(command->str));
 }

@@ -58,5 +58,6 @@ void				ft_delete_char(unsigned int **str, size_t pos)
 		return ;
 	}
 	end = ft_uintdup((unsigned int*)(*str) + pos + 1);
+	free(*str);
 	*str = ft_uintjoin_multi(TRUE, begin, end, NULL);
 }

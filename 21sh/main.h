@@ -88,7 +88,7 @@ void				ft_uintdel(unsigned int **as);
 void				ft_insert_char(
 	unsigned int **str, unsigned int c, size_t pos);
 void				ft_delete_char(unsigned int **str, size_t pos);
-void				t_init(void);
+void				t_init(t_bool save);
 void				t_save(void);
 void				t_restore(void);
 t_bool				t_delete_after_cursor(void);
