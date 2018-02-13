@@ -267,6 +267,7 @@ int 		heredoc(char *stop)
 
 	pipe(p);
 	str = display_input_heredoc(stop);
+	free(stop);
 	ft_putstr_fd(str, p[1]);
 	ft_strdel(&str);
 	close(p[1]);
@@ -394,7 +395,7 @@ t_instruct *command2instruct(t_command *command)
 					arg->next->next->ignore_me = TRUE;
 				}
 				else
-					instruct->pipe_from_fd = heredoc("<<");
+					instruct->pipe_from_fd = heredoc(ft_strdup("<<"));
 				// TODO il faut une fonction de type ft_uinttoi
 				/*if (!arg->next->next){} // TODO error
 				instruct->pipe_form_fd = arg->next->next->str;*/
@@ -756,37 +757,23 @@ t_instruct	*instruct_pipe_fd(t_instruct *instruct)
 	return instruct->next;
 }
 
+void ft_erase(t_instruct **instruct)
+{
+	ft_bzero(*instruct, sizeof(t_instruct));
+	
+}
+
 void	delinstructs(t_instruct *instruct)
 {
-	t_instruct 	*tmp;
-	t_token 		*arg;
-	t_instruct *piped;
+	static t_list *list = NULL;
 
-	while (instruct)
+	if (!list)
 	{
-		tmp = instruct->next;
-		ft_memdel((void**)&(instruct->program_name));
-		arg = instruct->program_args;
-		while (arg)
-			arg = deltoken(&arg);
-		if (instruct)
-		{
-			piped = instruct->pipe_to_instruct;
-			while (piped)
-			{
-				tmp = piped->pipe_to_instruct;
-				delinstructs(piped);
-				piped = tmp; 
-			}
-			if (instruct)
-			{
-				ft_memdel((void**)&(instruct->pipe_from_str));
-				ft_memdel((void**)&(instruct->pipe_from_file));
-				ft_memdel((void**)&(instruct->pipe_to_file));
-				ft_memdel((void**)&(instruct));
-			}
-		}
-		instruct = tmp;
+		list = ft_lstnew(&instruct, sizeof(t_instruct*));
+	}
+	else
+	{
+		ft_lstadd(&list, ft_lstnew(&instruct, sizeof(t_instruct*)));
 	}
 }
 
