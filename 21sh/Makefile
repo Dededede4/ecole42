@@ -12,7 +12,7 @@
 
 CC=gcc
 
-CFLAGS=-Wall -Wextra -Werror -ltermcap -w
+CFLAGS=-Wall -Wextra -Werror -ltermcap -w -g
 
 RM=rm -f
 
