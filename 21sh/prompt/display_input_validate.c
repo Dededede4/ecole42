@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "../main.h"
 
 t_bool			display_input_validate(unsigned int buff, t_command **command)
 {

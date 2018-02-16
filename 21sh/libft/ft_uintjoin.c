@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   uint2.c                                            :+:      :+:    :+:   */
+/*   ft_uintjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/04 09:24:06 by mprevot           #+#    #+#             */
-/*   Updated: 2018/02/04 09:24:08 by mprevot          ###   ########.fr       */
+/*   Created: 2018/02/15 20:46:40 by mprevot           #+#    #+#             */
+/*   Updated: 2018/02/15 20:46:49 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
-
-unsigned int		*ft_uintnew(size_t size)
-{
-	return (ft_memalloc((size + 1) * 4));
-}
+#include "libft.h"
 
 unsigned int		*ft_uintjoin(unsigned int const *s1, unsigned int const *s2)
 {
@@ -58,39 +53,4 @@ unsigned int		*ft_uintjoin_multi(int autofree, ...)
 	}
 	va_end(ap);
 	return (str);
-}
-
-unsigned int		*ft_uintdup_len(unsigned int *str, size_t len)
-{
-	unsigned int	*newstr;
-
-	newstr = ft_uintnew(len);
-	ft_memcpy(newstr, str, len * 4);
-	return (newstr);
-}
-
-char				*ft_uint_to_char(unsigned int *input)
-{
-	unsigned char	*s;
-	size_t			i;
-	size_t			i_output;
-	char			*o;
-
-	o = ft_strnew(ft_uintlen(input) * 4);
-	i = 0;
-	i_output = 0;
-	while (input[i])
-	{
-		s = (unsigned char*)(input + i);
-		if (s[0] > 0)
-			o[i_output++] = s[0];
-		if (s[1] > 0)
-			o[i_output++] = s[1];
-		if (s[2] > 0)
-			o[i_output++] = s[2];
-		if (s[3] > 0)
-			o[i_output++] = s[3];
-		i++;
-	}
-	return (o);
 }

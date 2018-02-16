@@ -75,16 +75,6 @@ t_bool				aggregate_fd;
 }					t_instruct;
 
 
-unsigned int		*ft_uintnew(size_t size);
-unsigned int		*ft_uintjoin(unsigned int const *s1, unsigned int const *s2);
-unsigned int		*ft_uintjoin_multi(int autofree, ...);
-unsigned int		*ft_uintdup_len(unsigned int *str, size_t len);
-char				*ft_uint_to_char(unsigned int *input);
-size_t				ft_uintlen(unsigned int const *s);
-void				ft_uintputchar(unsigned int const *str);
-void				ft_uintput(unsigned int *str);
-unsigned int		*ft_uintdup(unsigned int const *s1);
-void				ft_uintdel(unsigned int **as);
 void				ft_insert_char(
 	unsigned int **str, unsigned int c, size_t pos);
 void				ft_delete_char(unsigned int **str, size_t pos);
@@ -117,4 +107,10 @@ t_bool				display_input_supermoves(
 	unsigned int buff, t_command *command);
 t_bool			display_input_historic(
 	unsigned int buff, t_command *command);
+char 	*display_input_heredoc(char *stop);
+void				show_command(t_command *command);
+void				sig_handler(int signo);
+size_t	get_word_pos(unsigned int *str, size_t start);
+unsigned int	*clear_escapes(unsigned int *str);
+t_token		*tokenize(unsigned int *str);
 #endif

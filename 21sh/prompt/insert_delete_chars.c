@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "../main.h"
 
 void				ft_insert_char(
 	unsigned int **str, unsigned int c, size_t pos)

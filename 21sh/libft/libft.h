@@ -280,4 +280,17 @@ char					*ft_whereis(char *cmd_name);
 void					ft_execwait(char *path, char **av);
 int						ft_countenv(void);
 char					**ft_getpcur(void);
+unsigned int			*ft_uintnew(size_t size);
+unsigned int			*ft_uintjoin(unsigned int const *s1, unsigned int const *s2);
+unsigned int			*ft_uintjoin_multi(int autofree, ...);
+unsigned int			*ft_uintdup_len(unsigned int *str, size_t len);
+char					*ft_uint_to_char(unsigned int *input);
+size_t					ft_uintlen(unsigned int const *s);
+void					ft_uintputchar(unsigned int const *str);
+void					ft_uintput(unsigned int *str);
+unsigned int			*ft_uintdup(unsigned int const *s1);
+void					ft_uintdel(unsigned int **as);
+unsigned int			*ft_uintsub(
+	unsigned int const *s, unsigned int start, size_t len);
+unsigned int			*ft_uinttrim_free(unsigned int **str);
 #endif
