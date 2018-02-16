@@ -39,14 +39,14 @@ t_token		*tokenize(unsigned int *str)
 	first_token = NULL;
 	if (!str || !*str)
 		return (NULL);
-	while (++i < ft_uintlen(str))
+	while (++i < (int)ft_uintlen(str))
 	{
 		if (' ' != str[i] && '\t' != str[i])
 		{
 			stop = get_word_pos(str, i);
 			token = get_next(token, &first_token);
 			token->str = (unsigned int *)
-				ft_memdup((char*)str + (i * 4), (stop - i + 1) * 4);
+				ft_memdup(((char*)str) + (i * 4), (stop - i + 1) * 4);
 			token->str = ft_uinttrim_free(&(token->str));
 			token->str = clear_escapes(token->str);
 			i = stop;
