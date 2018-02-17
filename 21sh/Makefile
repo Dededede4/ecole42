@@ -16,12 +16,15 @@ CFLAGS=-Wall -Wextra -Werror -ltermcap -w -g
 
 RM=rm -f
 
-SRC= main.c execute.c prompt/insert_delete_chars.c prompt/init_termcaps.c\
-prompt/termcaps1.c prompt/termcaps2.c prompt/display_directions.c prompt/display_supermoves.c\
+SRC= main.c execute/execute.c prompt/insert_delete_chars.c prompt/init_termcaps.c prompt/termcaps1.c prompt/termcaps2.c prompt/display_directions.c prompt/display_supermoves.c\
 prompt/clear_input.c prompt/display_input_delete_insert.c prompt/display_input_validate.c\
 prompt/display_input_historic.c prompt/display_input_copypast.c prompt/complete_buff.c\
 prompt/display_input_heredoc.c prompt/ft_putchar2.c prompt/show_command.c prompt/sig_handler.c\
-execute/get_word_pos.c execute/clear_escapes.c execute/tokenize.c
+execute/get_word_pos.c execute/clear_escapes.c execute/tokenize.c \
+execute/command2instruct_redirect.c execute/command2instruct.c execute/instructs_pipe_chain.c execute/heredoc.c\
+execute/deltoken.c execute/ft_execwait.c execute/instruct_to_argv.c \
+execute/minishell.c execute/instruct_file2fd_chain.c execute/exec_instruct_simple.c execute/instruct_pipe_fd.c\
+execute/storeinstructs.c
 
 OBJS=$(SRC:.c=.o)
 
@@ -48,3 +51,5 @@ libft/libft.a:
 	make -C libft
 
 .PHONY: clean fclean re all
+
+#gcc -Wall -Wextra -Werror -ltermcap -g -o 21sh execute/command2instruct.c main.c execute.c prompt/insert_delete_chars.c prompt/init_termcaps.c prompt/termcaps1.c prompt/termcaps2.c prompt/display_directions.c prompt/display_supermoves.c prompt/clear_input.c prompt/display_input_delete_insert.c prompt/display_input_validate.c prompt/display_input_historic.c prompt/display_input_copypast.c prompt/complete_buff.c prompt/display_input_heredoc.c prompt/ft_putchar2.c prompt/show_command.c prompt/sig_handler.c execute/get_word_pos.c execute/clear_escapes.c execute/tokenize.c

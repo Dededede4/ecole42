@@ -43,7 +43,8 @@ ft_putstr_right.c ft_putstr_left.c ft_putnbr_right.c ft_putstr_error.c \
 ft_strsplit_del.c ft_loadenv.c ft_env_tools.c ft_strdup_len.c ft_whereis.c \
 ft_env_tools2.c ft_execwait.c ft_memdup.c ft_uint_to_char.c ft_uintdel.c \
 ft_uintdup.c ft_uintdup_len.c ft_uintjoin.c ft_uintlen.c ft_uintnew.c ft_uintput.c \
-ft_uintputchar.c ft_uintsub.c ft_uinttrim.c
+ft_uintputchar.c ft_uintsub.c ft_uinttrim.c ft_atoi_uint.c ft_uintcmp.c \
+ft_atoi_uint.c ft_uintcmp.c
 
 
 OBJ=$(SRC:.c=.o)

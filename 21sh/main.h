@@ -74,6 +74,13 @@ t_bool				aggregate_fd;
 	struct s_instruct	*next;
 }					t_instruct;
 
+typedef struct			s_fdsave
+{
+	int 				fd0;
+	int					fd1;
+	int					fd2;
+}						t_fdsave;
+
 
 void				ft_insert_char(
 	unsigned int **str, unsigned int c, size_t pos);
@@ -113,4 +120,31 @@ void				sig_handler(int signo);
 size_t	get_word_pos(unsigned int *str, size_t start);
 unsigned int	*clear_escapes(unsigned int *str);
 t_token		*tokenize(unsigned int *str);
+t_token *deltoken(t_token **delme);
+int 		heredoc(char *stop);
+void		command2instruct_redirect1(
+	t_token *arg, t_token *lastarg, t_instruct *instruct);
+void		command2instruct_redirect2(
+	t_token *arg, t_token *lastarg, t_instruct *instruct);
+void		command2instruct_redirect3(
+	t_token *arg, t_token *lastarg, t_instruct *instruct);
+void		command2instruct_redirect4(
+	t_token *arg, t_token *lastarg, t_instruct *instruct);
+t_bool		command2instruct_redirect5(
+	t_token **arg, t_token *lastarg, t_instruct **instruct);
+t_instruct *command2instruct(t_command *command);
+t_instruct	*instructs_pipe_chain(
+	t_instruct *instruct, t_fdsave fds, int fd);
+void exec_instrut_simple(t_instruct *instruct);
+void		ft_execwait(char *path, char **av);
+char			**instruct_to_agrv(t_instruct *instruct, int *argc);
+void		log_and_chdir(char *path);
+void		execbuiltin_cd(char **argv);
+t_bool		execbuiltin(char **argv);
+void		putargv(char **argv);
+void	del_argv(char **argv, int argc);
+void		instruct_file2fd_chain(t_instruct *instruct);
+void	exec_instrut_simple(t_instruct *instruct);
+t_instruct	*instruct_pipe_fd(t_instruct *instruct);
+void	storeinstructs(t_instruct *instruct);
 #endif

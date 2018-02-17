@@ -294,4 +294,6 @@ void					ft_uintdel(unsigned int **as);
 unsigned int			*ft_uintsub(
 	unsigned int const *s, unsigned int start, size_t len);
 unsigned int			*ft_uinttrim_free(unsigned int **str);
+int						ft_atoi_uint(const unsigned int *str);
+int						ft_uintcmp(unsigned int *s1, unsigned int *s2);
 #endif

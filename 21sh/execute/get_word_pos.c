@@ -23,11 +23,9 @@ size_t	get_word_pos(unsigned int *str, size_t start)
 	{
 		if ('\'' == str[i] || '"' == str[i])
 		{
-			if (i > 0 && '\\' == str[i - 1])
-				;
-			else if ('\0' == quote)
+			if (!(i > 0 && '\\' == str[i - 1]) && '\0' == quote)
 				quote = str[i];
-			else if (str[i] == (unsigned int)quote)
+			else if (!(i > 0 && '\\' == str[i - 1]) && (char)str[i] == quote)
 				quote = '\0';
 		}
 		if ('\t' == str[i + 1] || ' ' == str[i + 1] || ';' == str[i + 1] ||
