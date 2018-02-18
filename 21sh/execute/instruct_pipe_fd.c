@@ -30,9 +30,8 @@ t_instruct	*instruct_pipe_fd(t_instruct *instruct)
 	exec_instrut_simple(instruct);
 	close(instruct->pipe_to_fd);
 	close(instruct->pipe_from_fd);
-	
 	dup2(savefd0, 0);
 	dup2(savefd1, 1);
 	dup2(savefd2, 2);
-	return instruct->next;
+	return (instruct->next);
 }

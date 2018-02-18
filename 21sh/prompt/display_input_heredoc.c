@@ -23,21 +23,16 @@ char	*display_input_heredoc(char *stop)
 	ft_putstr("heredoc> ");
 	while (42 && ft_gnl(STDIN_FILENO, &line))
 	{
-		if (ft_strlen(line))
+		if (ft_strequ(line, stop))
 		{
-			if (ft_strequ(line, stop))
-			{
-				ft_memdel((void**)&line);
-				t_init(false);
-				return (!input ? ft_strdup("") : input);
-			}
-			input = (!input) ?
-				ft_strjoin_multi(TRUE, line, ft_strdup("\n"), NULL)
-				: ft_strjoin_multi(TRUE, input, line, ft_strdup("\n"), NULL);
-			ft_putstr("heredoc> ");
-		}
-		else
 			ft_memdel((void**)&line);
+			t_init(false);
+			return (!input ? ft_strdup("") : input);
+		}
+		input = (!input) ?
+			ft_strjoin_multi(TRUE, line, ft_strdup("\n"), NULL)
+			: ft_strjoin_multi(TRUE, input, line, ft_strdup("\n"), NULL);
+		ft_putstr("heredoc> ");
 	}
-	return ft_strdup("");
+	return (ft_strdup(""));
 }

@@ -30,7 +30,7 @@ void				t_init(t_bool save)
 	tattr.c_lflag &= ~(ECHO);
 	tattr.c_cc[VMIN] = 1;
 	tattr.c_cc[VTIME] = 0;
-  	tcsetattr (STDIN_FILENO, TCSADRAIN, &tattr);
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &tattr);
 }
 
 void				t_save(void)

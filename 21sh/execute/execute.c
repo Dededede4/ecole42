@@ -22,7 +22,7 @@ t_fdsave		getfdsave(void)
 	return (data);
 }
 
-void	execute(t_command *command)
+void			execute(t_command *command)
 {
 	t_instruct	*inst;
 	t_instruct	*first;

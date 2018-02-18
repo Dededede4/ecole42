@@ -24,5 +24,5 @@ char		*ft_memdup(char *mem, size_t len)
 		newalloc[i] = mem[i];
 		i++;
 	}
-	return newalloc;
+	return (newalloc);
 }

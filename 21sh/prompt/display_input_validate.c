@@ -21,10 +21,11 @@ t_bool			display_input_validate(unsigned int buff, t_command **command)
 		ft_putchar('\n');
 		execute(*command);
 		ft_putstr("$> ");
-		if(NULL == ((t_command *)(*command))->str || '\0' == ((t_command *)(*command))->str[0])
+		if (NULL == ((t_command *)(*command))->str ||
+			'\0' == ((t_command *)(*command))->str[0])
 			return (TRUE);
 		(*command)->pos = ft_uintlen((*command)->str);
-		new_command =  ft_memalloc(sizeof(t_command));
+		new_command = ft_memalloc(sizeof(t_command));
 		new_command->prev = (*command);
 		new_command->prev->next = new_command;
 		*command = new_command;

@@ -184,7 +184,6 @@ void					ft_lstadd(t_list **alst, t_list *new);
 void					ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void					ft_cat(char *path);
-//void					ft_foreach(int *tab, int length, void (*f)(int*));
 int						*ft_range(int min, int max);
 int						ft_factorial(int nb);
 void					ft_swap(int *a, int *b);
@@ -282,7 +281,8 @@ void					ft_execwait(char *path, char **av);
 int						ft_countenv(void);
 char					**ft_getpcur(void);
 unsigned int			*ft_uintnew(size_t size);
-unsigned int			*ft_uintjoin(unsigned int const *s1, unsigned int const *s2);
+unsigned int			*ft_uintjoin(
+	unsigned int const *s1, unsigned int const *s2);
 unsigned int			*ft_uintjoin_multi(int autofree, ...);
 unsigned int			*ft_uintdup_len(unsigned int *str, size_t len);
 char					*ft_uint_to_char(unsigned int *input);
