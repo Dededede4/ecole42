@@ -1,0 +1,8 @@
+PING 10.51.1.253 (10.51.1.253): 56 data bytes
+64 bytes from 10.51.1.253: icmp_seq=0 ttl=62 time=0.276 ms
+64 bytes from 10.51.1.253: icmp_seq=1 ttl=62 time=0.213 ms
+64 bytes from 10.51.1.253: icmp_seq=2 ttl=62 time=0.328 ms
+^C
+--- 10.51.1.253 ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 0.213/0.272/0.328/0.047 ms
