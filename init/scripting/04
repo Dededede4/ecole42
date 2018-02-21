@@ -4,7 +4,12 @@ do
 before=`md5sum /etc/crontab`
 sleep 1
 after=`md5sum /etc/crontab`
-if [ "$s1" != "$s2" ]
+echo "$before"
+echo "$after"
+echo ""
+if [ "$before" != "$after" ]
+then
+	echo "oh"
 	echo "Change detected" | mail -s "olalala :(" root
 fi
 done
