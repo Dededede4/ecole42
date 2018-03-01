@@ -1,0 +1,1 @@
+sudo fdisk -l

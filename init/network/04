@@ -1,0 +1,1 @@
+netstat -nr | grep default  | head -n 1 | cut -c20- | cut -c-19

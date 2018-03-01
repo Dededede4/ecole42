@@ -1,0 +1,1 @@
+nslookup slash16.org | head -n 1 | cut -c 10-

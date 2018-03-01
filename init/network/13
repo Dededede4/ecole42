@@ -1,0 +1,16 @@
+It is a DNS server, rpcbind, postgresql and http.
+
+user@debian:~$ nmap 10.51.1.253
+ 
+Starting Nmap 7.40 ( https://nmap.org ) at 2018-02-20 23:02 EST
+Nmap scan report for dhcp.42.us.org (10.51.1.253)
+Host is up (0.00070s latency).
+Not shown: 996 closed ports
+PORT     STATE SERVICE
+53/tcp   open  domain
+111/tcp  open  rpcbind
+5432/tcp open  postgresql
+8000/tcp open  http-alt
+ 
+Nmap done: 1 IP address (1 host up) scanned in 0.14 seconds
+
