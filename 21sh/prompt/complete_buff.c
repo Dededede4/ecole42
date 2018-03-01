@@ -22,6 +22,14 @@ void		pass1_values(unsigned int *buff, int newbuff)
 		*buff = MOVE_RIGHT;
 	if (68 == newbuff)
 		*buff = MOVE_LEFT;
+	if (72 == newbuff)
+	{
+		ft_printf("gauche");
+	}
+	if (70 == newbuff)
+	{
+		ft_printf("droite");
+	}
 }
 
 void		pass2_values(unsigned int *buff, int newbuff)
@@ -42,6 +50,7 @@ void		pass_values(unsigned int *buff, int *newbuff)
 	if (91 == *newbuff)
 	{
 		read(STDIN_FILENO, newbuff, 1);
+		ft_printf("->>%d<<-\n", *newbuff);
 		pass1_values(buff, *newbuff);
 	}
 	else if (KEY_ESC == *newbuff)

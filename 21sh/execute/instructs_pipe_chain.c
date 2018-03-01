@@ -12,6 +12,22 @@
 
 #include "../main.h"
 
+void exec_instrut_simple_nowait(t_instruct *instruct)
+{
+	pid_t	father;
+
+	father = fork();
+	if (father > 0)
+	{
+		//wait(&osef);
+	}
+	else
+	{
+		exec_instrut_simple(instruct);
+		exit(0);
+	}
+}
+
 void		instructs_pipe_chain_1(
 	t_instruct *instruct, int savefd2, int (*p)[2])
 {
@@ -20,7 +36,7 @@ void		instructs_pipe_chain_1(
 	if (instruct->aggregate_fd)
 		dup2((*p)[1], 2);
 	dup2((*p)[1], 1);
-	exec_instrut_simple(instruct);
+	exec_instrut_simple_nowait(instruct);
 	close((*p)[1]);
 	dup2(savefd2, 2);
 	close(instruct->pipe_from_fd);
@@ -34,7 +50,7 @@ void		instructs_pipe_chain_2(
 	dup2((*p)[1], 1);
 	if (instruct->aggregate_fd)
 		dup2((*p)[1], 2);
-	exec_instrut_simple(instruct);
+	exec_instrut_simple_nowait(instruct);
 	close((*p)[1]);
 	dup2(savefd2, 2);
 }
@@ -46,7 +62,7 @@ void		instructs_pipe_chain_3(
 	dup2(instruct->pipe_to_fd, 1);
 	if (instruct->aggregate_fd)
 		dup2(instruct->pipe_to_fd, 2);
-	exec_instrut_simple(instruct);
+	exec_instrut_simple_nowait(instruct);
 	dup2(fds.fd0, 0);
 	dup2(fds.fd1, 1);
 	dup2(fds.fd2, 2);
@@ -56,7 +72,10 @@ t_instruct	*instructs_pipe_chain(
 	t_instruct *instruct, t_fdsave fds, int fd)
 {
 	int		p[2];
+	static	int test = 0;
+	int osef = 0;
 
+	test++;
 	if (instruct->pipe_to_instruct)
 	{
 		if (-1 == fd)
@@ -75,6 +94,11 @@ t_instruct	*instructs_pipe_chain(
 	else
 	{
 		instructs_pipe_chain_3(instruct, fds, fd);
+		while(test--)
+		{
+			wait(&osef);
+		}
+		test = 0;
 		return (instruct->next);
 	}
 }
