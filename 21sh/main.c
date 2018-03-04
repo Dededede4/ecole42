@@ -12,6 +12,8 @@
 
 #include "main.h"
 
+t_command			*currentcommand;
+
 void					cc_clear(t_command *command)
 {
 	command->cc_pos_start = 0;
@@ -26,11 +28,11 @@ void					display_input_actions(
 		cc_clear(*command);
 	else if (display_input_validate(buff, command))
 		cc_clear(*command);
-	else if (display_input_supermoves(buff, *command))
-		;
-	else if (display_input_left(buff, *command))
-		;
-	else if (display_input_right(buff, *command))
+	else if (display_input_supermoves(buff, *command) ||
+		display_input_supermoves_homeend(buff, *command) ||
+		display_input_left(buff, *command) ||
+		display_input_right(buff, *command)
+		)
 		;
 	else if (display_input_historic(buff, *command))
 		cc_clear(*command);
@@ -64,6 +66,7 @@ void					display_input(t_command **command)
 			continue ;
 		}
 		display_input_actions(buff, &clipboard, command);
+		currentcommand = *command;
 		buff = 0;
 	}
 }
@@ -73,6 +76,7 @@ unsigned int			*shell_input(void)
 	t_command		*command;
 
 	command = ft_memalloc(sizeof(t_command));
+	currentcommand = command;
 	t_init(TRUE);
 	t_enable_insert_mode();
 	signal(SIGINT, sig_handler);

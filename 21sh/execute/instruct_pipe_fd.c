@@ -22,9 +22,9 @@ t_instruct	*instruct_pipe_fd(t_instruct *instruct)
 	savefd1 = dup(1);
 	savefd2 = dup(2);
 	if (instruct->aggregate_fd)
-	{
 		dup2(instruct->pipe_to_fd, 2);
-	}
+	if (instruct->invert_fd)
+		dup2(instruct->pipe_to_fd, 1);
 	dup2(instruct->pipe_to_fd, 1);
 	dup2(instruct->pipe_from_fd, 0);
 	exec_instrut_simple(instruct);

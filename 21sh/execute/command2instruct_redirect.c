@@ -28,6 +28,11 @@ void		command2instruct_redirect1(
 			instruct->aggregate_fd = TRUE;
 			lastarg->ignore_me = TRUE;
 		}
+		if (lastarg && 0 == ft_uintcmp(lastarg->str, (unsigned int *)L"1"))
+		{
+			instruct->invert_fd = TRUE;
+			lastarg->ignore_me = TRUE;
+		}
 		arg->ignore_me = TRUE;
 		arg->next->ignore_me = TRUE;
 	}
@@ -60,6 +65,12 @@ void		command2instruct_redirect3(
 		if (lastarg && 0 == ft_uintcmp(lastarg->str, (unsigned int *)L"2"))
 		{
 			instruct->aggregate_fd = TRUE;
+			lastarg->ignore_me = TRUE;
+		}
+		if (lastarg && 0 == ft_uintcmp(lastarg->str, (unsigned int *)L"1"))
+		{
+			instruct->invert_fd = TRUE;
+			instruct->pipe_to_fd = 1;
 			lastarg->ignore_me = TRUE;
 		}
 		instruct->pipe_to_file = ft_uint_to_char(arg->next->str);

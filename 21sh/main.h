@@ -30,6 +30,8 @@
 # define MOVE_RIGHT		4414235
 # define MOVE_TOP		4283163
 # define MOVE_DOWN		4348699
+# define MOVE_HOME 		4741915
+# define MOVE_END		4610843
 
 # define ACTION_COPY		7011
 # define ACTION_PAST		7024
@@ -75,6 +77,7 @@ typedef struct			s_instruct
 	char				*pipe_from_file;
 	char				*pipe_to_file;
 	t_bool				aggregate_fd;
+	t_bool				invert_fd;
 	struct s_instruct	*next;
 }						t_instruct;
 
@@ -155,5 +158,6 @@ void					instruct_file2fd_chain(t_instruct *instruct);
 void					exec_instrut_simple(t_instruct *instruct);
 t_instruct				*instruct_pipe_fd(t_instruct *instruct);
 void					storeinstructs(t_instruct *instruct);
-
+t_bool					display_input_supermoves_homeend(
+	unsigned int buff, t_command *command);
 #endif

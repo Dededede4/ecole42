@@ -15,9 +15,11 @@
 void	sig_handler(int signo)
 {
 	extern char **environ;
+	extern t_command *currentcommand;
 
 	if (signo == SIGINT)
 	{
+		clear_input(currentcommand);
 	}
 	if (signo == SIGQUIT || signo == SIGTERM)
 	{

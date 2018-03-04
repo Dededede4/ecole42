@@ -19,7 +19,9 @@ t_bool			display_input_validate(unsigned int buff, t_command **command)
 	if ('\n' == buff)
 	{
 		ft_putchar('\n');
+		t_restore();
 		execute(*command);
+		t_init(FALSE);
 		ft_putstr("$> ");
 		if (NULL == ((t_command *)(*command))->str ||
 			'\0' == ((t_command *)(*command))->str[0])

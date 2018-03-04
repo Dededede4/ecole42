@@ -40,6 +40,8 @@
 # define TRUE 1
 # define FALSE 0
 
+# define DEBUG 0
+
 typedef struct			s_fd
 {
 	int					fd_n;

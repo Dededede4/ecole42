@@ -16,7 +16,7 @@ CFLAGS=-Wall -Wextra -Werror -ltermcap -w -g
 
 RM=rm -f
 
-SRC= main.c execute/execute.c prompt/insert_delete_chars.c prompt/init_termcaps.c prompt/termcaps1.c prompt/termcaps2.c prompt/display_directions.c prompt/display_supermoves.c\
+SRC= main.c execute/execute.c prompt/insert_delete_chars.c prompt/init_termcaps.c prompt/termcaps1.c prompt/termcaps2.c prompt/display_directions.c prompt/display_supermoves.c prompt/display_supermoves_homeend.c\
 prompt/clear_input.c prompt/display_input_delete_insert.c prompt/display_input_validate.c\
 prompt/display_input_historic.c prompt/display_input_copypast.c prompt/complete_buff.c\
 prompt/display_input_heredoc.c prompt/ft_putchar2.c prompt/show_command.c prompt/sig_handler.c\
