@@ -325,6 +325,7 @@ void show_alloc_mem()
 int 	main()
 {
 	init_container();
+	printf("coucou bg 42");
 	/*char *str;
 	int i = 0;
 	srand(time(NULL));
