@@ -322,9 +322,66 @@ void show_alloc_mem()
 //	Total : 52698 octets
 }
 
+void ft_free_large(void *addr)
+{
+    t_list    *current;
+    t_list    *before;
+    size_t	size_alloc;
+
+	
+
+	current = g_container.large;
+	before = NULL;
+	while(current)
+	{
+	    if (current == addr)
+	    {
+			size_alloc = current->data_size + sizeof(t_list);
+			size_alloc = ((size_alloc / getpagesize()) + 1) * getpagesize();
+	        if(NULL == before)
+	        {
+				g_container.large = current->next;
+				munmap(current, size_alloc);
+				return ;
+            }
+            before->next = current->next;
+            munmap(current, size_alloc);
+            return ;
+        }
+        before = current;
+        current = current->next;
+    }
+}
+
+void ft_free_tiny(void *addr)
+{
+    t_list    *current;
+    size_t	size_alloc;
+
+	current = g_container.tiny;
+	before = NULL;
+	while(current)
+	{
+	    if (current == addr)
+	    {
+	    	current->is_busy = 0;
+            return ;
+        }
+        current = current->next;
+    }
+}
+
+void ft_free(void *addr)
+{
+  ft_free_large(addr);
+}
+
 int 	main()
 {
 	init_container();
+	char *str;
+	char *str1;
+	
 	/*char *str;
 	int i = 0;
 	srand(time(NULL));
@@ -338,7 +395,11 @@ int 	main()
 	ft_malloc(42);
 	ft_malloc(84);
 	ft_malloc(3725);
+	str1 =ft_malloc(48847);
+	str = ft_malloc(48847);
 	ft_malloc(48847);
+	ft_free_large(str1);
+	str[0] = 'a';
 	show_alloc_mem();
 
 	return (0);	
