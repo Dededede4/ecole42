@@ -4,6 +4,32 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+static void show_alloc_mem();
+
+static void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+static void	ft_putnbr_fd(size_t n, int fd)
+{
+	if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+	{
+		ft_putchar_fd(n + '0', fd);
+	}
+}
+
+void	ft_putstr(char const *s)
+{
+	while (*s)
+		ft_putchar_fd(*(s++), 1);
+}
+
 typedef struct		s_list
 {
 	void 			*data;
@@ -23,26 +49,26 @@ typedef struct		s_all
 	size_t		nbr_tiny;
 }			t_all;
 
-t_all g_container;
+t_all g_container = {NULL, NULL, NULL, 0, 0, 0};
 
-void	init_container()
-{
-	g_container.large = NULL;
-	g_container.small = NULL;
-	g_container.tiny = NULL;
-	g_container.nbr_large = 0;
-	g_container.nbr_small = 0;
-	g_container.nbr_tiny = 0;
-}
+	// g_container.large = NULL;
+	// g_container.small = NULL;
+	// g_container.tiny = NULL;
+	// g_container.nbr_large = 0;
+	// g_container.nbr_small = 0;
+	// g_container.nbr_tiny = 0;
 
-t_list	*malloc_direct(size_t size)
+
+static t_list	*malloc_direct(size_t size)
 {
 	size_t	size_alloc;
 	t_list	*l;
 
 	size_alloc = size + sizeof(t_list);
 	size_alloc = ((size_alloc / getpagesize()) + 1) * getpagesize();
-	l = mmap(NULL, size_alloc, PROT_READ | PROT_WRITE, MAP_ANON|MAP_SHARED, -1, 0);
+	ft_putnbr_fd(size_alloc, 1);
+	ft_putstr("<-malloc direct\n");
+	l = mmap(NULL, size_alloc, PROT_READ | PROT_WRITE, MAP_ANON|MAP_PRIVATE, -1, 0);
 	l->data_size = size;
 	l->data = l + 1;
 	l->is_busy = 9;
@@ -52,7 +78,7 @@ t_list	*malloc_direct(size_t size)
 }
 
 // Entre 1 et (1024 - taille de la structure)
-t_list	*malloc_page_tiny(size_t size)
+static t_list	*malloc_page_tiny(size_t size)
 {
 	t_list *current;
 	g_container.nbr_tiny++;
@@ -73,7 +99,7 @@ t_list	*malloc_page_tiny(size_t size)
 	}
 }
 
-t_list	*malloc_page_small(size_t size)
+static t_list	*malloc_page_small(size_t size)
 {
 	t_list *current;
 	g_container.nbr_small++;
@@ -94,9 +120,19 @@ t_list	*malloc_page_small(size_t size)
 	}
 }
 
-t_list	*malloc_page_large(size_t size)
+static t_list	*malloc_page_large(size_t size)
 {
 	t_list *current;
+	static char first = 0;
+	if (!first)
+	{
+		ft_putnbr_fd(size, 1);
+		ft_putstr("<-first\n");
+		g_container.large = NULL;
+		g_container.nbr_large = 0;
+		first = 1;
+	}
+
 	g_container.nbr_large++;
 	if (g_container.large)
 	{
@@ -111,11 +147,13 @@ t_list	*malloc_page_large(size_t size)
 	else
 	{
 		g_container.large = malloc_direct(size);
+		ft_putnbr_fd(g_container.large->data_size, 1);
+		ft_putstr("<-last\n");
 		return (g_container.large);
 	}
 }
 
-t_list *malloc_nopage_tiny(size_t size)
+static t_list *malloc_nopage_tiny(size_t size)
 {
 	t_list *current;
 
@@ -133,7 +171,7 @@ t_list *malloc_nopage_tiny(size_t size)
 	return (current->next);
 }
 
-t_list *malloc_nopage_small(size_t size)
+static t_list *malloc_nopage_small(size_t size)
 {
 	t_list *current;
 
@@ -151,7 +189,7 @@ t_list *malloc_nopage_small(size_t size)
 	return (current->next);
 }
 
-size_t	list_size(t_list *page)
+/*static size_t	list_size(t_list *page)
 {
 	size_t size;
 
@@ -162,10 +200,10 @@ size_t	list_size(t_list *page)
 		page = page->next;
 	}
 	return (size);
-}
+}*/
 
 
-void *	malloc_tiny(size_t size)
+static void *	malloc_tiny(size_t size)
 {
 	size_t page_used_size;
 	t_list	*last;
@@ -185,7 +223,7 @@ void *	malloc_tiny(size_t size)
 		if (page->next && page->next->is_new_page)
 		{
 
-			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
+			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size+100)) // On segfault sur ls ! o_O
 			{
 				l = page->next;
 				page->next = page->data + page->data_size;
@@ -204,13 +242,15 @@ void *	malloc_tiny(size_t size)
 	if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
 	{
 		l = malloc_nopage_tiny(size);
+		ft_putstr("b\n");
 		return (l->data);
 	}
 	l = malloc_page_tiny(size);
+	ft_putstr("c\n");
 	return (l->data);
 }
 
-void *	malloc_small(size_t size)
+static void *	malloc_small(size_t size)
 {
 	size_t page_used_size;
 	t_list	*last;
@@ -230,7 +270,7 @@ void *	malloc_small(size_t size)
 		if (page->next && page->next->is_new_page)
 		{
 
-			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
+			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size+100))
 			{
 				l = page->next;
 				page->next = page->data + page->data_size;
@@ -255,13 +295,20 @@ void *	malloc_small(size_t size)
 	return (l->data);
 }
 
-void *malloc_large(size_t size)
+static void *malloc_large(size_t size)
 {
-	return malloc_page_large(size);
+	t_list *pouet = malloc_page_large(size);
+	return (pouet->data);
 }
 
 void	*ft_malloc(size_t size)
 {
+	if (size == 0)
+		return (NULL);
+	write(1, "\x1B[31mmalloc(", 12);
+	ft_putnbr_fd(size, 1);
+	write(1, ");\x1B[0m\n", 7);
+	//printf("\nmalloc(%zu);\n", size);
 	if ((size * 4) <= getpagesize() - sizeof(t_list))
 		return malloc_tiny(size);
 	if (size <= getpagesize() - sizeof(t_list))
@@ -269,7 +316,7 @@ void	*ft_malloc(size_t size)
 	return malloc_large(size);
 }
 
-void	memdump(void *data)
+/*static void	memdump(void *data)
 {
 	size_t i;
 
@@ -284,45 +331,57 @@ void	memdump(void *data)
 	}
 	printf("\n===========\n");
 }
-
+*/
 #include <time.h>
 #include <stdlib.h>
 
-void show_alloc_mem()
+static void show_alloc_mem()
 {
 	t_list *current;
 	size_t	total;
 
 	total = 0;
 	current = g_container.tiny;
-	printf("TINY : %p\n", current);
+	//printf("TINY : %p\n", current);
+	ft_putstr("TINY :\n");
 	while (current)
 	{
-		printf("%p - %p : %zu octets\n", current->data, current->data + current->data_size, current->data_size );
+		ft_putstr("%p - %p : ");
+		ft_putnbr_fd(current->data_size, 1);
+		ft_putstr("\n");
+		//printf("%p - %p : %zu octets\n", current->data, current->data + current->data_size, current->data_size );
 		total += current->data_size;
 		current = current->next;
 	}
+	ft_putstr("SMALL :\n");
 	current = g_container.small;
-	printf("SMALL : %p\n", current);
+	//printf("SMALL : %p\n", current);
 	while (current)
 	{
-		printf("%p - %p : %zu octets\n", current->data, current->data + current->data_size, current->data_size );
+		ft_putstr("%p - %p : ");
+		ft_putnbr_fd(current->data_size, 1);
+		ft_putstr("\n");
+		//printf("%p - %p : %zu octets\n", current->data, current->data + current->data_size, current->data_size );
 		total += current->data_size;
 		current = current->next;
 	}
+	ft_putstr("LARGE :\n");
 	current = g_container.large;
-	printf("LARGE : %p\n", current);
+	//printf("LARGE : %p\n", current);
 	while (current)
 	{
-		printf("%p - %p : %zu octets\n", current->data, current->data + current->data_size, current->data_size );
+		ft_putstr("%p - %p : ");
+		ft_putnbr_fd(current->data_size, 1);
+		ft_putstr("\n");
+		//printf("%p - %p : %zu octets\n", current->data, current->data + current->data_size, current->data_size );
 		total += current->data_size;
 		current = current->next;
 	}
-	printf("TOTAL : %zu octets\n", total);
+	//printf("TOTAL : %zu octets\n", total);
 //	Total : 52698 octets
 }
 
-void ft_free_large(void *addr)
+/*static void ft_free_large(void *addr)
 {
     t_list    *current;
     t_list    *before;
@@ -353,13 +412,11 @@ void ft_free_large(void *addr)
     }
 }
 
-void ft_free_tiny(void *addr)
+static void ft_free_tiny(void *addr)
 {
     t_list    *current;
-    size_t	size_alloc;
 
 	current = g_container.tiny;
-	before = NULL;
 	while(current)
 	{
 	    if (current == addr)
@@ -369,39 +426,124 @@ void ft_free_tiny(void *addr)
         }
         current = current->next;
     }
-}
+}*/
 
 void ft_free(void *addr)
 {
-  ft_free_large(addr);
-}
-
-int 	main()
-{
-	init_container();
-	char *str;
-	char *str1;
-	
-	/*char *str;
-	int i = 0;
-	srand(time(NULL));
-	while (i < 10) {
-		str = ft_malloc(rand() % 10000);
-		strcpy(str, "abcd");
-		printf("%s %d %d %d\n", str, i, (int)g_container.nbr_tiny, (int)((getpagesize() * g_container.nbr_tiny) - list_size(g_container.tiny)));
-		//memdump(g_container.tiny);
-		i++;
-	}*/
-	ft_malloc(42);
-	ft_malloc(84);
-	ft_malloc(3725);
-	str1 =ft_malloc(48847);
-	str = ft_malloc(48847);
-	ft_malloc(48847);
-	ft_free_large(str1);
-	str[0] = 'a';
+	(void)addr;
+	write(1, "\x1B[31mfree();\n", 14);
 	show_alloc_mem();
-
-	return (0);	
+ 	//ft_free_large(addr);
 }
 
+static void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t			i;
+
+	i = 0;
+	while (i < n)
+	{
+		((char*)dest)[i] = ((char*)src)[i];
+		i++;
+	}
+	return (dest);
+}
+
+static t_list *find_item(void *addr)
+{
+	t_list    *current;
+
+	current = g_container.tiny;
+	while(current)
+	{
+	    if (current == addr)
+	    {
+            return current;
+        }
+        current = current->next;
+    }
+
+    current = g_container.small;
+	while(current)
+	{
+	    if (current == addr)
+	    {
+            return current;
+        }
+        current = current->next;
+    }
+
+    current = g_container.large;
+	while(current)
+	{
+	    if (current == addr)
+	    {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return (NULL);
+}
+
+static void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*b2;
+
+	i = 0;
+	b2 = b;
+	while (i < len)
+	{
+		b2[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}
+
+void *ft_realloc(void *ptr, size_t size)
+{
+	void *new;
+	t_list *item;
+
+	write(1, "\x1B[31mft_realloc(", 13);
+	ft_putnbr_fd(size, 1);
+	write(1, ");\x1B[0m\n", 7);
+	new = ft_malloc(size);
+	ft_memset(new, 0, size);
+	item = find_item(ptr);
+	if (item)
+	{
+		ft_memcpy(new, ptr, item->data_size < size ? item->data_size : size);
+	}
+	ft_free(ptr);
+	return (new);
+}
+
+void free(void *ptr)
+{
+	return (ft_free(ptr));
+}
+
+void *malloc(size_t size)
+{
+	return (ft_malloc(size));
+}
+
+void *realloc(void *ptr, size_t size)
+{
+	return (ft_realloc(ptr, size));
+}
+/*
+int main(void)
+{
+	ft_malloc(10000);
+	void *lol = ft_malloc(10000);
+	ft_realloc(lol, 10001);
+	ft_realloc(lol, 256);
+	ft_malloc(256);
+	ft_realloc(lol, 10001);
+	ft_realloc(lol, 10001);
+	ft_free(0);
+	return (0);
+}*/
