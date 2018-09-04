@@ -27,6 +27,7 @@ typedef struct		s_all
 
 t_all g_container = {NULL, NULL, NULL, 0, 0, 0};
 
+
 static t_list *find_item(void *addr)
 {
 	t_list    *current;
@@ -34,7 +35,7 @@ static t_list *find_item(void *addr)
 	current = g_container.tiny;
 	while(current)
 	{
-	    if (current == addr)
+	    if (current->data == addr)
 	    {
             return current;
         }
@@ -44,7 +45,7 @@ static t_list *find_item(void *addr)
     current = g_container.small;
 	while(current)
 	{
-	    if (current == addr)
+	    if (current->data == addr)
 	    {
             return current;
         }
@@ -54,7 +55,7 @@ static t_list *find_item(void *addr)
     current = g_container.large;
 	while(current)
 	{
-	    if (current == addr)
+	    if (current->data == addr)
 	    {
             return current;
         }
@@ -66,7 +67,7 @@ static t_list *find_item(void *addr)
 
 static void	ft_putchar_fd(char c, int fd)
 {
-	write(fd, &c, 1);
+	//write(fd, &c, 1);
 }
 
 static void	ft_putnbr_fd(size_t n, int fd)
@@ -82,10 +83,62 @@ static void	ft_putnbr_fd(size_t n, int fd)
 	}
 }
 
+static void	ft_putnbr_fd_hexa(size_t n, int fd)
+{
+	if (n >= 16)
+	{
+		ft_putnbr_fd_hexa(n / 16, fd);
+		ft_putnbr_fd_hexa(n % 16, fd);
+	}
+	else
+	{
+		if (n < 10)
+			ft_putchar_fd(n + '0', fd);
+		else
+			ft_putchar_fd((n - 10) + 'A', fd);
+	}
+}
+
+
 void	ft_putstr(char const *s)
 {
 	while (*s)
 		ft_putchar_fd(*(s++), 1);
+}
+
+void display_pages(){
+	return ;
+	t_list *current;
+	size_t poid;
+
+	ft_putstr("====== DÉBUT ======\n");
+	current = g_container.tiny;
+	poid = 0;
+	while(current)
+	{
+		if (current->is_new_page)
+		{
+			if(poid != 0)
+			{
+				ft_putstr("Total : ");
+				ft_putnbr_fd(poid, 1);
+				ft_putstr(" octets\n");
+				poid = 0;
+			}
+			ft_putstr("\n\nNouvelle page :\n");
+		}
+		
+		
+		ft_putnbr_fd_hexa((size_t)current, 1);
+		ft_putstr(" Bloc de ");
+		ft_putnbr_fd(current->data_size, 1);
+		ft_putstr(" octets\n");
+		poid += current->data_size + sizeof(t_list);
+		current = current->next;
+	}
+	ft_putstr("Poid restant : ");
+	ft_putnbr_fd(poid, 1);
+	ft_putstr(" octets\n");
 }
 
 
@@ -257,37 +310,49 @@ static void *	malloc_tiny(size_t size)
 		l = malloc_page_tiny(size);
 		return (l->data);
 	}
+	//ft_putnbr_fd(sizeof(t_list), 1);
+	//exit(0);
 	page_used_size = 0;
 	while(page)
 	{
 		page_used_size += page->data_size + sizeof(t_list);
 		if (page->next && page->next->is_new_page)
 		{
-
+			ft_putstr("hey\n");
+			ft_putnbr_fd(page_used_size, 1);
+			ft_putstr("\n");
+			ft_putnbr_fd(getpagesize() - page_used_size, 1);
+			ft_putstr("<~~\n");
 			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size)) // On segfault sur ls ! o_O
 			{
+				ft_putstr("a\n");
 				l = page->next;
-				page->next = page->data + page->data_size +1;
+				page->next = page->data + page->data_size;
 				page->next->next = l;
 				page->next->data = page->next + 1;
 				page->next->is_busy = 1;
 				page->next->data_size = size;
 				page->next->is_new_page = 0;
+				ft_putstr("c\n");
 				return (page->data);
 			}
 			page_used_size = 0;
 		}
+
 		last = page;
 		page = page->next;
 	}
-	if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
+	if ((getpagesize() - (page_used_size + sizeof(t_list))) > (sizeof(t_list) + size))
 	{
+		ft_putnbr_fd((getpagesize() - page_used_size), 1);
+		ft_putstr("<--\nç\n");
 		l = malloc_nopage_tiny(size);
-		ft_putstr("b\n");
+		ft_putstr("z\n");
 		return (l->data);
 	}
+	ft_putstr("xd\n");
 	l = malloc_page_tiny(size);
-	ft_putstr("c\n");
+	ft_putstr("y\n");
 	return (l->data);
 }
 
@@ -310,7 +375,6 @@ static void *	malloc_small(size_t size)
 		page_used_size += page->data_size + sizeof(t_list);
 		if (page->next && page->next->is_new_page)
 		{
-
 			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
 			{
 				l = page->next;
@@ -344,17 +408,20 @@ static void *malloc_large(size_t size)
 
 void	*ft_malloc(size_t size)
 {
+	void *ret;
 	if (size == 0)
 		return (NULL);
-	write(1, "\x1B[31mmalloc(", 12);
+	//write(1, "\x1B[31mmalloc(", 12);
 	ft_putnbr_fd(size, 1);
-	write(1, ");\x1B[0m\n", 7);
+	//write(1, ");\x1B[0m\n", 7);
 	//printf("\nmalloc(%zu);\n", size);
 	if ((size * 4) <= getpagesize() - sizeof(t_list))
-		return malloc_tiny(size);
+		ret = malloc_tiny(size);
 	if (size <= getpagesize() - sizeof(t_list))
-		return malloc_small(size);
-	return malloc_large(size);
+		ret = malloc_small(size);
+	ret = malloc_large(size);
+	display_pages();
+	return (ret);
 }
 
 /*static void	memdump(void *data)
@@ -503,7 +570,7 @@ static void ft_free_tiny(void *addr)
 void ft_free(void *addr)
 {
 	(void)addr;
-	write(1, "\x1B[31mfree();\n", 14);
+	//write(1, "\x1B[31mfree();\n", 14);
 	//show_alloc_mem();
  	ft_free_large(addr);
  	ft_free_tiny(addr);
@@ -542,16 +609,33 @@ void *ft_realloc(void *ptr, size_t size)
 	void *new;
 	t_list *item;
 
-	write(1, "\x1B[31mft_realloc(", 13);
-	ft_putnbr_fd(size, 1);
-	write(1, ");\x1B[0m\n", 7);
+	if(ptr == NULL)
+		return malloc(size);
+	if(size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	
+	
+	
 	new = ft_malloc(size);
-	ft_memset(new, 0, size);
 	item = find_item(ptr);
+	//write(1, "\x1B[31mft_realloc(", 16);
 	if (item)
 	{
+		//ft_putnbr_fd(item->data_size - size, 1);
+		ft_putnbr_fd(item->data_size, 1);
+		ft_putstr(" ");
+		ft_putnbr_fd(size, 1);
 		ft_memcpy(new, ptr, item->data_size < size ? item->data_size : size);
 	}
+	else
+	{
+		ft_putnbr_fd(size, 1);
+		return (NULL);
+	}
+	//write(1, ");\x1B[0m\n", 7);
 	ft_free(ptr);
 	return (new);
 }
@@ -563,22 +647,50 @@ void free(void *ptr)
 
 void *malloc(size_t size)
 {
-	return (ft_malloc(size));
+	return ft_malloc(size);
 }
 
 void *realloc(void *ptr, size_t size)
 {
 	return (ft_realloc(ptr, size));
 }
-
+/*
 int main(void)
 {
-
-	void *lol = ft_malloc(10);
-	void *lol2 = ft_malloc(10);
-	void *lol3 = ft_malloc(10);
-	ft_free(lol);
-	ft_free(lol2);
-	ft_free(lol3);
-	return (0);
-}
+	printf("%p\n", ft_malloc(32));
+	printf("%p\n", ft_malloc(32));
+	printf("%p\n", ft_malloc(32));
+	printf("%p\n", ft_malloc(15));
+	printf("%p\n", ft_malloc(45));
+	printf("%p\n", ft_malloc(205));
+	printf("%p\n", ft_malloc(45));
+	printf("%p\n", ft_malloc(50));
+	printf("%p\n", ft_malloc(47));
+	printf("%p\n", ft_malloc(11));
+	printf("%p\n", ft_malloc(64));
+	printf("%p\n", ft_malloc(49));
+	printf("%p\n", ft_malloc(67));
+	printf("%p\n", ft_malloc(52));
+	printf("%p\n", ft_malloc(54));
+	printf("%p\n", ft_malloc(12));
+	printf("%p\n", ft_malloc(45));
+	printf("%p\n", ft_malloc(80));
+	printf("%p\n", ft_malloc(16));
+	printf("%p\n", ft_malloc(64));
+	printf("%p\n", ft_malloc(14));
+	printf("%p\n", ft_malloc(256));
+	printf("%p\n", ft_malloc(4096));
+	printf("%p\n", ft_malloc(2160));
+	char *a = ft_malloc(3312);
+	a[3311] = 5;
+	printf("%p\n", ft_malloc(4096));
+	char *bb = ft_realloc(a, 91556);
+	ft_putnbr_fd((size_t)bb[3311], 1);
+	printf("%p\n", ft_malloc(192));
+	printf("%p\n", ft_malloc(46));
+	printf("%p\n", ft_malloc(48));
+	printf("%p\n", ft_malloc(20));
+	printf("%p\n", ft_malloc(488));
+	char *b = ft_malloc(389);
+	b[388] = 'a';
+}*/
