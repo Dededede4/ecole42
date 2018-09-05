@@ -155,7 +155,7 @@ static t_list	*malloc_direct(size_t size)
 	l = mmap(NULL, size_alloc, PROT_READ | PROT_WRITE, MAP_ANON|MAP_PRIVATE, -1, 0);
 	l->data_size = size;
 	l->data = l + 1;
-	l->is_busy = 9;
+	l->is_busy = 1;
 	l->is_new_page = 1;
 	l->next = NULL;
 	return (l);
@@ -248,6 +248,11 @@ static void *	malloc_list(size_t size, t_list **page_container)
 	page_used_size = 0;
 	while(page)
 	{
+		if (page->is_busy == 0 && page->data_size >= size)
+		{
+			page->is_busy = 1;
+			return (page->data);
+		}
 		page_used_size += page->data_size + sizeof(t_list);
 		if (page->next && page->next->is_new_page)
 		{
