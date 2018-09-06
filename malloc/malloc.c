@@ -27,7 +27,7 @@ typedef struct		s_all
 
 t_all g_container = {NULL, NULL, NULL, 0, 0, 0};
 
-
+# define DEBUG_MALLOC 0
 
 /////
 
@@ -223,6 +223,7 @@ static t_list *malloc_nopage_list(size_t size, t_list **container)
 	{
 		current = current->next;
 	}
+
 	current->next = current->data + current->data_size;
 	current->next->next = NULL;
 	current->next->data = current->next + 1;
@@ -242,6 +243,8 @@ static void *	malloc_list(size_t size, t_list **page_container)
 	page = *page_container;
 	if (NULL == *page_container)
 	{
+		if (DEBUG_MALLOC)
+			ft_putstr("\x1B[31m-> On crée une nouvelle page car c'est le premier\x1B[0m\n");
 		l = malloc_page_list(size, page_container);
 		return (l->data);
 	}
@@ -251,13 +254,22 @@ static void *	malloc_list(size_t size, t_list **page_container)
 		if (page->is_busy == 0 && page->data_size >= size)
 		{
 			page->is_busy = 1;
+			if (DEBUG_MALLOC)
+			{
+				ft_putstr("\x1B[31m-> On attribue le malloc à un bloc de ");
+				ft_putnbr_fd(page->data_size, 1);
+				ft_putstr(" octets\x1B[0m\n");
+			}
 			return (page->data);
 		}
+		
 		page_used_size += page->data_size + sizeof(t_list);
 		if (page->next && page->next->is_new_page)
 		{
 			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
 			{
+				if (DEBUG_MALLOC)
+					ft_putstr("\x1B[31m-> On lui crée une zone dans une page d'avant\x1B[0m\n");
 				l = page->next;
 				page->next = page->data + page->data_size;
 				page->next->next = l;
@@ -265,7 +277,7 @@ static void *	malloc_list(size_t size, t_list **page_container)
 				page->next->is_busy = 1;
 				page->next->data_size = size;
 				page->next->is_new_page = 0;
-				return (page->data);
+				return (page->next->data);
 			}
 			page_used_size = 0;
 		}
@@ -273,11 +285,15 @@ static void *	malloc_list(size_t size, t_list **page_container)
 		last = page;
 		page = page->next;
 	}
-	if ((getpagesize() - (page_used_size + sizeof(t_list))) > (sizeof(t_list) + size))
+	if ((getpagesize() - page_used_size) > (sizeof(t_list) + size))
 	{
+		if (DEBUG_MALLOC)
+			ft_putstr("\x1B[31m-> On lui crée une zone dans la dernière page\x1B[0m\n");
 		l = malloc_nopage_list(size, page_container);
 		return (l->data);
 	}
+	if (DEBUG_MALLOC)
+			ft_putstr("\x1B[31m-> On crée une nouvelle page car il n'y a plus de place\x1B[0m\n");
 	l = malloc_page_list(size, page_container);
 	return (l->data);
 }
@@ -292,6 +308,12 @@ static void *malloc_large(size_t size)
 void	*ft_malloc(size_t size)
 {
 	void *ret;
+	if (DEBUG_MALLOC)
+	{
+		write(1, "\x1B[31mmalloc(", 12);
+		ft_putnbr_fd(size, 1);
+		write(1, ");\x1B[0m\n", 7);
+	}
 	if (size == 0)
 		return (NULL);
 	if ((size * 4) <= getpagesize() - sizeof(t_list))
@@ -385,16 +407,21 @@ static void ft_free_container(void *addr, t_list **page_container)
 
 	if(!(current = find_item(addr)))
 		return ;
+	if (current->is_busy == 0)
+		return ;
+	if (DEBUG_MALLOC)
+		ft_putnbr_fd(current->data_size, 1);
+	
 	current->is_busy = 0;
 
 	// petit algo pour parcourir les élèments de la liste, si entre deux pages tout est vide, on peut le free pour de vrai.
 	page_start = *page_container;
 	before_page_start = NULL;
-	current = page_start->next;
+	current = page_start;
 	busy_find = false;
 	while(current)
 	{
-		if (current->is_new_page || current->next == NULL)
+		if (current != *page_container && (current->is_new_page  || current->next == NULL))
 		{
 			if (!busy_find)
 			{
@@ -415,6 +442,8 @@ static void ft_free_container(void *addr, t_list **page_container)
 					before_page_start->next = current;
 					before_page_start = old_current;
 				}
+				if (DEBUG_MALLOC)
+					ft_putstr(" (munmap)");
 				munmap(page_start, getpagesize());
 				return;
 			}
@@ -432,9 +461,13 @@ static void ft_free_container(void *addr, t_list **page_container)
 
 void ft_free(void *addr)
 {
+	if (DEBUG_MALLOC)
+		write(1, "\x1B[31mfree(", 11);
  	ft_free_large(addr);
  	ft_free_container(addr, &g_container.tiny);
  	ft_free_container(addr, &g_container.small);
+ 	if (DEBUG_MALLOC)
+ 		write(1, ");\x1B[0m\n", 7);
 }
 
 static void	*ft_memcpy(void *dest, const void *src, size_t n)
@@ -482,21 +515,26 @@ void *ft_realloc(void *ptr, size_t size)
 	
 	new = ft_malloc(size);
 	item = find_item(ptr);
-	//write(1, "\x1B[31mft_realloc(", 16);
+	if (DEBUG_MALLOC)
+		write(1, "\x1B[31mft_realloc(", 16);
 	if (item)
 	{
-		//ft_putnbr_fd(item->data_size - size, 1);
-		//ft_putnbr_fd(item->data_size, 1);
-		//ft_putstr(" ");
-		//ft_putnbr_fd(size, 1);
+		if (DEBUG_MALLOC)
+		{
+			ft_putnbr_fd(item->data_size, 1);
+			ft_putstr(" ");
+			ft_putnbr_fd(size, 1);
+		}
 		ft_memcpy(new, ptr, item->data_size < size ? item->data_size : size);
 	}
 	else
 	{
-		//ft_putnbr_fd(size, 1);
+		if (DEBUG_MALLOC)
+			ft_putnbr_fd(size, 1);
 		return (NULL);
 	}
-	//write(1, ");\x1B[0m\n", 7);
+	if (DEBUG_MALLOC)
+		write(1, ");\x1B[0m\n", 7);
 	ft_free(ptr);
 	return (new);
 }
@@ -537,13 +575,7 @@ static void main_test_1()
 	show_alloc_mem();
 }
 
-int main()
-{
-	main_test_1();
-	return (0);
-}
-/*
-int main(void)
+static void main_test_2()
 {
 	printf("%p\n", ft_malloc(32));
 	printf("%p\n", ft_malloc(32));
@@ -571,7 +603,6 @@ int main(void)
 	printf("%p\n", ft_malloc(2160));
 	char *a = ft_malloc(3312);
 	a[3311] = 5;
-	printf("%p\n", ft_malloc(4096));
 	char *bb = ft_realloc(a, 91556);
 	ft_putnbr_fd((size_t)bb[3311], 1);
 	printf("%p\n", ft_malloc(192));
@@ -581,4 +612,15 @@ int main(void)
 	printf("%p\n", ft_malloc(488));
 	char *b = ft_malloc(389);
 	b[388] = 'a';
+}
+
+int main()
+{
+	main_test_2();
+	return (0);
+}
+/*
+int main(void)
+{
+
 }*/
