@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static void		*malloc_large(size_t size)
+#include "malloc.h"
+
+void		*malloc_large(size_t size)
 {
 	t_list *pouet;
 

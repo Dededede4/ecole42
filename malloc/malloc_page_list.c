@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-tatic t_list	*malloc_page_list(size_t size, t_list **page_container)
+#include "malloc.h"
+
+t_list	*malloc_page_list(size_t size, t_list **page_container)
 {
 	t_list *current;
 

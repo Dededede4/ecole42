@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static void	ft_free_large(void *addr)
+#include "malloc.h"
+
+t_all g_container;
+
+void	ft_free_large(void *addr)
 {
 	t_list		*current;
 	t_list		*before;
@@ -20,8 +24,10 @@ static void	ft_free_large(void *addr)
 	before = NULL;
 	while (current)
 	{
-		if (current == addr)
+		if (current->data == addr)
 		{
+			if (DEBUG_MALLOC)
+				ft_putnbr_fd(current->data_size, 1);
 			size_alloc = current->data_size + sizeof(t_list);
 			size_alloc = ((size_alloc / getpagesize()) + 1) * getpagesize();
 			if (NULL == before)
@@ -39,17 +45,15 @@ static void	ft_free_large(void *addr)
 	}
 }
 
-static void	ft_free_container_checkmunmap_nobusyfind(
+void	ft_free_container_checkmunmap_nobusyfind(
 	t_list **page_container, t_list *before_page_start,
 	t_list *current, t_list *page_start)
 {
+	return ;
 	if (before_page_start == NULL)
 		*page_container = (current->next == NULL) ? NULL : current;
 	else
-	{
 		before_page_start->next = current;
-		before_page_start = old_current;
-	}
 	if (DEBUG_MALLOC)
 		ft_putstr(" (munmap)");
 	munmap(page_start, getpagesize());
@@ -60,7 +64,7 @@ static void	ft_free_container_checkmunmap_nobusyfind(
 ** si entre deux pages tout est vide, on peut le munmap.
 */
 
-static void	ft_free_container_checkmunmap(t_list **page_container)
+void	ft_free_container_checkmunmap(t_list **page_container)
 {
 	t_list		*page_start;
 	t_list		*before_page_start;
@@ -79,7 +83,7 @@ static void	ft_free_container_checkmunmap(t_list **page_container)
 		{
 			if (!busy_find)
 				return (ft_free_container_checkmunmap_nobusyfind(
-					page_container, &before_page_start, current, page_start));
+					page_container, before_page_start, current, page_start));
 				page_start = current;
 		}
 		if (current->is_busy)
@@ -89,11 +93,11 @@ static void	ft_free_container_checkmunmap(t_list **page_container)
 	}
 }
 
-static void	ft_free_container(void *addr, t_list **page_container)
+void	ft_free_container(void *addr, t_list **page_container)
 {
 	t_list	*current;
 
-	if (!(current = find_item(addr)))
+	if (!(current = find_item_list(addr, page_container)))
 		return ;
 	if (current->is_busy == 0)
 		return ;
@@ -103,13 +107,12 @@ static void	ft_free_container(void *addr, t_list **page_container)
 	ft_free_container_checkmunmap(page_container);
 }
 
-static void	ft_free(void *addr)
+void	ft_free(void *addr)
 {
 	if (DEBUG_MALLOC)
 		write(1, "\x1B[31mfree(", 11);
 	ft_free_large(addr);
 	ft_free_container(addr, &g_container.tiny);
 	ft_free_container(addr, &g_container.small);
-	if (DEBUG_MALLOC)
-		write(1, ");\x1B[0m\n", 7);
+	pd(");\x1B[0m\n");
 }

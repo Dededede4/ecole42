@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static void		*ft_realloc_afterchecks(void *ptr, size_t size)
+#include "malloc.h"
+
+void		*ft_realloc_afterchecks(void *ptr, size_t size)
 {
 	void	*new;
 	t_list	*item;
@@ -38,7 +40,7 @@ static void		*ft_realloc_afterchecks(void *ptr, size_t size)
 	return (new);
 }
 
-static void		*ft_realloc(void *ptr, size_t size)
+void		*ft_realloc(void *ptr, size_t size)
 {
 	if (ptr == NULL)
 		return (malloc(size));

@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static void		*create_zone_from_mem(t_list *page)
+#include "malloc.h"
+
+void		*create_zone_from_mem(t_list *page, size_t size)
 {
 	t_list *l;
 
@@ -24,7 +26,7 @@ static void		*create_zone_from_mem(t_list *page)
 	return (page->next->data);
 }
 
-static void		*malloc_list_after(size_t size, t_list **page_container,
+void		*malloc_list_after(size_t size, t_list **page_container,
 	size_t page_used_size)
 {
 	if ((getpagesize() - page_used_size) > (sizeof(t_list) + size) &&
@@ -34,14 +36,14 @@ static void		*malloc_list_after(size_t size, t_list **page_container,
 	return ((malloc_page_list(size, page_container))->data);
 }
 
-static void		*malloc_list(size_t size, t_list **page_container)
+void		*malloc_list(size_t size, t_list **page_container)
 {
 	size_t page_used_size;
 	t_list *page;
 
 	page = *page_container;
-	if (NULL == *page_container && !(page_used_size = 0) &&
-		pd("\x1B[31m-> Nouvelle page car c'est le premier\x1B[0m\n"))
+	if (!(page_used_size = 0) && NULL == *page_container &&
+		pd("\x1B[31m-> Une nouvelle page car c'est le premier\x1B[0m\n"))
 		return ((malloc_page_list(size, page_container))->data);
 	while (page)
 	{
@@ -53,7 +55,7 @@ static void		*malloc_list(size_t size, t_list **page_container)
 		if (page->next && page->next->is_new_page)
 			if ((getpagesize() - page_used_size) > (sizeof(t_list) + size) &&
 				pd("\x1B[31m-> Une zone dans une page d'avant\x1B[0m\n"))
-				return (create_zone_from_mem(page));
+				return (create_zone_from_mem(page, size));
 			else
 				page_used_size = 0;
 		page = page->next;

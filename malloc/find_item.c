@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static t_list	*find_item_list(void *addr, t_list **page_container)
+#include "malloc.h"
+
+t_list	*find_item_list(void *addr, t_list **page_container)
 {
 	t_list	*current;
 
@@ -26,7 +28,7 @@ static t_list	*find_item_list(void *addr, t_list **page_container)
 	return (NULL);
 }
 
-static t_list	*find_item(void *addr)
+t_list	*find_item(void *addr)
 {
 	t_list	*r;
 

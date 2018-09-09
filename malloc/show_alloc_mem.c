@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static size_t	show_alloc_mem_list(char *name, t_list **container)
+#include "malloc.h"
+
+size_t	show_alloc_mem_list(char *name, t_list **container)
 {
 	t_list	*current;
 	size_t	total;

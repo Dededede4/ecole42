@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-tatic t_list	*malloc_direct(size_t size)
+#include "malloc.h"
+
+t_list	*malloc_direct(size_t size)
 {
 	size_t	size_alloc;
 	t_list	*l;

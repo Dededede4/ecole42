@@ -10,18 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static t_list	*malloc_page_large(size_t size)
+#include "malloc.h"
+
+t_list	*malloc_page_large(size_t size)
 {
 	t_list		*current;
-	static char	first = 0;
 
-	if (!first)
-	{
-		g_container.large = NULL;
-		g_container.nbr_large = 0;
-		first = 1;
-	}
-	g_container.nbr_large++;
 	if (g_container.large)
 	{
 		current = g_container.large;

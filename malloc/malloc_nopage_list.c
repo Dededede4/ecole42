@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static t_list	*malloc_nopage_list(size_t size, t_list **container)
+#include "malloc.h"
+
+t_list	*malloc_nopage_list(size_t size, t_list **container)
 {
 	t_list *current;
 

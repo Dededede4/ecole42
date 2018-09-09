@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static void	ft_putnbr_fd(size_t n, int fd)
+#include "malloc.h"
+
+void	ft_putnbr_fd(size_t n, int fd)
 {
 	if (n >= 10)
 	{
@@ -23,7 +25,7 @@ static void	ft_putnbr_fd(size_t n, int fd)
 	}
 }
 
-static void	ft_putnbr_fd_hexa(size_t n, int fd)
+void	ft_putnbr_fd_hexa(size_t n, int fd)
 {
 	if (n >= 16)
 	{
@@ -39,8 +41,9 @@ static void	ft_putnbr_fd_hexa(size_t n, int fd)
 	}
 }
 
-static void	ft_putnbr_fd_debug(size_t n, int fd)
+int	ft_putnbr_fd_debug(size_t n, int fd)
 {
 	if (DEBUG_MALLOC)
 		ft_putnbr_fd(n, fd);
+	return (1);
 }
