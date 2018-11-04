@@ -1,3 +1,4 @@
+#!/Users/mprevot/.brew/bin/php 
 <?php
 
 function ft_sqrt(string $str): float
@@ -161,6 +162,7 @@ class Member
 		unset($tokens[0]);
 		unset($tokens[1]);
 		$tokens = array_values($tokens);
+		$this->absorb($tokens);
 	}
 }
 

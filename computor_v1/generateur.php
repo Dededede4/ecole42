@@ -15,7 +15,7 @@ $plusminus = array( 0 => " + ", 1 => " - ");
 $i = 0;
  
 /* Let's build first part of equ */
- 
+$ret = '';
 while ($i <= $degree1)
 {
     /* Let's put float numbers. Or not */
