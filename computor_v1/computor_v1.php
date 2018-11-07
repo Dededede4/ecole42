@@ -153,8 +153,6 @@ class Member
 		$revertSigns = [
 			'+' => '-',
 			'-' => '+',
-			'*' => '/',
-			'/' => '*',
 		];
 
 		array_unshift($this->tokens, $tokens[1]);
@@ -167,16 +165,56 @@ class Member
 }
 
 
+function strToAst($equationStr)
+{
+	$members = explode(' = ', $equationStr);
+
+	$result = [];
+
+	foreach ($members as &$member) {
+		$member = explode(' ', $member);
+		$tree = [];
+
+		$len = count($member);
+		for ($i=1; $i < $len; $i += 2) {
+			if ('*' === $member[$i] ||  '/' === $member[$i])
+			{
+				$tree[] = [$member[$i + 1], $member[$i], $member[$i + 1]];
+			}
+			else
+			{
+				$tree[] = $member[$i];
+			}
+		}
+
+		$len = count($tree);
+		$tree2 = [];
+		for ($i=0; $i + 1 < $len; $i++) {
+			if (is_array($tree[$i]) && is_array($tree[$i + 1]))
+			{
+				$tree[$i] = array_merge($tree[$i], $tree[$i + 1]);
+				unset($tree[$i + 1]);
+				$tree = array_values($tree);
+				$len = count($tree);
+				$i = 0;
+			}
+		}
+
+
+		$result[] = $tree;
+	}
+	return $result;
+}
+
 class Equation 
 {
 	public $member1;
-	public $member2;
 
 	public function __construct(string $equationStr)
 	{
-		$members = explode(' = ', $equationStr);
-		$this->member1 = new Member($members[0]);
-		$this->member2 = new Member($members[1]);
+		$ast = strToAst($equationStr);
+		$this->member1 = new Member($ast[0]);
+		$this->member2 = new Member($ast[1]);
 	}
 
 	public function solve()
@@ -205,7 +243,7 @@ class Equation
 $arg = $argv[1];
 
 echo 'OK on va résoudre "'.$arg.'"'."\n";
-
+tokenize($arg);
 $equation = new Equation($arg);
 //$equation->show();
 echo "\n";
