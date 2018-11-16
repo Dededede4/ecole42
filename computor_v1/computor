@@ -1,0 +1,191 @@
+#!/Users/mprevot/.brew/bin/php 
+<?php
+
+// Méthode du héron : https://www.youtube.com/watch?v=7dNF29NKhoM
+function ft_sqrt($nbr)
+{
+	$x = $nbr;
+	$y = 1;
+
+
+	for ($i=0; $i < 100; $i++) {
+		$average = ($x + $y) / 2;
+		$x = $nbr / $average;
+		$y = $average;
+	}
+
+	return $x;
+}
+
+class Member
+{
+	public $lvl0;
+	public $lvl1;
+	public $lvl2;
+	public $delta;
+
+	public function __construct(string $memberStr)
+	{
+		$tokens = explode(' ', $memberStr);
+		if (count($tokens) >= 3)
+			$this->lvl0 = $tokens[0];
+		if (count($tokens) >= 7)
+			eval('$this->lvl1 = '.$tokens[3] .' '.$tokens[4].';');
+		if (count($tokens) >= 11)
+			eval('$this->lvl2 = '.$tokens[7] .' '.$tokens[8].';');
+		if (count($tokens) > 11)
+		{
+			echo ("The polynomial degree is stricly greater than 2, I can't solve.\n");
+			die;
+		}
+	}
+
+
+	public function absorb(Member $member)
+	{
+		if (!is_null($member->lvl0))
+			$this->lvl0 -= $member->lvl0;
+		if (!is_null($member->lvl1))
+			$this->lvl1 -= $member->lvl1;
+		if (!is_null($member->lvl2))
+			$this->lvl2 -= $member->lvl2;
+		$member->lvl0 = null;
+		$member->lvl1 = null;
+		$member->lvl2 = null;
+	}
+
+	public function show()
+	{
+		if (is_null($this->lvl0) && is_null($this->lvl1) && is_null($this->lvl2))
+		{
+			echo '0';
+			return ;
+		}
+
+		echo $this->lvl0.' * X^0';
+
+		if ($this->lvl1)
+		{
+			echo ' + '.$this->lvl1.' * X^1';
+		}
+
+		if ($this->lvl2)
+		{
+			echo ' + '.$this->lvl2.' * X^2';
+		}
+	}
+
+	public function findForZero()
+	{
+		$this->delta = NULL;
+		if (is_null($this->lvl0))
+			return '0';
+		if (is_null($this->lvl1))
+			return $this->lvl0; // // Quelque soit la puissance de zéro, le résultat est 1
+		if (is_null($this->lvl2))
+		{
+			if ($this->lvl1 > 0)
+				return - $this->lvl0 / $this->lvl1; // Il nous faut un résultat de -1 quand on multiplie le facteur par x
+			return null;
+		}
+
+		if ($this->lvl2 == 0) // cas pourri d'une "fausse équation du second degré"
+		{
+			$this->lvl2 = null;
+			return $this->findForZero();
+		}
+
+		$a = $this->lvl2;
+		$b = $this->lvl1;
+		$c = $this->lvl0;
+		$Δ =  ($b * $b) - (4 * $a * $c); // Δ=b²−4ac (c = 1)
+		$this->delta = $Δ;
+		if ($Δ > 0) // deux solutions
+		{
+			$x1 = (0 - $b + ft_sqrt($Δ)) / (2 * $a);
+			$x2 = (0 - $b - ft_sqrt($Δ)) / (2 * $a);
+			return [$x1, $x2];
+		}
+		elseif ($Δ == 0) // une solution
+		{
+			return (- $b) / (2 * $a);
+		}
+		return null; // pas de solution
+	}
+
+	public function testForZero($solution)
+	{
+		if (is_null($this->lvl1))
+			return ($this->lvl0 == 0);
+		if (is_null($this->lvl2))
+			return ($this->lvl0 + $this->lvl1 * $solution == 0);
+
+		return (($this->lvl0 +
+			($this->lvl1 * $solution) +
+			($this->lvl2 * ($solution * $solution))) == 0);
+	}
+}
+
+
+
+class Equation 
+{
+	public $member1;
+
+	public function __construct(string $equationStr)
+	{
+		$parts = explode(' = ', $equationStr);
+		if (2 != count($parts))
+			throw new Exception("Error for '='");
+			
+		$this->member1 = new Member($parts[0]);
+		$this->member2 = new Member($parts[1]);
+	}
+
+	public function solve()
+	{
+		$this->member1->absorb($this->member2);
+		$this->finded = $this->member1->findForZero();
+	}
+
+	public function show()
+	{
+		echo 'Reduced form: ';
+		$this->member1->show();
+		echo ' = ';
+		$this->member2->show();
+		echo "\n";
+		$degree = 0;
+		if (!is_null($this->member1->lvl2))
+			$degree = 2;
+		elseif (!is_null($this->member1->lvl1))
+			$degree = 1;
+		echo 'Polynomial degree: '.$degree."\n";
+		if (!is_null($this->member1->delta))
+		{
+			if ($this->member1->delta > 0)
+				echo "Discriminant is strictly positive, the two solutions are: \n".$this->finded[0]."\n".$this->finded[1]."\n";
+			if ($this->member1->delta == 0 && $this->member1->testForZero($this->finded))
+				echo "Discriminant is zero, the solution is : \n".$this->finded."\n";
+			if ($this->member1->delta < 0)
+				echo "Discriminant is strictly negative, no solution"."\n";
+			die;
+		}
+		if (is_null($this->finded))
+			echo 'No solution'."\n";
+		else if ($this->member1->testForZero(6) && $this->member1->testForZero(21) && $this->member1->testForZero(42))
+			echo 'All number is possible'."\n";
+		else if ($this->member1->testForZero($this->finded))
+			echo 'The solution is :'."\n".$this->finded."\n";
+		else
+			echo 'No number is possible'."\n";
+	}
+}
+
+
+
+$arg = $argv[1];
+echo 'For '.$arg."\n";
+$equation = new Equation($arg);
+$equation->solve();
+$equation->show();
