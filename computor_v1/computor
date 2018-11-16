@@ -110,7 +110,21 @@ class Member
 		{
 			return (- $b) / (2 * $a);
 		}
-		return null; // pas de solution
+		else // Deux solutions complexes : https://www.youtube.com/watch?v=4pB8RPq837A
+		{
+			$x1 = (0 - $b + ft_sqrt(0 - $Δ)) / (2 * $a);
+			$x2 = (0 - $b - ft_sqrt(0 - $Δ)) / (2 * $a);
+
+			$x1 = (0 - $b + (2 * ft_sqrt((0 - $Δ) / 2))) / (2 * $a);
+			$x2 = (0 - $b - (2 * ft_sqrt((0 - $Δ)) / 2)) / (2 * $a);
+
+			$dénominateur = (2 * $a);
+			$a = (0 - $b) / $dénominateur;
+			$b = ft_sqrt((0 - $Δ) / $dénominateur);
+			$b = (2 * ft_sqrt((0 - $Δ)) / $dénominateur);
+			$first = 
+
+		}
 	}
 
 	public function testForZero($solution)
@@ -167,7 +181,7 @@ class Equation
 				echo "Discriminant is strictly positive, the two solutions are: \n".$this->finded[0]."\n".$this->finded[1]."\n";
 			if ($this->member1->delta == 0 && $this->member1->testForZero($this->finded))
 				echo "Discriminant is zero, the solution is : \n".$this->finded."\n";
-			if ($this->member1->delta < 0)
+			if ($this->member1->CFV < 0)
 				echo "Discriminant is strictly negative, no solution"."\n";
 			die;
 		}
