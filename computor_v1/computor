@@ -35,8 +35,13 @@ class Member
 			eval('$this->lvl2 = '.$tokens[7] .' '.$tokens[8].';');
 		if (count($tokens) > 11)
 		{
-			echo ("The polynomial degree is stricly greater than 2, I can't solve.\n");
-			die;
+			for ($i= 8 + 4; $i < count($tokens); $i+=4) { 
+				if ($tokens[$i] !== '0')
+				{
+					echo ("The polynomial degree is stricly greater than 2, I can't solve.\n");
+					die;
+				}
+			}
 		}
 	}
 
@@ -114,10 +119,7 @@ class Member
 		{
 			$left = ((0 - $b) / (2 * $a));
 			$right = ft_sqrt(0 - $Δ) / (2 * $a);
-			$result = [$left .' + i * '.$right, $left .' - i * '.$right];
-			var_dump($result);
-			die;
-
+			return [$left .' + i * '.$right, $left .' - i * '.$right];
 		}
 	}
 
@@ -169,6 +171,15 @@ class Equation
 		elseif (!is_null($this->member1->lvl1))
 			$degree = 1;
 		echo 'Polynomial degree: '.$degree."\n";
+		if ($this->member1->testForZero(6) && $this->member1->testForZero(21) && $this->member1->testForZero(42))
+		{
+			echo 'All number is possible'."\n"; die;
+		}
+		elseif ($this->member1->testForZero(0))
+		{
+			echo 'The solution is : '."\n0\n"; die;
+		}
+
 		if (!is_null($this->member1->delta))
 		{
 			if ($this->member1->delta > 0)
@@ -176,13 +187,11 @@ class Equation
 			if ($this->member1->delta == 0 && $this->member1->testForZero($this->finded))
 				echo "Discriminant is zero, the solution is : \n".$this->finded."\n";
 			if ($this->member1->delta < 0)
-				echo "Discriminant is strictly negative : ".$this->member1->lvl0." ".$this->member1->lvl1." ".$this->member1->lvl0." ".$this->member1->delta.", no solution"."\n";
+				echo "Discriminant is strictly negative, the two solutions are \n".$this->finded[0]."\n".$this->finded[1]."\n";
 			die;
 		}
 		if (is_null($this->finded))
 			echo 'No solution'."\n";
-		else if ($this->member1->testForZero(6) && $this->member1->testForZero(21) && $this->member1->testForZero(42))
-			echo 'All number is possible'."\n";
 		else if ($this->member1->testForZero($this->finded))
 			echo 'The solution is :'."\n".$this->finded."\n";
 		else
