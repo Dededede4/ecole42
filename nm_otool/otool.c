@@ -22,6 +22,30 @@ void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 	}
 }
 
+void print_data(void *start, uint64_t size, uint32_t offset)
+{
+	int		i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (i  % 16 == 0)
+		{
+			ft_printf("%016x\t", offset + i);
+		}
+		ft_printf("%02X", ((unsigned char*)start)[i]);
+		if ((i + 1)  % 16 == 0)
+		{
+			ft_printf("\n");
+		}
+		else
+		{
+			ft_printf(" ");
+		}
+		i++;
+	}
+}
+
 void handle_64(char * ptr)
 {
 	int ncmds;
@@ -45,6 +69,7 @@ void handle_64(char * ptr)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
+			ft_printf("LC_SYMTAB\n");
 			//sym = (struct symtab_command *)lc;
 			//ft_printf("nb symboles : %d\n", sym->nsyms);
 			//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 print_output(sym->nsyms, sym->symoff, sym->stroff, ptr);
@@ -58,15 +83,15 @@ void handle_64(char * ptr)
 			//seg->segname[15] = 0; // On n'a pas le droit u___ù
 			if (ft_strequ(seg->segname, "__TEXT"))
 			{
-				ft_printf("Position : %d == %x\n", ((void *)seg - (void*)ptr), ((void *)seg - (void*)ptr));
-				ft_printf("cmd : %x\n", seg->cmd);
-				ft_printf("cmdsize : %x\n", seg->cmdsize);
-				ft_printf("vmaddr : %x\n", seg->vmaddr);
-				ft_printf("vmsize : %d\n", seg->vmsize);
-				ft_printf("fileoff : %x\n", seg->fileoff);
-				ft_printf("filesize : %x\n", seg->filesize);
-				ft_printf("nsects : %x\n", seg->nsects);
-				ft_printf("flags : %x\n", seg->flags);
+				//ft_printf("Position : %d == %x\n", ((void *)seg - (void*)ptr), ((void *)seg - (void*)ptr));
+				//ft_printf("cmd : %x\n", seg->cmd);
+				//ft_printf("cmdsize : %x\n", seg->cmdsize);
+				//ft_printf("vmaddr : %x\n", seg->vmaddr);
+				//ft_printf("vmsize : %d\n", seg->vmsize);
+				//ft_printf("fileoff : %x\n", seg->fileoff);
+				//ft_printf("filesize : %x\n", seg->filesize);
+				//ft_printf("nsects : %x\n", seg->nsects);
+				//ft_printf("flags : %x\n", seg->flags);
 
 				sec = (((void*)seg) + sizeof(struct segment_command_64));
 				while (y < seg->nsects) // todo troll
@@ -74,21 +99,21 @@ void handle_64(char * ptr)
 					if (ft_strequ(sec->sectname, "__text")) // todo troll
 					{
 						text = ptr + sec->offset;
-						ft_printf("Nom : %x\n", *((int*)text)); // y'a plus qu'à afficher 
-						struct section_64 { /* for 64-bit architectures */
-							char		sectname[16];	/* name of this section */
-							char		segname[16];	/* segment this section goes in */
-							uint64_t	addr;		/* memory address of this section */
-							uint64_t	size;		/* size in bytes of this section */
-							uint32_t	offset;		/* file offset of this section */
-							uint32_t	align;		/* section alignment (power of 2) */
-							uint32_t	reloff;		/* file offset of relocation entries */
-							uint32_t	nreloc;		/* number of relocation entries */
-							uint32_t	flags;		/* flags (section type and attributes)*/
-							uint32_t	reserved1;	/* reserved (for offset or index) */
-							uint32_t	reserved2;	/* reserved (for count or sizeof) */
-							uint32_t	reserved3;	/* reserved */
-						};
+						//ft_printf("Nom : %x %x\n", *((int*)text), sec->offset); // y'a plus qu'à afficher 
+						print_data(text, sec->size, sec->offset);
+//						struct section_64 { /* for 64-bit architectures */
+//						char		sectname[16];	/* name of this section */
+//						char		segname[16];	/* segment this section goes in */
+//						uint64_t	addr;		/* memory address of this section */
+//						uint64_t	size;		/* size in bytes of this section */
+//						uint32_t	offset;		/* file offset of this section */
+//						uint32_t	align;		/* section alignment (power of 2) */
+//						uint32_t	reloff;		/* file offset of relocation entries */
+//						uint32_t	nreloc;		/* number of relocation entries */
+//						uint32_t	flags;		/* flags (section type and attributes)*/
+//						uint32_t	reserved1;	/* reserved (for offset or index) */
+//						uint32_t	reserved2;	/* reserved (for count or sizeof) */
+//						uint32_t	reserved3;	/* reserved */
 					}
 					
 					sec = (((void*)sec) + sizeof(struct section_64));
@@ -114,6 +139,10 @@ filesize : 2000
 nsects : 5
 flags : 0*/
 			}
+			else
+			{
+				ft_printf("Connais pas : %x\n", lc->cmd);
+			}
 			
 			/*print_output(seg->nsects, sym->symoff, sym->stroff, ptr);
 			ft_printf("-->%d<--\n", lc->cmd);*/
@@ -129,9 +158,13 @@ void nm(char *ptr)
 	int magic_number;
 
 	magic_number = *(int*) ptr;
-	if (magic_number == MH_MAGIC_64 || magic_number == MH_MAGIC)
+	if (magic_number == MH_MAGIC_64)
 	{
 		handle_64(ptr);
+	}
+	else
+	{
+		ft_printf("Ce n'est pas MH_MAGIC_64 : %x\n", magic_number);
 	}
 
 }
