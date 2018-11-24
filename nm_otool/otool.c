@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include "libft/libft.h"
+#include <ar.h>
 
 void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 {
