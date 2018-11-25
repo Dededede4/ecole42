@@ -5,23 +5,23 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include "libft/libft.h"
-#include <ar.h>
 
-void	print_output(int nsyms, int symoff, int stroff, char *ptr)
+typedef struct			s_command
 {
-	int i;
-	char *stringtable;
+	char				*path;
+	int					fd;
+	char				*ptr;
+	struct stat			buf;
+	int					magic_number;
+	int ncmds;
+	struct mach_header_64 * header;
+	struct load_command *lc;
+	struct symtab_command *sym;
+	struct segment_command_64 *seg;
+	struct section_64		*sec;
 	struct  nlist_64 *el;
+}						t_command;
 
-	el = (void*)ptr + symoff;
-	stringtable =  ptr + stroff;
-
-	while (i < nsyms)
-	{
-		ft_printf("%s\n", stringtable + el[i].n_un.n_strx);
-		i++;
-	}
-}
 
 void print_data(void *start, uint64_t size, uint32_t offset)
 {
@@ -32,10 +32,10 @@ void print_data(void *start, uint64_t size, uint32_t offset)
 	{
 		if (i  % 16 == 0)
 		{
-			ft_printf("%016x\t", offset + i);
+			ft_printf("00000001%08x\t", offset + i);
 		}
-		ft_printf("%02X", ((unsigned char*)start)[i]);
-		if ((i + 1)  % 16 == 0)
+		ft_printf("%02x", ((unsigned char*)start)[i]);
+		if ((i + 1)  % 16 == 0 || i + 1 == size)
 		{
 			ft_printf("\n");
 		}
@@ -47,44 +47,34 @@ void print_data(void *start, uint64_t size, uint32_t offset)
 	}
 }
 
-void handle_64(char * ptr)
+void handle_64(t_command command)
 {
-	int ncmds;
-	struct mach_header_64 * header;
-	struct load_command *lc;
-	struct symtab_command *sym;
-	struct segment_command_64 *seg;
-	struct section_64		*sec;
-	struct  nlist_64 *el;
-
-	void	*text;
 
 	int i = 0;
-
 	int y = 0;
 
-	header = (struct mach_header_64 *)ptr;
-	ncmds  = header->ncmds;
-	lc = (void *)ptr + sizeof(*header);
-	while (i < ncmds)
+	(command.header) = (struct mach_header_64 *)(command.ptr);
+	(command.ncmds)  = (command.header)->ncmds;
+	(command.lc) = (void *)(command.ptr) + sizeof(*(command.header));
+	while (i < (command.ncmds))
 	{
-		if (lc->cmd == LC_SYMTAB)
+		if ((command.lc)->cmd == LC_SYMTAB)
 		{
-			ft_printf("LC_SYMTAB\n");
+			//ft_printf("LC_SYMTAB\n");
 			//sym = (struct symtab_command *)lc;
 			//ft_printf("nb symboles : %d\n", sym->nsyms);
-			//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 print_output(sym->nsyms, sym->symoff, sym->stroff, ptr);
+			//                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 print_output(sym->nsyms, sym->symoff, sym->stroff, (command.ptr));
 			//break;
 		}
-		else if (lc->cmd == LC_SEGMENT_64)
+		else if ((command.lc)->cmd == LC_SEGMENT_64)
 		{
-			seg = (struct segment_command_64 *)lc;
+			(command.seg) = (struct segment_command_64 *)(command.lc);
 
 			// Attention aux trolls du \0
-			//seg->segname[15] = 0; // On n'a pas le droit u___ù
-			if (ft_strequ(seg->segname, "__TEXT"))
+			//sqeg->segname[15] = 0; // On n'a pas le droit u___ù
+			if (ft_strequ((command.seg)->segname, "__TEXT"))
 			{
-				//ft_printf("Position : %d == %x\n", ((void *)seg - (void*)ptr), ((void *)seg - (void*)ptr));
+				//ft_printf("Position : %d == %x\n", ((void *)seg - (void*)(command.ptr)), ((void *)seg - (void*)(command.ptr)));
 				//ft_printf("cmd : %x\n", seg->cmd);
 				//ft_printf("cmdsize : %x\n", seg->cmdsize);
 				//ft_printf("vmaddr : %x\n", seg->vmaddr);
@@ -94,14 +84,14 @@ void handle_64(char * ptr)
 				//ft_printf("nsects : %x\n", seg->nsects);
 				//ft_printf("flags : %x\n", seg->flags);
 
-				sec = (((void*)seg) + sizeof(struct segment_command_64));
-				while (y < seg->nsects) // todo troll
+				(command.sec) = (((void*)(command.seg)) + sizeof(struct segment_command_64));
+				while (y < (command.seg)->nsects) // todo troll
 				{
-					if (ft_strequ(sec->sectname, "__text")) // todo troll
+					if (ft_strequ((command.sec)->sectname, "__text")) // todo troll
 					{
-						text = ptr + sec->offset;
 						//ft_printf("Nom : %x %x\n", *((int*)text), sec->offset); // y'a plus qu'à afficher 
-						print_data(text, sec->size, sec->offset);
+						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
+						print_data((command.ptr) + (command.sec)->offset, (command.sec)->size, (command.sec)->offset);
 //						struct section_64 { /* for 64-bit architectures */
 //						char		sectname[16];	/* name of this section */
 //						char		segname[16];	/* segment this section goes in */
@@ -117,14 +107,14 @@ void handle_64(char * ptr)
 //						uint32_t	reserved3;	/* reserved */
 					}
 					
-					sec = (((void*)sec) + sizeof(struct section_64));
+					(command.sec) = (((void*)(command.sec)) + sizeof(struct section_64));
 					y++;
 				}
-				//sec = (struct section_64 *)(ptr + seg->filesize);
+				//sec = (struct section_64 *)((command.ptr) + seg->filesize);
 				//while (sec < ) 
 				//print_output(seg->nsects, seg->fileoff, seg->fileoff)
-				/*el = (void*) (ptr + seg->fileoff);
-				while((void *)sec < ((void*)ptr + (seg->fileoff + seg->filesize))) // troll de vmsize
+				/*el = (void*) ((command.ptr) + seg->fileoff);
+				while((void *)sec < ((void*)(command.ptr) + (seg->fileoff + seg->filesize))) // troll de vmsize
 				{
 					ft_printf("%p\n", sec);
 					ft_printf("Size : %s\n", sec->sectname); // troll de \0
@@ -140,67 +130,70 @@ filesize : 2000
 nsects : 5
 flags : 0*/
 			}
-			else
-			{
-				ft_printf("Connais pas : %x\n", lc->cmd);
-			}
-			
-			/*print_output(seg->nsects, sym->symoff, sym->stroff, ptr);
-			ft_printf("-->%d<--\n", lc->cmd);*/
 		}
-		lc = (void*) lc + lc ->cmdsize;
+		else
+		{
+			//ft_printf("Connais pas : %x\n", (command.lc)->cmd);
+		}
+			
+			/*print_output(seg->nsects, sym->symoff, sym->stroff, (command.ptr));
+			ft_printf("-->%d<--\n", lc->cmd);*/
+		
+		(command.lc) = (void*) (command.lc) + (command.lc) ->cmdsize;
 		i++;
 	}
-	//write(1, lc, 13896 - (((void*)lc) - ((void*)ptr)));
+	//write(1, lc, 13896 - (((void*)lc) - ((void*)(command.ptr))));
 }
 
-void nm(char *ptr)
+void nm(t_command command)
 {
-	int magic_number;
-
-	magic_number = *(int*) ptr;
-	if (magic_number == MH_MAGIC_64)
+	command.magic_number = *(int*) (command.ptr);
+	if (command.magic_number == MH_MAGIC_64)
 	{
-		handle_64(ptr);
+		handle_64(command);
 	}
 	else
 	{
-		ft_printf("Ce n'est pas MH_MAGIC_64 : %x\n", magic_number);
+		ft_printf("This magic number « %x » is unknow.\n", command.magic_number);
 	}
 
 }
 
+
+
 int main(int ac, char **av)
 {
-	int		fd;
-	char	*ptr;
-	struct stat	buf;
 
-	if (ac != 2)
+	t_command	command;
+	int			i;
+
+	i = 1;
+	if (ac <= 1)
 	{
 		ft_printf("Please give me an arg\n");
 		return (0);
 	}
-	if ((fd = open(av[1], O_RDONLY)) < 0)
+	while ( i < ac )
 	{
-		ft_printf("Erreur dans open");
-		return (0);
+		command.path = av[i];
+		if ((command.fd = open(av[i], O_RDONLY)) < 0)
+		{
+			ft_printf("Error in open\n");
+			return (0);
+		}
+		if (fstat(command.fd, &(command.buf)) < 0)
+		{
+			ft_printf("Error in fstat\n");
+			return (0);
+		}
+		if ((command.ptr = mmap(0, command.buf.st_size, PROT_READ, MAP_PRIVATE, command.fd, 0)) == MAP_FAILED)
+		{
+			ft_printf("Error in mmap\n");
+			return (0);
+		}
+		nm(command);
+		ft_bzero(&command, sizeof(command));
+		i++;
 	}
-	if (fstat(fd, &buf) < 0)
-	{
-		ft_printf("fstat");
-		return (0);
-	}
-	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-	{
-		ft_printf("mmap");
-		return (0);
-	}
-	nm(ptr);
-	/*if (munmap(ptr, buf.st_size < 0))
-	{
-		ft_printf("munmap");
-		return (0);
-	}*/
-	return (EXIT_SUCCESS);
+	return (0);
 }
