@@ -19,16 +19,16 @@
 #include "libft/libft.h"
 #include "otool.h"
 
-void	print_data(void *start, uint64_t size, uint32_t offset)
+void	print_data(void *start, uint64_t size, uint64_t offset)
 {
-	int		i;
+	uint32_t		i;
 
 	i = 0;
 	while (i < size)
 	{
 		if (i % 16 == 0)
 		{
-			ft_printf("00000001%08x\t", offset + i);
+			ft_printf("%016llx\t", (offset) + i);
 		}
 		ft_printf("%02x", ((unsigned char*)start)[i]);
 		if ((i + 1) % 16 == 0 || i + 1 == size)
@@ -65,8 +65,7 @@ void	handle_64(t_command command)
 				{
 					if (ft_strequ((command.sec_64)->sectname, "__text"))
 					{
-						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
-						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->offset);
+						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->addr);
 					}
 					
 					(command.sec_64) = (((void*)(command.sec_64)) + sizeof(struct section_64));
@@ -101,7 +100,7 @@ void	handle_32(t_command command)
 				{
 					if (ft_strequ((command.sec_32)->sectname, "__text"))
 					{
-						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
+						ft_printf("%s:\nContents of (__TEXT,__text) section : %d\n", command.path);
 						print_data((command.ptr) + (command.sec_32)->offset, (command.sec_32)->size, (command.sec_32)->offset);
 					}
 					
