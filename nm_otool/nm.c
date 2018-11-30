@@ -17,6 +17,10 @@ void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 
 	while (i < nsyms)
 	{
+		if (el[i].n_type == N_UNDF)
+			ft_printf("U");
+		else
+			ft_printf("? -> %d <-", el[i].n_type);
 		ft_printf("%s\n", stringtable + el[i].n_un.n_strx);
 		i++;
 	}
