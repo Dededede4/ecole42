@@ -1,10 +1,37 @@
 #include <sys/mman.h>
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
+#include <mach-o/fat.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include "libft/libft.h"
+
+void	print_type(uint8_t type)
+{
+	if (0 != (type & N_STAB))
+		ft_printf("-");
+	if (0 != (type & N_PEXT))
+		ft_printf("private external symbol bit");
+	if (0 != (type & N_EXT))
+		ft_printf("Upercase : "); 
+
+
+
+	if (N_UNDF == (type & N_TYPE))
+		ft_printf("U"); // undefined, n_sect == NO_SECT
+	if (N_ABS == (type & N_TYPE))
+		ft_printf("A"); // absolute, n_sect == NO_SECT
+	if (N_SECT == (type & N_TYPE))
+		ft_printf("T"); // defined in section number n_sect
+	// if (N_PBUD == (type & N_TYPE))
+		// ft_printf("U"); // prebound undefined (defined in a dylib)
+	if (N_INDR == (type & N_TYPE))
+		ft_printf("I"); // inderct
+
+	/*if (nlist.n_desc & N_WEAK_REF)
+		ft_printf("W");*/
+}
 
 void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 {
@@ -17,11 +44,8 @@ void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 
 	while (i < nsyms)
 	{
-		if (el[i].n_type == N_UNDF)
-			ft_printf("U");
-		else
-			ft_printf("? -> %d <-", el[i].n_type);
-		ft_printf("%s\n", stringtable + el[i].n_un.n_strx);
+		print_type(el[i].n_type);
+		ft_printf("\t%s\n", stringtable + el[i].n_un.n_strx);
 		i++;
 	}
 }
@@ -44,7 +68,7 @@ void handle_64(char * ptr)
 		if (lc->cmd == LC_SYMTAB)
 		{
 			sym = (struct symtab_command *)lc;
-			//ft_printf("nb symboles : %d\n", sym->nsyms);
+			//˛("nb symboles : %d\n", sym->nsyms);
 			print_output(sym->nsyms, sym->symoff, sym->stroff, ptr);
 			break;
 		}
@@ -59,10 +83,39 @@ void nm(char *ptr)
 {
 	int magic_number;
 
+	struct fat_header *fat;
+	struct fat_arch		*arch;
+	uint32_t	i;
+
 	magic_number = *(int*) ptr;
 	if (magic_number == MH_MAGIC_64)
 	{
 		handle_64(ptr);
+	}
+	else if (magic_number == MH_MAGIC)
+	{
+		ft_printf("32 bites"); exit(0);
+	}
+	else if (magic_number == FAT_CIGAM) //  Universal Object
+	{
+		fat= (struct fat_header*)ptr;
+		i = 0;
+		if (2 != NXSwapLong(fat->nfat_arch))
+			exit(0);
+		while (i < NXSwapLong(fat->nfat_arch))
+		{
+			arch = (struct fat_arch*)(ptr + (sizeof(struct fat_header))) + i;
+			if (NXSwapLong(arch->cputype) == CPU_TYPE_X86_64)
+			{
+				ft_printf("64 bites : ");
+			}
+			else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
+			{
+				ft_printf("32 bites : ");
+			}
+			i++;
+		}
+		ft_printf("pouet"); exit(0);
 	}
 
 }
