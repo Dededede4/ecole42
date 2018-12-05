@@ -13,6 +13,10 @@
 #ifndef OTOOL_H
 # define OTOOL_H
 
+#include <inttypes.h>
+#include <stdio.h>
+
+
 typedef struct					s_command
 {
 	char						*path;

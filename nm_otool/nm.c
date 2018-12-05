@@ -7,15 +7,25 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 
+typedef struct					s_command
+{
+	uint32_t					bss_number;
+	uint32_t					const_number;
+	uint32_t					data_number;
+	uint32_t					text_number;
+}								t_command;
+
+t_command command;
+
 void	print_type(uint8_t type)
 {
+	ft_printf("  %b  ", type);
 	if (0 != (type & N_STAB))
 		ft_printf("-");
 	if (0 != (type & N_PEXT))
 		ft_printf("private external symbol bit");
 	if (0 != (type & N_EXT))
 		ft_printf("Upercase : "); 
-
 
 
 	if (N_UNDF == (type & N_TYPE))
@@ -42,13 +52,27 @@ void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 	el = (void*)ptr + symoff;
 	stringtable =  ptr + stroff;
 
+	i = 0;
 	while (i < nsyms)
 	{
-		print_type(el[i].n_type);
-		ft_printf("\t%s\n", stringtable + el[i].n_un.n_strx);
+		if(el[i].n_value)
+			ft_printf("%016llx\t", el[i].n_value);
+		if (command.bss_number == el[i].n_sect)
+			ft_printf("BB");
+		else if (command.const_number == el[i].n_sect)
+			ft_printf("SS");
+		else if (command.data_number == el[i].n_sect)
+			ft_printf("DD");
+		else if (command.text_number == el[i].n_sect)
+			ft_printf("TT");
+		else
+			print_type(el[i].n_type);
+		ft_printf( " ( %u %u )\t%s\n", el[i].n_sect, command.bss_number, stringtable + el[i].n_un.n_strx);
 		i++;
 	}
 }
+
+
 
 void handle_64(char * ptr)
 {
@@ -58,6 +82,10 @@ void handle_64(char * ptr)
 	struct symtab_command *sym;
 
 	int i = 0;
+	int y = 0;
+	int ycount = 1;
+
+	struct section_64			*sec_64;
 
 	header = (struct mach_header_64 *)ptr;
 	ncmds  = header->ncmds;
@@ -65,12 +93,43 @@ void handle_64(char * ptr)
 	
 	while (i < ncmds)
 	{
+		//ft_printf(">>>>%d<<<< \n", i);
 		if (lc->cmd == LC_SYMTAB)
 		{
 			sym = (struct symtab_command *)lc;
 			//˛("nb symboles : %d\n", sym->nsyms);
 			print_output(sym->nsyms, sym->symoff, sym->stroff, ptr);
-			break;
+		}
+		else if (lc->cmd == LC_SEGMENT_64)
+		{
+			//ft_printf("__ %s __\n",((struct segment_command_64 *)(lc))->segname);
+			sec_64 = (((void*)lc) + sizeof(struct segment_command_64));
+			y = 0;
+			while (y < ((struct segment_command_64 *)(lc))->nsects)
+			{
+				//ft_printf("__ >> %s << __\n", (sec_64)->sectname);
+				if (command.bss_number == 0 && ft_strequ((sec_64)->sectname, "__bss"))
+				{
+					command.bss_number = ycount;
+				}
+				if (command.const_number == 0 && ft_strequ((sec_64)->sectname, "__const"))
+				{
+					command.const_number = ycount;
+				}
+				if (command.data_number == 0 && ft_strequ((sec_64)->sectname, "__data"))
+				{
+					command.data_number = ycount;
+				}
+				if (command.text_number == 0 && ft_strequ((sec_64)->sectname, "__text"))
+				{
+					command.text_number = ycount;
+				}
+				// __text
+				// 
+				(sec_64) = (((void*)(sec_64)) + sizeof(struct section_64));
+				y++;
+				ycount++;
+			}
 		}
 		lc = (void*) lc + lc ->cmdsize;
 		i++;
@@ -81,11 +140,17 @@ void handle_64(char * ptr)
 
 void nm(char *ptr)
 {
+	command.bss_number = 0;
+	command.const_number = 0;
+	command.data_number = 0;
+	command.text_number = 0;
+
 	int magic_number;
 
 	struct fat_header *fat;
 	struct fat_arch		*arch;
 	uint32_t	i;
+	char *cpy;
 
 	magic_number = *(int*) ptr;
 	if (magic_number == MH_MAGIC_64)
@@ -107,15 +172,16 @@ void nm(char *ptr)
 			arch = (struct fat_arch*)(ptr + (sizeof(struct fat_header))) + i;
 			if (NXSwapLong(arch->cputype) == CPU_TYPE_X86_64)
 			{
-				ft_printf("64 bites : ");
+				cpy = ft_memdup(ptr + NXSwapLong(arch->offset), NXSwapLong(arch->size));
+				handle_64(cpy);
+				free(cpy);
 			}
-			else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
+			/*else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
 			{
-				ft_printf("32 bites : ");
-			}
+
+			}*/
 			i++;
 		}
-		ft_printf("pouet"); exit(0);
 	}
 
 }
