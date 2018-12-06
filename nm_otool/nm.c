@@ -9,35 +9,94 @@
 
 typedef struct					s_command
 {
-	uint32_t					bss_number;
-	uint32_t					const_number;
-	uint32_t					data_number;
-	uint32_t					text_number;
+	t_list						*bss_numbers;
+	t_list						*const_numbers;
+	t_list						*data_numbers;
+	t_list						*text_numbers;
+
 }								t_command;
 
 t_command command;
 
-void	print_type(uint8_t type)
+/*static char	get_type(const uint64_t n_value, const uint8_t n_type, \
+				const uint8_t n_sect, const uint16_t n_desc)
 {
-	ft_printf("  %b  ", type);
-	if (0 != (type & N_STAB))
-		ft_printf("-");
-	if (0 != (type & N_PEXT))
-		ft_printf("private external symbol bit");
-	if (0 != (type & N_EXT))
-		ft_printf("Upercase : "); 
+	const int	n_type_field = N_TYPE & n_type;
+	char		type = '?';
+
+	if (N_STAB & n_type)
+		type = '-';
+	else if (n_type_field == N_UNDF)
+		type = n_value ? 'c' : 'u';
+	else if (n_type_field == N_ABS)
+		type = 'a';
+	else if (n_type_field == N_SECT && \
+		!(type = nm_sections_character_table(FIRST_BIT_ON_64 | n_sect)))
+		type = '?';
+	else if (n_type_field == N_PBUD)
+		type = 'u';
+	else if (n_type_field == N_INDR)
+		type = 'i';
+	else if (n_desc & N_WEAK_REF)
+		type = 'W';
+
+	//if external set uppercase
+	if (N_EXT & n_type)
+		type = ft_toupper(type);
+
+	return (type);
+}*/
 
 
-	if (N_UNDF == (type & N_TYPE))
-		ft_printf("U"); // undefined, n_sect == NO_SECT
-	if (N_ABS == (type & N_TYPE))
-		ft_printf("A"); // absolute, n_sect == NO_SECT
-	if (N_SECT == (type & N_TYPE))
-		ft_printf("T"); // defined in section number n_sect
-	// if (N_PBUD == (type & N_TYPE))
-		// ft_printf("U"); // prebound undefined (defined in a dylib)
-	if (N_INDR == (type & N_TYPE))
-		ft_printf("I"); // inderct
+t_bool 	lookfor(uint8_t n_sect, t_list *lst)
+{
+	while(lst)
+	{
+
+		if (*((int*)((lst->content))) == n_sect)
+			return TRUE;
+		lst = lst->next;
+	}
+	return FALSE;
+}
+
+void	print_type(struct nlist_64 el)
+{
+	t_bool upper;
+	char 	c;
+
+	upper = (0 != (el.n_type & N_EXT));
+
+	if (0 != (el.n_type & N_STAB))
+		c = '-';
+	if (N_UNDF == (el.n_type & N_TYPE))
+	{
+		if (el.n_value)
+			c = 'C'; // undefined, n_sect == NO_SECT
+		else
+			c = 'U';
+	}
+	else if (N_ABS == (el.n_type & N_TYPE))
+		c = 'A'; // absolute, n_sect == NO_SECT
+	else if (N_INDR == (el.n_type & N_TYPE))
+		c = 'I'; // inderct
+	else if (lookfor(el.n_sect, command.bss_numbers))
+		c = 'B';
+	else if (lookfor(el.n_sect, command.const_numbers))
+		c = 'S';
+	else if (lookfor(el.n_sect, command.data_numbers))
+		c = 'D';
+	else if (lookfor(el.n_sect, command.text_numbers))
+		c = 'T';
+	else
+		c = '?';
+
+	if (upper)
+		ft_putchar(c);
+	else
+		ft_putchar(ft_tolower(c));
+
+
 
 	/*if (nlist.n_desc & N_WEAK_REF)
 		ft_printf("W");*/
@@ -55,19 +114,12 @@ void	print_output(int nsyms, int symoff, int stroff, char *ptr)
 	i = 0;
 	while (i < nsyms)
 	{
-		if(el[i].n_value)
-			ft_printf("%016llx\t", el[i].n_value);
-		if (command.bss_number == el[i].n_sect)
-			ft_printf("BB");
-		else if (command.const_number == el[i].n_sect)
-			ft_printf("SS");
-		else if (command.data_number == el[i].n_sect)
-			ft_printf("DD");
-		else if (command.text_number == el[i].n_sect)
-			ft_printf("TT");
+		if(el[i].n_value || lookfor(el[i].n_sect, command.text_numbers)) // T
+			ft_printf("%016llx ", el[i].n_value);
 		else
-			print_type(el[i].n_type);
-		ft_printf( " ( %u %u )\t%s\n", el[i].n_sect, command.bss_number, stringtable + el[i].n_un.n_strx);
+			ft_printf("                 ");
+		print_type(el[i]);
+		ft_printf( " %s\n", stringtable + el[i].n_un.n_strx);
 		i++;
 	}
 }
@@ -86,6 +138,7 @@ void handle_64(char * ptr)
 	int ycount = 1;
 
 	struct section_64			*sec_64;
+	t_list	*tmp;
 
 	header = (struct mach_header_64 *)ptr;
 	ncmds  = header->ncmds;
@@ -108,21 +161,33 @@ void handle_64(char * ptr)
 			while (y < ((struct segment_command_64 *)(lc))->nsects)
 			{
 				//ft_printf("__ >> %s << __\n", (sec_64)->sectname);
-				if (command.bss_number == 0 && ft_strequ((sec_64)->sectname, "__bss"))
+				if (ft_strequ((sec_64)->sectname, "__bss"))
 				{
-					command.bss_number = ycount;
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.bss_numbers)
+						tmp->next = command.bss_numbers;
+					command.bss_numbers = tmp;
 				}
-				if (command.const_number == 0 && ft_strequ((sec_64)->sectname, "__const"))
+				if (ft_strequ((sec_64)->sectname, "__const"))
 				{
-					command.const_number = ycount;
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.const_numbers)
+						tmp->next = command.const_numbers;
+					command.const_numbers = tmp;
 				}
-				if (command.data_number == 0 && ft_strequ((sec_64)->sectname, "__data"))
+				if ( ft_strequ((sec_64)->sectname, "__data"))
 				{
-					command.data_number = ycount;
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.data_numbers)
+						tmp->next = command.data_numbers;
+					command.data_numbers = tmp;
 				}
-				if (command.text_number == 0 && ft_strequ((sec_64)->sectname, "__text"))
+				if (ft_strequ((sec_64)->sectname, "__text"))
 				{
-					command.text_number = ycount;
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.text_numbers)
+						tmp->next = command.text_numbers;
+					command.text_numbers = tmp;
 				}
 				// __text
 				// 
@@ -140,10 +205,10 @@ void handle_64(char * ptr)
 
 void nm(char *ptr)
 {
-	command.bss_number = 0;
-	command.const_number = 0;
-	command.data_number = 0;
-	command.text_number = 0;
+	command.const_numbers = NULL;
+	command.data_numbers = NULL;
+	command.text_numbers = NULL;
+	command.bss_numbers = NULL;
 
 	int magic_number;
 
