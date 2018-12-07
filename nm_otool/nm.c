@@ -18,34 +18,15 @@ typedef struct					s_command
 
 t_command command;
 
-/*static char	get_type(const uint64_t n_value, const uint8_t n_type, \
-				const uint8_t n_sect, const uint16_t n_desc)
+typedef	struct 					s_line
 {
-	const int	n_type_field = N_TYPE & n_type;
-	char		type = '?';
-
-	if (N_STAB & n_type)
-		type = '-';
-	else if (n_type_field == N_UNDF)
-		type = n_value ? 'c' : 'u';
-	else if (n_type_field == N_ABS)
-		type = 'a';
-	else if (n_type_field == N_SECT && \
-		!(type = nm_sections_character_table(FIRST_BIT_ON_64 | n_sect)))
-		type = '?';
-	else if (n_type_field == N_PBUD)
-		type = 'u';
-	else if (n_type_field == N_INDR)
-		type = 'i';
-	else if (n_desc & N_WEAK_REF)
-		type = 'W';
-
-	//if external set uppercase
-	if (N_EXT & n_type)
-		type = ft_toupper(type);
-
-	return (type);
-}*/
+	uint64_t		left;
+	char			middle;
+	char			*right;
+	t_bool			is_64;
+	t_bool			is_32;
+	struct s_line	*next;
+}								t_line;
 
 
 t_bool 	lookfor(uint8_t n_sect, t_list *lst)
@@ -60,7 +41,7 @@ t_bool 	lookfor(uint8_t n_sect, t_list *lst)
 	return FALSE;
 }
 
-void	print_type(struct nlist_64 el)
+char	get_type(struct nlist_64 el)
 {
 	t_bool upper;
 	char 	c;
@@ -80,6 +61,8 @@ void	print_type(struct nlist_64 el)
 		c = 'A'; // absolute, n_sect == NO_SECT
 	else if (N_INDR == (el.n_type & N_TYPE))
 		c = 'I'; // inderct
+	else if (el.n_desc & N_WEAK_REF)
+		c = 'W';
 	else if (lookfor(el.n_sect, command.bss_numbers))
 		c = 'B';
 	else if (lookfor(el.n_sect, command.const_numbers))
@@ -92,39 +75,88 @@ void	print_type(struct nlist_64 el)
 		c = '?';
 
 	if (upper)
-		ft_putchar(c);
+		return (c);
 	else
-		ft_putchar(ft_tolower(c));
-
-
-
-	/*if (nlist.n_desc & N_WEAK_REF)
-		ft_printf("W");*/
+		return (ft_tolower(c));
 }
 
-void	print_output(int nsyms, int symoff, int stroff, char *ptr)
+t_line*	get_line(int nsyms, int symoff, int stroff, char *ptr)
 {
 	int i;
 	char *stringtable;
 	struct  nlist_64 *el;
 
+	t_line			*line;
+	t_line			*tmp;
+
+	line = NULL;
+	tmp = NULL;
 	el = (void*)ptr + symoff;
 	stringtable =  ptr + stroff;
 
 	i = 0;
 	while (i < nsyms)
 	{
-		if(el[i].n_value || lookfor(el[i].n_sect, command.text_numbers)) // T
-			ft_printf("%016llx ", el[i].n_value);
-		else
-			ft_printf("                 ");
-		print_type(el[i]);
-		ft_printf( " %s\n", stringtable + el[i].n_un.n_strx);
+		tmp = ft_memalloc(sizeof(*line));
+		if (line)
+			tmp->next = line;
+		line = tmp;
+		line->left = el[i].n_value;
+		line->middle = get_type(el[i]);
+		line->right = stringtable + el[i].n_un.n_strx;
 		i++;
 	}
+	return (line);
 }
 
 
+void	tri_pourri_lol(t_line **first)
+{
+	t_line *line;
+	t_line *tmp;
+	t_line *before;
+
+	line = *first;
+	before = NULL;
+	while(line->next)
+	{
+		if(ft_strcmp(line->right, line->next->right) < 0)
+		{
+			if (before)
+			{
+				tmp = line->next->next;
+				before->next = line->next;
+				before->next->next = line;
+				before->next->next->next = tmp;
+			}
+			else
+			{
+				tmp = line->next->next;
+				*first = line->next;
+				(*first)->next = line;
+				(*first)->next->next = tmp;
+			}
+			line = *first;
+			break;
+		}
+		before = line;
+		line = line->next;
+	}
+}
+
+void	print_line(t_line *line)
+{
+	while (line)
+	{
+		if(line->left || line->middle == 'T')
+			ft_printf("%016llx ", line->left);
+		else
+			ft_printf("                 ");
+		ft_putchar(line->middle);
+		ft_printf( " %s\n", line->right);
+		line = line->next;
+	}
+}
 
 void handle_64(char * ptr)
 {
@@ -139,6 +171,7 @@ void handle_64(char * ptr)
 
 	struct section_64			*sec_64;
 	t_list	*tmp;
+	t_line			*line;
 
 	header = (struct mach_header_64 *)ptr;
 	ncmds  = header->ncmds;
@@ -151,7 +184,10 @@ void handle_64(char * ptr)
 		{
 			sym = (struct symtab_command *)lc;
 			//˛("nb symboles : %d\n", sym->nsyms);
-			print_output(sym->nsyms, sym->symoff, sym->stroff, ptr);
+			line = get_line(sym->nsyms, sym->symoff, sym->stroff, ptr);
+			tri_pourri_lol(&line);
+			print_line(line);
+			exit(0);
 		}
 		else if (lc->cmd == LC_SEGMENT_64)
 		{
@@ -168,7 +204,7 @@ void handle_64(char * ptr)
 						tmp->next = command.bss_numbers;
 					command.bss_numbers = tmp;
 				}
-				if (ft_strequ((sec_64)->sectname, "__const"))
+				if (ft_strequ((sec_64)->sectname, "__const") || ft_strequ((sec_64)->sectname, "__common"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.const_numbers)
