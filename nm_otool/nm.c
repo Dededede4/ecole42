@@ -120,7 +120,7 @@ void	tri_pourri_lol(t_line **first)
 	before = NULL;
 	while(line->next)
 	{
-		if(ft_strcmp(line->right, line->next->right) < 0)
+		if(ft_strcmp(line->right, line->next->right) > 0)
 		{
 			if (before)
 			{
@@ -137,7 +137,8 @@ void	tri_pourri_lol(t_line **first)
 				(*first)->next->next = tmp;
 			}
 			line = *first;
-			break;
+			before = NULL;
+			continue;
 		}
 		before = line;
 		line = line->next;
