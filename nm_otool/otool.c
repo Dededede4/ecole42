@@ -33,7 +33,7 @@ void	print_data(void *start, uint64_t size, uint64_t offset)
 		ft_printf("%02x", ((unsigned char*)start)[i]);
 		if ((i + 1) % 16 == 0 || i + 1 == size)
 		{
-			ft_printf("\n");
+			ft_printf(" \n");
 		}
 		else
 		{
@@ -65,6 +65,7 @@ void	handle_64(t_command command)
 				{
 					if (ft_strequ((command.sec_64)->sectname, "__text"))
 					{
+						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
 						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->addr);
 					}
 					
@@ -100,7 +101,7 @@ void	handle_32(t_command command)
 				{
 					if (ft_strequ((command.sec_32)->sectname, "__text"))
 					{
-						ft_printf("%s:\nContents of (__TEXT,__text) section : %d\n", command.path);
+						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
 						print_data((command.ptr) + (command.sec_32)->offset, (command.sec_32)->size, (command.sec_32)->offset);
 					}
 					
