@@ -19,7 +19,9 @@
 #include "libft/libft.h"
 #include "otool.h"
 
-void	print_data(void *start, uint64_t size, uint64_t offset)
+#include <mach-o/fat.h>
+
+void	print_data(void *start, uint64_t size, uint64_t offset, t_bool is_64)
 {
 	uint32_t		i;
 
@@ -28,7 +30,10 @@ void	print_data(void *start, uint64_t size, uint64_t offset)
 	{
 		if (i % 16 == 0)
 		{
-			ft_printf("%016llx\t", (offset) + i);
+			if (is_64)
+				ft_printf("%016llx\t", (offset) + i);
+			else
+				ft_printf("%08llx\t", (offset) + i);
 		}
 		ft_printf("%02x", ((unsigned char*)start)[i]);
 		if ((i + 1) % 16 == 0 || i + 1 == size)
@@ -66,7 +71,7 @@ void	handle_64(t_command command)
 					if (ft_strequ((command.sec_64)->sectname, "__text"))
 					{
 						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
-						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->addr);
+						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->addr, TRUE);
 					}
 					
 					(command.sec_64) = (((void*)(command.sec_64)) + sizeof(struct section_64));
@@ -102,7 +107,7 @@ void	handle_32(t_command command)
 					if (ft_strequ((command.sec_32)->sectname, "__text"))
 					{
 						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
-						print_data((command.ptr) + (command.sec_32)->offset, (command.sec_32)->size, (command.sec_32)->offset);
+						print_data((command.ptr) + (command.sec_32)->offset, (command.sec_32)->size, (command.sec_32)->addr, FALSE);
 					}
 					
 					(command.sec_32) = (((void*)(command.sec_32)) + sizeof(struct section));
@@ -117,6 +122,14 @@ void	handle_32(t_command command)
 
 void	nm(t_command command)
 {
+
+	struct fat_header *fat;
+	struct fat_arch		*arch;
+	uint32_t	i;
+	char *cpy;
+	void *tmp;
+
+
 	command.magic_number = *(int*) (command.ptr);
 	if (command.magic_number == MH_MAGIC_64)
 	{
@@ -126,12 +139,36 @@ void	nm(t_command command)
 	{
 		handle_32(command);
 	}
+	else if (command.magic_number == FAT_CIGAM) //  Universal Object
+	{
+		fat= (struct fat_header*)command.ptr;
+		i = 0;
+		if (2 != NXSwapLong(fat->nfat_arch))
+			exit(0);
+		while (i < NXSwapLong(fat->nfat_arch))
+		{
+			arch = (struct fat_arch*)(command.ptr + (sizeof(struct fat_header))) + i;
+			if (NXSwapLong(arch->cputype) == CPU_TYPE_X86_64)
+			{
+				cpy = ft_memdup(command.ptr + NXSwapLong(arch->offset), NXSwapLong(arch->size));
+				tmp = command.ptr;
+				command.ptr = cpy;
+				handle_64(command);
+				free(cpy);
+				command.ptr = tmp;
+			}
+			/*else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
+			{
+
+			}*/
+			i++;
+		}
+	}
 	else
 	{
 		ft_printf("This magic number « %x » is unknow.\n", command.magic_number);
 	}
 }
-
 
 
 int		main(int ac, char **av)
