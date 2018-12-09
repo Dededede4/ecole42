@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 
+int antitroll(char *ptr, off_t size);
+
 typedef struct					s_command
 {
 	t_list						*bss_numbers;
@@ -478,6 +480,7 @@ int main(int ac, char **av)
 		ft_printf("mmap");
 		return (0);
 	}
+	antitroll(ptr, buf.st_size);
 	nm(ptr);
 	/*if (munmap(ptr, buf.st_size < 0))
 	{
