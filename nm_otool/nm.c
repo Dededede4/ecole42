@@ -152,7 +152,7 @@ t_line*	get_line(int nsyms, int symoff, int stroff, char *ptr)
 	return (line);
 }
 
-t_line*	get_line_32(int nsyms, int symoff, int stroff, char *ptr)
+t_line*	get_line_32(int nsyms, int symoff, int stroff, void *ptr)
 {
 	int i;
 	char *stringtable;
@@ -192,9 +192,13 @@ void	tri_pourri_lol(t_line **first)
 
 	line = *first;
 	before = NULL;
+	int diff;
 	while(line->next)
 	{
-		if(ft_strcmp(line->right, line->next->right) > 0)
+		diff = ft_strcmp(line->right, line->next->right);
+		if(diff > 0 || 
+			(diff == 0 && line->left == 0 && line->next->left > 0) ||
+			(diff == 0 && line->left != 0 && line->next->left != 0 && line->left > line->next->left))
 		{
 			if (before)
 			{
@@ -219,26 +223,72 @@ void	tri_pourri_lol(t_line **first)
 	}
 }
 
-void	print_line(t_line *line)
+t_bool	can_show(t_line *first, t_line *findme)
 {
+	t_line	*line;
+	int 	i;
+
+	i = 0;
+	line = first;
+	
+	if (0 == ft_strlen(findme->right) || findme->middle == '?')
+		return FALSE;
+
 	while (line)
 	{
-		if (line->is_64)
+			if (0 == ft_strcmp(line->right, findme->right)
+				&& (line->left == findme->left || !line->left || !findme->left))
+			{
+				if (line == findme)
+					return TRUE;
+				line = line->next;
+				break;
+			}
+		line = line->next;
+	}
+
+	return FALSE;
+
+	while (line)
+	{
+			if (0 == ft_strcmp(line->right, findme->right)
+				&& (line->left == findme->left || !line->left || !findme->left))
+			{
+				return (FALSE);
+			}
+		line = line->next;
+	}
+
+
+	return TRUE;
+}
+
+void	print_line(t_line *line)
+{
+	t_line *first;
+
+	first = line;
+	while (line)
+	{
+		if (can_show(first, line))
 		{
-			if(line->left || line->middle == 'T')
-				ft_printf("%016llx ", line->left);
-			else
-				ft_printf("                 ");
+			if (line->is_64)
+			{
+				if(line->left || line->middle == 'T')
+					ft_printf("%016llx ", line->left);
+				else
+					ft_printf("                 ");
+			}
+			if (line->is_32)
+			{
+				if(line->left || line->middle == 'T')
+					ft_printf("%08llx ", line->left);
+				else
+					ft_printf("         ");
+			}
+			ft_putchar(line->middle);
+			ft_printf( " %s\n", line->right);
 		}
-		if (line->is_32)
-		{
-			if(line->left || line->middle == 'T')
-				ft_printf("%08llx ", line->left);
-			else
-				ft_printf("         ");
-		}
-		ft_putchar(line->middle);
-		ft_printf( " %s\n", line->right);
 		line = line->next;
 	}
 }
@@ -289,7 +339,7 @@ void handle_64(char * ptr)
 						tmp->next = command.bss_numbers;
 					command.bss_numbers = tmp;
 				}
-				if (ft_strequ((sec_64)->sectname, "__const") || ft_strequ((sec_64)->sectname, "__common"))
+				if (ft_strequ((sec_64)->sectname, "__const") || ft_strequ((sec_64)->sectname, "__common") || ft_strequ((sec_64)->sectname, "__class"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.const_numbers)
@@ -370,7 +420,7 @@ void handle_32(char * ptr)
 						tmp->next = command.bss_numbers;
 					command.bss_numbers = tmp;
 				}
-				if (ft_strequ((sec)->sectname, "__const") || ft_strequ((sec)->sectname, "__common"))
+				if (ft_strequ((sec)->sectname, "__const") || ft_strequ((sec)->sectname, "__common") || ft_strequ((sec)->sectname, "__class"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.const_numbers)
