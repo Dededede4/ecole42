@@ -232,8 +232,6 @@ int antitroll(char *ptr, off_t size)
 		
 		fat= (struct fat_header*)ptr;
 		i = 0;
-		if (2 != NXSwapLong(fat->nfat_arch))
-			exit(0);
 		if (size < sizeof (struct fat_header) + sizeof(struct fat_arch) * NXSwapLong(fat->nfat_arch))
 				exit(43);
 		while (i < NXSwapLong(fat->nfat_arch))

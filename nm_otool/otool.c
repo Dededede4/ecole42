@@ -21,7 +21,9 @@
 
 #include <mach-o/fat.h>
 
-void	print_data(void *start, uint64_t size, uint64_t offset, t_bool is_64)
+int antitroll(char *ptr, off_t size);
+
+void	print_data(void *start, uint64_t size, uint64_t offset, t_bool is_64, t_command command)
 {
 	uint32_t		i;
 
@@ -35,15 +37,29 @@ void	print_data(void *start, uint64_t size, uint64_t offset, t_bool is_64)
 			else
 				ft_printf("%08llx\t", (offset) + i);
 		}
-		ft_printf("%02x", ((unsigned char*)start)[i]);
-		if ((i + 1) % 16 == 0 || i + 1 == size)
+		if (!is_64 && command.header_32->cputype == CPU_TYPE_ARM)
 		{
-			ft_printf(" \n");
+			if (i % 4 == 0)
+				ft_printf("%08x ", ((unsigned int*)start)[i / 4]);
+			if ((i + 1) % 16 == 0 || i + 1 == size)
+			{
+				ft_printf("\n");
+			}
 		}
 		else
 		{
-			ft_printf(" ");
+			ft_printf("%02x", ((unsigned char*)start)[i]);
+			if ((i + 1) % 16 == 0 || i + 1 == size)
+			{
+				ft_printf(" \n");
+			}
+			else
+			{
+				ft_printf(" ");
+			}
 		}
+		
+
 		i++;
 	}
 }
@@ -71,7 +87,7 @@ void	handle_64(t_command command)
 					if (ft_strequ((command.sec_64)->sectname, "__text"))
 					{
 						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
-						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->addr, TRUE);
+						print_data((command.ptr) + (command.sec_64)->offset, (command.sec_64)->size, (command.sec_64)->addr, TRUE, command);
 					}
 					
 					(command.sec_64) = (((void*)(command.sec_64)) + sizeof(struct section_64));
@@ -107,7 +123,7 @@ void	handle_32(t_command command)
 					if (ft_strequ((command.sec_32)->sectname, "__text"))
 					{
 						ft_printf("%s:\nContents of (__TEXT,__text) section\n", command.path);
-						print_data((command.ptr) + (command.sec_32)->offset, (command.sec_32)->size, (command.sec_32)->addr, FALSE);
+						print_data((command.ptr) + (command.sec_32)->offset, (command.sec_32)->size, (command.sec_32)->addr, FALSE, command);
 					}
 					
 					(command.sec_32) = (((void*)(command.sec_32)) + sizeof(struct section));
@@ -143,8 +159,6 @@ void	nm(t_command command)
 	{
 		fat= (struct fat_header*)command.ptr;
 		i = 0;
-		if (2 != NXSwapLong(fat->nfat_arch))
-			exit(0);
 		while (i < NXSwapLong(fat->nfat_arch))
 		{
 			arch = (struct fat_arch*)(command.ptr + (sizeof(struct fat_header))) + i;
@@ -156,6 +170,7 @@ void	nm(t_command command)
 				handle_64(command);
 				free(cpy);
 				command.ptr = tmp;
+				break;
 			}
 			/*else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
 			{
@@ -185,6 +200,7 @@ int		main(int ac, char **av)
 	}
 	while ( i < ac )
 	{
+		
 		command.path = av[i];
 		if ((command.fd = open(av[i], O_RDONLY)) < 0)
 		{
@@ -198,9 +214,9 @@ int		main(int ac, char **av)
 		}
 		if ((command.ptr = mmap(0, command.buf.st_size, PROT_READ, MAP_PRIVATE, command.fd, 0)) == MAP_FAILED)
 		{
-			ft_printf("Error in mmap\n");
 			return (0);
 		}
+		antitroll(command.ptr, command.buf.st_size);
 		nm(command);
 		ft_bzero(&command, sizeof(command));
 		i++;

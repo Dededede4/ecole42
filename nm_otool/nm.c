@@ -52,7 +52,7 @@ char	get_type(struct nlist_64 el)
 
 	if (0 != (el.n_type & N_STAB))
 		c = '-';
-	if (N_UNDF == (el.n_type & N_TYPE))
+	else if (N_UNDF == (el.n_type & N_TYPE))
 	{
 		if (el.n_value)
 			c = 'C'; // undefined, n_sect == NO_SECT
@@ -91,7 +91,7 @@ char	get_type_32(struct nlist el)
 
 	if (0 != (el.n_type & N_STAB))
 		c = '-';
-	if (N_UNDF == (el.n_type & N_TYPE))
+	else if (N_UNDF == (el.n_type & N_TYPE))
 	{
 		if (el.n_value)
 			c = 'C'; // undefined, n_sect == NO_SECT
@@ -197,8 +197,9 @@ void	tri_pourri_lol(t_line **first)
 	{
 		diff = ft_strcmp(line->right, line->next->right);
 		if(diff > 0 || 
-			(diff == 0 && line->left == 0 && line->next->left > 0) ||
-			(diff == 0 && line->left != 0 && line->next->left != 0 && line->left > line->next->left))
+			(diff == 0 && line->left > 0 && line->next->left == 0) ||
+			(diff == 0 && line->left != 0 && line->next->left != 0 && line->left > line->next->left)
+			)
 		{
 			if (before)
 			{
@@ -231,12 +232,13 @@ t_bool	can_show(t_line *first, t_line *findme)
 	i = 0;
 	line = first;
 	
-	if (0 == ft_strlen(findme->right) || findme->middle == '?')
+	if (0 == ft_strlen(findme->right) || findme->middle == '?' || findme->middle == '-')
 		return FALSE;
 
 	while (line)
 	{
 			if (0 == ft_strcmp(line->right, findme->right)
+				&& line->middle == findme->middle
 				&& (line->left == findme->left || !line->left || !findme->left))
 			{
 				if (line == findme)
@@ -247,11 +249,10 @@ t_bool	can_show(t_line *first, t_line *findme)
 		line = line->next;
 	}
 
-	return FALSE;
-
 	while (line)
 	{
 			if (0 == ft_strcmp(line->right, findme->right)
+				&& line->middle == findme->middle
 				&& (line->left == findme->left || !line->left || !findme->left))
 			{
 				return (FALSE);
@@ -339,26 +340,26 @@ void handle_64(char * ptr)
 						tmp->next = command.bss_numbers;
 					command.bss_numbers = tmp;
 				}
-				if (ft_strequ((sec_64)->sectname, "__const") || ft_strequ((sec_64)->sectname, "__common") || ft_strequ((sec_64)->sectname, "__class"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.const_numbers)
-						tmp->next = command.const_numbers;
-					command.const_numbers = tmp;
-				}
-				if ( ft_strequ((sec_64)->sectname, "__data"))
+				else if ( ft_strequ((sec_64)->sectname, "__data"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.data_numbers)
 						tmp->next = command.data_numbers;
 					command.data_numbers = tmp;
 				}
-				if (ft_strequ((sec_64)->sectname, "__text"))
+				else if (ft_strequ((sec_64)->sectname, "__text"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.text_numbers)
 						tmp->next = command.text_numbers;
 					command.text_numbers = tmp;
+				}
+				else
+				{
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.const_numbers)
+						tmp->next = command.const_numbers;
+					command.const_numbers = tmp;
 				}
 				// __text
 				// 
@@ -420,26 +421,33 @@ void handle_32(char * ptr)
 						tmp->next = command.bss_numbers;
 					command.bss_numbers = tmp;
 				}
-				if (ft_strequ((sec)->sectname, "__const") || ft_strequ((sec)->sectname, "__common") || ft_strequ((sec)->sectname, "__class"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.const_numbers)
-						tmp->next = command.const_numbers;
-					command.const_numbers = tmp;
-				}
-				if ( ft_strequ((sec)->sectname, "__data"))
+				else if ( ft_strequ((sec)->sectname, "__data"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.data_numbers)
 						tmp->next = command.data_numbers;
 					command.data_numbers = tmp;
 				}
-				if (ft_strequ((sec)->sectname, "__text"))
+				else if (ft_strequ((sec)->sectname, "__text"))
 				{
 					tmp = ft_lstnew(&ycount, 4);
 					if (command.text_numbers)
 						tmp->next = command.text_numbers;
 					command.text_numbers = tmp;
+				}
+				else if (ft_strequ((sec)->sectname, "__text"))
+				{
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.text_numbers)
+						tmp->next = command.text_numbers;
+					command.text_numbers = tmp;
+				}
+				else
+				{
+					tmp = ft_lstnew(&ycount, 4);
+					if (command.const_numbers)
+						tmp->next = command.const_numbers;
+					command.const_numbers = tmp;
 				}
 				// __text
 				// 
@@ -483,8 +491,6 @@ void nm(char *ptr)
 	{
 		fat= (struct fat_header*)ptr;
 		i = 0;
-		if (2 != NXSwapLong(fat->nfat_arch))
-			exit(0);
 		while (i < NXSwapLong(fat->nfat_arch))
 		{
 			arch = (struct fat_arch*)(ptr + (sizeof(struct fat_header))) + i;
@@ -494,12 +500,20 @@ void nm(char *ptr)
 				handle_64(cpy);
 				free(cpy);
 			}
-			/*else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
+			else if (NXSwapLong(arch->cputype) == CPU_TYPE_I386)
 			{
 
-			}*/
+			}
+			else
+			{
+				// ft_printf("This CPUType « %x » is unknow.\n", NXSwapLong(arch->cputype));
+			}
 			i++;
 		}
+	}
+	else
+	{
+		// ft_printf("This magic number « %x » is unknow.\n", magic_number);
 	}
 
 }
@@ -522,12 +536,10 @@ int main(int ac, char **av)
 	}
 	if (fstat(fd, &buf) < 0)
 	{
-		ft_printf("fstat");
 		return (0);
 	}
 	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 	{
-		ft_printf("mmap");
 		return (0);
 	}
 	antitroll(ptr, buf.st_size);
