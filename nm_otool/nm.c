@@ -524,30 +524,17 @@ int main(int ac, char **av)
 	char	*ptr;
 	struct stat	buf;
 
-	if (ac != 2)
-	{
-		ft_printf("Please give me an arg\n");
-		return (0);
-	}
-	if ((fd = open(av[1], O_RDONLY)) < 0)
-	{
-		ft_printf("Erreur dans open");
-		return (0);
-	}
+	if (ac > 1)
+		if ((fd = open(av[1], O_RDONLY)) < 0)
+			exit(0);
+	else
+		if ((fd = open("a.out", O_RDONLY)) < 0)
+			exit(0);
 	if (fstat(fd, &buf) < 0)
-	{
-		return (0);
-	}
+		exit(0);
 	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-	{
-		return (0);
-	}
+		exit(0);
 	antitroll(ptr, buf.st_size);
 	nm(ptr);
-	/*if (munmap(ptr, buf.st_size < 0))
-	{
-		ft_printf("munmap");
-		return (0);
-	}*/
-	return (EXIT_SUCCESS);
+	exit(0);
 }
