@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nm.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/12/14 17:47:22 by mprevot           #+#    #+#             */
+/*   Updated: 2018/12/14 17:47:24 by mprevot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <sys/mman.h>
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
@@ -43,13 +55,30 @@ t_bool 	lookfor(uint8_t n_sect, t_list *lst)
 	return FALSE;
 }
 
+
+char	get_type_lookfor(uint8_t n_sect)
+{
+	char 	c;
+
+	if (lookfor(n_sect, command.bss_numbers))
+		c = 'B';
+	else if (lookfor(n_sect, command.const_numbers))
+		c = 'S';
+	else if (lookfor(n_sect, command.data_numbers))
+		c = 'D';
+	else if (lookfor(n_sect, command.text_numbers))
+		c = 'T';
+	else
+		c = '?';
+	return (c);
+}
+
 char	get_type(struct nlist_64 el)
 {
 	t_bool upper;
 	char 	c;
 
 	upper = (0 != (el.n_type & N_EXT));
-
 	if (0 != (el.n_type & N_STAB))
 		c = '-';
 	else if (N_UNDF == (el.n_type & N_TYPE))
@@ -65,21 +94,11 @@ char	get_type(struct nlist_64 el)
 		c = 'I'; // inderct
 	else if (el.n_desc & N_WEAK_REF)
 		c = 'W';
-	else if (lookfor(el.n_sect, command.bss_numbers))
-		c = 'B';
-	else if (lookfor(el.n_sect, command.const_numbers))
-		c = 'S';
-	else if (lookfor(el.n_sect, command.data_numbers))
-		c = 'D';
-	else if (lookfor(el.n_sect, command.text_numbers))
-		c = 'T';
 	else
-		c = '?';
-
+		c = get_type_lookfor(el.n_sect);
 	if (upper)
 		return (c);
-	else
-		return (ft_tolower(c));
+	return (ft_tolower(c));
 }
 
 char	get_type_32(struct nlist el)
@@ -104,21 +123,11 @@ char	get_type_32(struct nlist el)
 		c = 'I'; // inderct
 	else if (el.n_desc & N_WEAK_REF)
 		c = 'W';
-	else if (lookfor(el.n_sect, command.bss_numbers))
-		c = 'B';
-	else if (lookfor(el.n_sect, command.const_numbers))
-		c = 'S';
-	else if (lookfor(el.n_sect, command.data_numbers))
-		c = 'D';
-	else if (lookfor(el.n_sect, command.text_numbers))
-		c = 'T';
 	else
-		c = '?';
-
+		c = get_type_lookfor(el.n_sect);
 	if (upper)
 		return (c);
-	else
-		return (ft_tolower(c));
+	return (ft_tolower(c));
 }
 
 t_line*	get_line(int nsyms, int symoff, int stroff, char *ptr)
@@ -126,7 +135,6 @@ t_line*	get_line(int nsyms, int symoff, int stroff, char *ptr)
 	int i;
 	char *stringtable;
 	struct  nlist_64 *el;
-
 	t_line			*line;
 	t_line			*tmp;
 
@@ -134,7 +142,6 @@ t_line*	get_line(int nsyms, int symoff, int stroff, char *ptr)
 	tmp = NULL;
 	el = (void*)ptr + symoff;
 	stringtable =  ptr + stroff;
-
 	i = 0;
 	while (i < nsyms)
 	{
@@ -157,7 +164,6 @@ t_line*	get_line_32(int nsyms, int symoff, int stroff, void *ptr)
 	int i;
 	char *stringtable;
 	struct  nlist *el;
-
 	t_line			*line;
 	t_line			*tmp;
 
@@ -165,7 +171,6 @@ t_line*	get_line_32(int nsyms, int symoff, int stroff, void *ptr)
 	tmp = NULL;
 	el = (void*)ptr + symoff;
 	stringtable =  ptr + stroff;
-
 	i = 0;
 	while (i < nsyms)
 	{
@@ -183,11 +188,29 @@ t_line*	get_line_32(int nsyms, int symoff, int stroff, void *ptr)
 	return (line);
 }
 
+void	tri_pourri_lol_switch(t_line *line, t_line *before, t_line **first)
+{
+	t_line *tmp;
+
+	if (before)
+	{
+		tmp = line->next->next;
+		before->next = line->next;
+		before->next->next = line;
+		before->next->next->next = tmp;
+	}
+	else
+	{
+		tmp = line->next->next;
+		*first = line->next;
+		(*first)->next = line;
+		(*first)->next->next = tmp;
+	}
+}
 
 void	tri_pourri_lol(t_line **first)
 {
 	t_line *line;
-	t_line *tmp;
 	t_line *before;
 
 	line = *first;
@@ -201,20 +224,7 @@ void	tri_pourri_lol(t_line **first)
 			(diff == 0 && line->left != 0 && line->next->left != 0 && line->left > line->next->left)
 			)
 		{
-			if (before)
-			{
-				tmp = line->next->next;
-				before->next = line->next;
-				before->next->next = line;
-				before->next->next->next = tmp;
-			}
-			else
-			{
-				tmp = line->next->next;
-				*first = line->next;
-				(*first)->next = line;
-				(*first)->next->next = tmp;
-			}
+			tri_pourri_lol_switch(line, before, first);
 			line = *first;
 			before = NULL;
 			continue;
@@ -224,17 +234,30 @@ void	tri_pourri_lol(t_line **first)
 	}
 }
 
+t_bool	can_show_next(t_line *line, t_line *findme)
+{
+	while (line)
+	{
+			if (0 == ft_strcmp(line->right, findme->right)
+				&& line->middle == findme->middle
+				&& (line->left == findme->left || !line->left || !findme->left))
+			{
+				return (FALSE);
+			}
+		line = line->next;
+	}
+	return (TRUE);
+}
+
 t_bool	can_show(t_line *first, t_line *findme)
 {
 	t_line	*line;
 	int 	i;
 
 	i = 0;
-	line = first;
-	
+	line = first;	
 	if (0 == ft_strlen(findme->right) || findme->middle == '?' || findme->middle == '-')
 		return FALSE;
-
 	while (line)
 	{
 			if (0 == ft_strcmp(line->right, findme->right)
@@ -248,20 +271,7 @@ t_bool	can_show(t_line *first, t_line *findme)
 			}
 		line = line->next;
 	}
-
-	while (line)
-	{
-			if (0 == ft_strcmp(line->right, findme->right)
-				&& line->middle == findme->middle
-				&& (line->left == findme->left || !line->left || !findme->left))
-			{
-				return (FALSE);
-			}
-		line = line->next;
-	}
-
-
-	return TRUE;
+	return can_show_next(line, findme);
 }
 
 void	print_line(t_line *line)
@@ -287,10 +297,48 @@ void	print_line(t_line *line)
 				else
 					ft_printf("         ");
 			}
-			ft_putchar(line->middle);
-			ft_printf( " %s\n", line->right);
+			ft_printf("%C %s\n", line->middle, line->right);
 		}
 		line = line->next;
+	}
+}
+
+
+void segname2struct_switch(int ycount, t_list **data)
+{
+	t_list *tmp;
+
+	tmp = ft_lstnew(&ycount, 4);
+	if (*data)
+		tmp->next = *data;
+	*data = tmp;
+}
+
+void segname2struct(int ycount, char * sectname)
+{
+	if (ft_strequ(sectname, "__bss"))
+		segname2struct_switch(ycount, &(command.bss_numbers));
+	else if (ft_strequ(sectname, "__data"))
+		segname2struct_switch(ycount, &(command.data_numbers));
+	else if (ft_strequ(sectname, "__text"))
+		segname2struct_switch(ycount, &(command.text_numbers));
+	else
+		segname2struct_switch(ycount, &(command.const_numbers));
+}
+
+void handle_64_segment(void *lc, int *ycount)
+{
+	struct section_64			*sec_64;
+	int y;
+
+	sec_64 = (((void*)lc) + sizeof(struct segment_command_64));
+	y = 0;
+	while (y < ((struct segment_command_64 *)(lc))->nsects)
+	{
+		segname2struct(*ycount, sec_64->sectname);
+		(sec_64) = (((void*)(sec_64)) + sizeof(struct section_64));
+		y++;
+		(*ycount)++;
 	}
 }
 
@@ -298,95 +346,61 @@ void handle_64(char * ptr)
 {
 	int ncmds;
 	struct load_command *lc;
-	struct symtab_command *sym;
-	int i = 0;
-	int y = 0;
-	int ycount = 1;
-	t_list	*tmp;
+	int i;
+	int ycount;	
 	t_line	*line;
-	struct mach_header_64 * header;
-	struct section_64			*sec_64;
 
-
-	header = (struct mach_header_64 *)ptr;
-	ncmds  = header->ncmds;
-	lc = (void *)ptr + sizeof(*header);
-	
-	while (i < ncmds)
+	ncmds  = ((struct mach_header_64*)ptr)->ncmds;
+	lc = (void *)ptr + sizeof(struct mach_header_64);
+	i = 0;
+	ycount = 1;
+	while (++i < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
-			sym = (struct symtab_command *)lc;
-			line = get_line(sym->nsyms, sym->symoff, sym->stroff, ptr);
+			line = get_line(((struct symtab_command *)lc)->nsyms, 
+				((struct symtab_command *)lc)->symoff,
+				((struct symtab_command *)lc)->stroff, ptr);
 			tri_pourri_lol(&line);
 			print_line(line);
 			exit(0);
 		}
 		else if (lc->cmd == LC_SEGMENT_64)
-		{
-			sec_64 = (((void*)lc) + sizeof(struct segment_command_64));
-			y = 0;
-			while (y < ((struct segment_command_64 *)(lc))->nsects)
-			{
-				if (ft_strequ((sec_64)->sectname, "__bss"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.bss_numbers)
-						tmp->next = command.bss_numbers;
-					command.bss_numbers = tmp;
-				}
-				else if ( ft_strequ((sec_64)->sectname, "__data"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.data_numbers)
-						tmp->next = command.data_numbers;
-					command.data_numbers = tmp;
-				}
-				else if (ft_strequ((sec_64)->sectname, "__text"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.text_numbers)
-						tmp->next = command.text_numbers;
-					command.text_numbers = tmp;
-				}
-				else
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.const_numbers)
-						tmp->next = command.const_numbers;
-					command.const_numbers = tmp;
-				}
-				(sec_64) = (((void*)(sec_64)) + sizeof(struct section_64));
-				y++;
-				ycount++;
-			}
-		}
+			handle_64_segment(lc, &ycount);
 		lc = (void*) lc + lc ->cmdsize;
-		i++;
 	}
 }
 
+void handle_32_segment(void *lc, int *ycount)
+{
+	struct section			*sec;
+	int y;
+
+	sec = (((void*)lc) + sizeof(struct segment_command));
+	y = 0;
+	while (y < ((struct segment_command *)(lc))->nsects)
+	{
+		segname2struct(*ycount, sec->sectname);
+		(sec) = (((void*)(sec)) + sizeof(struct section));
+		y++;
+		(*ycount)++;
+	}
+}
 
 void handle_32(char * ptr)
 {
 	int ncmds;
-	struct mach_header * header;
 	struct load_command *lc;
 	struct symtab_command *sym;
+	int i;
+	int ycount;
 
-	int i = 0;
-	int y = 0;
-	int ycount = 1;
-
-	struct section			*sec;
-	t_list	*tmp;
 	t_line			*line;
-
-	header = (struct mach_header *)ptr;
-	ncmds  = header->ncmds;
-	lc = (void *)ptr + sizeof(*header);
-
-	while (i < ncmds)
+	ncmds  = ((struct mach_header *)ptr)->ncmds;
+	lc = (void *)ptr + sizeof(struct mach_header);
+	i = 0;
+	ycount = 1;
+	while (i++ < ncmds)
 	{
 		if (lc->cmd == LC_SYMTAB)
 		{
@@ -397,65 +411,15 @@ void handle_32(char * ptr)
 			exit(0);
 		}
 		else if (lc->cmd == LC_SEGMENT)
-		{
-			sec = (((void*)lc) + sizeof(struct segment_command));
-			y = 0;
-			while (y < ((struct segment_command *)(lc))->nsects)
-			{
-				if (ft_strequ((sec)->sectname, "__bss"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.bss_numbers)
-						tmp->next = command.bss_numbers;
-					command.bss_numbers = tmp;
-				}
-				else if ( ft_strequ((sec)->sectname, "__data"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.data_numbers)
-						tmp->next = command.data_numbers;
-					command.data_numbers = tmp;
-				}
-				else if (ft_strequ((sec)->sectname, "__text"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.text_numbers)
-						tmp->next = command.text_numbers;
-					command.text_numbers = tmp;
-				}
-				else if (ft_strequ((sec)->sectname, "__text"))
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.text_numbers)
-						tmp->next = command.text_numbers;
-					command.text_numbers = tmp;
-				}
-				else
-				{
-					tmp = ft_lstnew(&ycount, 4);
-					if (command.const_numbers)
-						tmp->next = command.const_numbers;
-					command.const_numbers = tmp;
-				}
-				// __text
-				// 
-				(sec) = (((void*)(sec)) + sizeof(struct section));
-				y++;
-				ycount++;
-			}
-		}
+			handle_32_segment(lc, &ycount);
 		lc = (void*) lc + lc ->cmdsize;
-		i++;
 	}
-
-
 }
 
 
 void nm(char *ptr)
 {
 	int magic_number;
-	struct fat_header *fat;
 	struct fat_arch		*arch;
 	uint32_t	i;
 	char *cpy;
@@ -466,20 +430,18 @@ void nm(char *ptr)
 		handle_64(ptr);
 	else if (magic_number == MH_MAGIC)
 		handle_32(ptr);
-	else if (magic_number == FAT_CIGAM) //  Universal Object
+	else if (magic_number == FAT_CIGAM)
 	{
-		fat = (struct fat_header*)ptr;
 		i = 0;
-		while (i < NXSwapLong(fat->nfat_arch))
+		while (i < NXSwapLong(((struct fat_header*)ptr)->nfat_arch))
 		{
-			arch = (struct fat_arch*)(ptr + (sizeof(struct fat_header))) + i;
+			arch = (struct fat_arch*)(ptr + (sizeof(struct fat_header))) + i++;
 			if (NXSwapLong(arch->cputype) == CPU_TYPE_X86_64)
 			{
 				cpy = ft_memdup(ptr + NXSwapLong(arch->offset), NXSwapLong(arch->size));
 				handle_64(cpy);
 				free(cpy);
 			}
-			i++;
 		}
 	}
 }
