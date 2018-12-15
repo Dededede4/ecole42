@@ -49,7 +49,7 @@ void	print_data(void *start, uint64_t size, uint64_t offset, t_bool is_64, t_com
 	}
 }
 
-void	handle_64_next(int * y, t_command command)
+void	handle_64_next(uint32_t * y, t_command command)
 {
 	(command.seg_64) = (struct segment_command_64 *)(command.lc);
 	if (ft_strequ((command.seg_64)->segname, "__TEXT"))
@@ -70,7 +70,7 @@ void	handle_64_next(int * y, t_command command)
 void	handle_64(t_command command)
 {
 	int i;
-	int y;
+	uint32_t y;
 
 	i = 0;
 	y = 0;
@@ -86,7 +86,7 @@ void	handle_64(t_command command)
 	}
 }
 
-void	handle_32_next(int *y, t_command command)
+void	handle_32_next(uint32_t *y, t_command command)
 {
 	(command.seg_32) = (struct segment_command *)(command.lc);
 	if (ft_strequ((command.seg_32)->segname, "__TEXT"))
@@ -108,7 +108,7 @@ void	handle_32_next(int *y, t_command command)
 void	handle_32(t_command command)
 {
 	int i;
-	int y;
+	uint32_t y;
 
 	i = 0;
 	y = 0;
@@ -134,12 +134,12 @@ void handle_fat(t_command command)
 
 	fat = (struct fat_header*)command.ptr;
 	i = 0;
-	while (i < NXSwapLong(fat->nfat_arch))
+	while (i < ft_nxswaplong(fat->nfat_arch))
 	{
 		arch = (struct fat_arch*)(command.ptr + (sizeof(struct fat_header))) + i;
-		if (NXSwapLong(arch->cputype) == CPU_TYPE_X86_64)
+		if (ft_nxswaplong(arch->cputype) == CPU_TYPE_X86_64)
 		{
-			cpy = ft_memdup(command.ptr + NXSwapLong(arch->offset), NXSwapLong(arch->size));
+			cpy = ft_memdup(command.ptr + ft_nxswaplong(arch->offset), ft_nxswaplong(arch->size));
 			tmp = command.ptr;
 			command.ptr = cpy;
 			handle_64(command);

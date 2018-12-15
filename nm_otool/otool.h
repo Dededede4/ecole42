@@ -16,6 +16,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+unsigned int ft_nxswaplong(unsigned int nbr);
 
 typedef struct					s_command
 {
@@ -23,7 +24,7 @@ typedef struct					s_command
 	int							fd;
 	char						*ptr;
 	struct stat					buf;
-	int							magic_number;
+	unsigned int				magic_number;
 	int							ncmds;
 	struct load_command			*lc;
 	struct symtab_command		*sym;

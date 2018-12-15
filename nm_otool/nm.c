@@ -20,6 +20,7 @@
 #include "libft/libft.h"
 
 int antitroll(char *ptr, off_t size);
+unsigned int ft_nxswaplong(unsigned int nbr);
 
 typedef struct					s_command
 {
@@ -329,7 +330,7 @@ void segname2struct(int ycount, char * sectname)
 void handle_64_segment(void *lc, int *ycount)
 {
 	struct section_64			*sec_64;
-	int y;
+	uint32_t y;
 
 	sec_64 = (((void*)lc) + sizeof(struct segment_command_64));
 	y = 0;
@@ -374,7 +375,7 @@ void handle_64(char * ptr)
 void handle_32_segment(void *lc, int *ycount)
 {
 	struct section			*sec;
-	int y;
+	uint32_t y;
 
 	sec = (((void*)lc) + sizeof(struct segment_command));
 	y = 0;
@@ -419,7 +420,7 @@ void handle_32(char * ptr)
 
 void nm(char *ptr)
 {
-	int magic_number;
+	unsigned int magic_number;
 	struct fat_arch		*arch;
 	uint32_t	i;
 	char *cpy;
@@ -433,12 +434,12 @@ void nm(char *ptr)
 	else if (magic_number == FAT_CIGAM)
 	{
 		i = 0;
-		while (i < NXSwapLong(((struct fat_header*)ptr)->nfat_arch))
+		while (i < ft_nxswaplong(((struct fat_header*)ptr)->nfat_arch))
 		{
 			arch = (struct fat_arch*)(ptr + (sizeof(struct fat_header))) + i++;
-			if (NXSwapLong(arch->cputype) == CPU_TYPE_X86_64)
+			if (ft_nxswaplong(arch->cputype) == CPU_TYPE_X86_64)
 			{
-				cpy = ft_memdup(ptr + NXSwapLong(arch->offset), NXSwapLong(arch->size));
+				cpy = ft_memdup(ptr + ft_nxswaplong(arch->offset), ft_nxswaplong(arch->size));
 				handle_64(cpy);
 				free(cpy);
 			}
