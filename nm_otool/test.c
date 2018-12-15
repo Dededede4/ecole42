@@ -1,4 +1,0 @@
-int main()
-{
-	printf("pouet");
-}

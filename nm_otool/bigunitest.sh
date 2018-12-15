@@ -1,8 +1,15 @@
 #!/bin/bash
-while IFS='' read -r line || [[ -n "$line" ]]; do
-    #echo "Text read from file: $line"
-    nm $line | grep ' W ' &> /dev/null 2>/dev/null
-	if [ $? == 0 ]; then
-	   echo "matched : $line"
+
+find ./custom_tests -type f  | while read line ;
+do
+  nm $line | grep --invert-match "is not an object file" > a
+  ./ft_nm $line > b
+  DIFF=$(diff a b) 
+	if [ "$DIFF" != "" ] 
+	then
+	    echo "Diff : $line"
+	    exit
+	 else
+	 	echo "OK : $line"
 	fi
-done < "$1"
+done
