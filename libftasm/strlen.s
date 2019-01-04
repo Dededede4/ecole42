@@ -7,14 +7,13 @@ _ft_strlenMAFONCTIONAMOI:
 	push rbp
 	mov rbp, rsp
 
-	mov rax, $0 ; i = 0
-start :
-	cmp byte[rdi + rax], $0
-	je end
-	add rax, $1
-	jmp start
+	xor rax, rax  ; i = 0
+	xor rcx, rcx
+	not rcx
+	repne scasb ; Il d
+	not rcx
+	dec rcx
+	mov rax, rcx
 
-end:
-	mov eax, rax
 	pop rbp
 	ret
