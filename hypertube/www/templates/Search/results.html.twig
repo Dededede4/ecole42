@@ -1,0 +1,32 @@
+{% for video in videos %}
+	<div class="movie-card" onclick="window.location = '{{ path('panel', {'video' : video.btih }) }}';">
+		<div class="movie-header" style="background: url('{% if video.pictureUrl %}{{ video.pictureUrl }}{%else%}{{ asset('/imgs/nocover.jpg') }}{%endif%}'); background-size: cover;">
+			<div class="header-icon-container">
+				<a href="#">
+					<i class="material-icons header-icon"></i>
+				</a>
+			</div>
+		</div><!--movie-header-->
+		<div class="movie-content">
+			<div class="movie-content-header">
+				<a href="#">
+					<h3 class="movie-title">{{ video.title }}</h3>
+				</a>
+			</div>
+			<div class="movie-info">
+				<div class="info-section">
+					<label>{{'rating' | trans}}</label>
+					<span>{{ video.notation }}</span>
+				</div><!--date,time-->
+				<div class="info-section">
+					<label>{{'Production date' | trans}}</label>
+					<span>{% if video.getProductionDate %}{{ video.getProductionDate | date('Y-m-d') }}{% endif %}</span>
+				</div><!--screen-->
+				<div class="info-section">
+					<label>{{'See' | trans}} ?</label>
+					<span>{% if video.lastSeeAt is null %}{{'Never see' | trans}}{% else %}{{'See' | trans}}{% endif %}</span>
+				</div><!--row-->
+			</div>
+		</div><!--movie-content-->
+	</div><!--movie-card-->
+{% endfor %}

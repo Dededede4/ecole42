@@ -1,0 +1,15 @@
+{% extends 'base_bootstrap.html.twig' %}
+
+{% block body %}
+
+<div class="container">{{ user.firstname }} </div>
+<div class="container">{{ user.lastname }}</div>
+
+<div class="circle-img img-circle">
+	<img src="{{ asset('/avatars/' ~ user.profilePicturePath) }}" class="img-fluid"/>
+</div>
+
+<div class="container">{{ user.username }}</div>
+
+
+{% endblock body %}

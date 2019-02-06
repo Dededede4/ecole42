@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{% endblock %}</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-F7cPHYSdE3FzBKvdxDKyFow9Y28Yq7KGHQOKpOI+rwc8s6jJnp///mpEJAib2EM6" crossorigin="anonymous">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="row">
+          <div class="col-lg-12">
+            <div class="bs-component">
+              <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <a class="navbar-brand" href="{{ path('homepage') }}">Hypertube</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon" ></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                
+                  <ul class="navbar-nav mr-auto">
+
+                  	{% set is_active = app.request.attributes.get('_route') == 'homepage' %}
+                    <li class="nav-item {% if is_active %}active{% endif %}">
+                      <a class="nav-link" href="{{ path('homepage') }}"> {{'Accueil' | trans}} {% if is_active %}<span class="sr-only">(current)</span>{% endif %}</a>
+                    </li>
+
+                    {% if not is_granted('ROLE_USER') %}
+	                    {% set is_active = app.request.attributes.get('_route') == 'fos_user_security_login' %}
+	                    <li class="nav-item {% if is_active %}active{% endif %}">
+	                      <a class="nav-link" href="{{ path('fos_user_security_login') }}">{{'Connection' | trans  | nl2br}} {% if is_active %}<span class="sr-only">(current)</span>{% endif %}</a>
+	                    </li>
+
+
+	                    {% set is_active = app.request.attributes.get('_route') == 'fos_user_registration_register' %}
+	                    <li class="nav-item {% if is_active %}active{% endif %}">
+	                      <a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{'Inscription' | trans  | nl2br}} {% if is_active %}<span class="sr-only">(current)</span>{% endif %}</a>
+	                    </li>
+
+	                    <li class="nav-item">
+	                      <a class="nav-link" href="{{ path('connect_facebook_start') }}">{{'Facebook login' | trans  | nl2br}}</a>
+	                    </li>
+	                    <li class="nav-item">
+	                      <a class="nav-link" href="{{ path('connect_intra42_start') }}">{{'Intra42 login' | trans  | nl2br}}</a>
+	                    </li>
+	                    {% endif %}
+
+	                    {% if is_granted('ROLE_USER') %}
+                            {% set is_active = app.request.attributes.get('_route') == 'movies' %}
+                            <li class="nav-item {% if is_active %}active{% endif %}">
+                                <a class="nav-link" href="{{ path('movies') }}">{{'Les vidéos telechargees' | trans  | nl2br}} {% if is_active %}<span class="sr-only">(current)</span>{% endif %}</a>
+                           </li>
+
+                            {% set is_active = app.request.attributes.get('_route') == 'moviesnotimetofinish' %}
+                            <li class="nav-item {% if is_active %}active{% endif %}">
+                                <a class="nav-link" href="http://localhost:4242/search/?search_engine%5BseederMin%5D=&search_engine%5BseederMax%5D=&search_engine%5Bsearch%5D=&search_engine%5BproductionYearMin%5D=&search_engine%5BproductionYearMax%5D=&search_engine%5BnotationMin%5D=&search_engine%5BnotationMax%5D=&search_engine%5Bgenre%5D=&search_engine%5BorderBy%5D=desc&search_engine%5BsortBy%5D=rating">{{'Les vidéos populaires' | trans | nl2br}} {% if is_active %}<span class="sr-only">(current)</span>{% endif %}</a>
+                           </li>
+
+
+                          {% set is_active = app.request.attributes.get('_route') == 'comments' %}
+                           <li class="nav-item {% if is_active %}active{% endif %}">
+                                <a class="nav-link" href="{{ path('comments') }}">{{'Les commentaires' | trans | nl2br}}</a>
+                           </li>
+
+                          {% set is_active = app.request.attributes.get('_route') == 'fos_user_profile_show' %}
+                           <li class="nav-item {% if is_active %}active{% endif %}">
+                                <a class="nav-link" href="{{ path('fos_user_profile_show') }}">{{'Mon profile' | trans  | nl2br}}{% if is_active %}<span class="sr-only">(current)</span>{% endif %}</a>
+                           </li>
+	               
+	               <li class="nav-item">
+	                    <a class="nav-link" href="{{ path('fos_user_security_logout') }}">{{'Déconnexion' | trans  | nl2br}}</a>
+	               </li>
+
+	                    {% endif %}
+                  </ul>
+                  {% if is_granted('ROLE_USER') %}
+              		<form class="form-inline my-2 my-lg-0" action="{{ path('search') }}" method="get">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search_engine[search]">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">{{'Search' | trans  | nl2br}}</button>
+                  </form>
+                  {% endif %}
+                </div>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+{% block body %}{% endblock %}
+
+<footer>
+	<div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+          <hr class="col-xs-12" style="border-color:#375a7f;">
+
+            <p>{{'Made by' | trans}} <a>Mprevot</a>, <a>Jaustry</a> {{'and' | trans}} <a>Gmorer</a>. <a class="nav-link" href="{{ path('homepage', {'_locale' : 'en'}) }}">ENGLISH</a> <a class="nav-link" href="{{ path('homepage', {'_locale' : 'fr'}) }}">FRANCAIS</a>  </p>
+          </div>
+        </div>
+       </div>
+      </footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+knpu_oauth2_client:
+    clients:
+        # the key "facebook_main" can be anything, it
+        # will create a service: "knpu.oauth2.client.facebook_main"
+        facebook_main:
+            # this will be one of the supported types
+            type: facebook
+            client_id: '%env(FACEBOOK_CLIENT_ID)%'
+            client_secret: '%env(FACEBOOK_CLIENT_SECRET)%'
+            # the route that you're redirected to after
+            # see the controller example below
+            redirect_route: connect_facebook_check
+            redirect_params: {}
+            graph_api_version: v2.12
+
+        intra42:
+            # must be "google" - it activates that type!
+            type: generic
+            provider_class: App\Provider\Intra42
+            # add and configure client_id and client_secret in parameters.yml
+            client_id: '%env(resolve:INTRA42_CLIENT_ID)%'
+            client_secret: '%env(resolve:INTRA42_CLIENT_SECRET)%'
+            # a route name you'll create
+            redirect_route: connect_intra42_check
+            redirect_params: {}
+            # Optional value for sending access_type parameter. More detail: https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters
+            # access_type: ''
+            # Optional value for sending hd parameter. More detail: https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+            # hosted_domain: ''
+            # Optional value for additional fields to be requested from the user profile. If set, these values will be included with the defaults. More details: https://developers.google.com/+/web/api/rest/latest/people
+            # user_fields: {}
+            # whether to check OAuth2 "state": defaults to true
+            # use_state: true
+

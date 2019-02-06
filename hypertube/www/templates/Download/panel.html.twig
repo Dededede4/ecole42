@@ -1,0 +1,38 @@
+{% extends 'base_bootstrap.html.twig' %}
+
+{% block body %}
+	
+		<video autoplay muted controls poster="{{ video.pictureUrl }}" src="{{ path('stream', {'video' : video.btih}) }}" style="width: 100%; height:56.25vw;">
+        {% for subtitle in video.subtitles %}
+            <track label="{{ subtitle.text }}" kind="subtitles" src="{{ asset('/download/other/' ~ video.btih ~ '/' ~ subtitle.text) }}">
+        {% endfor %}
+        </video>
+	<div class="container">
+		<h2>{{ video.title }}</h2>
+		<p>{% if video.getProductionDate %}{{'Production date' | trans  | nl2br}}{{ video.getProductionDate | date('Y-m-d') }}{% endif %}</p>
+        <p>{{ video.description }}</p>
+
+
+		{{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" value="Send" />
+
+        {{ form_end(form) }}
+	
+        <h3>{{ video.comments | length }} {{ 'commentaire(s)' | trans }}</h3>
+
+        {% for comment in video.comments %}
+            <div class="row">
+            	<div class="col-sm-1">
+            		<div class="circle-img img-circle">
+        				<img src="{{ asset('/avatars/' ~ comment.user.profilePicturePath) }}" class="img-fluid"/>
+        			</div>
+        		</div>
+        		<div class="col-sm">
+        			<p>{{ comment.user.firstname }} {{ comment.user.lastname }}<br/>{{ comment.text | nl2br }}</p>
+        		</div>
+        	</div>
+        {% endfor %}
+	</div>
+{% endblock %}

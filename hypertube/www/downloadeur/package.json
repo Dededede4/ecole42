@@ -1,0 +1,12 @@
+{
+  "name": "downloader",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "amqplib": "0.5.3",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "stream-transcoder": "*",
+    "torrent-stream": "*"
+  }
+}

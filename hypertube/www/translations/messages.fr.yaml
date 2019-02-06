@@ -1,0 +1,108 @@
+hello.paraf : Bienvenue sur hypertube !
+
+blabla.paraf: |
+  Ce projet vous propose de créer une application web permettant à un utilisateur de rechercher et visionner des vidéos.
+
+  Le lecteur sera directement intégré au site, et les vidéos seront téléchargées au travers du protocole BitTorrent.
+
+  Le moteur de recherche interrogera plusieurs sources externes de votre choix, comme par exemple http ://www.legittorrents.info, ou encore https://archive.org.
+
+  Une fois un élément sélectionné, il sera téléchargé sur le serveur et diffusé sur le player web en même temps. Autrement dit, le lecteur ne se contentera pas d’afficher la vidéo une fois le téléchargement complété, mais sera capable de streamer directement le flux.
+
+Accueil: Accueil
+
+Connection: Connection
+
+Inscription: Inscription
+
+Facebook login: Connection Facebook
+
+Intra42 login: Connection Intra42
+
+Search: Rechercher
+
+Les vidéos: Les vidéos
+
+Les membres: Les membres
+
+Les commentaires: Les commentaires
+
+Déconnexion: Déconnexion
+
+Mon profile: Mon profile
+
+Firstname : Prenom
+
+Lastname: Nom
+
+Profile picture file: Photo de profil
+
+Made by: Développé par
+
+and: et
+
+edit my profil: édité mon profil
+
+Seeder min: Seeder min
+
+Seeder max: Seeder max
+
+Production year min: année de production min
+
+Production year max: année de production max
+
+Notation max: note max
+
+Notation min: note min
+
+Genre: Genre
+
+Text: Votre message
+
+Sort by: Trier par
+
+Order by: Ordre
+Action: Action
+Adventure: Aventure
+Animation: Animation
+Biography: Biographie
+Comedy: Comedie
+Crime: Crime
+Documentary: Documentaire
+Drama: Drame
+Family: Famile
+Fantasy: Fantaisie
+Film Noir: Film Noir
+History: Historique
+Horror: Horreur
+Music: Music
+Musical: Comedie Musicale
+Mystery: Mistere
+Romance: Romantique
+Sci-Fi: Science-fiction
+Short: court
+Sport: Sport
+Superhero: Superhero
+Thriller: Policier
+War: Guerre
+Western: Western
+peers: pairs
+Never see: Pas Vu
+See: Deja Vu
+desc: deccroissant
+asc: croissant
+title: Titre
+year: Année
+rating: Note
+seeds: seeds
+download_count: nombre téléchargement
+like_count: nombre de j'aime
+date_added: date d'ajout
+
+Production date: date de production
+Pas de commentaires: Pas de commentaires
+
+Les vidéos populaires: Les vidéos populaires
+Les vidéos telechargees: Les vidéos telechargees
+
+commentaire(s): commentaire(s)

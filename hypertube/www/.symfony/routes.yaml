@@ -1,0 +1,2 @@
+"https://{default}/": { type: upstream, upstream: "my-project:http" }
+"http://{default}/": { type: redirect, to: "https://{default}/" }
