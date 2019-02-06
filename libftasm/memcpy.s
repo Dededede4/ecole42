@@ -1,8 +1,8 @@
 section .text
 	global _ft_memcpy
 
-; Premier argument : rdi -> void *b
-; Deuxième argument : rsi -> int c
+; Premier argument : rdi -> void *dst
+; Deuxième argument : rsi -> void *src
 ; Troisième argument : rdx -> size_t len
 
 _ft_memcpy:

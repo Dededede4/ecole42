@@ -1,9 +1,9 @@
 section .text
-	global _ft_strlenMAFONCTIONAMOI
+	global _ft_strlen
 
 ; Premier argument : rdi -> str *s
 
-_ft_strlenMAFONCTIONAMOI:
+_ft_strlen:
 	push rbp
 	mov rbp, rsp
 
