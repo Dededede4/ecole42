@@ -11,7 +11,6 @@ int main()
 	char *destB;
 
 	destA = ft_strdup(str);
-	return 0;
 	destB = strdup(str);
 
 	if (0 == strcmp(destA, destB))
