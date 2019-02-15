@@ -3,8 +3,6 @@ extern _malloc, _ft_strlen, _ft_memcpy
 section .text
 	global _ft_strdup
 
-global _main
-
 ; Premier argument : rdi -> str *s
 
 _ft_strdup:
