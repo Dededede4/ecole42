@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdio.h>
 
 int	isdigit(int c);
 int	ft_isdigit(int c);

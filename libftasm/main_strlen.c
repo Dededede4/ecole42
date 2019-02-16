@@ -13,5 +13,5 @@ int main_strlen()
 		printf("Youpi\n");
 	else
 		printf("Au lieu de 3 ça retourne : %zu \n", ft_strlen("abc"));
-
+	return (0);
 }

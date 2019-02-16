@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdio.h>
 
 int	isalpha(int c);
 int	ft_isalpha(int c);

@@ -1,8 +1,9 @@
 #include <ctype.h>
+#include <stdio.h>
 
 int	toupper(int c);
 int	ft_toupper(int c);
-int main()
+int main_toupper()
 {
 	for (int i = 0; i < 2555; ++i)
 	{

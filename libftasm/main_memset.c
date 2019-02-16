@@ -9,7 +9,7 @@ int main_memset()
 	unsigned int b = -1;
 
 
-	ft_memset(&a, 0, 3);
+	memset(&a, 0, 3);
 	memset(&b, 0, 3);
 	if (a == b)
 		printf("Bien");

@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdio.h>
 
 int	isprint(int c);
 int	ft_isprint(int c);

@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdio.h>
 
 int	isalnum(int c);
 int	ft_isalnum(int c);
