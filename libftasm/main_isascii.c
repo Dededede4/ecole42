@@ -3,7 +3,7 @@
 int	isascii(int c);
 int	ft_isascii(int c);
 
-int main()
+int main_isascii()
 {
 	for (int i = 0; i < 2555; ++i)
 	{

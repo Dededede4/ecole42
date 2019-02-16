@@ -3,7 +3,7 @@
 int	isalnum(int c);
 int	ft_isalnum(int c);
 
-int main()
+int main_isalnum()
 {
 	for (int i = 0; i < 2555; ++i)
 	{

@@ -2,7 +2,7 @@
 
 int	tolower(int c);
 int	ft_tolower(int c);
-int main()
+int main_tolower()
 {
 	for (int i = 0; i < 2555; ++i)
 	{

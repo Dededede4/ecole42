@@ -2,7 +2,7 @@
 
 size_t ft_strlen(char *str);
 
-int main()
+int main_strlen()
 {
 	if (6 == ft_strlen("abcdef"))
 		printf("Youpi\n");

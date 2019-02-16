@@ -4,7 +4,7 @@
      #include <string.h>
 char *ft_strdup(const char *s1);
 
-int main()
+int main_strdup()
 {
 	char str[] = "Coucou mon coco";
 	char *destA;

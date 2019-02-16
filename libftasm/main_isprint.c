@@ -3,7 +3,7 @@
 int	isprint(int c);
 int	ft_isprint(int c);
 
-int main()
+int main_isprint()
 {
 	for (int i = 0; i < 2555; ++i)
 	{

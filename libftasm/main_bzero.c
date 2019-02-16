@@ -3,7 +3,7 @@
 
 void ft_bzero(void *s, size_t n);
 
-int main()
+int main_bzero()
 {
 	unsigned int a = -1;
 	unsigned int b = -1;

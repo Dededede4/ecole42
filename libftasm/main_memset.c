@@ -3,7 +3,7 @@
 
 void ft_memset(void *b, int c, size_t len);
 
-int main()
+int main_memset()
 {
 	unsigned int a = -1;
 	unsigned int b = -1;

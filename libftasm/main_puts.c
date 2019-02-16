@@ -4,7 +4,7 @@ int
 char *
      strdup(const char *s1);
 
-int main()
+int main_puts()
 {
 	char *str = strdup("Coucou mon coco");
 	ft_puts(str);

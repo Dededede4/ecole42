@@ -2,7 +2,7 @@
 
 int	isdigit(int c);
 int	ft_isdigit(int c);
-int main()
+int main_isdigit()
 {
 	for (int i = 0; i < 2555; ++i)
 	{

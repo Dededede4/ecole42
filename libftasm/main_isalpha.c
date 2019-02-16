@@ -2,7 +2,7 @@
 
 int	isalpha(int c);
 int	ft_isalpha(int c);
-int main()
+int main_isalpha()
 {
 	for (int i = 0; i < 2555; ++i)
 	{
