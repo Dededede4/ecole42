@@ -10,10 +10,8 @@ _ft_memset:
 	mov rbp, rsp
 
 
-	mov    rax,rsi 
-	;mov    rdi,offset arr 
-	mov    rcx,rdx         ;array size 
-	rep movsb
+	mov al, sil
+	rep stosb
 
 	pop rbp
 	ret

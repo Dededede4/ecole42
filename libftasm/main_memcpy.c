@@ -3,7 +3,7 @@
 
 void * ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 
-int main()
+int main_memcpy()
 {
 	char str[] = "Coucou mon coco";
 	int size = strlen(str);

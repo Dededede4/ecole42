@@ -2,7 +2,7 @@
 
 size_t ft_strlen(char *str);
 
-int main()
+int main_strlen()
 {
 	if (6 == ft_strlen("abcdef"))
 		printf("Youpi\n");
@@ -13,5 +13,5 @@ int main()
 		printf("Youpi\n");
 	else
 		printf("Au lieu de 3 ça retourne : %zu \n", ft_strlen("abc"));
-
+	return (0);
 }

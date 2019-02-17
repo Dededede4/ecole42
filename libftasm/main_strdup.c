@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <strings.h>
 #include <stdlib.h>
-     #include <string.h>
+#include <string.h>
+
 char *ft_strdup(const char *s1);
 
-int main()
+int main_strdup()
 {
 	char str[] = "Coucou mon coco";
 	char *destA;
 	char *destB;
 
 	destA = ft_strdup(str);
-	return 0;
 	destB = strdup(str);
 
 	if (0 == strcmp(destA, destB))
