@@ -1,0 +1,83 @@
+import pandas as pd
+from matplotlib import pyplot as plt
+import math;
+import seaborn as sns;
+#sns.set(style="ticks", color_codes=True)
+iris = pd.read_csv('dataset_train.csv')
+
+iris = iris.dropna()
+
+classA = iris[iris['Hogwarts House'] == 'Ravenclaw']['History of Magic']
+classB = iris[iris['Hogwarts House'] == 'Slytherin']['History of Magic']
+classC = iris[iris['Hogwarts House'] == 'Gryffindor']['History of Magic']
+classD = iris[iris['Hogwarts House'] == 'Hufflepuff']['History of Magic']
+
+quats = ['Arithmancy', 'Astronomy', 'Herbology', 'Defense Against the Dark Arts', 'Divination', 'Muggle Studiesk', 'Ancient Runes', 'History of Magic', 'Transfiguration Potions Care of Magical Creatures', 'Charms', 'Flying']
+keysHouse = {}
+for i, quat in enumerate(quats):
+    keysHouse[quat] = {'Ravenclaw' : [0, 0],
+		'Slytherin' : [0, 0],
+		'Gryffindor' : [0, 0],
+		'Hufflepuff' : [0, 0]
+	}
+
+def test(lol):
+	lol['Arithmancy']['Ravenclaw'][0] = 42;
+print(keysHouse['Arithmancy']['Ravenclaw'][0])
+test(keysHouse)
+print(keysHouse['Arithmancy']['Ravenclaw'][0])
+exit(0)
+# Retourne la probabilté entre 0 et un que ce soit une maison
+def g(z):
+  return 1 / (1 + math.exp(0 - z))
+
+def h(teta, x):
+	return g(teta * x)
+
+def j(teta, df):
+	result = 0
+	for index, row in df.iterrows():
+		y = 0
+		x = row['History of Magic']
+		if row['Hogwarts House'] == 'Ravenclaw':
+			y = 1
+		print("=============")
+		print(teta)
+		print(y)
+		print(x)
+		result += ((0 - y) * math.log(h(teta, x)) - (1 - y) * math.log((1 - h(teta, x))))
+	return 1 / len(df) * result
+
+def trainning(df):
+	teta = 0
+	a = 0.001
+	i = 0
+	while (i < 1000):
+		teta = teta - a * j(teta, df)
+		i = i + 1
+	return teta
+
+
+teta = trainning(iris) # -0.011778473894546596
+m = 0
+for index, row in iris.iterrows():
+	y = 0
+	x = row['History of Magic']
+	if row['Hogwarts House'] == 'Ravenclaw':
+		y = 1
+	plt.scatter(x, y)
+
+mini = -8
+maxi = 10
+step = (maxi - mini) / 1000
+i = 0
+
+while (i < 1000):
+	x = mini + i * step
+	plt.scatter(x, h(teta, x))
+	i = i + 1
+
+print(j(teta, iris))
+
+plt.show()
+
