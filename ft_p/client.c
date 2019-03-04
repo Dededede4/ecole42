@@ -91,13 +91,14 @@ void download_file(int fdin, char *filename, off_t filesize)
 
 	fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	downloaded = 0;
-	while((r = read(fdin, buff, 1024)))
+	while(downloaded < filesize)
 	{
+		r = read(fdin, buff, 1024);
+		if (-1 == r || 0 == r)
+			break;
 		ft_putstr_fd("AAAAAAAAA", 1);
 		write(fdout, buff, r);
 		downloaded += r;
-		if (downloaded >= filesize)
-			return ;
 	}
 }
 
@@ -131,17 +132,61 @@ t_bool command_get(int fd, char *command)
 	return (TRUE);
 }
 
+int		ft_offtlen(off_t n)
+{
+	int			len;
+
+	len = 1;
+	if (n < 0)
+		len++;
+	while (n /= 10)
+		len++;
+	return (len);
+}
+
+
+char			*ft_itoa_offt_nl(off_t n)
+{
+	char		*str;
+	int			len;
+
+	len = ft_offtlen(n);
+	str = ft_strnew(len + 1);
+	str[len] = '\n';
+	if (str == NULL)
+		return (NULL);
+	if (n < 0)
+		str[0] = '-';
+	else
+		n = 0 - n;
+	while (n / 10)
+	{
+		str[--len] = (0 - (n % 10)) + '0';
+		n /= 10;
+	}
+	str[--len] = (0 - (n % 10)) + '0';
+
+	return (str);
+}
+
 void	ft_putofft_fd(off_t n, int fd)
 {
-	if (n >= 10)
+	char *tmp;
+
+	tmp = ft_itoa_offt_nl(n);
+	ft_putstr_fd(tmp, fd);
+	free(tmp);
+}
+
+void ft_sleep()
+{
+	int i = 0;
+	while(i > -1)
 	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
+
+		i+=100;
 	}
-	else
-	{
-		ft_putchar_fd(n + '0', fd);
-	}
+
 }
 
 void send_file(char *file, int fd)
@@ -156,12 +201,15 @@ void send_file(char *file, int fd)
 	stat(file, &st);
 	size = st.st_size;
 	ft_putofft_fd(size, fd);
-	ft_putchar_fd('\n', fd);
 	fdfile = open(file, O_RDONLY);
-	while((r = read(fdfile, buff, 1024)))
+	printf("%d %s\n", fdfile, file);
+	ft_sleep();
+	while((r = read(fdfile, buff, 1024)) > 0)
 	{
 		write(fd, buff, r);
+		write(1, buff, r);
 	}
+	close(fdfile);
 }
 
 t_bool command_put(int fd, char *command)
@@ -169,6 +217,7 @@ t_bool command_put(int fd, char *command)
 	char *path;
 	char *tmp;
 	char *file;
+	char *commandnl;
 	off_t filesize;
 
 	if (ft_strlen(command) <= 4)
@@ -176,7 +225,10 @@ t_bool command_put(int fd, char *command)
 	if (0 != ft_memcmp(command, "put ", 4))
 		return (FALSE);
 	file = ft_strdup((command) + 4);
-	ft_putstr_fd(command, fd);
+	commandnl = ft_strjoin_multi(TRUE, ft_strdup(command), ft_strdup("\n"), NULL);
+	ft_putstr_fd(commandnl, fd);
+	free(commandnl);
+	
 	send_file(file, fd);
 	free(file);
 	return (TRUE);

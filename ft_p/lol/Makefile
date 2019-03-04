@@ -1,4 +1,5 @@
-****************************************************** #
+424
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -18,6 +19,4 @@ CFLAGS=-g -Wall -Werror -Wextra
 
 RM=rm -f
 
-SRC= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmovput auteurtakefile
-8
-mprevot
+SRC= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmov
