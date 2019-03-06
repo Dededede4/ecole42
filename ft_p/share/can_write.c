@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putofft_fd.c                                    :+:      :+:    :+:   */
+/*   can_write.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/05 18:23:38 by mprevot           #+#    #+#             */
-/*   Updated: 2019/03/05 18:23:40 by mprevot          ###   ########.fr       */
+/*   Created: 2019/03/06 19:28:07 by mprevot           #+#    #+#             */
+/*   Updated: 2019/03/06 19:28:09 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "share.h"
 
-void	ft_putofft_fd(off_t n, int fd)
+t_bool can_write(char *path)
 {
-	char *tmp;
+	int 	fd;
 
-	tmp = ft_itoa_offt_nl(n);
-	ft_putstr_fd(tmp, fd);
-	free(tmp);
+	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	close(fd);
+	return (fd > 1);
 }

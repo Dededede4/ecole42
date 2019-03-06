@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "share.h"
+
 void download_file(int fdin, char *filename, off_t filesize)
 {
 	char	buff[1024];
@@ -30,7 +32,6 @@ void download_file(int fdin, char *filename, off_t filesize)
 			r = read(fdin, buff, todownload);
 		if (-1 == r || 0 == r)
 			break;
-		ft_putstr_fd("AAAAAAAAA", 1);
 		write(1, buff, r);
 		write(fdout, buff, r);
 		ft_printf("--------->%d\n", downloaded);

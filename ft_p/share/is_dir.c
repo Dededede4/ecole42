@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putofft_fd.c                                    :+:      :+:    :+:   */
+/*   is_dir.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/05 18:23:38 by mprevot           #+#    #+#             */
-/*   Updated: 2019/03/05 18:23:40 by mprevot          ###   ########.fr       */
+/*   Created: 2019/03/06 15:29:17 by mprevot           #+#    #+#             */
+/*   Updated: 2019/03/06 15:29:19 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "share.h"
 
-void	ft_putofft_fd(off_t n, int fd)
-{
-	char *tmp;
+int is_dir(char *p) {
+	struct stat statbuf;
 
-	tmp = ft_itoa_offt_nl(n);
-	ft_putstr_fd(tmp, fd);
-	free(tmp);
+   if (stat(p, &statbuf) != 0)
+       return (0);
+   return S_ISDIR(statbuf.st_mode);
 }

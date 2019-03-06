@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "share.h"
+
 off_t			ft_atoi_offt(const char *str)
 {
 	off_t		result;

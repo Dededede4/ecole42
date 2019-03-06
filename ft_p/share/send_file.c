@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "share.h"
+
 void send_file(char *file, int fd)
 {
 	struct stat st;
@@ -23,7 +25,7 @@ void send_file(char *file, int fd)
 	size = st.st_size;
 	ft_putofft_fd(size, fd);
 	fdfile = open(file, O_RDONLY);
-	printf("%d %s\n", fdfile, file);
+	ft_printf("%d %s\n", fdfile, file);
 	ft_sleep();
 	while((r = read(fdfile, buff, 1024)) > 0)
 	{
