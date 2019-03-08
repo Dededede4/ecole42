@@ -12,13 +12,13 @@
 
 #include "share.h"
 
-void send_file(char *file, int fd)
+void	send_file(char *file, int fd)
 {
-	struct stat st;
-	off_t size;
-	char	buff[1024];
-	int 	r;
-	int 	fdfile;
+	struct stat	st;
+	off_t		size;
+	char		buff[1024];
+	int			r;
+	int			fdfile;
 
 	ft_putstr_fd("takefile\n", fd);
 	stat(file, &st);
@@ -27,7 +27,7 @@ void send_file(char *file, int fd)
 	fdfile = open(file, O_RDONLY);
 	ft_printf("%d %s\n", fdfile, file);
 	ft_sleep();
-	while((r = read(fdfile, buff, 1024)) > 0)
+	while ((r = read(fdfile, buff, 1024)) > 0)
 	{
 		write(fd, buff, r);
 		write(1, buff, r);

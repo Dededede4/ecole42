@@ -6,24 +6,46 @@
 #    By: mprevot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/01 11:18:53 by mprevot           #+#    #+#              #
-#    Updated: 2017/08/10 21:38:54 by mprevot          ###   ########.fr        #
+#    Updated: 2017/02/24 17:54:48 by mprevot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME=share.a
 
-all:
-	make -C server_src
-	make -C client_src
+CC=gcc
+
+CFLAGS=-Wall -Werror -Wextra
+
+RM=rm -f
+
+SRC=	can_read.c \
+		can_write.c \
+		download_file.c \
+		ft_atoi_offt.c \
+		ft_itoa_offt_nl.c \
+		ft_offtlen.c \
+		ft_putofft_fd.c \
+		ft_sleep.c \
+		is_dir.c \
+		send_file.c
+
+OBJ=$(SRC:.c=.o)
+
+all: $(NAME)
+
+%.o: %.s
+	$(CC) $(CFLAGS) -o $@ $<
+
+$(NAME): $(OBJ)
+	ar rc $(NAME) $(OBJ)
+	ranlib $(NAME)
 
 clean:
-	make -C server_src clean
-	make -C client_src clean
+	$(RM) $(OBJ)
 
-fclean:
-	make -C server_src fclean
-	make -C client_src fclean
-
+fclean: clean
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re

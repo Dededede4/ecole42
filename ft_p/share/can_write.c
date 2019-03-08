@@ -12,9 +12,9 @@
 
 #include "share.h"
 
-t_bool can_write(char *path)
+t_bool	can_write(char *path)
 {
-	int 	fd;
+	int	fd;
 
 	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	close(fd);

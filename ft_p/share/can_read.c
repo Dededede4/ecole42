@@ -12,9 +12,9 @@
 
 #include "share.h"
 
-t_bool can_read(char *path)
+t_bool	can_read(char *path)
 {
-	int 	fd;
+	int		fd;
 
 	fd = open(path, O_WRONLY, 0666);
 	close(fd);

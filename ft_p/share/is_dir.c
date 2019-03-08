@@ -12,10 +12,11 @@
 
 #include "share.h"
 
-int is_dir(char *p) {
+int	is_dir(char *p)
+{
 	struct stat statbuf;
 
-   if (stat(p, &statbuf) != 0)
-       return (0);
-   return S_ISDIR(statbuf.st_mode);
+	if (stat(p, &statbuf) != 0)
+		return (0);
+	return (S_ISDIR(statbuf.st_mode));
 }

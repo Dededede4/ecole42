@@ -12,12 +12,13 @@
 
 #include "share.h"
 
-void ft_sleep()
+void	ft_sleep(void)
 {
-	int i = 0;
-	while(i > -1)
-	{
+	int i;
 
-		i+=100;
+	i = 0;
+	while (i > -1)
+	{
+		i += 100;
 	}
 }

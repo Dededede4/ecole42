@@ -32,6 +32,5 @@ char			*ft_itoa_offt_nl(off_t n)
 		n /= 10;
 	}
 	str[--len] = (0 - (n % 10)) + '0';
-
 	return (str);
 }

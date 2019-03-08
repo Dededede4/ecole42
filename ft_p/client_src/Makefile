@@ -10,19 +10,37 @@
 #                                                                              #
 # **************************************************************************** #
 
+CC=gcc
 
-all:
-	make -C server_src
-	make -C client_src
+CFLAGS=-Wall -Wextra -Werror
+
+RM=rm -f
+
+SRC=	client.c \
+		command_get.c \
+		command_others.c
+
+OBJS=$(SRC:.c=.o)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+all: client
+
+client: $(OBJS)
+	make -C ../libft
+	make -C ../share
+	$(CC) $(CFLAGS) $(OBJS) ../libft/libft.a ../share/share.a -o ../client
 
 clean:
-	make -C server_src clean
-	make -C client_src clean
+	$(RM) $(OBJS)
+	make -C ../libft clean
+	make -C ../share clean
 
-fclean:
-	make -C server_src fclean
-	make -C client_src fclean
-
+fclean: clean
+	$(RM) ../client
+	make -C ../libft fclean
+	make -C ../share fclean
 
 re: fclean all
 
