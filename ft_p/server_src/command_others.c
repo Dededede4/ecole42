@@ -28,7 +28,6 @@ void	show_ls(int fd, char *path)
 	{
 		while ((dir = readdir(d)) != NULL)
 		{
-			ft_printf("-->%s<--\n", dir->d_name);
 			ft_putstr_fd(dir->d_name, fd);
 			ft_putstr_fd(" ; ", fd);
 		}
@@ -86,7 +85,7 @@ t_bool	command_get(int fd, char *command, char *curdir)
 		exit(0);
 	if (!can_read(file))
 	{
-		ft_putstr_fd("ERROR : Can't read.", fd);
+		ft_putstr_fd("ERROR : Can't read.\n", fd);
 		return (TRUE);
 	}
 	send_file(file, fd);

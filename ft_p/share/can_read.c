@@ -16,7 +16,7 @@ t_bool	can_read(char *path)
 {
 	int		fd;
 
-	fd = open(path, O_WRONLY, 0666);
+	fd = open(path, O_WRONLY);
 	close(fd);
 	return (fd > 1);
 }

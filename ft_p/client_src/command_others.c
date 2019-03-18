@@ -36,6 +36,7 @@ t_bool	command_put(int fd, char *command)
 	ft_strdel(&commandnl);
 	send_file(file, fd);
 	ft_strdel(&file);
+	displayline(fd);
 	return (TRUE);
 }
 

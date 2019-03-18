@@ -54,10 +54,13 @@ t_bool	command_put(int fd, char *command, char *curdir)
 	if (!can_write(file))
 	{
 		ft_strdel(&file);
-		ft_putstr_fd("ERROR : Can't write.\n", fd);
+		command_put_inside(fd, "/dev/null");
+		ft_putstr_fd("ERROR : Can't write. (directory ? \
+			The file already exists ?)\n", fd);
 		return (TRUE);
 	}
 	command_put_inside(fd, file);
 	ft_strdel(&file);
+	ft_putstr_fd("SUCCESS\n", fd);
 	return (TRUE);
 }

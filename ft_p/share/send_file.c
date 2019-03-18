@@ -25,12 +25,10 @@ void	send_file(char *file, int fd)
 	size = st.st_size;
 	ft_putofft_fd(size, fd);
 	fdfile = open(file, O_RDONLY);
-	ft_printf("%d %s\n", fdfile, file);
 	ft_sleep();
 	while ((r = read(fdfile, buff, 1024)) > 0)
 	{
 		write(fd, buff, r);
-		write(1, buff, r);
 	}
 	close(fdfile);
 }

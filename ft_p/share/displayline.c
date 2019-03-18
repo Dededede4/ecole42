@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   can_write.c                                        :+:      :+:    :+:   */
+/*   displayline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mprevot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/06 19:28:07 by mprevot           #+#    #+#             */
-/*   Updated: 2019/03/06 19:28:09 by mprevot          ###   ########.fr       */
+/*   Created: 2019/03/09 01:33:33 by mprevot           #+#    #+#             */
+/*   Updated: 2019/03/09 01:33:48 by mprevot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "share.h"
 
-t_bool	can_write(char *path)
+void	displayline(int fd)
 {
-	int	fd;
+	char *tmp;
 
-	if (can_read(path))
-		return (FALSE);
-	fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, 0666);
-	close(fd);
-	return (fd > 1);
+	tmp = NULL;
+	ft_gnl(fd, &tmp);
+	ft_putstr_fd(tmp, 1);
+	ft_putstr_fd("\n", 1);
+	ft_strdel(&tmp);
 }

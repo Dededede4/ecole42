@@ -21,7 +21,7 @@ void	download_file(int fdin, char *filename, off_t filesize)
 	int		r;
 
 	todownload = filesize;
-	fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	fdout = open(filename, O_CREAT | O_WRONLY, 0666);
 	downloaded = 0;
 	while (downloaded < filesize)
 	{

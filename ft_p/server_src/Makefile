@@ -39,7 +39,7 @@ clean:
 	make -C ../share clean
 
 fclean: clean
-	$(RM) server
+	$(RM) ../server
 	make -C ../libft fclean
 	make -C ../share fclean
 

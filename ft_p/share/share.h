@@ -33,5 +33,6 @@ int		is_dir(char *p);
 void	send_file(char *file, int fd);
 t_bool	can_write(char *path);
 t_bool	can_read(char *path);
+void	displayline(int fd);
 
 #endif

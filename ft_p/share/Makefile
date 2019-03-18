@@ -27,7 +27,8 @@ SRC=	can_read.c \
 		ft_putofft_fd.c \
 		ft_sleep.c \
 		is_dir.c \
-		send_file.c
+		send_file.c \
+		displayline.c
 
 OBJ=$(SRC:.c=.o)
 

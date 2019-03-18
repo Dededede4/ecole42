@@ -27,7 +27,6 @@ int		create_server(int port)
 	if (0 == (proto = getprotobyname("tcp")))
 		return (-1);
 	sock = socket(PF_INET, SOCK_STREAM, proto->p_proto);
-	ft_memdel((void**)&proto);
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);

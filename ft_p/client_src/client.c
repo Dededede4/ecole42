@@ -78,7 +78,10 @@ int		main(int ac, char **av)
 	if (ac != 3)
 		usage(av[0]);
 	port = ft_atoi(av[2]);
-	sock = create_client(av[1], port);
+	if (ft_strequ(av[1], "localhost"))
+		sock = create_client("127.0.0.1", port);
+	else
+		sock = create_client(av[1], port);
 	prompt(sock);
 	close(sock);
 	return (0);
