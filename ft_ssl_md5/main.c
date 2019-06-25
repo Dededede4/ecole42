@@ -3,48 +3,49 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include <string.h>
-
-/*
-F(X,Y,Z) = (X AND Y) OR (not(X) AND Z)
-G(X,Y,Z) = (X AND Z) OR (Y AND not(Z))
-H(X,Y,Z) = X xor Y xor Z
-I(X,Y,Z) = Y xor (X OR not(Z))
-*/
+#include <stdint.h>
+#include <stdio.h>
 
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
 
 
-t_uint32 F(t_uint32 X, t_uint32 Y, t_uint32 Z)
+uint32_t F(uint32_t X, uint32_t Y, uint32_t Z)
 {
 	return (X & Y) | ((~ X) & Z);
 }
 
-t_uint32 G(t_uint32 X, t_uint32 Y, t_uint32 Z)
+uint32_t G(uint32_t X, uint32_t Y, uint32_t Z)
 {
 	return (X & Y) | (X & (~ Z));
 }
 
-t_uint32 H(t_uint32 X, t_uint32 Y, t_uint32 Z)
+uint32_t H(uint32_t X, uint32_t Y, uint32_t Z)
 {
 	return X ^ Y ^ Z;
 }
 
-t_uint32 I(t_uint32 X, t_uint32 Y, t_uint32 Z)
+uint32_t I(uint32_t X, uint32_t Y, uint32_t Z)
 {
 	return Y ^ (X | (~ Z));
 }
 
-void first_turn(t_uint32 *a, t_uint32 b, t_uint32 c, t_uint32 d, t_uint32 k, t_uint32 s, t_uint32 i)
-{
-	a = b + ROTATE_LEFT((*a + G(b,c,d) + X[k] + T[i]),s);
-}
 /*
 Initialiser un tableau de 64 entiers sur 32 bits T[1..64] tel que :
 T[i] = Int(232 * abs(sin i)) avec i en radians
 */
 
 
-uint32_t k[] = {
+
+int main()
+{
+	//unsigned char	block[512];
+	//ssize_t 		len;
+
+	char			message[12] = "Hello World!";
+	char			message_padded[64]; // 512 bits
+	uint32_t		*message_padded32;
+
+	uint32_t k[] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
     0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
     0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -67,30 +68,25 @@ uint32_t r[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
             4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
             6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
 
-void main()
-{
-	unsigned char	block[512];
-	ssize_t 		len;
-
-	char			message[12] = "Hello World!";
-	char			message_padded[64]; // 512 bits
 
 	bzero(message_padded, 64);
-	memmove(message_padded, src, 12);
+	memmove(message_padded, message, 12);
 	message_padded[13] = 0b10000000;
 
-	*((t_uint64*)(message_padded + 56)) = 8 * 12; // La taille du Hello World !
+	*((uint64_t *)(((char *)message_padded) + 56)) = 8 * 12; // La taille du Hello World !
+
+	message_padded32 = (uint32_t*)message_padded;
 
 
-	t_uint32 A = 0x67452301;
-	t_uint32 B = 0xefcdab89;
-	t_uint32 C = 0x98badcfe;
-	t_uint32 D = 0x10325476;
+	uint32_t A = 0x67452301;
+	uint32_t B = 0xefcdab89;
+	uint32_t C = 0x98badcfe;
+	uint32_t D = 0x10325476;
 
-	t_uint32 AA = 0x0;
-	t_uint32 BB = 0x0;
-	t_uint32 CC = 0x0;
-	t_uint32 DD = 0x0;
+	uint32_t AA = 0x0;
+	uint32_t BB = 0x0;
+	uint32_t CC = 0x0;
+	uint32_t DD = 0x0;
 
 
 	A = AA + A;
@@ -98,27 +94,30 @@ void main()
 	C = CC + C;
 	D = DD + D;
 
+	int i = 0;
 	for(i = 0; i<64; i++) {
             uint32_t f, g;
  
              if (i < 16) {
-                f = (b & c) | ((~b) & d);
+                f = F(B, C, D);
                 g = i;
             } else if (i < 32) {
-                f = (d & b) | ((~d) & c);
+                f = G(B, C, D);
                 g = (5*i + 1) % 16;
             } else if (i < 48) {
-                f = b ^ c ^ d;
+                f = H(B, C, D);
                 g = (3*i + 5) % 16;          
             } else {
-                f = c ^ (b | (~d));
+                f = G(B, C, D);
                 g = (7*i) % 16;
             }
-
-            uint32_t temp = d;
-            d = c;
-            c = b;
-            b = b + LEFTROTATE((a + f + k[i] + w[g]), r[i]);
-            a = temp;
+            printf("%08x %08x %08x %08x %d\n", A, B, C, D, g);
+            uint32_t temp = D;
+            D = C;
+            C = B;
+            B = B + LEFTROTATE((A + f + k[i] + message_padded32[g]), r[i]);
+            A = temp;
         }
+    printf("%08x%08x%08x%08x\n", A, B, C, D);
+    return (0);
 }

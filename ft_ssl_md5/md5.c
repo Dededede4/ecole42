@@ -132,14 +132,14 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
                 f = c ^ (b | (~d));
                 g = (7*i) % 16;
             }
-
+            printf("%08x %08x %08x %08x %d\n", a, b, c, d, g);
 #ifdef ROUNDS
             printf("f=%x g=%d w[g]=%x\n", f, g, w[g]);
 #endif 
             uint32_t temp = d;
             d = c;
             c = b;
-            printf("rotateLeft(%x + %x + %x + %x, %d)\n", a, f, k[i], w[g], r[i]);
+            //printf("rotateLeft(%x + %x + %x + %x, %d)\n", a, f, k[i], w[g], r[i]);
             b = b + LEFTROTATE((a + f + k[i] + w[g]), r[i]);
             a = temp;
 
