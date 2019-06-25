@@ -98,30 +98,27 @@ void main()
 	C = CC + C;
 	D = DD + D;
 
-	for (int i = 0; i < 16; ++i)
-	{
-		/* code */
-	}
+	for(i = 0; i<64; i++) {
+            uint32_t f, g;
+ 
+             if (i < 16) {
+                f = (b & c) | ((~b) & d);
+                g = i;
+            } else if (i < 32) {
+                f = (d & b) | ((~d) & c);
+                g = (5*i + 1) % 16;
+            } else if (i < 48) {
+                f = b ^ c ^ d;
+                g = (3*i + 5) % 16;          
+            } else {
+                f = c ^ (b | (~d));
+                g = (7*i) % 16;
+            }
 
-	for (int i = 0; i < 16; ++i)
-	{
-		/* code */
-	}
-
-	for (int i = 0; i < 16; ++i)
-	{
-		/* code */
-	}
-
-	for (int i = 0; i < 16; ++i)
-	{
-		/* code */
-	}
-
-	/*
-		while ((len = read(0, block, 512)) > 0)
-		{
-			printf("Pouet pd\n");
-		}
-	*/
+            uint32_t temp = d;
+            d = c;
+            c = b;
+            b = b + LEFTROTATE((a + f + k[i] + w[g]), r[i]);
+            a = temp;
+        }
 }
