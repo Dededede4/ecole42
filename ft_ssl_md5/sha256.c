@@ -11,61 +11,47 @@
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
 #define RIGHTROTATE(x, c) (((x) >> (c)) | ((x) << (32 - (c))))
 
-uint32_t F(uint32_t X, uint32_t Y, uint32_t Z)
-{
-	return (X & Y) | ((~ X) & Z);
-}
-
-uint32_t G(uint32_t X, uint32_t Y, uint32_t Z)
-{
-	return (X & Z) | (Y & (~ Z));
-}
-
-uint32_t H(uint32_t X, uint32_t Y, uint32_t Z)
-{
-	return X ^ Y ^ Z;
-}
-
-uint32_t I(uint32_t X, uint32_t Y, uint32_t Z)
-{
-	return Y ^ (X | (~ Z));
-}
 
 uint32_t CH(uint32_t x, uint32_t y, uint32_t z)
 {
-	return (x & y) ^ ( (~ x) & z)
+	return (x & y) ^ ( (~ x) & z);
 }
 
 uint32_t MAJ(uint32_t x, uint32_t y, uint32_t z)
 {
-	return (x & y) ^ (x & z) ^ (y & z)
+	return (x & y) ^ (x & z) ^ (y & z);
 }
-
+/*
 uint32_t BSIG0(uint32_t x)
 {
-	return RIGHTROTATE(x, 28) ^ RIGHTROTATE(x, 34) ^ RIGHTROTATE(x, 39)
+	return RIGHTROTATE(x, 28) ^ RIGHTROTATE(x, 34) ^ RIGHTROTATE(x, 39);
 }
 
 uint32_t BSIG1(uint32_t x)
 {
-	return RIGHTROTATE(x, 14) ^ RIGHTROTATE(x, 18) ^ RIGHTROTATE(x, 41)
+	return RIGHTROTATE(x, 14) ^ RIGHTROTATE(x, 18) ^ RIGHTROTATE(x, 41);
 }
 
 
 uint32_t SSIG0(uint32_t x){
-	return RIGHTROTATE(x, 1) ^ RIGHTROTATE(x, 8) ^ (x >> 7)
+	return RIGHTROTATE(x, 1) ^ RIGHTROTATE(x, 8) ^ (x >> 7);
 }
 
 uint32_t SSIG1(uint32_t x)
 {
-	return RIGHTROTATE(x, 19) ^ RIGHTROTATE(x, 61) ^ (x >> 6)
-}
+	return RIGHTROTATE(x, 19) ^ RIGHTROTATE(x, 61) ^ (x >> 6);
+}*/
 
 uint32_t swap_uint32( uint32_t val )
 {
     val = ((val << 8) & 0xFF00FF00 ) | ((val >> 8) & 0xFF00FF ); 
     return (val << 16) | (val >> 16);
 }
+
+#define EP0(x) (RIGHTROTATE(x,2) ^ RIGHTROTATE(x,13) ^ RIGHTROTATE(x,22))
+#define EP1(x) (RIGHTROTATE(x,6) ^ RIGHTROTATE(x,11) ^ RIGHTROTATE(x,25))
+#define SIG0(x) (RIGHTROTATE(x,7) ^ RIGHTROTATE(x,18) ^ ((x) >> 3))
+#define SIG1(x) (RIGHTROTATE(x,17) ^ RIGHTROTATE(x,19) ^ ((x) >> 10))
 
 
 /*
@@ -123,6 +109,14 @@ printf("----");
 	}
 
 
+	uint32_t m[64];
+	uint32_t j, t1, t2;
+
+	for (i = 0, j = 0; i < 16; ++i, j += 4)
+		m[i] = (message_padded32[j] << 24) | (message_padded32[j + 1] << 16) | (message_padded32[j + 2] << 8) | (message_padded32[j + 3]);
+	for ( ; i < 64; ++i)
+		m[i] = SIG1(m[i - 2]) + m[i - 7] + SIG0(m[i - 15]) + m[i - 16];
+
 	uint32_t A = 0x6a09e667;
 	uint32_t B = 0xbb67ae85;
 	uint32_t C = 0x3c6ef372;
@@ -142,39 +136,78 @@ printf("----");
 	uint32_t HH = 0x5be0cd19;
 
 
-
-	A = AA;
-	B = BB;
-	C = CC;
-	D = DD;
-
-	for(i = 0; i<64; i++) {
-		uint32_t f, g;
-
-		if (i < 16) {
-			f = F(B, C, D);
-			g = i;
-		} else if (i < 32) {
-			f = G(B, C, D);
-			g = (5*i + 1) % 16;
-		} else if (i < 48) {
-			f = H(B, C, D);
-			g = (3*i + 5) % 16;          
-		} else {
-			f = I(B, C, D);
-			g = (7*i) % 16;
-		}
-		printf("%08x %08x %08x %08x %d\n", A, B, C, D, g);
-		uint32_t temp = D;
+	for (i = 0; i < 64; ++i) {
+		t1 = H + EP1(E) + CH(E,F,G) + k[i] + m[i];
+		t2 = EP0(A) + MAJ(A,B,C);
+		H = G;
+		G = F;
+		F = E;
+		E = D + t1;
 		D = C;
 		C = B;
-		B = B + LEFTROTATE((A + f + k[i] + message_padded32[g]), r[i]);
-		A = temp;
+		B = A;
+		A = t1 + t2;
 	}
+
 	A = AA + A;
 	B = BB + B;
 	C = CC + C;
 	D = DD + D;
-	printf("%08x%08x%08x%08x\n", swap_uint32(A), swap_uint32(B), swap_uint32(C), swap_uint32(D));
+	E = EE + E;
+	F = FF + F;
+	G = GG + G;
+	H = HH + H;
+
+
+	printf("%08x%08x%08x%08x%08x%08x%08x%08x\n", swap_uint32(A), swap_uint32(B), swap_uint32(C), swap_uint32(D), swap_uint32(E), swap_uint32(F), swap_uint32(G), swap_uint32(H));
 	return (0);
 }
+
+
+
+
+/*void sha256_final(SHA256_CTX *ctx, BYTE hash[])
+{
+	WORD i;
+
+	i = ctx->datalen;
+
+	// Pad whatever data is left in the buffer.
+	if (ctx->datalen < 56) {
+		ctx->data[i++] = 0x80;
+		while (i < 56)
+			ctx->data[i++] = 0x00;
+	}
+	else {
+		ctx->data[i++] = 0x80;
+		while (i < 64)
+			ctx->data[i++] = 0x00;
+		sha256_transform(ctx, ctx->data);
+		memset(ctx->data, 0, 56);
+	}
+
+	// Append to the padding the total message's length in bits and transform.
+	ctx->bitlen += ctx->datalen * 8;
+	ctx->data[63] = ctx->bitlen;
+	ctx->data[62] = ctx->bitlen >> 8;
+	ctx->data[61] = ctx->bitlen >> 16;
+	ctx->data[60] = ctx->bitlen >> 24;
+	ctx->data[59] = ctx->bitlen >> 32;
+	ctx->data[58] = ctx->bitlen >> 40;
+	ctx->data[57] = ctx->bitlen >> 48;
+	ctx->data[56] = ctx->bitlen >> 56;
+	sha256_transform(ctx, ctx->data);
+
+	// Since this implementation uses little endian byte ordering and SHA uses big endian,
+	// reverse all the bytes when copying the final state to the output hash.
+	for (i = 0; i < 4; ++i) {
+		hash[i]      = (A >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 4]  = (B >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 8]  = (C >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 12] = (D >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 16] = (E >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 20] = (F >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 24] = (G >> (24 - i * 8)) & 0x000000ff;
+		hash[i + 28] = (H >> (24 - i * 8)) & 0x000000ff;
+	}
+}*/
