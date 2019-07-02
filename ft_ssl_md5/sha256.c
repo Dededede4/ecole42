@@ -113,7 +113,7 @@ printf("----");
 	uint32_t j, t1, t2;
 
 	for (i = 0, j = 0; i < 16; ++i, j += 4)
-		m[i] = (message_padded32[j] << 24) | (message_padded32[j + 1] << 16) | (message_padded32[j + 2] << 8) | (message_padded32[j + 3]);
+		m[i] = (message_padded[j] << 24) | (message_padded[j + 1] << 16) | (message_padded[j + 2] << 8) | (message_padded[j + 3]);
 	for ( ; i < 64; ++i)
 		m[i] = SIG1(m[i - 2]) + m[i - 7] + SIG0(m[i - 15]) + m[i - 16];
 
@@ -159,6 +159,7 @@ printf("----");
 	H = HH + H;
 
 
+	printf("%08x%08x%08x%08x%08x%08x%08x%08x\n", (A), (B), (C), (D), (E), (F), (G), (H));
 	printf("%08x%08x%08x%08x%08x%08x%08x%08x\n", swap_uint32(A), swap_uint32(B), swap_uint32(C), swap_uint32(D), swap_uint32(E), swap_uint32(F), swap_uint32(G), swap_uint32(H));
 	return (0);
 }
