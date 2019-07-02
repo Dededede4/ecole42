@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <byteswap.h>
 
 
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
@@ -66,8 +67,8 @@ int main()
 	//unsigned char	block[512];
 	//ssize_t 		len;
 
-	char			message[12] = "Hello World!";
-	char			message_padded[64]; // 512 bits
+	unsigned char			message[12] = "Hello World!";
+	unsigned char			message_padded[64]; // 512 bits
 	uint32_t		*message_padded32;
 
 	uint32_t k[] = {
@@ -101,7 +102,7 @@ int main()
 */
 	message_padded[12] = 0b10000000;
 
-	*((uint64_t *)(((char *)message_padded) + 56)) = 8 * 12; // La taille du Hello World !
+	*((uint64_t *)(((char *)message_padded) + 56)) = __bswap_64(8 * 12); // La taille du Hello World !
 printf("----");
 	for (i = 0; i < 16; i++)
 	{
