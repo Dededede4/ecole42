@@ -22,15 +22,20 @@ int				print_usage(void)
 void			read_file(t_params params)
 {
 	int		size;
-	char	buf[56];
+	char	buf[64];
+	int		old_size;
 
-	while ((size = read(params.fd, buf, 56)) > 0)
+	while ((size = read(params.fd, buf, 64)) > 0)
 	{
-		size--;
+		old_size = size;
 		if (params.h == MD5)
-			encrypt_md5(buf, size);
+			encrypt_md5(buf, size, &params);
 		if (params.h == SHA256)
 			encrypt_sha256(buf, size);
+	}
+	if (old_size >= 56)
+	{
+		encrypt_md5(buf, 0, &params);
 	}
 }
 

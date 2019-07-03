@@ -23,8 +23,19 @@ typedef struct			s_params
 	t_bool				r;
 	t_bool				q;
 	t_bool				error;
+	t_bool				is_last;
 	char		 		*s;
 	int					fd;
+	char				*d;
+	uint64_t			ds;
+	uint32_t			AA;
+	uint32_t			BB;
+	uint32_t			CC;
+	uint32_t			DD;
+	uint32_t			EE;
+	uint32_t			FF;
+	uint32_t			GG;
+	uint32_t			HH;
 }						t_params;
 
 #define ENDIAN_SWAP_U64(val) (( \
@@ -38,8 +49,10 @@ typedef struct			s_params
     (((val) & 0xff00000000000000) >> 56)))
 
 t_params		get_params(int argc, char **argv);
-int encrypt_md5(char *data, uint64_t size);
+int encrypt_md5(char *data, uint64_t size, t_params *params);
 
 int encrypt_sha256(char *data, uint64_t size);
 
 uint32_t swap_uint32( uint32_t val );
+
+void	get_file(t_params *params);

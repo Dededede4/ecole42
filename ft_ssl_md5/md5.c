@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-
+#include "ft_ssl.h"
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
 
 
@@ -31,18 +31,12 @@ uint32_t I(uint32_t X, uint32_t Y, uint32_t Z)
 	return Y ^ (X | (~ Z));
 }
 
-uint32_t swap_uint32( uint32_t val )
-{
-    val = ((val << 8) & 0xFF00FF00 ) | ((val >> 8) & 0xFF00FF ); 
-    return (val << 16) | (val >> 16);
-}
-
-
-int encrypt_md5(char *data, uint64_t size)
+int encrypt_md5(char *data, uint64_t size, t_params *params)
 {
 	char			message_padded[64];
 	uint32_t		*message_padded32;
 	int				i;
+	uint32_t		A, B, C, D;
 
 	uint32_t k[] = {
 		0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
@@ -71,26 +65,37 @@ int encrypt_md5(char *data, uint64_t size)
 	memset(message_padded, 0, 64);
 	memmove(message_padded, data, size);
 	message_padded32 = (uint32_t*)message_padded;
-	message_padded[size] = 0b10000000;
-	*((uint64_t *)(((char *)message_padded) + 56)) = 8 * size;
+	params->ds += size;
+
+
+	if (size < 64 && FALSE == params->is_last) // end
+	{
+		params->is_last = TRUE;
+		ft_printf("End1 : %lld\n", size);
+		message_padded[size] = 0b10000000;
+	}
+	if (size < 56) // end
+	{
+		//size--;
+		ft_printf("End2 : %lld\n", size);
+		*((uint64_t *)(((char *)message_padded) + 56)) = 8 * params->ds;
+	}
+
+
+	if (0 == params->AA)
+	{
+		params->AA = 0x67452301;
+		params->BB = 0xefcdab89;
+		params->CC = 0x98badcfe;
+		params->DD = 0x10325476;
+	}
 
 
 
-	uint32_t A = 0x67452301;
-	uint32_t B = 0xefcdab89;
-	uint32_t C = 0x98badcfe;
-	uint32_t D = 0x10325476;
-
-	uint32_t AA = 0x67452301;
-	uint32_t BB = 0xefcdab89;
-	uint32_t CC = 0x98badcfe;
-	uint32_t DD = 0x10325476;
-
-
-	A = AA;
-	B = BB;
-	C = CC;
-	D = DD;
+	A = params->AA;
+	B = params->BB;
+	C = params->CC;
+	D = params->DD;
 
 	for(i = 0; i<64; i++) {
 		uint32_t f, g;
@@ -114,11 +119,11 @@ int encrypt_md5(char *data, uint64_t size)
 		B = B + LEFTROTATE((A + f + k[i] + message_padded32[g]), r[i]);
 		A = temp;
 	}
-	A = AA + A;
-	B = BB + B;
-	C = CC + C;
-	D = DD + D;
+	params->AA = params->AA + A;
+	params->BB = params->BB + B;
+	params->CC = params->CC + C;
+	params->DD = params->DD + D;
 
-	printf("%08x%08x%08x%08x\n", swap_uint32(A), swap_uint32(B), swap_uint32(C), swap_uint32(D));
+	printf("%08x%08x%08x%08x\n", swap_uint32(params->AA), swap_uint32(params->BB), swap_uint32(params->CC), swap_uint32(params->DD));
 	return (0);
 }
