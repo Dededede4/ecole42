@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef FT_SSL_H
+# define FT_SSL_H
+
 #include "libft/libft.h"
 #include <errno.h>
 
@@ -25,6 +28,7 @@ typedef struct			s_params
 	t_bool				error;
 	t_bool				is_last;
 	char		 		*s;
+	char				*fn;
 	int					fd;
 	char				*d;
 	uint64_t			ds;
@@ -37,6 +41,8 @@ typedef struct			s_params
 	uint32_t			GG;
 	uint32_t			HH;
 }						t_params;
+
+#define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
 
 #define ENDIAN_SWAP_U64(val) (( \
     (((val) & 0x00000000000000ff) << 56) | \
@@ -51,8 +57,12 @@ typedef struct			s_params
 t_params		get_params(int argc, char **argv);
 int encrypt_md5(char *data, uint64_t size, t_params *params);
 
-int encrypt_sha256(char *data, uint64_t size);
+int encrypt_sha256(char *data, uint64_t size, t_params *params);
 
 uint32_t swap_uint32( uint32_t val );
 
 void	get_file(t_params *params);
+
+
+
+#endif

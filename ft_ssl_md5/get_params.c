@@ -48,6 +48,7 @@ int				sub_get_params(t_params *params, int argc, char **argv)
 			params->s = argv[++i];
 		else if ((i + 1) == argc)
 		{
+			params->fn = argv[i];
 			if ((params->fd = open(argv[i], O_RDONLY)) < 0)
 				sub_get_params_error(params, i, argv);
 		}
