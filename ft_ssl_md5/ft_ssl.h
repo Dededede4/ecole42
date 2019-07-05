@@ -66,5 +66,11 @@ uint32_t swap_uint32( uint32_t val );
 void	get_file(t_params *params);
 void sub_get_params_error(t_params *params, char *name);
 
+void			read_file(t_params params);
+
+uint32_t	func_f(uint32_t x, uint32_t y, uint32_t z);
+uint32_t	func_g(uint32_t x, uint32_t y, uint32_t z);
+uint32_t	func_h(uint32_t x, uint32_t y, uint32_t z);
+uint32_t	func_i(uint32_t x, uint32_t y, uint32_t z);
 
 #endif

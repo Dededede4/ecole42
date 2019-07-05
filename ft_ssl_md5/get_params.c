@@ -50,7 +50,7 @@ int				sub_get_params(t_params *params, int argc, char **argv)
 		{
 			params->fns = argv + i;
 			params->nfn = argc - i;
-			break;
+			break ;
 		}
 		i++;
 	}
