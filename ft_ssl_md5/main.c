@@ -82,7 +82,10 @@ void			display_for_std(t_params params)
 
 void			read_file(t_params params)
 {
-	if ((!params.s && !params.fn) || params.p)
+	int i;
+
+	i = 0;
+	if ((!params.s && 0 == params.nfn) || params.p)
 	{
 		display_for_std(params);
 		ft_putchar('\n');
@@ -90,22 +93,37 @@ void			read_file(t_params params)
 
 	if (params.s)
 	{
-		if (params.h == MD5 && FALSE == params.q)
+		if (FALSE == params.r && params.h == MD5 && FALSE == params.q)
 			ft_printf("MD5 (\"%s\") = ", params.s);
-		if (params.h == SHA256 && FALSE == params.q)
+		if (FALSE == params.r && params.h == SHA256 && FALSE == params.q)
 			ft_printf("SHA256 (\"%s\") = ", params.s);
 		display_for_string(params);
+		if (TRUE == params.r && params.h == MD5 && FALSE == params.q)
+			ft_printf(" \"%s\"", params.s);
+		if (TRUE == params.r && params.h == SHA256 && FALSE == params.q)
+			ft_printf(" \"%s\"", params.s);
 		ft_putchar('\n');
 	}
 
-	if (params.fn)
+	while (i < params.nfn)
 	{
-		if (params.h == MD5 && FALSE == params.q)
-			ft_printf("MD5 (%s) = ", params.fn);
-		if (params.h == SHA256 && FALSE == params.q)
-			ft_printf("SHA256 (%s) = ", params.fn);
-		display_for_files(params);
-		ft_putchar('\n');
+		params.fn = params.fns[i];
+		if ((params.fd = open(params.fn, O_RDONLY)) < 0)
+				sub_get_params_error(&params, params.fn);
+		else
+		{
+			if (FALSE == params.r && params.h == MD5 && FALSE == params.q)
+				ft_printf("MD5 (%s) = ", params.fn);
+			if (FALSE == params.r && params.h == SHA256 && FALSE == params.q)
+				ft_printf("SHA256 (%s) = ", params.fn);
+			display_for_files(params);
+			if (TRUE == params.r && params.h == MD5 && FALSE == params.q)
+				ft_printf(" %s", params.fn);
+			if (TRUE == params.r && params.h == SHA256 && FALSE == params.q)
+				ft_printf(" %s", params.fn);
+			ft_putchar('\n');
+		}
+		i++;
 	}
 }
 

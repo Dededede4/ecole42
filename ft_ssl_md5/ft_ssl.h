@@ -28,7 +28,9 @@ typedef struct			s_params
 	t_bool				error;
 	t_bool				is_last;
 	char		 		*s;
+	char				**fns;
 	char				*fn;
+	int					nfn;
 	int					fd;
 	char				*d;
 	uint64_t			ds;
@@ -62,7 +64,7 @@ int encrypt_sha256(char *data, uint64_t size, t_params *params);
 uint32_t swap_uint32( uint32_t val );
 
 void	get_file(t_params *params);
-
+void sub_get_params_error(t_params *params, char *name);
 
 
 #endif

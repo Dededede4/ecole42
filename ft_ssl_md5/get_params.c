@@ -22,13 +22,13 @@ Cipher commands:\n");
 	return (1);
 }
 
-void			sub_get_params_error(t_params *params, int i, char **argv)
+void			sub_get_params_error(t_params *params, char *name)
 {
 	params->error = TRUE;
 	if (params->h == MD5)
-		ft_printf("ft_ssl: md5: %s: %s\n", argv[i], strerror(errno));
+		ft_printf("ft_ssl: md5: %s: %s\n", name, strerror(errno));
 	else
-		ft_printf("ft_ssl: sha256: %s: %s\n", argv[i], strerror(errno));
+		ft_printf("ft_ssl: sha256: %s: %s\n", name, strerror(errno));
 }
 
 #define INIT_I int i = 2;
@@ -46,14 +46,12 @@ int				sub_get_params(t_params *params, int argc, char **argv)
 			params->r = TRUE;
 		else if (ft_strequ(argv[i], "-s") && (i + 1) < argc)
 			params->s = argv[++i];
-		else if ((i + 1) == argc)
+		else
 		{
-			params->fn = argv[i];
-			if ((params->fd = open(argv[i], O_RDONLY)) < 0)
-				sub_get_params_error(params, i, argv);
+			params->fns = argv + i;
+			params->nfn = argc - i;
+			break;
 		}
-		else if ((params->error = TRUE))
-			print_error();
 		i++;
 	}
 	return (0);
