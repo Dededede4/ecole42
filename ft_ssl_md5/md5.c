@@ -13,7 +13,7 @@
 #include "ft_ssl.h"
 #include "md5.h"
 
-void		init_params(t_params *params)
+static void		init_params(t_params *params)
 {
 	if (0 == params->AA)
 	{
@@ -28,7 +28,7 @@ void		init_params(t_params *params)
 #define MOULINETTE_INITS a=p->AA;b=p->BB;c=p->CC;d=p->DD;
 #define MOULINETTE_END p->AA=p->AA+a;p->BB=p->BB+b;p->CC=p->CC+c;p->DD=p->DD+d;
 
-void		moulinette(uint32_t *message_padded32, t_params *p)
+static void		moulinette(uint32_t *message_padded32, t_params *p)
 {
 	MOULINETTE_VARS;
 	MOULINETTE_INITS;
