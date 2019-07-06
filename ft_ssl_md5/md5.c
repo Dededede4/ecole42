@@ -56,7 +56,7 @@ static void		moulinette(uint32_t *message_padded32, t_params *p)
 	MOULINETTE_END;
 }
 
-int			encrypt_md5(char *data, uint64_t size, t_params *p)
+int				encrypt_md5(char *data, uint64_t size, t_params *p)
 {
 	char			message_padded[64];
 	uint32_t		*message_padded32;
