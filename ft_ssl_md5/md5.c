@@ -15,18 +15,18 @@
 
 static void		init_params(t_params *params)
 {
-	if (0 == params->AA)
+	if (0 == params->h0)
 	{
-		params->AA = 0x67452301;
-		params->BB = 0xefcdab89;
-		params->CC = 0x98badcfe;
-		params->DD = 0x10325476;
+		params->h0 = 0x67452301;
+		params->h1 = 0xefcdab89;
+		params->h2 = 0x98badcfe;
+		params->h3 = 0x10325476;
 	}
 }
 
 #define MOULINETTE_VARS uint32_t	i = 0, a, b, c, d, f, g, temp;
-#define MOULINETTE_INITS a=p->AA;b=p->BB;c=p->CC;d=p->DD;
-#define MOULINETTE_END p->AA=p->AA+a;p->BB=p->BB+b;p->CC=p->CC+c;p->DD=p->DD+d;
+#define MOULINETTE_INITS a=p->h0;b=p->h1;c=p->h2;d=p->h3;
+#define MOULINETTE_END p->h0=p->h0+a;p->h1=p->h1+b;p->h2=p->h2+c;p->h3=p->h3+d;
 
 static void		moulinette(uint32_t *message_padded32, t_params *p)
 {
@@ -49,7 +49,7 @@ static void		moulinette(uint32_t *message_padded32, t_params *p)
 		temp = d;
 		d = c;
 		c = b;
-		b = b + LEFTROTATE((a + f + k[i] + message_padded32[g]), r[i]);
+		b = b + LEFTROTATE((a + f + g_k[i] + message_padded32[g]), g_r[i]);
 		a = temp;
 		i++;
 	}
@@ -75,7 +75,7 @@ int				encrypt_md5(char *data, uint64_t size, t_params *p)
 	init_params(p);
 	moulinette(message_padded32, p);
 	if (size < 56)
-		ft_printf("%08x%08x%08x%08x", swap_uint32(p->AA),
-			swap_uint32(p->BB), swap_uint32(p->CC), swap_uint32(p->DD));
+		ft_printf("%08x%08x%08x%08x", swap_uint32(p->h0),
+			swap_uint32(p->h1), swap_uint32(p->h2), swap_uint32(p->h3));
 	return (0);
 }

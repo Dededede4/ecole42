@@ -13,11 +13,11 @@
 #ifndef FT_SSL_H
 # define FT_SSL_H
 
-#include "libft/libft.h"
-#include <errno.h>
+# include "libft/libft.h"
+# include <errno.h>
 
-#define MD5 1
-#define SHA256 2
+# define MD5 1
+# define SHA256 2
 
 typedef struct			s_params
 {
@@ -27,50 +27,42 @@ typedef struct			s_params
 	t_bool				q;
 	t_bool				error;
 	t_bool				is_last;
-	char		 		*s;
+	char				*s;
 	char				**fns;
 	char				*fn;
 	int					nfn;
 	int					fd;
 	char				*d;
 	uint64_t			ds;
-	uint32_t			AA;
-	uint32_t			BB;
-	uint32_t			CC;
-	uint32_t			DD;
-	uint32_t			EE;
-	uint32_t			FF;
-	uint32_t			GG;
-	uint32_t			HH;
+	uint32_t			h0;
+	uint32_t			h1;
+	uint32_t			h2;
+	uint32_t			h3;
+	uint32_t			h4;
+	uint32_t			h5;
+	uint32_t			h6;
+	uint32_t			h7;
 }						t_params;
 
-#define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
+# define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
+# define RIGHTROTATE(x, c) (((x) >> (c)) | ((x) << (32 - (c))))
 
-#define ENDIAN_SWAP_U64(val) (( \
-    (((val) & 0x00000000000000ff) << 56) | \
-    (((val) & 0x000000000000ff00) << 40) | \
-    (((val) & 0x0000000000ff0000) << 24) | \
-    (((val) & 0x00000000ff000000) <<  8) | \
-    (((val) & 0x000000ff00000000) >>  8) | \
-    (((val) & 0x0000ff0000000000) >> 24) | \
-    (((val) & 0x00ff000000000000) >> 40) | \
-    (((val) & 0xff00000000000000) >> 56)))
-
-t_params		get_params(int argc, char **argv);
-int encrypt_md5(char *data, uint64_t size, t_params *params);
-
-int encrypt_sha256(char *data, uint64_t size, t_params *params);
-
-uint32_t swap_uint32( uint32_t val );
-
-void	get_file(t_params *params);
-void sub_get_params_error(t_params *params, char *name);
-
-void			read_file(t_params params);
-
-uint32_t	func_f(uint32_t x, uint32_t y, uint32_t z);
-uint32_t	func_g(uint32_t x, uint32_t y, uint32_t z);
-uint32_t	func_h(uint32_t x, uint32_t y, uint32_t z);
-uint32_t	func_i(uint32_t x, uint32_t y, uint32_t z);
+uint64_t				swap_uint64(uint64_t val);
+t_params				get_params(int argc, char **argv);
+int						encrypt_md5(
+	char *data, uint64_t size, t_params *params);
+int						encrypt_sha256(
+	char *data, uint64_t size, t_params *params);
+uint32_t				swap_uint32(uint32_t val);
+void					get_file(t_params *params);
+void					sub_get_params_error(
+	t_params *params, char *name);
+void					read_file(t_params params);
+uint32_t				func_f(uint32_t x, uint32_t y, uint32_t z);
+uint32_t				func_g(uint32_t x, uint32_t y, uint32_t z);
+uint32_t				func_h(uint32_t x, uint32_t y, uint32_t z);
+uint32_t				func_i(uint32_t x, uint32_t y, uint32_t z);
+uint32_t				ch(uint32_t x, uint32_t y, uint32_t z);
+uint32_t				maj(uint32_t x, uint32_t y, uint32_t z);
 
 #endif
