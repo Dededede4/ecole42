@@ -1,6 +1,6 @@
 certifi==2017.11.5
 chardet==3.0.4
-Django==2.0.1
+Django==2.2.24
 idna==2.6
 omdb==0.8.1
 psycopg2==2.7.3.2
